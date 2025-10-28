@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.businessContentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.businessContentHeaderTitle {
+  padding: 16px 20px;
+  height: 60px;
+  min-height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border-bottom: 1px solid #eee;
+}
+
+.businessContentHeaderIcon {
+  padding: 16px;
+}
+
+.content {
+  flex: 1;
+  padding: 16px;
+  overflow: auto;
+}
+
+.noFileText {
+  color: #757575; // MUI's text.secondary equivalent
+  font-size: 14px;
+}

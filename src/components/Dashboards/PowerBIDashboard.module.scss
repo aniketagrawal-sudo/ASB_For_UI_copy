@@ -1,0 +1,134 @@
+@use '../../styles/globalStyles.scss' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background-color: #f9f9fb;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 46px;
+  padding: $Spacing-XS $Spacing-S;
+  margin-bottom: 0;
+  z-index: $Z-Index-Base;
+  position: relative;
+}
+
+.reportSelector {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.title {
+  font-weight: $Font-Weight-SemiBold;
+  font-size: $Font-Size-LG;
+  font-family: $Font-Family;
+  line-height: $Line-Height-Tight;
+  color: $Text-Color;
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: $Main-Color;
+    border-radius: 3px;
+  }
+
+  &:hover {
+    color: $Main-Color;
+  }
+}
+
+.dropdownIcon {
+  margin-left: 4px;
+  font-size: 20px;
+  color: $Secondary-Text;
+}
+
+.dashboardWrapper {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  border-radius: $Border-Radius-L;
+  box-shadow: $Shadow-MD;
+  border: 1px solid rgb(0, 0, 0, 0.05);
+  background-color: #f9f9fb;
+  min-height: 700px;
+}
+
+.reportsMenu {
+  max-width: 320px;
+}
+
+.errorBox {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure the dashboard is properly responsive */
+@media (height <= 800px) {
+  .dashboardWrapper {
+    min-height: 500px;
+  }
+}
+
+@media (width <= 960px) {
+  .container {
+    padding: 0;
+  }
+
+  .header {
+    padding: $Spacing-XS $Spacing-S;
+    height: 42px;
+    margin-bottom: 0;
+  }
+
+  .title {
+    font-size: $Font-Size-MD;
+  }
+
+  .dashboardWrapper {
+    border-radius: $Border-Radius-M;
+  }
+}
+
+@media (width <= 768px) {
+  .header {
+    flex-direction: row;
+    align-items: center;
+    height: auto;
+    padding: $Spacing-XS;
+    margin-bottom: 0;
+  }
+
+  .title {
+    font-size: $Font-Size-SM;
+
+    &::after {
+      width: 30px;
+      height: 2px;
+    }
+  }
+
+  .dashboardWrapper {
+    border-radius: $Border-Radius-S;
+  }
+}

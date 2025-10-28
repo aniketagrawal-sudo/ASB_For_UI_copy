@@ -1,0 +1,372 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+.tableContainer {
+  width: 100%;
+  overflow: hidden;
+  background: white;
+  border-radius: globalStyles.$Border-Radius-M;
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
+  margin-top: 0;
+  border: 1px solid rgb(0, 0, 0, 0.08);
+  
+  // FIXED height constraints
+  height: auto;
+  min-height: 200px;
+  max-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tableWrapper {
+  width: 100%;
+  flex: 1;
+  
+  // CRITICAL: Enable both scrollbars with max height constraint
+  overflow: auto !important;
+  
+  // Consistent scrollbar styling with other components
+  background-color: rgb(247, 144, 29, 0.02);
+  
+  // Enhanced scrollbar styling for better visibility - consistent with MessageBubble
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgb(0, 0, 0, 0.05);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgb(247, 144, 29, 0.3);
+    border-radius: 4px;
+    transition: background globalStyles.$Transition-Fast;
+    
+    &:hover {
+      background: rgb(247, 144, 29, 0.5);
+    }
+  }
+  
+  &::-webkit-scrollbar-corner {
+    background: rgb(0, 0, 0, 0.05);
+  }
+
+  // Firefox scrollbar
+  scrollbar-width: thin;
+  scrollbar-color: rgb(247, 144, 29, 0.3) rgb(0, 0, 0, 0.05);
+
+  // Ensure table takes minimum required width for horizontal scroll
+  :global(.MuiTable-root) {
+    min-width: 100%;
+    width: auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: globalStyles.$Font-Family;
+  }
+  
+  // Ensure proper table head styling
+  :global(.MuiTableHead-root) {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: rgb(247, 144, 29, 0.08);
+  }
+  
+  // Header cell styling for MUI tables
+  :global(.MuiTableCell-head) {
+    background-color: rgb(247, 144, 29, 0.08) !important;
+    font-weight: globalStyles.$Font-Weight-SemiBold !important;
+    color: globalStyles.$Text-Color !important;
+    text-transform: capitalize;
+    white-space: nowrap;
+    font-size: globalStyles.$Font-Size-SM !important;
+    padding: globalStyles.$Spacing-S globalStyles.$Spacing-M !important;
+    font-family: globalStyles.$Font-Family !important;
+    border-bottom: 2px solid rgb(247, 144, 29, 0.2) !important;
+    border-right: 1px solid rgb(0, 0, 0, 0.05);
+    
+    &:last-child {
+      border-right: none;
+    }
+  }
+  
+  // Row styling for MUI tables
+  :global(.MuiTableRow-root) {
+    transition: background-color globalStyles.$Transition-Fast;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.05);
+    
+    &:hover {
+      background-color: rgb(247, 144, 29, 0.04) !important;
+    }
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  // Body cell styling for MUI tables
+  :global(.MuiTableCell-body) {
+    padding: globalStyles.$Spacing-S globalStyles.$Spacing-M !important;
+    font-size: globalStyles.$Font-Size-SM !important;
+    font-family: globalStyles.$Font-Family !important;
+    color: globalStyles.$Text-Color;
+    border-right: 1px solid rgb(0, 0, 0, 0.05);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    
+    &:last-child {
+      border-right: none;
+    }
+    
+    // Number formatting
+    &[data-type="number"] {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+}
+
+.tableHeaderCell {
+  background-color: rgb(247, 144, 29, 0.08) !important;
+  font-weight: globalStyles.$Font-Weight-SemiBold !important;
+  color: globalStyles.$Text-Color !important;
+  text-transform: capitalize;
+  white-space: nowrap;
+  font-size: globalStyles.$Font-Size-SM !important;
+  padding: globalStyles.$Spacing-S globalStyles.$Spacing-M !important;
+  font-family: globalStyles.$Font-Family !important;
+  border-bottom: 2px solid rgb(247, 144, 29, 0.2) !important;
+  border-right: 1px solid rgb(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.tableRow {
+  transition: background-color globalStyles.$Transition-Fast;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.05);
+  
+  &:hover {
+    background-color: rgb(247, 144, 29, 0.04) !important;
+  }
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  // Highlighted row for selected data point
+  &.highlighted {
+    background-color: rgb(247, 144, 29, 0.1) !important;
+    
+    &:hover {
+      background-color: rgb(247, 144, 29, 0.15) !important;
+    }
+  }
+}
+
+.tableCell {
+  padding: globalStyles.$Spacing-S globalStyles.$Spacing-M !important;
+  font-size: globalStyles.$Font-Size-SM !important;
+  font-family: globalStyles.$Font-Family !important;
+  color: globalStyles.$Text-Color;
+  border-right: 1px solid rgb(0, 0, 0, 0.05);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  
+  &:last-child {
+    border-right: none;
+  }
+  
+  // Number formatting
+  &[data-type="number"] {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.noData {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: globalStyles.$Secondary-Text;
+  font-family: globalStyles.$Font-Family;
+  font-size: globalStyles.$Font-Size-MD;
+  background: white;
+}
+
+// Responsive max heights
+@media (width <= 1200px) {
+  .tableContainer {
+    max-height: 450px;
+  }
+}
+
+@media (width <= 768px) {
+  .tableContainer {
+    max-height: 400px;
+  }
+  
+  .tableHeaderCell,
+  .tableCell,
+  :global(.MuiTableCell-head),
+  :global(.MuiTableCell-body) {
+    padding: globalStyles.$Spacing-XS globalStyles.$Spacing-S !important;
+    font-size: globalStyles.$Font-Size-XS !important;
+    max-width: 150px;
+  }
+}
+
+@media (width <= 480px) {
+  .tableContainer {
+    max-height: 350px;
+  }
+  
+  .tableHeaderCell,
+  .tableCell,
+  :global(.MuiTableCell-head),
+  :global(.MuiTableCell-body) {
+    padding: globalStyles.$Spacing-XXS globalStyles.$Spacing-XS !important;
+    max-width: 120px;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .tableContainer {
+    border: 2px solid globalStyles.$Border-Color;
+  }
+  
+  .tableHeaderCell,
+  :global(.MuiTableCell-head) {
+    background-color: rgb(247, 144, 29, 0.15) !important;
+    border-bottom: 3px solid globalStyles.$Main-Color !important;
+  }
+  
+  .tableRow:hover,
+  :global(.MuiTableRow-root):hover {
+    background-color: rgb(247, 144, 29, 0.1) !important;
+  }
+}
+
+// Reduced motion preferences
+@media (prefers-reduced-motion: reduce) {
+  .tableRow,
+  .tableWrapper::-webkit-scrollbar-thumb,
+  :global(.MuiTableRow-root) {
+    transition: none;
+  }
+}
+
+// Focus management for accessibility
+.tableContainer:focus-within {
+  outline: 2px solid globalStyles.$Main-Color;
+  outline-offset: 2px;
+}
+
+.tableCell:focus,
+.tableHeaderCell:focus,
+:global(.MuiTableCell-head):focus,
+:global(.MuiTableCell-body):focus {
+  outline: 2px solid globalStyles.$Main-Color;
+  outline-offset: -2px;
+  background-color: rgb(247, 144, 29, 0.1) !important;
+}
+
+// Print styles
+@media print {
+  .tableContainer {
+    box-shadow: none;
+    border: 1px solid #000;
+    max-height: none;
+    overflow: visible;
+  }
+  
+  .tableWrapper {
+    overflow: visible;
+  }
+  
+  .tableHeaderCell,
+  :global(.MuiTableCell-head) {
+    background-color: #f0f0f0 !important;
+    color: #000 !important;
+  }
+}
+
+// Loading state styles
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  
+  &::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgb(247, 144, 29, 0.3);
+    border-top: 2px solid globalStyles.$Main-Color;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Error state styles
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: globalStyles.$Error-Color;
+  font-family: globalStyles.$Font-Family;
+  flex-direction: column;
+  gap: globalStyles.$Spacing-S;
+  background-color: #ffebee;
+  border-radius: globalStyles.$Border-Radius-M;
+  
+  .errorMessage {
+    margin-top: 8px;
+    font-size: globalStyles.$Font-Size-SM;
+    text-align: center;
+  }
+}
+
+// Keyboard navigation styles
+.tableRow:focus,
+.tableHeaderCell:focus,
+.tableCell:focus,
+:global(.MuiTableRow-root):focus,
+:global(.MuiTableCell-head):focus,
+:global(.MuiTableCell-body):focus {
+  background-color: rgb(247, 144, 29, 0.08) !important;
+  outline: 2px solid globalStyles.$Main-Color;
+  outline-offset: -2px;
+}
+
+// RTL support (if needed)
+[dir="rtl"] {
+  .tableCell,
+  .tableHeaderCell,
+  :global(.MuiTableCell-head),
+  :global(.MuiTableCell-body) {
+    text-align: right;
+    
+    &[data-type="number"] {
+      text-align: left;
+    }
+  }
+}

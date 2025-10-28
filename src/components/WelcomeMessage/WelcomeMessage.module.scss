@@ -1,0 +1,193 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+.welcomeMessage {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: globalStyles.$Spacing-L;
+  position: relative;
+  gap: globalStyles.$Spacing-L;
+  max-width: 480px;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcomeHeader {
+  text-align: center;
+  flex-shrink: 0;
+  width: 100%;
+  margin-bottom: globalStyles.$Spacing-XL;
+
+  .iconWrapper {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto globalStyles.$Spacing-M;
+    border-radius: globalStyles.$Border-Radius-M;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    box-shadow: globalStyles.$Shadow-SM;
+    transition: all globalStyles.$Transition-Fast;
+    
+    img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: globalStyles.$Shadow-MD;
+    }
+  }
+
+  .greeting {
+    color: globalStyles.$Text-Color;
+    font-size: globalStyles.$Font-Size-XL;
+    font-weight: globalStyles.$Font-Weight-SemiBold;
+    margin-bottom: globalStyles.$Spacing-XS;
+    line-height: globalStyles.$Line-Height-Tight;
+    font-family: globalStyles.$Font-Family;
+  }
+
+  .subtext {
+    color: globalStyles.$Secondary-Text;
+    font-size: globalStyles.$Font-Size-MD;
+    line-height: globalStyles.$Line-Height-Normal;
+    font-family: globalStyles.$Font-Family;
+  }
+}
+
+.queriesSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-self: flex-start;
+
+  .queriesTitle {
+    color: globalStyles.$Text-Color;
+    font-size: globalStyles.$Font-Size-SM;
+    font-weight: globalStyles.$Font-Weight-SemiBold;
+    margin-bottom: globalStyles.$Spacing-M;
+    font-family: globalStyles.$Font-Family;
+    text-align: left;
+  }
+
+  .queriesList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+.queryItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: globalStyles.$Spacing-M globalStyles.$Spacing-S;
+  cursor: pointer;
+  transition: all globalStyles.$Transition-Fast;
+  border-bottom: 1px solid globalStyles.$Border-Color;
+
+  &:hover {
+    background: globalStyles.$Main-Color-5;
+
+    .arrowIcon {
+      color: globalStyles.$Main-Color;
+      transform: translateX(4px);
+    }
+
+    .queryText {
+      color: globalStyles.$Main-Color;
+    }
+  }
+
+  .queryText {
+    color: globalStyles.$Text-Color;
+    font-size: globalStyles.$Font-Size-SM;
+    margin-right: globalStyles.$Spacing-S;
+    flex: 1;
+    font-family: globalStyles.$Font-Family;
+
+    // @include globalStyles.textEllipsis;
+
+    transition: color globalStyles.$Transition-Fast;
+  }
+
+  .arrowIcon {
+    color: globalStyles.$Secondary-Text;
+    transition: all globalStyles.$Transition-Fast;
+    font-size: globalStyles.$Font-Size-LG;
+  }
+}
+
+@media (width <= 768px) {
+  .welcomeMessage {
+    padding: globalStyles.$Spacing-M;
+    gap: globalStyles.$Spacing-M;
+  }
+
+  .welcomeHeader {
+    margin-bottom: globalStyles.$Spacing-L;
+
+    .iconWrapper {
+      width: 40px;
+      height: 40px;
+      margin-bottom: globalStyles.$Spacing-S;
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    .greeting {
+      font-size: globalStyles.$Font-Size-LG;
+    }
+
+    .subtext {
+      font-size: globalStyles.$Font-Size-SM;
+    }
+  }
+
+  .queriesSection {
+    .queriesTitle {
+      font-size: globalStyles.$Font-Size-SM;
+      margin-bottom: globalStyles.$Spacing-S;
+    }
+  }
+
+  .queryItem {
+    padding: globalStyles.$Spacing-S globalStyles.$Spacing-XS;
+
+    .queryText {
+      font-size: globalStyles.$Font-Size-XS;
+    }
+
+    .arrowIcon {
+      font-size: globalStyles.$Font-Size-MD;
+    }
+  }
+}
+
+@media (height <= 600px) {
+  .welcomeMessage {
+    padding: globalStyles.$Spacing-M;
+  }
+
+  .welcomeHeader {
+    margin-bottom: globalStyles.$Spacing-M;
+
+    .iconWrapper {
+      margin-bottom: globalStyles.$Spacing-S;
+    }
+
+    .greeting {
+      font-size: globalStyles.$Font-Size-MD;
+    }
+  }
+}

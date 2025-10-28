@@ -1,0 +1,90 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+.container {
+  min-height: calc(100vh - 64px);
+  padding: 0 1rem;
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.homeContainer {
+  width: 100%;
+  flex-grow: 1;
+}
+
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem !important;
+}
+
+.chatIcon {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem !important;
+}
+
+.greetingText {
+  @include globalStyles.fontFamily;
+
+  color: #0a0a0a !important;
+  margin-bottom: 0.25rem !important;
+  text-align: center;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.descriptionText {
+  @include globalStyles.fontFamily;
+
+  color: #7b7b7b;
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+  font-size: 0.875rem;
+}
+
+.queriesContainer {
+  width: 100%;
+  max-width: 800px;
+}
+
+.chatInputContainer {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+}
+
+.chatInputWrapper {
+  width: 100%;
+}
+
+@media (width <= 600px) {
+  .container {
+    min-height: calc(100vh - 56px);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .greetingText {
+    font-size: 1rem;
+  }
+
+  .chatIcon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .chatInputContainer {
+    margin-bottom: 1rem;
+  }
+}

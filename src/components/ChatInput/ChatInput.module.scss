@@ -1,0 +1,166 @@
+@use '../../styles//globalStyles.scss' as globalStyles;
+
+.inputMessageFieldContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.inputBaseContainer {
+  width: 100%;
+  background: #f8f6f4;
+  border-radius: 15px;
+  min-height: 56px;
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px; // Adjusted padding slightly
+  position: relative;
+  z-index: 2;
+  border-top: 3px solid globalStyles.$Main-Color;
+  font-family: Inter, Poppins, sans-serif;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  min-height: 56px;
+  gap: 8px; // Added gap for spacing
+}
+
+.fileChipsContainer {
+  width: 100%;
+  padding: 8px 0;
+  display: flex !important;
+  flex-flow: row wrap;
+  gap: 8px;
+  margin-top: 4px;
+  border-top: 1px solid rgb(0, 0, 0, 0.05);
+  align-items: center;
+  position: relative;
+  z-index: 5;
+}
+
+
+.fileChip {
+  max-width: 200px !important;
+  height: 24px !important;
+  font-size: 0.75rem !important;
+  background-color: rgb(255, 255, 255, 0.9) !important;
+  border: 1px solid globalStyles.$Border-Color !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  visibility: visible !important;
+  
+  & span {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    display: block !important;
+    visibility: visible !important;
+    padding-left: 8px !important;
+    padding-right: 4px !important;
+  }
+  
+  &:hover {
+    background-color: rgb(247, 144, 29, 0.1) !important;
+  }
+}
+
+.moreFilesChip {
+  background: rgb(247, 144, 29, 0.1) !important;
+  border: 1px solid globalStyles.$Main-Color !important;
+  font-size: 0.75rem !important;
+  height: 24px !important;
+  color: globalStyles.$Main-Color !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  
+  & span {
+    display: block !important;
+    visibility: visible !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+  
+  &:hover {
+    background-color: rgb(247, 144, 29, 0.2) !important;
+  }
+}
+
+.inputBase {
+  @include globalStyles.fontFamily;
+
+  flex: 1;
+  padding: 12px 0; // Simplified padding
+  font-size: 0.875rem;
+  background: transparent;
+  border: none;
+  width: 100%;
+  display: block !important;
+  visibility: visible !important;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #313030;
+  }
+}
+
+/* DELETED .buttonsContainer class as it is no longer needed */
+
+.uploadButton {
+  cursor: pointer;
+  padding: 8px;
+  transition: color 0.2s ease;
+  display: inline-flex !important;
+  visibility: visible !important;
+  color: #1f1d1d; // Set a base color for the icon
+
+  &:hover {
+    color: #000; // Darken icon on hover
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: rgb(0, 0, 0, 0.26); // Use MUI's disabled color
+  }
+}
+
+.sendButton {
+  color: globalStyles.$Main-Color;
+  cursor: pointer;
+  padding: 8px;
+  display: inline-flex !important;
+  visibility: visible !important;
+
+  &:disabled {
+    color: rgb(0, 0, 0, 0.26);
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    color: rgb(247, 144, 29, 0.8);
+  }
+}
+
+.input {
+  display: none;
+}
+
+.error {
+  color: #f44336;
+  margin-bottom: 8px;
+  font-size: 0.875rem;
+  width: 100%;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: rgb(244, 67, 54, 0.08);
+}

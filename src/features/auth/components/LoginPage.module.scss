@@ -1,0 +1,79 @@
+@use '../../../styles/globalStyles.scss' as globalStyles;
+
+@mixin LoginTheme() {
+  background: transparent linear-gradient(44deg, #f8f6f0 0%, #fce3c7 100%, #f7901d 100%);
+}
+
+@mixin buttonColorAndStyleTheme {
+  border: 1px solid #c9c9c9;
+  color: #312e2d;
+  text-transform: none;
+  min-width: 50%;
+}
+
+@mixin buttonStyle($min: 0.5rem, $value: 1vw, $max: 1.5rem) {
+  @include buttonColorAndStyleTheme;
+  @include globalStyles.fontFamily;
+
+  font-size: clamp($min, $value, $max);
+  padding: 1rem;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    border: 1px solid #c9c9c9;
+    background-color: #f7901d;
+  }
+}
+
+.loginBody {
+  width: 100vw;
+  height: 100vh;
+}
+
+.loginLeft {
+  padding: clamp(2rem, 5vw, 8rem);
+
+  @include LoginTheme;
+}
+
+.loginRight {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 8rem);
+}
+
+.persona {
+  display: inline-block;
+  background-image: linear-gradient(transparent 70%, #f7901d 70%);
+  background-size: 50% 5px;
+  background-repeat: no-repeat;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginButton {
+  @include buttonStyle;
+}
+
+.sendIcon {
+  background-color: #f7901d;
+  border-radius: 50%;
+  color: white;
+}
+
+.footerContainer {
+  position: absolute;
+  bottom: 1rem;
+}
+
+.footerText {
+  font-size: clamp(0.3rem, 0.8vw, 0.8rem);
+}

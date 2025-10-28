@@ -1,0 +1,410 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+.messageChartContainer {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  border-radius: globalStyles.$Border-Radius-M;
+  border: 1px solid rgb(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin: globalStyles.$Spacing-XS 0;
+  background-color: white;
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+
+  &.fullscreen {
+    height: 100%;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    
+  }
+
+  &.pinned {
+    border-color: globalStyles.$Main-Color;
+    box-shadow: 0 4px 12px rgb(247, 144, 29, 0.2);
+
+    .chartHeader {
+      background-color: rgb(247, 144, 29, 0.08);
+      border-bottom-color: globalStyles.$Main-Color;
+    }
+
+    .pinButton {
+      color: globalStyles.$Main-Color;
+      transform: rotate(-45deg);
+    }
+  }
+
+  // Dynamic chart sizing based on chart type
+  &[data-chart-type='pie'],
+  &[data-chart-type='doughnut'] {
+    height: 300px;
+
+    .chartWrapper {
+      height: 250px;
+    }
+  }
+
+  &[data-chart-type='bar'] {
+    height: 300px;
+
+    .chartWrapper {
+      height: 300px;
+    }
+  }
+
+  &[data-chart-type='line'] {
+    height: 250px;
+
+    .chartWrapper {
+      height: 250px;
+    }
+  }
+
+  &[data-chart-type='scatter'] {
+    height: 300px;
+
+    .chartWrapper {
+      height: 300px;
+    }
+  }
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: globalStyles.$Spacing-S globalStyles.$Spacing-M;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  backdrop-filter: blur(4px);
+  font-family: globalStyles.$Font-Family;
+}
+
+.chartTitle {
+  font-size: globalStyles.$Font-Size-SM;
+  font-weight: globalStyles.$Font-Weight-SemiBold;
+  color: globalStyles.$Text-Color;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 80%;
+}
+
+.chartActions {
+  display: flex;
+  gap: globalStyles.$Spacing-XXS;
+}
+
+.pinButton,
+.infoButton {
+  width: 28px !important;
+  height: 28px !important;
+  color: rgb(0, 0, 0, 0.5) !important;
+  transition: all globalStyles.$Transition-Fast !important;
+  padding: 4px !important;
+
+  &:hover {
+    background-color: rgb(0, 0, 0, 0.05) !important;
+    color: globalStyles.$Text-Color !important;
+  }
+
+  &.pinActive {
+    color: globalStyles.$Main-Color !important;
+    transform: rotate(-45deg);
+  }
+}
+
+// Enhanced chart wrapper for better dynamic sizing
+.chartWrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: globalStyles.$Spacing-S;
+  overflow: hidden;
+  transition: height 0.3s ease;
+
+  &[data-render-for-pdf='true'] {
+    height: auto !important;
+    min-height: 250px !important;
+  }
+}
+
+// Improved canvas rendering quality
+.chartCanvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 400px;
+  
+  // This helps Canvas display properly in PDFs
+  image-rendering: high-quality;
+  transform: translateZ(0);
+}
+
+.chartError {
+  padding: globalStyles.$Spacing-M;
+  text-align: center;
+  color: globalStyles.$Error-Color;
+  font-family: globalStyles.$Font-Family;
+  font-size: globalStyles.$Font-Size-SM;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+
+  p {
+    margin: 0;
+    padding: globalStyles.$Spacing-S;
+    background-color: rgb(244, 67, 54, 0.08);
+    border-radius: globalStyles.$Border-Radius-S;
+    max-width: 80%;
+  }
+}
+
+.chartLoading {
+  padding: globalStyles.$Spacing-M;
+  text-align: center;
+  color: globalStyles.$Secondary-Text;
+  font-family: globalStyles.$Font-Family;
+  font-size: globalStyles.$Font-Size-SM;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  p {
+    margin: 0;
+    padding: globalStyles.$Spacing-S;
+    background-color: rgb(0, 0, 0, 0.03);
+    border-radius: globalStyles.$Border-Radius-S;
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.6;
+  }
+}
+
+/* Table styles for better integration with charts */
+.tableContainer {
+  width: 100%;
+  overflow: hidden;
+  margin-top: globalStyles.$Spacing-M;
+  border-radius: globalStyles.$Border-Radius-S;
+  border: 1px solid rgb(0, 0, 0, 0.08);
+
+  .tableHeader {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    padding: globalStyles.$Spacing-S globalStyles.$Spacing-M;
+    border-bottom: 1px solid globalStyles.$Border-Color;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    backdrop-filter: blur(4px);
+  }
+
+  .tableTitle {
+    font-size: globalStyles.$Font-Size-SM;
+    font-weight: globalStyles.$Font-Weight-SemiBold;
+    color: globalStyles.$Text-Color;
+    margin: 0;
+  }
+
+  .tableActions {
+    display: flex;
+    gap: globalStyles.$Spacing-XXS;
+  }
+
+  .downloadButton {
+    font-size: globalStyles.$Font-Size-XS !important;
+    padding: globalStyles.$Spacing-XXS globalStyles.$Spacing-XS !important;
+    text-transform: none !important;
+    color: globalStyles.$Secondary-Text !important;
+
+    &:hover {
+      background-color: rgb(0, 0, 0, 0.05) !important;
+      color: globalStyles.$Text-Color !important;
+    }
+  }
+
+  .tableWrapper {
+    max-height: 300px;
+    overflow-y: auto;
+
+    @include globalStyles.scrollbar;
+
+    /* Table-specific styling */
+    table {
+      border-collapse: collapse;
+      width: 100%;
+
+      th {
+        background-color: #f8f9fa;
+        font-weight: globalStyles.$Font-Weight-SemiBold;
+        color: globalStyles.$Text-Color;
+        text-align: left;
+        padding: globalStyles.$Spacing-XS globalStyles.$Spacing-S;
+        font-size: globalStyles.$Font-Size-XS;
+        border-bottom: 1px solid globalStyles.$Border-Color;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        backdrop-filter: blur(4px);
+      }
+
+      td {
+        padding: globalStyles.$Spacing-XS globalStyles.$Spacing-S;
+        font-size: globalStyles.$Font-Size-XS;
+        border-bottom: 1px solid rgb(0, 0, 0, 0.04);
+        color: globalStyles.$Secondary-Text;
+      }
+
+      tr:hover td {
+        background-color: rgb(0, 0, 0, 0.02);
+      }
+    }
+  }
+}
+
+// Enhanced responsive adjustments for better dynamic sizing
+@media (width <= 768px) {
+  .messageChartContainer {
+    max-width: 100%;
+
+    // Improved responsive sizes
+    &[data-chart-type='pie'],
+    &[data-chart-type='doughnut'],
+    &[data-chart-type='bar'],
+    &[data-chart-type='line'],
+    &[data-chart-type='scatter'] {
+      min-height: 180px;
+
+      .chartWrapper {
+        height: 180px;
+      }
+    }
+  }
+
+  .chartHeader {
+    padding: globalStyles.$Spacing-XS globalStyles.$Spacing-S;
+  }
+
+  .chartTitle {
+    font-size: globalStyles.$Font-Size-XS;
+  }
+
+  .pinButton,
+  .infoButton {
+    width: 24px !important;
+    height: 24px !important;
+    padding: 2px !important;
+  }
+
+  .chartWrapper {
+    padding: globalStyles.$Spacing-XS;
+  }
+
+  .tableContainer {
+    .tableHeader {
+      padding: globalStyles.$Spacing-XS globalStyles.$Spacing-S;
+    }
+
+    .tableTitle {
+      font-size: globalStyles.$Font-Size-XS;
+    }
+
+    .tableWrapper {
+      max-height: 250px;
+
+      table {
+        th,
+        td {
+          padding: globalStyles.$Spacing-XXS globalStyles.$Spacing-XS;
+          font-size: calc(globalStyles.$Font-Size-XS - 1px);
+        }
+      }
+    }
+  }
+}
+
+// Smaller screen size adjustments
+@media (width <= 480px) {
+  .messageChartContainer {
+    &[data-chart-type='pie'],
+    &[data-chart-type='doughnut'],
+    &[data-chart-type='bar'],
+    &[data-chart-type='line'],
+    &[data-chart-type='scatter'] {
+      min-height: 150px;
+
+      .chartWrapper {
+        height: 150px;
+      }
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .messageChartContainer {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    max-height: none;
+
+    .chartWrapper {
+      min-height: 250px !important;
+      height: auto !important;
+      width: 100% !important;
+    }
+
+    .chartCanvas {
+      height: auto !important;
+      width: 100% !important;
+      image-rendering: high-quality;
+      transform: translateZ(0);
+    }
+  }
+
+  .pinButton,
+  .infoButton {
+    display: none;
+  }
+
+  .tableContainer {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    max-height: none;
+
+    .tableWrapper {
+      max-height: none;
+      overflow: visible;
+    }
+
+    table {
+      page-break-inside: avoid;
+    }
+  }
+}

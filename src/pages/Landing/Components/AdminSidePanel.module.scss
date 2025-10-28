@@ -1,0 +1,790 @@
+@use '../../../styles/globalStyles.scss' as globalStyles;
+
+// Base container
+.sidePanelContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: globalStyles.$Spacing-L globalStyles.$Spacing-Base;
+  overflow: hidden;
+  border-radius: globalStyles.$Border-Radius-L;
+  background: transparent;
+  backdrop-filter: blur(10px);
+  box-shadow: globalStyles.$Shadow-MD;
+  transition: all globalStyles.$Transition-Fast;
+  color: globalStyles.$Text-Color;
+
+  &:hover {
+    background: rgb(255, 255, 255, 0.05);
+    box-shadow: globalStyles.$Shadow-LG;
+  }
+}
+
+// Header Section
+.headerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: globalStyles.$Spacing-L;
+
+  .logoSection {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: globalStyles.$Spacing-XS;
+  }
+
+  .logoWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: globalStyles.$Spacing-XS;
+    cursor: pointer;
+    padding: globalStyles.$Spacing-S;
+    border-radius: globalStyles.$Border-Radius-L;
+    transition: all globalStyles.$Transition-Fast;
+
+    &:hover {
+      background-color: globalStyles.$Main-Color-5;
+
+      .logo {
+        transform: scale(1.05);
+      }
+
+      .title {
+        color: globalStyles.$Main-Color;
+      }
+    }
+
+    .logo {
+      height: 32px;
+      width: auto;
+      transition: transform globalStyles.$Transition-Fast;
+      filter: brightness(0) saturate(100%);
+    }
+
+    .title {
+      color: globalStyles.$Text-Color;
+      font-weight: globalStyles.$Font-Weight-SemiBold;
+      font-size: globalStyles.$Font-Size-XL;
+      font-family: globalStyles.$Font-Family;
+      line-height: globalStyles.$Line-Height-Tight;
+      transition: color globalStyles.$Transition-Fast;
+    }
+  }
+
+  .divider {
+    width: 85%;
+    margin: globalStyles.$Spacing-Base 0;
+    background-color: rgb(255, 255, 255, 0.1);
+  }
+}
+
+// Role Section
+.roleSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: globalStyles.$Spacing-S;
+  padding: 0 globalStyles.$Spacing-Base;
+  margin-bottom: globalStyles.$Spacing-M;
+
+  .roleChip {
+    width: 100%;
+    background-color: globalStyles.$Main-Color-Light !important;
+    color: globalStyles.$Text-Color !important;
+    padding: globalStyles.$Spacing-S 0 !important;
+    border-radius: globalStyles.$Border-Radius-Full !important;
+    font-family: globalStyles.$Font-Family !important;
+    font-weight: globalStyles.$Font-Weight-SemiBold !important;
+    font-size: globalStyles.$Font-Size-SM !important;
+    text-align: center;
+    border: none !important;
+    transition: all globalStyles.$Transition-Fast;
+
+    &:hover {
+      background-color: rgba(globalStyles.$Main-Color, 0.25) !important;
+    }
+  }
+
+  .refreshButton {
+    width: 100% !important;
+    color: globalStyles.$Main-Color !important;
+    padding: globalStyles.$Spacing-XS globalStyles.$Spacing-S !important;
+    text-transform: none !important;
+    font-size: globalStyles.$Font-Size-SM !important;
+    font-weight: globalStyles.$Font-Weight-Medium !important;
+    transition: all globalStyles.$Transition-Fast !important;
+    border-radius: globalStyles.$Border-Radius-M !important;
+
+    &:hover:not(:disabled) {
+      background-color: globalStyles.$Main-Color-5 !important;
+    }
+
+    &:disabled {
+      color: globalStyles.$Gray-40 !important;
+      background-color: globalStyles.$Gray-5 !important;
+    }
+
+    .MuiCircularProgress-root {
+      color: globalStyles.$Main-Color;
+    }
+  }
+}
+
+// Menu List
+.menuList {
+  flex: 1;
+  padding: globalStyles.$Spacing-XXS globalStyles.$Spacing-S globalStyles.$Spacing-XXS 0;
+  overflow: hidden auto;
+  margin: 0;
+  position: relative;
+
+  @include globalStyles.scrollbar;
+
+  .menuDivider {
+    margin: globalStyles.$Spacing-XS globalStyles.$Spacing-M;
+    background-color: rgb(255, 255, 255, 0.1);
+  }
+}
+
+// Menu Items
+.menuItem {
+  padding: globalStyles.$Spacing-S globalStyles.$Spacing-M;
+  border-radius: 0 24px 24px 0;
+  margin: globalStyles.$Spacing-XXS 0;
+  transition: all globalStyles.$Transition-Fast;
+  position: relative;
+  width: calc(100% + globalStyles.$Spacing-S);
+  margin-left: -#{globalStyles.$Spacing-S};
+  cursor: pointer;
+
+  .menuItemContent {
+    display: flex;
+    align-items: center;
+    gap: globalStyles.$Spacing-M;
+    width: 100%;
+  }
+
+  .menuIcon {
+    min-width: 24px !important;
+    width: 24px !important;
+    height: 24px !important;
+    color: globalStyles.$Secondary-Text;
+    transition: all globalStyles.$Transition-Fast;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: globalStyles.$Secondary-Text;
+      stroke-width: 2px;
+      transition: color globalStyles.$Transition-Fast;
+    }
+
+    img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      filter: brightness(0) saturate(100%) invert(46%) sepia(9%) saturate(14%) hue-rotate(321deg) brightness(94%)
+        contrast(87%);
+      opacity: 0.9;
+      transition:
+        filter globalStyles.$Transition-Fast,
+        opacity globalStyles.$Transition-Fast;
+    }
+
+    .loadingIcon {
+      color: globalStyles.$Main-Color;
+    }
+  }
+
+  .menuText {
+    flex: 1;
+    margin: 0 !important;
+
+    span {
+      color: globalStyles.$Text-Color;
+      font-size: globalStyles.$Font-Size-SM;
+      font-weight: globalStyles.$Font-Weight-SemiBold !important;
+      font-family: globalStyles.$Font-Family;
+      line-height: globalStyles.$Line-Height-Normal;
+      transition: color globalStyles.$Transition-Fast;
+      letter-spacing: -0.2px;
+    }
+  }
+
+  .countBadge {
+    background-color: globalStyles.$Main-Color-Light;
+    color: globalStyles.$Main-Color;
+    padding: globalStyles.$Spacing-XXS globalStyles.$Spacing-XS;
+    border-radius: globalStyles.$Border-Radius-Full;
+    font-size: globalStyles.$Font-Size-XXS;
+    font-weight: globalStyles.$Font-Weight-SemiBold;
+    min-width: 20px;
+    text-align: center;
+    transition: all globalStyles.$Transition-Fast;
+  }
+
+  &:hover {
+    background-color: globalStyles.$Main-Color-5;
+
+    .menuIcon {
+      color: globalStyles.$Main-Color;
+
+      img {
+        filter: brightness(0) saturate(100%) invert(55%) sepia(94%) saturate(1553%) hue-rotate(346deg) brightness(97%)
+          contrast(95%);
+      }
+
+      svg {
+        color: globalStyles.$Main-Color;
+      }
+    }
+
+    .menuText span {
+      color: globalStyles.$Main-Color;
+    }
+
+    .addButton {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &.selected {
+    background-color: globalStyles.$Main-Color;
+    margin-right: globalStyles.$Spacing-M;
+
+    .menuIcon {
+      color: white;
+
+      img {
+        filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%)
+          contrast(102%);
+        opacity: 1;
+      }
+
+      svg {
+        color: white;
+      }
+    }
+
+    .menuText span {
+      color: white;
+      font-weight: globalStyles.$Font-Weight-SemiBold;
+    }
+
+    .countBadge {
+      background-color: white;
+      color: globalStyles.$Main-Color;
+    }
+
+    .addButton {
+      color: white !important;
+      opacity: 1;
+      visibility: visible;
+
+      &:hover {
+        background-color: rgb(255, 255, 255, 0.2) !important;
+      }
+    }
+
+    &:hover {
+      background-color: globalStyles.$Main-Color;
+
+      .menuIcon {
+        color: white;
+      }
+
+      .menuText span {
+        color: white;
+      }
+    }
+  }
+}
+
+// Add button styles
+.addButton {
+  width: 24px !important;
+  height: 24px !important;
+  padding: globalStyles.$Spacing-XXS !important;
+  margin-right: globalStyles.$Spacing-XS !important;
+  transition: all globalStyles.$Transition-Fast !important;
+  color: globalStyles.$Secondary-Text !important;
+  opacity: 0.6;
+  visibility: visible;
+
+  svg {
+    font-size: 18px !important;
+  }
+
+  &:hover {
+    background-color: globalStyles.$Main-Color-5 !important;
+    color: globalStyles.$Main-Color !important;
+    opacity: 1;
+  }
+}
+
+// Dropdown collapsible container
+.dropdownCollapse {
+  padding: 0 !important;
+  background-color: rgb(255, 255, 255, 0.02);
+  border-radius: 0 0 12px;
+  margin-bottom: globalStyles.$Spacing-XS;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, rgb(255, 255, 255, 0.1), rgb(255, 255, 255, 0.05), rgb(255, 255, 255, 0));
+  }
+}
+
+// Nested List Styles
+.nestedList {
+  padding: 0 !important;
+  margin-left: 0;
+  backdrop-filter: blur(5px);
+}
+
+.nestedListItem {
+  padding: globalStyles.$Spacing-XS globalStyles.$Spacing-L !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  transition: all globalStyles.$Transition-Fast;
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgb(247, 144, 29, 0.05) !important;
+  }
+
+  &.nestedSelected {
+    background-color: rgb(247, 144, 29, 0.1) !important;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background-color: globalStyles.$Main-Color;
+    }
+
+    .nestedListText {
+      font-weight: globalStyles.$Font-Weight-SemiBold !important;
+      color: globalStyles.$Main-Color !important;
+    }
+  }
+}
+
+.nestedListText {
+  margin: 0 !important;
+
+  // Target MUI Typography
+  span {
+    font-family: globalStyles.$Font-Family !important;
+    font-size: globalStyles.$Font-Size-SM !important;
+    font-weight: globalStyles.$Font-Weight-Medium !important;
+    color: globalStyles.$Secondary-Text !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all globalStyles.$Transition-Fast;
+  }
+}
+
+// Typography for nested items
+.nestedItemTypography {
+  font-family: globalStyles.$Font-Family !important;
+  font-size: globalStyles.$Font-Size-SM !important;
+  font-weight: globalStyles.$Font-Weight-Medium !important;
+  color: globalStyles.$Secondary-Text !important;
+}
+
+// Pagination styles
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  padding: globalStyles.$Spacing-XS 0;
+  margin: globalStyles.$Spacing-XS 0;
+  background-color: rgb(255, 255, 255, 0.02);
+  border-top: 1px solid rgb(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgb(255, 255, 255, 0.05);
+}
+
+.pagination {
+  // Style for MUI pagination
+  button {
+    color: globalStyles.$Secondary-Text !important;
+    font-size: globalStyles.$Font-Size-XS !important;
+    min-width: 26px !important;
+    height: 26px !important;
+    padding: 0 !important;
+
+    &.Mui-selected {
+      background-color: rgb(247, 144, 29, 0.15) !important;
+      color: globalStyles.$Main-Color !important;
+      font-weight: globalStyles.$Font-Weight-SemiBold !important;
+    }
+
+    &:hover {
+      background-color: rgb(247, 144, 29, 0.08) !important;
+    }
+  }
+}
+
+// Loading spinner
+.loadingSpinner {
+  color: globalStyles.$Main-Color !important;
+  margin-right: globalStyles.$Spacing-S !important;
+}
+
+// Empty state for sections
+.emptyState {
+  padding: globalStyles.$Spacing-M;
+  text-align: center;
+  color: globalStyles.$Secondary-Text;
+  font-family: globalStyles.$Font-Family;
+  font-size: globalStyles.$Font-Size-SM;
+  font-style: italic;
+  background-color: rgb(255, 255, 255, 0.02);
+  border-radius: globalStyles.$Border-Radius-M;
+  margin: globalStyles.$Spacing-XS 0;
+}
+
+// Footer Section
+.footer {
+  margin-top: auto;
+  padding-top: globalStyles.$Spacing-Base;
+  border-top: 1px solid rgb(255, 255, 255, 0.1);
+
+  .footerActions {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: globalStyles.$Spacing-XS;
+  }
+}
+
+// Footer Icons
+.footerIcon {
+  color: globalStyles.$Secondary-Text;
+  width: 24px !important;
+  height: 24px !important;
+  padding: globalStyles.$Spacing-XS;
+  transition: all globalStyles.$Transition-Fast;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    color: globalStyles.$Main-Color;
+    background-color: globalStyles.$Main-Color-5;
+    transform: translateY(-1px);
+  }
+
+  svg {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    stroke-width: 2px;
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    filter: brightness(0) saturate(100%) invert(46%) sepia(9%) saturate(14%) hue-rotate(321deg) brightness(94%)
+      contrast(87%);
+    opacity: 0.9;
+
+    &:hover {
+      filter: brightness(0) saturate(100%) invert(55%) sepia(94%) saturate(1553%) hue-rotate(346deg) brightness(97%)
+        contrast(95%);
+    }
+  }
+}
+
+// Avatar Styles
+.userAvatar {
+  width: 36px !important;
+  height: 36px !important;
+  font-size: globalStyles.$Font-Size-MD !important;
+  font-weight: globalStyles.$Font-Weight-SemiBold !important;
+  font-family: globalStyles.$Font-Family !important;
+  background-color: globalStyles.$Main-Color-Light !important;
+  color: globalStyles.$Main-Color !important;
+  text-transform: uppercase !important;
+  border: 2px solid rgb(255, 255, 255, 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all globalStyles.$Transition-Fast !important;
+
+  &.MuiAvatar-root,
+  &.MuiAvatar-colorDefault,
+  &.MuiAvatar-circular {
+    background-color: globalStyles.$Main-Color-Light !important;
+    color: globalStyles.$Main-Color !important;
+  }
+
+  img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 50% !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+}
+
+.menuAvatar {
+  width: 40px !important;
+  height: 40px !important;
+  font-size: globalStyles.$Font-Size-LG !important;
+  font-weight: globalStyles.$Font-Weight-SemiBold !important;
+  font-family: globalStyles.$Font-Family !important;
+  background-color: globalStyles.$Main-Color-Light !important;
+  color: globalStyles.$Main-Color !important;
+  text-transform: uppercase !important;
+  border: 2px solid rgb(255, 255, 255, 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-right: globalStyles.$Spacing-S !important;
+
+  &.MuiAvatar-root,
+  &.MuiAvatar-colorDefault,
+  &.MuiAvatar-circular {
+    background-color: globalStyles.$Main-Color-Light !important;
+    color: globalStyles.$Main-Color !important;
+  }
+
+  img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 50% !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+}
+
+.avatarButton {
+  padding: globalStyles.$Spacing-XS !important;
+  border-radius: 50% !important;
+  transition: all globalStyles.$Transition-Fast !important;
+  cursor: pointer;
+
+  &:hover {
+    background-color: globalStyles.$Main-Color-5 !important;
+
+    .userAvatar {
+      transform: scale(1.05);
+    }
+  }
+}
+
+// User Menu
+.userMenu {
+  margin-top: globalStyles.$Spacing-Base;
+  min-width: 240px;
+  border-radius: globalStyles.$Border-Radius-L;
+  overflow: hidden;
+  box-shadow: globalStyles.$Shadow-MD;
+  background: rgb(255, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+
+  .userInfo {
+    padding: globalStyles.$Spacing-Base;
+    display: flex;
+    align-items: center;
+    gap: globalStyles.$Spacing-Base;
+    background-color: rgb(255, 255, 255, 0.05);
+  }
+
+  .userDetails {
+    overflow: hidden;
+
+    :global(.MuiTypography-root) {
+      &:first-child {
+        font-size: globalStyles.$Font-Size-SM;
+        font-weight: globalStyles.$Font-Weight-SemiBold;
+        font-family: globalStyles.$Font-Family;
+        line-height: globalStyles.$Line-Height-Normal;
+        color: globalStyles.$Text-Color;
+      }
+
+      &:last-child {
+        font-size: globalStyles.$Font-Size-XS;
+        font-family: globalStyles.$Font-Family;
+        line-height: globalStyles.$Line-Height-Normal;
+        color: globalStyles.$Secondary-Text;
+
+        @include globalStyles.textEllipsis;
+      }
+    }
+  }
+
+  .MuiMenuItem-root {
+    font-family: globalStyles.$Font-Family;
+    font-size: globalStyles.$Font-Size-SM;
+    padding: globalStyles.$Spacing-S globalStyles.$Spacing-M;
+    color: globalStyles.$Text-Color;
+    transition: background-color globalStyles.$Transition-Fast;
+
+    &:hover {
+      background-color: globalStyles.$Main-Color-5;
+    }
+
+    .MuiListItemIcon-root {
+      color: globalStyles.$Secondary-Text;
+      min-width: 36px;
+    }
+  }
+}
+
+// Notification badge
+.notificationBadge {
+  .MuiBadge-badge {
+    background-color: globalStyles.$Main-Color;
+    color: white;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    font-size: globalStyles.$Font-Size-XXS;
+  }
+}
+
+// Responsive Styles
+@media (width <= 768px) {
+  .sidePanelContainer {
+    padding: globalStyles.$Spacing-Base globalStyles.$Spacing-M;
+  }
+
+  .menuList {
+    padding: globalStyles.$Spacing-XXS globalStyles.$Spacing-XS globalStyles.$Spacing-XXS 0;
+  }
+
+  .menuItem {
+    width: calc(100% + globalStyles.$Spacing-XS);
+    margin-left: -#{globalStyles.$Spacing-XS};
+    padding: globalStyles.$Spacing-S globalStyles.$Spacing-M;
+
+    .menuIcon {
+      width: 20px !important;
+      height: 20px !important;
+
+      svg, img {
+        width: 16px;
+        height: 16px;
+        stroke-width: 1.5px;
+      }
+    }
+
+    .menuText span {
+      font-size: globalStyles.$Font-Size-XS;
+      letter-spacing: -0.1px;
+    }
+  }
+  
+  .nestedListItem {
+    padding: globalStyles.$Spacing-XS globalStyles.$Spacing-M !important;
+  }
+  
+  .nestedListText span {
+    font-size: globalStyles.$Font-Size-XS !important;
+  }
+  
+  .nestedItemTypography {
+    font-size: globalStyles.$Font-Size-XS !important;
+  }
+  
+  .paginationContainer {
+    padding: globalStyles.$Spacing-XXS 0;
+  }
+
+  .footerIcon {
+    width: 20px !important;
+    height: 20px !important;
+    padding: globalStyles.$Spacing-XXS;
+
+    svg, img {
+      width: 16px;
+      height: 16px;
+      stroke-width: 1.5px;
+    }
+  }
+
+  .userAvatar {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: globalStyles.$Font-Size-SM !important;
+    border-width: 1.5px !important;
+  }
+
+  .menuAvatar {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: globalStyles.$Font-Size-MD !important;
+    border-width: 1.5px !important;
+  }
+
+  .avatarButton {
+    padding: globalStyles.$Spacing-XXS !important;
+  }
+  
+  .logoWrapper {
+    .logo {
+      height: 28px;
+    }
+    
+    .title {
+      font-size: globalStyles.$Font-Size-LG;
+    }
+  }
+}
+
+// Reduced Motion
+@media (prefers-reduced-motion: reduce) {
+  .sidePanelContainer,
+  .menuItem,
+  .footerIcon,
+  .avatarButton,
+  .userAvatar,
+  .menuAvatar {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+// High Contrast Mode
+@media (prefers-contrast: more) {
+  .menuItem.selected {
+    border: 1px solid globalStyles.$Main-Color;
+  }
+  
+  .nestedSelected::before {
+    width: 4px;
+  }
+}
+
+// Print Styles
+@media print {
+  .sidePanelContainer {
+    display: none;
+  }
+}

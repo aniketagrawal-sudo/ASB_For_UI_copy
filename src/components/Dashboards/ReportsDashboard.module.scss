@@ -1,0 +1,268 @@
+@use '../../styles/globalStyles.scss' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: #f8f6f4 !important;
+  position: relative;
+}
+
+// Modern header with left-aligned tabs
+.modernHeader {
+  padding: 0;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.08);
+  background: white;
+  flex-shrink: 0;
+  z-index: $Z-Index-Base;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+}
+
+.modernTabs {
+  width: auto;
+  min-height: 46px;
+
+  :global(.MuiTabs-indicator) {
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+  }
+}
+
+.modernTab {
+  font-family: $Font-Family;
+  font-size: $Font-Size-SM;
+  text-transform: none;
+  font-weight: $Font-Weight-Medium;
+  padding: 0.6rem 1.2rem;
+  color: $Text-Color;
+  opacity: 0.8;
+  transition: all $Transition-Fast;
+  min-width: auto;
+  min-height: 46px;
+
+  &:hover {
+    opacity: 1;
+    background-color: rgb(247, 144, 29, 0.04);
+  }
+
+  &[aria-selected='true'] {
+    opacity: 1;
+    color: $Main-Color;
+    font-weight: $Font-Weight-SemiBold;
+  }
+}
+
+.tabLabelContainer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  padding-right: 4px;
+}
+
+.noReportsMessage {
+  font-family: $Font-Family;
+  font-size: $Font-Size-LG;
+  font-weight: $Font-Weight-Medium;
+  color: $Secondary-Text;
+  text-align: center;
+  padding: $Spacing-L;
+}
+
+.singleDashboardContainer {
+  .dashboardContent {
+    padding-top: 0;
+  }
+}
+
+// Dashboard content area - takes all available space
+.dashboardContent {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background-color: white;
+  min-height: 0; // Important for proper flexbox behavior
+  display: flex;
+  flex-direction: column;
+  
+  // Make sure any child components also fill the space
+  > div {
+    flex: 1;
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+// Loading indicator
+.loadingContainer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  z-index: 10;
+  animation: fade-in 0.3s ease;
+}
+
+.spinner {
+  color: $Main-Color;
+  margin-bottom: 0.75rem;
+}
+
+.loadingText {
+  font-family: $Font-Family;
+  font-size: $Font-Size-MD;
+  color: $Secondary-Text;
+  margin-bottom: 1rem;
+}
+
+// Animations
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+// Responsive adjustments
+@media (width <= 1200px) {
+  .modernHeader {
+    min-height: 42px;
+  }
+  
+  .modernTab {
+    font-size: $Font-Size-XS;
+    padding: 0.5rem 1rem;
+    min-height: 42px;
+  }
+  
+  .modernTabs {
+    min-height: 42px;
+  }
+}
+
+@media (width <= 960px) {
+  .modernHeader {
+    min-height: 40px;
+  }
+  
+  .modernTab {
+    padding: 0.5rem 0.85rem;
+    min-height: 40px;
+  }
+  
+  .modernTabs {
+    min-height: 40px;
+  }
+}
+
+@media (width <= 768px) {
+  .modernHeader {
+    min-height: 36px;
+  }
+  
+  .modernTab {
+    padding: 0.4rem 0.7rem;
+    font-size: $Font-Size-XXS;
+    min-height: 36px;
+  }
+  
+  .modernTabs {
+    min-height: 36px;
+    width: 100%;
+  }
+  
+  .headerContent {
+    width: 100%;
+  }
+}
+
+@media (width <= 480px) {
+  .modernHeader {
+    min-height: 32px;
+  }
+  
+  .modernTab {
+    padding: 0.3rem 0.6rem;
+    min-height: 32px;
+  }
+  
+  .modernTabs {
+    min-height: 32px;
+  }
+  
+  .loadingText {
+    font-size: $Font-Size-SM;
+  }
+}
+
+/* High-resolution display support */
+@media (resolution >= 192dpi) {
+  .modernHeader {
+    border-bottom: 1px solid rgb(0, 0, 0, 0.05);
+  }
+}
+
+/* Support for different zoom levels */
+@media (height <= 600px) {
+  .modernHeader {
+    min-height: 32px;
+  }
+  
+  .modernTab {
+    min-height: 32px;
+    font-size: $Font-Size-XXS;
+  }
+  
+  .modernTabs {
+    min-height: 32px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .container {
+    height: 100%;
+    width: 100%;
+    overflow: visible;
+  }
+  
+  .modernHeader {
+    display: none;
+  }
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .container,
+  .modernTab {
+    transition: none;
+  }
+
+  .loadingContainer {
+    animation: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .modernHeader {
+    border-bottom: 2px solid $Text-Color;
+  }
+
+  .modernTab[aria-selected='true'] {
+    border-bottom: 2px solid currentcolor;
+  }
+}

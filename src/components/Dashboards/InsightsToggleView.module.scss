@@ -1,0 +1,33 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+.toggleContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+  padding: 0 8px;
+}
+
+.viewToggle {
+  background-color: white;
+  border-radius: globalStyles.$Border-Radius-M;
+  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.1);
+  
+  :global(.MuiToggleButton-root) {
+    padding: 4px 8px;
+    border: none;
+    color: rgb(0, 0, 0, 0.6);
+    
+    &:hover {
+      background-color: rgb(0, 0, 0, 0.04);
+    }
+    
+    &.Mui-selected {
+      background-color: rgb(247, 144, 29, 0.08);
+      color: globalStyles.$Main-Color;
+      
+      &:hover {
+        background-color: rgb(247, 144, 29, 0.12);
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+@use './styles/globalStyles.scss' as globalStyles;
+
+@mixin fontFamily {
+  font-family: 'Helvetica Neue';
+}
+
+body {
+  @include fontFamily;
+
+  margin: 0;
+  background: transparent url('./assets/appBackGround.svg') 0% 0% no-repeat padding-box;
+  background-size: cover;
+}

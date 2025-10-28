@@ -1,0 +1,129 @@
+variables:
+  ACR_NAME: devdtsearchacr
+  DOCKER_IMAGE: senseai-ui
+
+stages:
+  - prepare
+  - build
+  # - sonar
+  - deploy
+
+prepare:
+  stage: prepare
+  rules:
+    - if: '$RUN_GITLAB_PIPELINE == "true"'
+      when: always
+    - when: never
+  image: mcr.microsoft.com/azure-cli:latest
+  script:
+    - echo "Logging into Azure..."
+    - az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
+    - ACR_TOKEN=$(az acr login --name "$ACR_NAME" --expose-token --output tsv --query accessToken)
+    - echo $ACR_TOKEN > acr_token.txt
+  artifacts:
+    paths:
+      - acr_token.txt
+
+build:
+  stage: build
+  rules:
+    - if: '$RUN_GITLAB_PIPELINE == "true"'
+      when: always
+    - when: never
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [""]
+  variables:
+    ENV_FILE_PATH: "$SENSEAI_UI_ENV_FILE"
+  dependencies:
+    - prepare
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - AUTH_STRING=$(echo -n "00000000-0000-0000-0000-000000000000:$(cat acr_token.txt)" | base64 -w 0)
+    - echo "{\"auths\":{\"$ACR_NAME.azurecr.io\":{\"auth\":\"$AUTH_STRING\"}}}" > /kaniko/.docker/config.json
+    - echo "Loading .env values from $ENV_FILE_PATH"
+    - source "$ENV_FILE_PATH"
+    - echo "VITE_ALLOWED_HOST = $VITE_ALLOWED_HOST"
+    - echo "VITE_BASE_PATH = $VITE_BASE_PATH"
+
+  script:
+
+    - >
+      /kaniko/executor
+      --context $CI_PROJECT_DIR
+      --dockerfile $CI_PROJECT_DIR/Dockerfile
+      --destination $ACR_NAME.azurecr.io/$DOCKER_IMAGE:$CI_PIPELINE_ID
+      --build-arg VITE_KEYCLOAK_SERVER_URL="$VITE_KEYCLOAK_SERVER_URL"
+      --build-arg VITE_KEYCLOAK_REALM="$VITE_KEYCLOAK_REALM"
+      --build-arg VITE_KEYCLOAK_CLIENT_ID="$VITE_KEYCLOAK_CLIENT_ID"
+      --build-arg VITE_BASE_PATH="$VITE_BASE_PATH"
+      --build-arg VITE_API_BASE_URL="$VITE_API_BASE_URL"
+      --build-arg VITE_ALLOWED_HOSTS="$VITE_ALLOWED_HOSTS"
+      --build-arg VITE_WS_BASE_URL="$VITE_WS_BASE_URL"
+      --build-arg VITE_API_BASE_PATH="$VITE_API_BASE_PATH"
+      --build-arg VITE_MICROSTRATEGY_BASE_URL="$VITE_MICROSTRATEGY_BASE_URL"
+      --build-arg VITE_MICROSTRATEGY_PROJECT_ID="$VITE_MICROSTRATEGY_PROJECT_ID"
+      --build-arg VITE_MICROSTRATEGY_DASHBOARD_ID="$VITE_MICROSTRATEGY_DASHBOARD_ID"
+      --build-arg VITE_POWERBI_CLIENT_ID="$VITE_POWERBI_CLIENT_ID"
+      --build-arg VITE_POWERBI_DEFAULT_WORKSPACE_ID="$VITE_POWERBI_DEFAULT_WORKSPACE_ID"
+      --build-arg VITE_MAX_FILE_SIZE="$VITE_MAX_FILE_SIZE"
+      --build-arg VITE_ALLOWED_FILE_TYPES="$VITE_ALLOWED_FILE_TYPES"
+      --build-arg VITE_PYTHON_API_URL_DEV="$VITE_PYTHON_API_URL_DEV"
+      --build-arg VITE_PYTHON_API_URL_PROD="$VITE_PYTHON_API_URL_PROD"
+      --build-arg DEP_HASH="$(sha256sum package-lock.json | cut -d' ' -f1)"
+      --cache=true
+      --cache-ttl=24h
+      --verbosity=info
+# sonarqube-check:
+#   stage: sonar
+#   image: sonarsource/sonar-scanner-cli:latest
+#   needs: [build]
+#   rules:
+#     - if: '$RUN_GITLAB_PIPELINE == "true"'
+#       when: always
+#     - when: never
+#   script:
+#   - |
+#     sonar-scanner \
+#       -Dsonar.projectKey=$CI_PROJECT_NAME \
+#       -Dsonar.projectName=$CI_PROJECT_NAME \
+#       -Dsonar.sources=. \
+#       -Dsonar.host.url=$SONAR_HOST_URL \
+#       -Dsonar.projectVersion="$CI_COMMIT_REF_NAME-$CI_COMMIT_SHA" \
+#       -Dsonar.login=$SONAR_TOKEN
+
+deploy:
+  stage: deploy
+  needs: [build]
+  rules:
+    - if: '$RUN_GITLAB_PIPELINE == "true"'
+      when: always
+    - when: never
+  image: alpine/git
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "Setting up Git authentication..."
+    - git config --global user.email "ci-bot@gitlab.com"
+    - git config --global user.name "GitLab CI"
+
+    # Set AKS_SOURCE_BRANCH based on current branch
+    - |
+      if [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        export AKS_SOURCE_BRANCH=main
+      else
+        export AKS_SOURCE_BRANCH=dev
+      fi
+      echo "Using AKS_SOURCE_BRANCH=$AKS_SOURCE_BRANCH"
+
+    - echo "Cloning Aks_source repo..."
+    - git clone --branch "$AKS_SOURCE_BRANCH" https://ci-deploy:$GITLAB_DEPLOY_TOKEN@git.tigeranalytics.com/tiger-internal/deepthought/Aks_source.git aks_source_repo
+
+    - echo "Updating manifest with image tag $CI_PIPELINE_ID..."
+    - sed -i "s|azurecr.io/senseai-ui:[^ ]*|azurecr.io/senseai-ui:$CI_PIPELINE_ID|g" aks_source_repo/Manifest_Senseaiui/manifest_senseaiui.yaml
+
+    - cd aks_source_repo
+    - git add Manifest_Senseaiui/manifest_senseaiui.yaml
+    - git commit -m "Updated manifest with image tag $CI_PIPELINE_ID"
+    - git push origin HEAD:$AKS_SOURCE_BRANCH
+

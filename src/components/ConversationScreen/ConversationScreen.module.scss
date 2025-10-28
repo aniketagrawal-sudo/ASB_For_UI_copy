@@ -1,0 +1,110 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+.conversationScreen {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background: #f8f6f4;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.messagesWrapper {
+  flex: 1;
+  overflow: hidden auto;
+  padding: globalStyles.$Spacing-M 0;
+  scroll-behavior: smooth;
+  position: relative;
+
+  @include globalStyles.scrollbar;
+  
+  // Performance optimizations
+  -webkit-overflow-scrolling: touch;
+  contain: layout style paint;
+}
+
+.messagesContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  gap: globalStyles.$Spacing-M;
+}
+
+.loadingSkeleton {
+  padding: globalStyles.$Spacing-M;
+  display: flex;
+  flex-direction: column;
+  gap: globalStyles.$Spacing-M;
+  animation: fade-in 0.3s ease-in-out;
+}
+
+.skeletonItem {
+  display: flex;
+  gap: globalStyles.$Spacing-M;
+  width: 100%;
+  max-width: 600px;
+
+  &.left {
+    align-self: flex-start;
+  }
+
+  &.right {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+}
+
+.avatarSkeleton {
+  flex-shrink: 0;
+}
+
+.contentSkeleton {
+  flex: 1;
+  max-width: 70%;
+
+  .MuiSkeleton-root {
+    background: rgb(0, 0, 0, 0.06);
+    border-radius: globalStyles.$Border-Radius-M;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loadingSkeleton {
+    animation: none;
+  }
+}
+
+// Responsive styles
+@media (width <= 768px) {
+  .messagesContainer {
+    gap: globalStyles.$Spacing-S;
+  }
+
+  .messagesWrapper {
+    padding: globalStyles.$Spacing-S 0;
+  }
+
+  .loadingSkeleton {
+    padding: globalStyles.$Spacing-S;
+    gap: globalStyles.$Spacing-S;
+  }
+
+  .skeletonItem {
+    gap: globalStyles.$Spacing-S;
+  }
+}
+
+// @media (max-width: 480px) {
+//   .messagesContainer {
+//     padding: 0 globalStyles.$Spacing-S;
+//   }
+// }

@@ -1,0 +1,117 @@
+/** changes made  
+v1.1.0 :  
+  => added the styles for loader  
+**/
+
+@use '../../styles//globalStyles.scss' as globalStyles;
+
+.conversationItem {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  margin: 2px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: rgb(0, 0, 0, 0.04);
+
+    .moreButton {
+      opacity: 1;
+    }
+  }
+
+  &.active {
+    background-color: rgba(globalStyles.$Main-Color, 0.08);
+
+    .conversationTitle {
+      color: globalStyles.$Main-Color !important;
+      font-weight: 500 !important;
+    }
+
+    .chatTypeIcon {
+      color: globalStyles.$Main-Color !important;
+      background-color: rgba(globalStyles.$Main-Color, 0.12);
+    }
+  }
+}
+
+.loader {
+  margin-left: 8px;
+  color: #f7901d; // or any theme color you want for the loader
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dispBtn {
+  opacity: 1 !important;
+}
+
+.conversationContent {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  gap: 8px;
+}
+
+// Improved chat icon with subtle background
+.chatTypeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777;
+  background-color: rgb(0, 0, 0, 0.03);
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  flex-shrink: 0;
+
+  svg {
+    font-size: 14px !important;
+  }
+}
+
+.conversationTitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px !important;
+  color: #444 !important;
+  line-height: 1.3 !important;
+}
+
+.metaContainer {
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+}
+
+.moreButton {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  padding: 2px !important;
+  min-width: 24px !important;
+  height: 24px !important;
+
+  svg {
+    font-size: 16px !important;
+    color: #777;
+  }
+
+  &:hover {
+    background-color: rgb(0, 0, 0, 0.08) !important;
+  }
+}
+
+.MenuItemText {
+  font-size: 13px;
+  padding: 0 4px;
+}
+
+.deleteIcon {
+  height: 1rem;
+  width: 1rem;
+}

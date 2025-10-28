@@ -1,0 +1,48 @@
+// src/components/SuggestedQuestions/SuggestedQuestions.module.scss
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+.container {
+  // Aligns the component with the content of the AI message bubble
+  margin-left: 54px; // Adjust as needed to match avatar width + gap
+  margin-top: globalStyles.$Spacing-S;
+  margin-bottom: globalStyles.$Spacing-S;
+  max-width: clamp(280px, 85%, 800px);
+  font-family: globalStyles.$Font-Family;
+}
+
+.title {
+  font-size: 0.9rem;
+  font-weight: globalStyles.$Font-Weight-SemiBold;
+  color: globalStyles.$Secondary-Text;
+  margin-bottom: globalStyles.$Spacing-S;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: globalStyles.$Spacing-XS;
+}
+
+.questionButton {
+  padding: globalStyles.$Spacing-S globalStyles.$Spacing-M;
+  border: 1px solid globalStyles.$Border-Color;
+  border-radius: globalStyles.$Border-Radius-L;
+  background-color: white;
+  color: globalStyles.$Main-Color;
+  cursor: pointer;
+  text-align: left;
+  font-size: globalStyles.$Font-Size-SM;
+  font-family: globalStyles.$Font-Family;
+  transition: all globalStyles.$Transition-Fast;
+  width: auto;
+  display: block;
+  box-shadow: globalStyles.$Shadow-SM;
+
+  &:hover {
+    transform: translateY(-1px);
+    border-color: globalStyles.$Main-Color;
+    box-shadow: globalStyles.$Shadow-MD;
+    background-color: globalStyles.$Main-Color-5;
+  }
+}

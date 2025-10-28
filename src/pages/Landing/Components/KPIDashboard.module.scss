@@ -1,0 +1,136 @@
+@use '../../../styles/globalStyles.scss' as globalStyles;
+
+.kpiContainer {
+    width: 70%;
+    font-size: 12px !important;
+    font-family: "Inter", sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0px 0px 10px;
+}
+
+.title {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.actionItem {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+}
+
+.actionText {
+    color: #008000;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.kpiBox {
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    margin-top: 12px;
+    padding: 16px;
+}
+
+.topRow,
+.bottomRow {
+    display: flex;
+    justify-content: space-between;
+    //  grid-template-columns: repeat(4, 1fr); 
+    gap: 50px;
+    margin-top: 8px;
+    margin-left: -52px;
+}
+
+.bottomRow {
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 10px;
+}
+
+.metricHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.metricTitle {
+    color: #444;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.infoIcon {
+    font-size: 16px;
+    color: #888;
+}
+
+.metricValue {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+    margin-top: 4px;
+}
+
+.metricSub {
+    color: #666;
+    font-size: 12px;
+}
+
+.trendUp {
+    color: #28a745;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.trendDown {
+    color: #d9534f;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.badge {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.yellow {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.green {
+    background: #d4edda;
+    color: #155724;
+}
+
+.lightGreen {
+    background: #e9f7ef;
+    color: #1e7e34;
+}
+
+.divider {
+    margin: 12px 0;
+    border-color: #e0e0e0;
+}

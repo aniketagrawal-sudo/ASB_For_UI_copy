@@ -1,0 +1,372 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s globalStyles.$Transition-Bezier;
+  z-index: 1200;
+  backdrop-filter: blur(4px);
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.panel {
+  position: fixed;
+  top: 0;
+  right: -80%;
+  width: 80%;
+  height: 100vh;
+  background: #f8f6f4;
+  box-shadow: -4px 0 24px rgb(0, 0, 0, 0.15);
+  transition: right 0.3s globalStyles.$Transition-Bezier;
+  z-index: 1201;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  &.open {
+    right: 0;
+
+    .tag {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+.tag {
+  position: absolute;
+  left: -44px; // Adjusted position
+  top: 10px;
+  background: #f8f6f4;
+  border-radius: 8px 0 0 8px;
+  box-shadow: -4px 0 12px rgb(0, 0, 0, 0.1);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1; // Changed from 0
+  visibility: visible; // Changed from hidden
+  transition: all 0.3s globalStyles.$Transition-Bezier;
+  padding: globalStyles.$Spacing-XS;
+}
+
+.closeButton {
+  position: relative !important; // Changed from absolute
+  color: globalStyles.$Secondary-Text !important;
+  padding: globalStyles.$Spacing-XS !important;
+  background: #f8f6f4 !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+
+  &:hover {
+    transform: scale(1.1); // Removed translateY
+    background: rgb(0, 0, 0, 0.04) !important;
+  }
+
+  svg {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: globalStyles.$Text-Color !important; // Added for better visibility
+  }
+}
+
+
+.content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f8f6f4;
+}
+
+.header {
+  padding: globalStyles.$Spacing-M;
+  background: white;
+  border-bottom: 1px solid globalStyles.$Main-Color;
+  z-index: 3;
+  flex-shrink: 0;
+  position: relative;
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: globalStyles.$Spacing-M;
+
+  .titleIcon {
+    color: globalStyles.$Main-Color;
+    font-size: 1.5rem;
+  }
+
+  .title {
+    color: #131212;
+    font-weight: globalStyles.$Font-Weight-SemiBold;
+    font-size: globalStyles.$Font-Size-LG;
+    font-family: globalStyles.$Font-Family;
+  }
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  height: calc(100% - 56px);
+  background: #f8f6f4;
+}
+
+.leftSection {
+  width: 320px;
+  border-right: 1px solid rgb(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.rightSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.rightHeader {
+  padding: globalStyles.$Spacing-M;
+  border-bottom: 1px solid globalStyles.$Main-Color;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+.sectionTitle {
+  color: #967249;
+  font-size: globalStyles.$Font-Size-LG;
+  font-weight: globalStyles.$Font-Weight-SemiBold;
+  font-family: globalStyles.$Font-Family;
+}
+
+.saveOptions {
+  display: flex;
+  align-items: center;
+  gap: globalStyles.$Spacing-M;
+}
+
+.saveButton, 
+.confirmSaveButton, 
+.cancelButton {
+  text-transform: none !important;
+  font-weight: globalStyles.$Font-Weight-Medium !important;
+  padding: globalStyles.$Spacing-S globalStyles.$Spacing-L !important;
+  border-radius: globalStyles.$Border-Radius-M !important;
+  transition: all globalStyles.$Transition-Fast !important;
+  font-family: globalStyles.$Font-Family !important;
+  font-size: globalStyles.$Font-Size-SM !important;
+}
+
+.saveButton {
+  color: globalStyles.$Main-Color !important;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: globalStyles.$Shadow-MD;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.confirmSaveButton {
+  background: globalStyles.$Main-Color !important;
+  color: white !important;
+
+  &:hover:not(:disabled) {
+    background: #e67d0a !important;
+    transform: translateY(-1px);
+    box-shadow: globalStyles.$Shadow-MD;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+  }
+}
+
+.cancelButton {
+  background: rgb(0, 0, 0, 0.04) !important;
+  color: globalStyles.$Secondary-Text !important;
+
+  &:hover {
+    background: rgb(0, 0, 0, 0.08) !important;
+    transform: translateY(-1px);
+  }
+}
+
+.rightContent {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  background: #f8f6f4;
+}
+
+.chatArea {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: globalStyles.$Spacing-XL;
+  overflow-y: auto;
+  background: #f8f6f4;
+}
+
+.conversationArea {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #f8f6f4;
+}
+
+.inputArea {
+  background: white;
+  border-top: 1px solid rgb(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+// Dialog styles
+.saveDialog {
+  :global(.MuiDialog-paper) {
+    border-radius: globalStyles.$Border-Radius-L;
+    padding: globalStyles.$Spacing-XL;
+    background: white;
+    min-width: 400px;
+  }
+
+  :global(.MuiDialogTitle-root) {
+    padding: 0 0 globalStyles.$Spacing-L;
+    font-size: globalStyles.$Font-Size-LG;
+    font-weight: globalStyles.$Font-Weight-SemiBold;
+    color: globalStyles.$Text-Color;
+    font-family: globalStyles.$Font-Family;
+  }
+
+  :global(.MuiDialogContent-root) {
+    padding: globalStyles.$Spacing-L 0;
+  }
+
+  :global(.MuiDialogActions-root) {
+    padding: globalStyles.$Spacing-XL 0 0;
+    gap: globalStyles.$Spacing-L;
+  }
+
+  :global(.MuiOutlinedInput-root) {
+    border-radius: globalStyles.$Border-Radius-M;
+    transition: all globalStyles.$Transition-Fast;
+    font-family: globalStyles.$Font-Family;
+
+    &:hover fieldset {
+      border-color: rgb(247, 144, 29, 0.5);
+    }
+
+    &.Mui-focused fieldset {
+      border-color: globalStyles.$Main-Color;
+    }
+  }
+}
+
+// Media queries
+@media (width <= 1200px) {
+  .panel {
+    width: 90%;
+  }
+}
+
+@media (width <= 768px) {
+  .panel {
+    width: 100%;
+  }
+
+  .tag {
+    left: -36px;
+    padding: globalStyles.$Spacing-XXS;
+  }
+
+  .closeButton {
+    width: 28px !important;
+    height: 28px !important;
+
+    svg {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .leftSection {
+    width: 280px;
+  }
+
+  .header, 
+  .rightHeader {
+    padding: globalStyles.$Spacing-S;
+    height: 48px;
+  }
+
+  .saveButton, 
+  .confirmSaveButton, 
+  .cancelButton {
+    padding: globalStyles.$Spacing-XS globalStyles.$Spacing-M !important;
+    font-size: globalStyles.$Font-Size-XS !important;
+  }
+
+  .chatArea {
+    padding: globalStyles.$Spacing-M;
+  }
+}
+
+// High Contrast Mode
+@media (prefers-contrast: more) {
+  .panel {
+    border: 2px solid globalStyles.$Text-Color;
+  }
+}
+
+// Reduced Motion
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .overlay,
+  .saveButton,
+  .confirmSaveButton,
+  .cancelButton {
+    transition: none;
+  }
+}

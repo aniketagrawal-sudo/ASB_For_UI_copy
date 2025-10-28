@@ -1,0 +1,79 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+// Container for the entire component
+.previousQueriesContainer {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 30px;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+// Title container
+.titleContainer {
+  padding: 0 4px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+// Title text
+.previousQueriesTitle {
+  @include globalStyles.fontFamily;
+
+  color: #0a0a0a !important;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: left;
+  padding-bottom: 8px;
+}
+
+// Grid layout for queries
+.queriesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+// Individual query item
+.queryItem {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
+
+  &:hover {
+    box-shadow: 0 3px 6px rgb(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+    background-color: #fafafa;
+  }
+}
+
+// Query text - Using p tag styling instead of Typography
+.queryText {
+  font-family: Inter, sans-serif; // Explicitly set font
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow: visible;
+  max-width: 100%;
+  display: inline-block; // Changed to inline-block
+}
+
+// Responsive styles
+@media (width <= 768px) {
+  .queriesGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .queryItem {
+    padding: 8px;
+  }
+}
