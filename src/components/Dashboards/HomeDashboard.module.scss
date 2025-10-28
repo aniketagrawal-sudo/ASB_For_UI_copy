@@ -1,0 +1,495 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+// Container
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #f8f6f4;
+  border-radius: globalStyles.$Border-Radius-L;
+  overflow: hidden;
+  position: relative;
+}
+
+.dashboardContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: globalStyles.$Spacing-M;
+  background: #f8f6f4;
+  display: flex;
+  flex-direction: column;
+
+  @include globalStyles.scrollbar;
+}
+
+// Loading Overlay - Modern centered overlay with progress indicator
+.loadingOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  background-color: rgb(255, 255, 255, 0.8);
+  border-radius: 12px;
+  padding: 24px 32px;
+  box-shadow: 0 8px 16px rgb(0, 0, 0, 0.08);
+  backdrop-filter: blur(4px);
+  min-width: 300px;
+  text-align: center;
+}
+
+// No Data Container - Center aligned container for empty state
+.noDataContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 40px;
+  text-align: center;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgb(0, 0, 0, 0.05);
+}
+
+// Error Container - For displaying error messages with retry option
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 24px;
+
+  .MuiAlert-root {
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 4px 12px rgb(0, 0, 0, 0.05);
+  }
+}
+
+// Grid Layout
+.grid {
+  display: grid;
+  gap: globalStyles.$Spacing-S;
+  width: 100%;
+
+  &.trendGrid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    padding: 0;
+
+    // Specific column configurations
+    &[data-items="1"] { grid-template-columns: 1fr; }
+    &[data-items="2"] { grid-template-columns: repeat(2, 1fr); }
+    &[data-items="3"] { grid-template-columns: repeat(3, 1fr); }
+    &[data-items="4"] { grid-template-columns: repeat(4, 1fr); }
+    &[data-items="5"] { grid-template-columns: repeat(5, 1fr); }
+  }
+
+  &.normalGrid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    padding: 0;
+
+    &[data-items="1"] { grid-template-columns: 1fr; }
+    &[data-items="2"] { grid-template-columns: repeat(2, 1fr); }
+    &[data-items="3"] { grid-template-columns: repeat(3, 1fr); }
+  }
+}
+
+.section {
+  width: 100%;
+  margin-bottom: globalStyles.$Spacing-L;
+  page-break-inside: avoid;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.trendSection {
+    background: #f8f6f4;
+    border-radius: globalStyles.$Border-Radius-L;
+    position: relative;
+
+    // Handle vertical layout
+    &[data-layout="vertical"] {
+      .trendGrid {
+        grid-template-columns: 1fr !important;
+        max-width: 600px;
+      }
+    }
+  }
+}
+
+// Empty slot for grid positioning
+.emptySlot {
+  min-height: 130px;
+  background-color: transparent;
+  border-radius: globalStyles.$Border-Radius-L;
+}
+
+// Cards
+.card {
+  display: flex;
+  flex-direction: column;
+  border-radius: globalStyles.$Border-Radius-L;
+  overflow: hidden;
+  transition: all globalStyles.$Transition-Fast;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: globalStyles.$Shadow-MD;
+  }
+
+  &.trendCard {
+    height: 130px;
+    background: transparent;
+    
+    .trendCardContent {
+      display: flex;
+      padding: globalStyles.$Spacing-S;
+      flex: 1;
+      background: white !important;
+      gap: globalStyles.$Spacing-XXS;
+      height: calc(100% - 36px);
+      overflow: hidden;
+    }
+
+    .statsSection {
+      flex: 0 0 15%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: globalStyles.$Spacing-XS;
+      padding: 0 globalStyles.$Spacing-S;
+      min-width: 120px;
+    }
+
+    .chartSection {
+      flex: 1;
+      position: relative;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      max-width: 95%;
+      overflow: hidden;
+    }
+  }
+
+  &.normalCard {
+    height: 360px;
+    background: white;
+    border: 1px solid #e0e0e0; // Added a light border
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    
+    .cardBody {
+      flex: 1;
+      min-height: 0;
+      padding: globalStyles.$Spacing-S;
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 48px);
+    }
+
+    &[data-chart-type="donut"],
+    &[data-chart-type="doughnut"] {
+      height: 320px;
+    }
+  }
+}
+
+.cardHeader {
+  padding: globalStyles.$Spacing-S globalStyles.$Spacing-L;
+  height: 48px; // Increased height slightly for better spacing
+  display: flex;
+  align-items: center;
+  justify-content: space-between; // This is key for layout
+  border-bottom: 1px solid #f0f0f0; // Lighter border
+  z-index: 1;
+  background-color: white; // Ensure header is white
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: globalStyles.$Spacing-XXS;
+}
+
+.cardTitle {
+  color: globalStyles.$Text-Color;
+  font-size: globalStyles.$Font-Size-SM;
+  font-weight: globalStyles.$Font-Weight-SemiBold;
+  font-family: globalStyles.$Font-Family;
+  line-height: globalStyles.$Line-Height-Normal;
+  flex: 1;
+}
+
+.downloadButton {
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+  margin-right: -8px; 
+}
+
+
+
+
+// Stats Section Styles
+.mainValue {
+  color: globalStyles.$Text-Color;
+  font-size: globalStyles.$Font-Size-XL !important;
+  font-weight: globalStyles.$Font-Weight-SemiBold !important;
+  line-height: globalStyles.$Line-Height-Tight !important;
+  font-family: globalStyles.$Font-Family !important;
+  margin: 0 !important;
+}
+
+.trendIndicator {
+  display: flex;
+  align-items: center;
+  gap: globalStyles.$Spacing-XXS;
+}
+
+.positiveChange {
+  color: globalStyles.$Success-Color;
+  font-weight: globalStyles.$Font-Weight-SemiBold;
+  font-size: globalStyles.$Font-Size-XXS;
+  display: flex;
+  align-items: center;
+  font-family: globalStyles.$Font-Family;
+}
+
+.normalChange {
+  color: #c7780a;
+  font-weight: globalStyles.$Font-Weight-SemiBold;
+  font-size: globalStyles.$Font-Size-XXS;
+  display: flex;
+  align-items: center;
+  font-family: globalStyles.$Font-Family;
+}
+
+.negativeChange {
+  color: globalStyles.$Error-Color;
+  font-weight: globalStyles.$Font-Weight-SemiBold;
+  font-size: globalStyles.$Font-Size-XXS;
+  display: flex;
+  align-items: center;
+  font-family: globalStyles.$Font-Family;
+}
+
+.periodType {
+  color: globalStyles.$Secondary-Text;
+  font-size: globalStyles.$Font-Size-XXS;
+  opacity: 0.8;
+  font-family: globalStyles.$Font-Family;
+}
+
+// Chart Container
+.chartContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chartWrapper {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  &[data-chart-type="line"] {
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
+}
+
+// Loading States
+.chartSkeleton {
+  border-radius: globalStyles.$Border-Radius-M;
+  background: rgb(0, 0, 0, 0.04) !important;
+}
+
+@keyframes skeleton-pulse-simple {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.6; }
+}
+
+// Enhanced skeleton animations with gradient
+@keyframes skeleton-pulse {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.chartSkeleton,
+.MuiSkeleton-root {
+  animation: skeleton-pulse 1.5s ease-in-out 0.5s infinite;
+  background: linear-gradient(90deg, 
+    rgb(244, 244, 244, 0.6), 
+    rgb(255, 255, 255, 0.8), 
+    rgb(244, 244, 244, 0.6)
+  );
+  background-size: 200% 100%;
+}
+
+// Loading Skeleton Items
+.skeletonItem {
+  background-color: rgb(0, 0, 0, 0.04) !important;
+  transform: scale(1, 0.8);
+  animation: skeleton-pulse-simple 1.5s ease-in-out infinite !important;
+  border-radius: globalStyles.$Border-Radius-S;
+
+  &.right {
+    margin-left: auto;
+    max-width: 80%;
+  }
+
+  &.left {
+    margin-right: auto;
+    max-width: 80%;
+  }
+}
+
+.avatarSkeleton {
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+}
+
+.contentSkeleton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+// Loading Skeleton Container
+.loadingSkeleton {
+  height: 100%;
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+
+
+// Responsive Design
+@media (width <= 1400px) {
+  .trendGrid { 
+    grid-template-columns: repeat(3, 1fr); 
+  }
+
+  .normalGrid { 
+    grid-template-columns: repeat(2, 1fr); 
+  }
+}
+
+@media (width <= 992px) {
+  .normalGrid,
+  .trendGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .loadingOverlay {
+    width: 90%;
+    max-width: 300px;
+    padding: 20px;
+  }
+  
+  .noDataContainer {
+    padding: 24px;
+  }
+}
+
+@media (width <= 768px) {
+  .dashboardContent {
+    padding: globalStyles.$Spacing-S;
+  }
+
+  .card {
+    &.normalCard {
+      height: 300px;
+    }
+
+    &.trendCard {
+      height: 110px;
+      
+      .statsSection {
+        min-width: 100px;
+      }
+    }
+  }
+
+  .cardHeader {
+    padding: globalStyles.$Spacing-XS globalStyles.$Spacing-M;
+  }
+
+  .mainValue {
+    font-size: globalStyles.$Font-Size-LG !important;
+  }
+}
+
+// Print styles
+@media print {
+  .container { 
+    height: auto; 
+  }
+  
+  .dashboardContent { 
+    overflow: visible; 
+  }
+  
+  .section, 
+  .grid, 
+  .card { 
+    page-break-inside: avoid; 
+  }
+  
+  .loadingOverlay,
+  .error,
+  .noDataContainer {
+    display: none;
+  }
+}
+
+// Reduced motion preferences
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .chartSkeleton,
+  .MuiSkeleton-root {
+    transition: none !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

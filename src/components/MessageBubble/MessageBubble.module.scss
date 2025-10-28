@@ -1,0 +1,935 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+// Base message container styles
+.messageContainer {
+  width: 100%;
+  display: flex;
+  padding: globalStyles.$Spacing-XS globalStyles.$Spacing-S;
+  position: relative;
+  transition: transform globalStyles.$Transition-Fast;
+
+  &.userMessage {
+    justify-content: flex-end;
+  }
+
+  &.aiMessage {
+    justify-content: flex-start;
+  }
+}
+
+// Updated messageContent
+.messageContent {
+  display: flex;
+  align-items: flex-end;
+  max-width: clamp(280px, 85%, 800px);
+  min-width: min(200px, 90%);
+  width: 100%;
+  gap: globalStyles.$Spacing-S;
+  position: relative;
+}
+
+// New container for timestamp and action buttons
+.actionAndTimeContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: globalStyles.$Spacing-XS;
+  padding-top: globalStyles.$Spacing-XXS;
+}
+
+// Container for timestamp and latency
+.timestampContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  flex-shrink: 0;
+  max-width: 70%;
+}
+
+.timestamp {
+  font-size: globalStyles.$Font-Size-XXS;
+  color: rgb(0, 0, 0, 0.5);
+  opacity: 0.7;
+  font-family: globalStyles.$Font-Family;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  .userMessageBubble & {
+    color: rgb(255, 255, 255, 0.8);
+  }
+}
+
+// Latency display for AI messages
+.latency {
+  font-size: globalStyles.$Font-Size-XXS;
+  color: rgb(0, 0, 0, 0.4);
+  opacity: 0.8;
+  font-family: globalStyles.$Font-Family;
+  font-style: italic;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Message bubbles - OPTIMIZED: Consistent styling with anti-flickering
+.userMessageBubble,
+.aiMessageBubble {
+  position: relative;
+  padding: globalStyles.$Spacing-M;
+  padding-top: calc(globalStyles.$Spacing-M + 12px); // Extra top padding for checkbox
+  width: 100%;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  transition: all globalStyles.$Transition-Fast;
+  overflow-wrap: break-word;
+  // word-break: break-all;
+  
+  // Anti-flickering optimizations
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.userMessageBubble {
+  background: linear-gradient(135deg, globalStyles.$Main-Color 0%, #f9a94a 100%);
+  border-radius: globalStyles.$Border-Radius-L globalStyles.$Border-Radius-L 0 globalStyles.$Border-Radius-L;
+  margin-right: globalStyles.$Spacing-S;
+  color: white;
+  box-shadow: 0 2px 8px rgb(247, 144, 29, 0.15);
+
+  .answerText {
+    color: white !important;
+    
+    p, div, span, strong, em, code, pre, ul, ol, li, h1, h2, h3, h4, h5, h6 {
+      color: white !important;
+    }
+    
+    // Ensure all content is white
+    * {
+      color: white !important;
+    }
+  }
+  
+  // For user messages, message actions should be light-colored
+  .messageActions {
+    .actionButton {
+      color: rgb(255, 255, 255, 0.8) !important;
+      
+      &:hover {
+        color: white !important;
+      }
+    }
+  }
+}
+
+.aiMessageBubble {
+  background: white;
+  border-radius: 0 globalStyles.$Border-Radius-L globalStyles.$Border-Radius-L globalStyles.$Border-Radius-L;
+  margin-left: globalStyles.$Spacing-S;
+  border: 1px solid rgb(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
+}
+
+// Message actions (buttons)
+.messageActions {
+  display: flex;
+  gap: 2px; // Reduced gap between buttons
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  justify-content: flex-end;
+  align-items: center; // Ensure vertical alignment with timestamp
+}
+
+// Make the action buttons visible on hover
+.userMessageBubble:hover .messageActions,
+.aiMessageBubble:hover .messageActions {
+  opacity: 1;
+}
+
+// Reduced button size to match timestamp
+.actionButton {
+  position: relative; // --- START: Add relative positioning for icon switching ---
+  color: globalStyles.$Secondary-Text !important;
+  transition: all globalStyles.$Transition-Fast !important;
+  padding: 2px !important; // Reduced padding
+  margin: 0 !important;
+  width: 18px !important; // Set explicit width
+  height: 18px !important; // Set explicit height
+  min-width: 18px !important; // Override MUI defaults
+  min-height: 18px !important; // Override MUI defaults
+  font-size: globalStyles.$Font-Size-XXS !important; 
+  
+  svg {
+    font-size: 14px;
+    position: absolute; // Position icons on top of each other
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.2s ease-in-out; 
+  }
+
+  .copyIcon {
+    opacity: 1; // Default state: copy icon is visible
+  }
+
+  .checkIcon {
+    opacity: 0; // Default state: check icon is hidden
+    color: #888888;; // Green color for success
+  }
+
+  &.copied {
+    .copyIcon {
+      opacity: 0; // Copied state: hide copy icon
+    }
+    .checkIcon {
+      opacity: 1; // Copied state: show check icon
+    }
+  }
+  
+  &:hover {
+    background-color: rgb(0, 0, 0, 0.05) !important;
+    transform: scale(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+// Toggle view control for visualization/table
+.viewToggleContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+  padding: 0 4px;
+  padding-right: 26px; // FIXED: Make space for checkbox
+}
+
+.viewToggle {
+  background-color: white;
+  border-radius: globalStyles.$Border-Radius-M;
+  box-shadow: 0 1px 3px rgb(0, 0, 0, 0.1);
+  
+  // Style for ToggleButton components
+  :global(.MuiToggleButton-root) {
+    border: 1px solid rgb(0, 0, 0, 0.08);
+    color: globalStyles.$Secondary-Text;
+    padding: 4px 10px;
+    
+    &:hover {
+      background-color: rgb(0, 0, 0, 0.04);
+    }
+    
+    &.Mui-selected {
+      background-color: globalStyles.$Main-Color-5;
+      color: globalStyles.$Main-Color;
+      
+      &:hover {
+        background-color: globalStyles.$Main-Color-10;
+      }
+    }
+    
+    svg {
+      font-size: 18px;
+    }
+  }
+}
+
+// Animation for smooth transitions
+.visualizationSection,
+.tableSection {
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  transform-origin: top center;
+}
+
+// Combined message container
+.combinedMessage {
+  display: flex;
+  flex-direction: column;
+  gap: globalStyles.$Spacing-M;
+  width: 100%;
+  position: relative;
+
+  .insightSection,
+  .visualizationSection,
+  .tableSection,
+  .fileSection {
+    width: 100%;
+  }
+
+  // FIXED: Added right padding to insight section to prevent checkbox overlap
+  .insightSection {
+    padding-right: 18px;
+  }
+}
+
+// Table styles
+.tableContainer {
+  width: 100%;
+  overflow: hidden;
+  background: white;
+  border-radius: globalStyles.$Border-Radius-M;
+  border: 1px solid globalStyles.$Border-Color;
+  margin: globalStyles.$Spacing-XS 0;
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
+
+  .tableHeader {
+    padding: globalStyles.$Spacing-S globalStyles.$Spacing-M;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    border-bottom: 1px solid globalStyles.$Border-Color;
+  }
+
+  .tableTitle {
+    font-size: globalStyles.$Font-Size-SM;
+    font-weight: globalStyles.$Font-Weight-SemiBold;
+    color: globalStyles.$Text-Color;
+    margin: 0;
+  }
+
+  .downloadButton {
+    font-size: globalStyles.$Font-Size-XS !important;
+    padding: globalStyles.$Spacing-XXS globalStyles.$Spacing-XS !important;
+    text-transform: none !important;
+    color: globalStyles.$Secondary-Text !important;
+
+    &:hover {
+      background-color: rgb(0, 0, 0, 0.04) !important;
+      color: globalStyles.$Text-Color !important;
+    }
+  }
+
+  .tableWrapper {
+    max-height: none !important;
+    overflow: visible !important;
+
+    @include globalStyles.scrollbar;
+  }
+}
+
+.tableHeaderCell {
+  background-color: #f8f9fa !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 2 !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 0 rgb(0, 0, 0, 0.1) !important;
+}
+
+// Visualization styles
+.visualizationContainer {
+  position: relative;
+  width: 100%;
+  margin: globalStyles.$Spacing-XS 0;
+  border-radius: globalStyles.$Border-Radius-M;
+  max-height: none !important;
+  overflow: visible !important; 
+
+
+  img.visualizationImage {
+    width: 100%;
+    object-fit: contain;
+    background: #f8f9fa;
+    border: 1px solid globalStyles.$Border-Color;
+    max-height: none !important;    
+    height: auto !important;
+  }
+
+  .visActions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+    display: flex;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(2px);
+    border-radius: 16px;
+    padding: 2px;
+  }
+
+  // MODIFIED: .pinButton is now simpler
+  .pinButton {
+    padding: 4px !important;
+    color: #666 !important;
+    transition: all globalStyles.$Transition-Fast;
+    padding: 4px !important;
+    background: rgb(255, 255, 255, 0.9) !important;
+    border-radius: 50%;
+    z-index: 10;
+    transition: all globalStyles.$Transition-Fast;
+    
+    &:hover {
+      transform: scale(1.1);
+      color: #000 !important;
+      background: white !important;
+    }
+    
+    .pinned {
+      color: globalStyles.$Main-Color;
+      transform: rotate(-45deg);
+    }
+  }
+}
+
+  // NEW: Style for the fullscreen button
+.fullscreenButton {
+  padding: 4px !important;
+  color: #666 !important;
+  transition: all globalStyles.$Transition-Fast;
+
+  &:hover {
+    transform: scale(1.1);
+    color: #000 !important;
+  }
+}
+
+// NEW: Style for the chart inside the dialog
+.dialogChartContainer {
+  padding: 16px !important;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  // This ensures the chart component inside fills the space
+  > div {
+    height: 100%;
+    width: 100%;
+  }
+}
+.dialogChartContainer > div > [class*='messageChartContainer'] {
+  height: 100% !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+
+// File button styles
+.fileContainer {
+  width: 100%;
+  margin: globalStyles.$Spacing-XS 0;
+
+  .viewFileButton {
+    width: 100%;
+    padding: globalStyles.$Spacing-M;
+    border: 1px solid globalStyles.$Border-Color;
+    border-radius: globalStyles.$Border-Radius-M;
+    font-size: globalStyles.$Font-Size-SM;
+    background: white;
+    color: globalStyles.$Text-Color;
+    display: flex;
+    align-items: center;
+    gap: globalStyles.$Spacing-S;
+    transition: all globalStyles.$Transition-Fast;
+    margin-top: globalStyles.$Spacing-M;
+
+    &:hover:not(:disabled) {
+      background-color: globalStyles.$Main-Color-5;
+      border-color: globalStyles.$Main-Color-20;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// FIXED: Improved select button styles to prevent overlapping with content
+.selectButton {
+  position: absolute !important;
+  width: 24px !important; // Slightly larger for better visibility
+  height: 24px !important; // Slightly larger for better visibility
+  top: 6px !important; // Positioned at the top edge
+  right: 6px !important; // Positioned at the right edge
+  padding: 2px !important;
+  background: white !important;
+  border: 1px solid globalStyles.$Border-Color !important;
+  border-radius: 50% !important;
+  z-index: 99 !important; // Higher z-index to ensure it's above all content
+  opacity: 0;
+  transition: all globalStyles.$Transition-Fast !important;
+  box-shadow: 0 2px 4px rgb(0, 0, 0, 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  &:hover {
+    transform: scale(1.1) !important;
+    border-color: globalStyles.$Main-Color !important;
+    box-shadow: 0 4px 8px rgb(0, 0, 0, 0.15) !important;
+  }
+
+  &.selected {
+    opacity: 1;
+    border-color: globalStyles.$Main-Color !important;
+    background: globalStyles.$Main-Color-5 !important;
+    box-shadow: 0 4px 8px rgb(247, 144, 29, 0.2) !important;
+  }
+
+  &[data-select-mode="true"] {
+    opacity: 1;
+  }
+
+  .selectedIcon,
+  .unselectedIcon {
+    font-size: 14px; // Slightly larger for better visibility
+  }
+
+  .selectedIcon {
+    color: globalStyles.$Main-Color;
+  }
+
+  .unselectedIcon {
+    color: globalStyles.$Secondary-Text;
+  }
+}
+
+// Show checkbox on hover or when in select mode
+.messageContainer:hover .selectButton:not([data-select-mode="true"]),
+.selectButton[data-select-mode="true"] {
+  opacity: 1;
+}
+
+// Avatar styles
+.userAvatarContainer,
+.aiAvatarContainer {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.userAvatar,
+.aiAvatar {
+  width: 28px !important;
+  height: 28px !important;
+  font-size: globalStyles.$Font-Size-SM !important;
+  transition: all globalStyles.$Transition-Fast;
+}
+
+.userAvatar {
+  background: linear-gradient(135deg, globalStyles.$Main-Color 0%, #f9a94a 100%) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgb(247, 144, 29, 0.2);
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.aiAvatar {
+  background: globalStyles.$Main-Color-5 !important;
+  color: globalStyles.$Main-Color !important;
+  border: 2px solid rgb(247, 144, 29, 0.2) !important;
+  
+  svg {
+    font-size: 16px;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+    border-color: globalStyles.$Main-Color !important;
+  }
+}
+
+// Queued message styling
+.queuedMessage {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: globalStyles.$Font-Size-XS;
+}
+
+.queuedIcon {
+  color: #ff9800;
+  font-size: 20px;
+}
+
+.fileViewerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px; // Optional: Adds some space around the button
+  width: 100%;
+}
+
+.viewFileButton {
+    width: 100%;
+    padding: globalStyles.$Spacing-M;
+    border: 1px solid globalStyles.$Border-Color;
+    border-radius: globalStyles.$Border-Radius-M;
+    font-size: globalStyles.$Font-Size-SM;
+    background: white;
+    color: globalStyles.$Text-Color;
+    display: flex;
+    align-items: center;
+    gap: globalStyles.$Spacing-S;
+    transition: all globalStyles.$Transition-Fast;
+
+    &:hover:not(:disabled) {
+      background-color: globalStyles.$Main-Color-5;
+      border-color: globalStyles.$Main-Color-20;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  } /* Lightens the border color */
+
+
+.chartContainer {
+  width: 100%;
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+}
+
+// Text styles
+.questionText {
+  color: white;
+  font-size: globalStyles.$Font-Size-SM;
+  line-height: globalStyles.$Line-Height-Relaxed;
+  white-space: pre-wrap;
+}
+
+// FIXED: Added padding-right to answerText to prevent overlap with checkbox
+.answerText {
+  color: globalStyles.$Text-Color;
+  font-size: globalStyles.$Font-Size-SM;
+  line-height: globalStyles.$Line-Height-Relaxed;
+  padding-right: 20px; // Add space for checkbox
+
+  // Add padding to first paragraphs to prevent collisions with checkbox
+  > p:first-child, > h1:first-child, > h2:first-child, > h3:first-child {
+    padding-right: 20px;
+  }
+  
+  // Add specific checkbox clearance for headings at the top
+  h1:first-child, h2:first-child, h3:first-child {
+    margin-right: 26px;
+  }
+
+  p {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+    
+    &:first-child {
+      margin-top: 0;
+    }
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  ul, ol {
+    padding-left: globalStyles.$Spacing-L;
+    margin: 0.75em 0;
+
+    ul {
+      list-style-type: disc; /* ✨ FIX: This restores the bullet points */
+      list-style-position: outside; /* Ensures proper alignment */
+    }
+    
+    &:first-child {
+      margin-top: 0;
+      padding-right: 20px; // Extra space for checkbox
+    }
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    li {
+      margin-bottom: 0.25em;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+
+  ul {
+    list-style-type: disc; /* ✨ FIX: This restores the bullet points */
+    list-style-position: outside; /* Ensures proper alignment */
+  }
+
+  // Enhanced bullet point styling for better HTML list handling
+  li {
+    line-height: 1.6;
+    
+    // Handle nested bullet points properly
+    &::marker {
+      color: #000;
+    }
+  }
+
+  code {
+    background: globalStyles.$Gray-5;
+    padding: globalStyles.$Spacing-XXS globalStyles.$Spacing-XS;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: Monaco, Menlo, 'Ubuntu Mono', monospace;
+  }
+
+  pre {
+    background: globalStyles.$Gray-5;
+    padding: globalStyles.$Spacing-S;
+    border-radius: globalStyles.$Border-Radius-S;
+    overflow-x: auto;
+    margin: 0.75em 0;
+    
+    code {
+      background: transparent;
+      padding: 0;
+    }
+  }
+
+  // Enhanced strong/bold text styling
+  strong, b {
+    font-weight: 600;
+    color: inherit;
+  }
+
+  // Enhanced emphasis/italic styling
+  em, i {
+    font-style: italic;
+    color: inherit;
+  }
+
+  // Enhanced heading styles for converted HTML
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+    line-height: 1.3;
+    
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  h1 { font-size: 1.5em; }
+  h2 { font-size: 1.3em; }
+  h3 { font-size: 1.2em; }
+  h4 { font-size: 1.1em; }
+  h5 { font-size: 1em; }
+  h6 { font-size: 0.9em; }
+
+  // Enhanced link styling
+  a {
+    color: globalStyles.$Main-Color;
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // Enhanced blockquote styling
+  blockquote {
+    border-left: 3px solid globalStyles.$Main-Color;
+    padding-left: globalStyles.$Spacing-M;
+    margin: 0.75em 0;
+    font-style: italic;
+    color: globalStyles.$Secondary-Text;
+  }
+
+  // FIXED: Classes for enhanced HTML elements
+  .enhanced-list-item {
+    margin-bottom: 0.5em;
+    line-height: 1.6;
+  }
+  
+  .enhanced-paragraph {
+    margin-bottom: 1em;
+    line-height: 1.6;
+  }
+}
+
+// Loading animation
+.loadingDots {
+  display: flex;
+  align-items: center;
+  gap: globalStyles.$Spacing-XXS;
+  padding: globalStyles.$Spacing-XS 0;
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    background: globalStyles.$Main-Color;
+    border-radius: 50%;
+    animation: bounce 1.5s infinite ease-in-out;
+    
+    &:nth-child(1) {
+      animation-delay: 0s;
+    }
+    
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    &:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+// Error message
+.errorMessage {
+  color: globalStyles.$Error-Color;
+  padding: globalStyles.$Spacing-S;
+  border-radius: globalStyles.$Border-Radius-S;
+  background: rgb(244, 67, 54, 0.05);
+  font-size: globalStyles.$Font-Size-SM;
+  margin: globalStyles.$Spacing-XS 0;
+}
+
+// Responsive styles
+@media (width <= 768px) {
+  .messageContainer {
+    padding: globalStyles.$Spacing-XS globalStyles.$Spacing-M;
+  }
+  
+  // FIXED: Keep proper padding in mobile view
+  .userMessageBubble,
+  .aiMessageBubble {
+    padding: globalStyles.$Spacing-S;
+    padding-top: calc(globalStyles.$Spacing-S + 12px); // Extra top padding for checkbox
+  }
+  
+  .userAvatar,
+  .aiAvatar {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  
+  .viewToggle {
+    :global(.MuiToggleButton-root) {
+      padding: 2px 6px;
+      
+      svg {
+        font-size: 16px;
+      }
+    }
+  }
+  
+  .visualizationContainer,
+  .tableContainer {
+    margin: globalStyles.$Spacing-XXS 0;
+  }
+
+  // Mobile responsive adjustments for checkbox
+  .selectButton {
+    width: 20px !important;
+    height: 20px !important;
+    top: 4px !important;
+    right: 4px !important;
+    
+    .selectedIcon,
+    .unselectedIcon {
+      font-size: 10px;
+    }
+  }
+
+  // Smaller padding for answerText on mobile
+  .answerText {
+    padding-right: 15px;
+  }
+}
+
+#pdf-container {
+  height: auto !important;
+  min-height: 100% !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+
+@media print {
+  .messageContainer {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .selectButton,
+  .messageActions,
+  .viewToggleContainer {
+    display: none !important;
+  }
+
+  .userMessageBubble,
+  .aiMessageBubble {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    padding-top: globalStyles.$Spacing-M !important;
+    overflow: visible !important;
+  }
+
+  .combinedMessage {
+    gap: 8px !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .visualizationSection,
+  .visualizationContainer {
+    max-height: none !important;
+    overflow: visible !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .visualizationContainer img.visualizationImage {
+    max-height: none !important;
+    height: auto !important;
+  }
+
+  .tableSection {
+    max-height: none !important;
+    page-break-inside: avoid;
+
+    .tableWrapper {
+      max-height: none !important;
+      overflow: visible !important;
+    }
+  }
+
+  // Reset padding for print
+  .answerText {
+    padding-right: 0 !important;
+  }
+}

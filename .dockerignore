@@ -1,0 +1,16 @@
+.DS_Store
+.editorconfig
+.eslint*
+.git
+.gitignore
+.prettier*
+.vscode
+
+build
+dist
+
+docker-compose.yml
+docker-compose.override.yml
+Dockerfile
+node_modules
+npm-debug.log

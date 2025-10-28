@@ -1,0 +1,257 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+// =============================================
+// GLOBAL RESETS - Prevent scrollbars and ensure full height
+// =============================================
+:global(html),
+:global(body),
+:global(#root) {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+// =============================================
+// MAIN CONTAINER - Fills available space
+// =============================================
+.pageContainer {
+  position: fixed;
+  inset: 64px 0 0; // Height of AppLayout header
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  padding: 8px 4px; // Reduced horizontal padding (8px top/bottom, 4px left/right)
+  box-sizing: border-box;
+}
+
+// =============================================
+// CONTENT WRAPPER - Contains sidebar and conversation container
+// =============================================
+.contentWrapper {
+  width: 100%;
+  display: flex;
+  gap: 6px; // Reduced gap between components
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  transition: all 0.3s ease; // Optional global transition
+}
+
+// =============================================
+// SIDEBAR CONTAINER - Collapsible sidebar
+// =============================================
+.sidebarContainer {
+  width: 280px;
+  border-radius: 10px; // Increased rounded edges
+  overflow: hidden;
+  transition: width 0.3s ease;
+  flex-shrink: 0;
+  background-color: white;
+  box-shadow: 0 2px 6px rgb(0, 0, 0, 0.08); // Slightly enhanced shadow
+
+  &.collapsed {
+    width: 40px;
+    min-width: 40px;
+    background: transparent;
+    box-shadow: none !important;
+  }
+}
+
+// =============================================
+// CONVERSATION CONTAINER - Main content area
+// =============================================
+.conversationsContainer {
+  flex: 1;
+  min-width: 0; // Critical to prevent flex items from overflowing
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 10px; // Increased rounded edges
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgb(0, 0, 0, 0.08); // Slightly enhanced shadow
+}
+
+// =============================================
+// CONVERSATION HEADER - Top bar of conversation
+// =============================================
+.conversationHeader {
+  padding: 16px 20px;
+  height: 60px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border-bottom: 1px solid #eee;
+}
+
+.headerTitle {
+  font-weight: 600 !important;
+  color: #333 !important;
+}
+
+// =============================================
+// CONVERSATION SCREEN - Messages display area
+// =============================================
+.conversationsScreenContainer {
+  flex: 1;
+  overflow: hidden auto;
+  padding: 0;
+  position: relative;
+}
+
+// =============================================
+// CHAT INPUT - Bottom bar with input field
+// =============================================
+.chatInputContainer {
+  padding: 12px 20px;
+  border-top: 1px solid #eee;
+  background-color: white;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+// =============================================
+// BUSINESS CONTEXT PANEL - Right-side flyout
+// =============================================
+.businessContentContainer {
+  width: 0;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: -2px 0 6px rgb(0, 0, 0, 0.08);
+  overflow: hidden;
+  transform: translateX(100%);
+  transition: width 0.3s ease-in-out;
+  opacity: 0;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+
+  &.open {
+    width: 70vw;
+    max-width: 1021px;
+    opacity: 1;
+    transform: translateX(0);
+    overflow-y: auto;
+  }
+}
+
+// =============================================
+// RESPONSIVE LAYOUTS
+// =============================================
+
+// Large displays (above 1800px)
+@media (width >= 1801px) {
+  .contentWrapper {
+    padding: 0 8px; // Reduced side padding
+  }
+}
+
+// Tablets
+@media (width <= 768px) {
+  .pageContainer {
+    top: 56px; // Smaller AppLayout header on mobile
+    padding: 6px 3px; // Reduced horizontal padding (6px top/bottom, 3px left/right)
+  }
+
+  .contentWrapper {
+    gap: 5px;
+  }
+
+  .sidebarContainer,
+  .conversationsContainer {
+    border-radius: 8px; // Slightly reduced on smaller screens
+  }
+
+  .sidebarContainer {
+    width: 240px;
+
+    &.collapsed {
+      width: 50px;
+    }
+  }
+
+  .conversationHeader,
+  .chatInputContainer {
+    padding: 12px 16px;
+  }
+
+  .businessContentContainer {
+    width: 0;
+    border-radius: 8px;
+
+    &.open {
+      width: 490px;
+    }
+  }
+}
+
+// Mobile devices
+@media (width <= 480px) {
+  .pageContainer {
+    padding: 4px 2px; // Reduced horizontal padding (4px top/bottom, 2px left/right)
+  }
+
+  .contentWrapper {
+    gap: 4px;
+  }
+
+  .sidebarContainer,
+  .conversationsContainer {
+    border-radius: 6px; // Further reduced on mobile
+  }
+
+  .sidebarContainer {
+    width: 220px;
+
+    &.collapsed {
+      width: 40px;
+    }
+  }
+
+  .conversationHeader,
+  .chatInputContainer {
+    padding: 8px 12px;
+  }
+
+  .businessContentContainer {
+    width: 0;
+    border-radius: 6px;
+
+    &.open {
+      width: 240px;
+    }
+  }
+}
+
+// Extra zoom support for different scales
+@media (width <= 480px) and (height <= 480px) {
+  .pageContainer {
+    padding: 2px 1px; // Minimal padding (2px top/bottom, 1px left/right)
+  }
+
+  .conversationHeader {
+    height: 45px;
+    min-height: 45px;
+    padding: 8px 10px;
+  }
+
+  .chatInputContainer {
+    padding: 6px 10px;
+  }
+}
+
+// Specific support for zoom levels
+@media (width <= 768px) and (width >= 481px) and (height <= 400px) {
+  .pageContainer {
+    padding: 4px 2px; // Reduced padding (4px top/bottom, 2px left/right)
+  }
+
+  .conversationHeader {
+    height: 45px;
+    min-height: 45px;
+  }
+}

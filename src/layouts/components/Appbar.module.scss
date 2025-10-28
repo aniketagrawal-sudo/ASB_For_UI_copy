@@ -1,0 +1,45 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+.appBarContainer {
+  min-height: 64px;
+  max-height: 64px;
+}
+
+.appBar {
+  display: 'flex';
+  color: #312e2d;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerContainer {
+  width: 100%;
+
+  @include globalStyles.centering;
+}
+
+.logo {
+  @include globalStyles.leftCentering;
+}
+
+.navContainer {
+  @include globalStyles.centering;
+
+  .active {
+    font-weight: bold;
+    border-bottom: 5px solid globalStyles.$globalColor;
+    border-radius: 0 0 5px 5px;
+  }
+}
+
+.actionContainer {
+  @include globalStyles.rightCentering;
+}
+
+.dropdownMenu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 10rem;
+  cursor: pointer;
+}

@@ -1,0 +1,356 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+@use "sass:color";
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s globalStyles.$Transition-Bezier;
+  z-index: 9998;
+  backdrop-filter: blur(4px);
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.panel {
+  position: fixed;
+  top: 0;
+  right: -50%;
+  width: 50%;
+  height: 100vh;
+  background: #f8f6f4;
+  box-shadow: -4px 0 24px rgb(0, 0, 0, 0.15);
+  transition: right 0.3s globalStyles.$Transition-Bezier;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  &.open {
+    right: 0;
+
+    .tag {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+.tag {
+  position: absolute;
+  left: -44px;
+  top: 10px;
+  background: #f8f6f4;
+  border-radius: 8px 0 0 8px;
+  box-shadow: -4px 0 12px rgb(0, 0, 0, 0.1);
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  transition: all 0.3s globalStyles.$Transition-Bezier;
+  padding: globalStyles.$Spacing-XS;
+}
+
+.closeButton {
+  position: relative !important;
+  color: globalStyles.$Secondary-Text !important;
+  padding: globalStyles.$Spacing-XS !important;
+  background: #f8f6f4 !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  z-index: 10002;
+
+  &:hover {
+    transform: scale(1.1);
+    background: rgb(0, 0, 0, 0.04) !important;
+  }
+
+  svg {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: globalStyles.$Text-Color !important;
+  }
+}
+
+.content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f8f6f4;
+}
+
+.header {
+  padding: globalStyles.$Spacing-M;
+  background: white;
+  border-bottom: 1px solid globalStyles.$Main-Color;
+  z-index: 3;
+  flex-shrink: 0;
+  position: relative;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .title {
+    color: #131212;
+    font-weight: globalStyles.$Font-Weight-SemiBold;
+    font-size: globalStyles.$Font-Size-LG;
+    font-family: globalStyles.$Font-Family;
+  }
+
+  .headerDownloadButton {
+    color: globalStyles.$Main-Color;
+    transition: all globalStyles.$Transition-Fast;
+
+    &:hover {
+      background-color: globalStyles.$Main-Color-5;
+      transform: scale(1.1);
+    }
+  }
+}
+
+.viewerContent {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 56px);
+  background: white;
+}
+
+.viewerContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  overflow: hidden;
+  height: 100%;
+}
+
+.iframeContainer {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.viewerFrame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: white;
+}
+
+.pdfContainer {
+  height: 100%;
+  width: 100%;
+  background: white;
+  overflow: hidden;
+
+  :global {
+    .rpv-core__viewer {
+      height: 100% !important;
+    }
+
+    .rpv-core__page-layer {
+      background: #f8f9fa;
+    }
+
+    .rpv-core__toolbar {
+      background: white;
+      border-bottom: 1px solid globalStyles.$Border-Color;
+    }
+
+    .rpv-core__menu-item:hover {
+      background: globalStyles.$Main-Color-5;
+    }
+
+    .rpv-core__button:hover {
+      background: globalStyles.$Main-Color-5;
+    }
+  }
+}
+
+.pptContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  overflow: hidden;
+}
+
+.officeFrame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: white;
+}
+
+.viewerControls {
+  display: flex;
+  gap: globalStyles.$Spacing-M;
+  padding: globalStyles.$Spacing-M;
+  background: white;
+  border-top: 1px solid globalStyles.$Border-Color;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 56px;
+}
+
+.controlButton {
+  color: globalStyles.$Text-Color !important;
+  border-color: globalStyles.$Border-Color !important;
+  transition: all globalStyles.$Transition-Fast !important;
+  font-family: globalStyles.$Font-Family !important;
+
+  &:hover {
+    background-color: globalStyles.$Main-Color-5 !important;
+    border-color: globalStyles.$Main-Color !important;
+    color: globalStyles.$Main-Color !important;
+  }
+}
+
+.loadingContainer,
+.errorContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: globalStyles.$Spacing-M;
+  padding: globalStyles.$Spacing-XL;
+  text-align: center;
+  background: white;
+}
+
+.loadingText {
+  color: globalStyles.$Text-Color;
+  margin-top: globalStyles.$Spacing-M;
+  font-size: globalStyles.$Font-Size-MD;
+  font-family: globalStyles.$Font-Family;
+}
+
+.loadingSubtext {
+  color: globalStyles.$Secondary-Text;
+  margin-top: globalStyles.$Spacing-S;
+  font-size: globalStyles.$Font-Size-SM;
+  font-family: globalStyles.$Font-Family;
+}
+
+.errorText {
+  color: globalStyles.$Error-Color;
+  font-weight: globalStyles.$Font-Weight-Medium;
+  font-size: globalStyles.$Font-Size-MD;
+  font-family: globalStyles.$Font-Family;
+}
+
+.errorActions {
+  display: flex;
+  gap: globalStyles.$Spacing-M;
+  margin-top: globalStyles.$Spacing-L;
+}
+
+.retryButton {
+  color: globalStyles.$Text-Color !important;
+  border-color: globalStyles.$Border-Color !important;
+  transition: all globalStyles.$Transition-Fast !important;
+  font-family: globalStyles.$Font-Family !important;
+
+  &:hover {
+    background-color: globalStyles.$Main-Color-5 !important;
+    border-color: globalStyles.$Main-Color !important;
+    color: globalStyles.$Main-Color !important;
+  }
+}
+
+.downloadButton {
+  background-color: globalStyles.$Main-Color !important;
+  color: white !important;
+  transition: all globalStyles.$Transition-Fast !important;
+  font-family: globalStyles.$Font-Family !important;
+
+  &:hover {
+    background-color: color.adjust(globalStyles.$Main-Color, $lightness: -5%) !important;
+    box-shadow: globalStyles.$Shadow-SM;
+  }
+
+  &:active {
+    background-color: color.adjust(globalStyles.$Main-Color, $lightness: -10%) !important;
+  }
+}
+
+@media (width <= 1200px) {
+  .panel {
+    width: 90%;
+    right: -90%;
+  }
+}
+
+@media (width <= 768px) {
+  .panel {
+    width: 100%;
+    right: -100%;
+  }
+
+  .tag {
+    display: none;
+  }
+
+  .header {
+    height: 48px;
+    padding: globalStyles.$Spacing-S;
+  }
+
+  .viewerControls {
+    flex-direction: column;
+    padding: globalStyles.$Spacing-M;
+  }
+
+  .errorActions {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .overlay,
+  .closeButton,
+  .controlButton,
+  .retryButton,
+  .downloadButton,
+  .headerDownloadButton {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+@supports not (backdrop-filter: blur(4px)) {
+  .overlay {
+    background: rgb(0, 0, 0, 0.7);
+  }
+}

@@ -1,0 +1,31 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+.dialogPaper {
+  width: 90%;
+  max-width: 500px;
+  min-width: 300px;
+  height: 180px;
+}
+
+.dialogContentCenter {
+  @include globalStyles.centering;
+}
+
+.errorMessage {
+  flex: 1;
+  text-align: center;
+  color: #d32f2f;
+  font-size: 0.8rem;
+}
+
+.dialogTitle {
+  font-size: 1rem;
+}
+
+.cancelButton {
+  color: rgb(0, 0, 0, 0.6);
+}
+
+.dialogText {
+  font-size: 0.85rem;
+}

@@ -1,0 +1,1005 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s globalStyles.$Transition-Bezier;
+  z-index: 9998;
+  backdrop-filter: blur(8px);
+  pointer-events: all;
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.panel {
+  position: fixed;
+  top: 0;
+  right: -85%; // Increased from -75%
+  width: 85%; // Increased from 75%
+  height: 100vh;
+  background: #f8f6f4;
+  box-shadow: -4px 0 24px rgb(0, 0, 0, 0.15);
+  transition: right 0.3s globalStyles.$Transition-Bezier;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+
+  &.open {
+    right: 0;
+    
+    .tag {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+.tag {
+  position: absolute;
+  left: -35px;
+  top: 10px;
+  background: #f8f6f4;
+  border-radius: 8px 0 0 8px;
+  box-shadow: -4px 0 12px rgb(0, 0, 0, 0.1);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s globalStyles.$Transition-Bezier;
+}
+
+.closeButton {
+  color: globalStyles.$Secondary-Text !important;
+  padding: globalStyles.$Spacing-XS !important;
+  background: #f8f6f4 !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  transition: transform globalStyles.$Transition-Fast;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    transform: scale(1.1);
+    background: globalStyles.$Gray-5 !important;
+  }
+
+  svg {
+    font-size: globalStyles.$Font-Size-LG;
+    width: globalStyles.$Font-Size-LG;
+    height: globalStyles.$Font-Size-LG;
+  }
+}
+
+.content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f8f6f4;
+}
+
+.header {
+  padding: globalStyles.$Spacing-M;
+  background: globalStyles.$Main-Color-5;
+  border-bottom: 1px solid globalStyles.$Main-Color;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  min-height: 56px;
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: globalStyles.$Spacing-S;
+  width: 100%;
+
+  .titleIcon {
+    color: globalStyles.$Main-Color;
+    font-size: globalStyles.$Font-Size-XL;
+    flex-shrink: 0;
+  }
+
+  .headerTitle {
+    color: #967249;
+    font-weight: globalStyles.$Font-Weight-SemiBold;
+    font-size: globalStyles.$Font-Size-LG;
+    font-family: globalStyles.$Font-Family;
+    line-height: globalStyles.$Line-Height-Tight;
+  }
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  gap: 0;
+  padding: 0;
+  overflow: visible;
+  background: white;
+  position: relative;
+
+  & > *:not(:last-child) {
+    border-right: 1px solid globalStyles.$Border-Color;
+  }
+}
+
+.leftPane {
+  flex: 0 0 300px; // Increased from 260px (approximately 35% of wider panel)
+  overflow-y: auto;
+
+  @include globalStyles.scrollbar;
+
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+
+  & > *:not(:last-child) {
+    border-bottom: 1px solid globalStyles.$Gray-5;
+  }
+}
+
+.dataPoint {
+  padding: globalStyles.$Spacing-M globalStyles.$Spacing-Base;
+  cursor: pointer;
+  transition: all globalStyles.$Transition-Fast;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: globalStyles.$Spacing-S;
+  margin: 0;
+  border-left: 3px solid transparent;
+  border-radius: 0;
+
+  &:hover {
+    background: globalStyles.$Main-Color-5;
+  }
+
+  &.selected{
+    background: globalStyles.$Main-Color-10;
+    border-left-color: globalStyles.$Main-Color;
+  }
+}
+
+.dataTitle {
+  font-size: globalStyles.$Font-Size-SM;
+  color: globalStyles.$Text-Color;
+  font-weight: globalStyles.$Font-Weight-Medium;
+  font-family: globalStyles.$Font-Family;
+  flex: 1;
+  line-height: globalStyles.$Line-Height-Normal;
+}
+
+.dataValue {
+  font-size: globalStyles.$Font-Size-SM;
+  font-weight: globalStyles.$Font-Weight-SemiBold;
+  font-family: globalStyles.$Font-Family;
+  padding: globalStyles.$Spacing-XS globalStyles.$Spacing-S;
+  border-radius: globalStyles.$Border-Radius-Full;
+  min-width: 42px;
+  text-align: center;
+
+  &.normalValue {
+    color: #f0ad4e;
+    background: rgb(255, 193, 7, 0.1);
+  }
+
+  &.positiveValue {
+    color: globalStyles.$Success-Color;
+    background: rgb(76, 175, 80, 0.1);
+  }
+
+  &.negativeValue {
+    color: globalStyles.$Error-Color;
+    background: rgb(244, 67, 54, 0.1);
+  }
+}
+
+.middlePane {
+  flex: 1; // This will now take approximately 40% of the wider panel
+  display: flex;
+  flex-direction: column;
+  gap: globalStyles.$Spacing-Base;
+  overflow-y: auto;
+  padding: globalStyles.$Spacing-Base;
+
+  @include globalStyles.scrollbar;
+}
+
+.metricContainer {
+  margin: -#{globalStyles.$Spacing-Base};
+  padding: globalStyles.$Spacing-Base;
+  text-align: left;
+  background: transparent;
+  border-radius: globalStyles.$Border-Radius-M;
+
+  &.normalValue {
+    background-color: rgb(255, 193, 7, 0.1);
+    border-bottom: 2px solid #f0ad4e;
+  }
+
+  &.positiveValue {
+    background-color: rgb(76, 175, 80, 0.1);
+    border-bottom: 2px solid globalStyles.$Success-Color;
+  }
+
+  &.negativeValue {
+    background-color: rgb(244, 67, 54, 0.1);
+    border-bottom: 2px solid globalStyles.$Error-Color;
+  }
+}
+
+.metricTitle {
+  color: globalStyles.$Text-Color;
+  margin-bottom: globalStyles.$Spacing-S;
+  font-weight: globalStyles.$Font-Weight-SemiBold;
+  font-size: globalStyles.$Font-Size-MD;
+  font-family: globalStyles.$Font-Family;
+  line-height: globalStyles.$Line-Height-Tight;
+  padding: 0 1rem;
+}
+
+.brief {
+  color: globalStyles.$Secondary-Text;
+  line-height: globalStyles.$Line-Height-Relaxed;
+  font-size: globalStyles.$Font-Size-SM;
+  font-weight: globalStyles.$Font-Weight-Regular;
+  font-family: globalStyles.$Font-Family;
+  padding: 0 globalStyles.$Spacing-Base;
+}
+
+// Updated toggle view styles - right-aligned with proper gap
+.viewToggleContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: globalStyles.$Spacing-S globalStyles.$Spacing-Base;
+  margin: 0.5rem 0;
+  border-radius: globalStyles.$Border-Radius-M;
+  gap: 0.5rem; // Add gap between toggle and download button
+}
+
+.viewToggle {
+  background-color: white;
+  box-shadow: globalStyles.$Shadow-SM;
+  border-radius: globalStyles.$Border-Radius-M;
+  overflow: hidden;
+  
+  :global(.MuiToggleButton-root) {
+    padding: globalStyles.$Spacing-XS globalStyles.$Spacing-S;
+    border: none;
+    color: globalStyles.$Secondary-Text;
+    transition: all globalStyles.$Transition-Fast;
+    border-radius: 0;
+    font-family: globalStyles.$Font-Family;
+    font-size: globalStyles.$Font-Size-SM;
+    
+    &:hover {
+      background-color: globalStyles.$Gray-5;
+    }
+    
+    &.Mui-selected {
+      background-color: globalStyles.$Main-Color-10;
+      color: globalStyles.$Main-Color;
+      font-weight: globalStyles.$Font-Weight-Medium;
+      
+      &:hover {
+        background-color: globalStyles.$Main-Color-20;
+      }
+    }
+
+    &:first-of-type {
+      border-top-left-radius: globalStyles.$Border-Radius-M;
+      border-bottom-left-radius: globalStyles.$Border-Radius-M;
+    }
+
+    &:last-of-type {
+      border-top-right-radius: globalStyles.$Border-Radius-M;
+      border-bottom-right-radius: globalStyles.$Border-Radius-M;
+    }
+  }
+}
+
+.downloadButton {
+  background-color: white !important;
+  color: globalStyles.$Main-Color !important;
+  padding: globalStyles.$Spacing-XS globalStyles.$Spacing-S !important;
+  border-radius: globalStyles.$Border-Radius-M !important;
+  font-family: globalStyles.$Font-Family !important;
+  font-size: globalStyles.$Font-Size-SM !important;
+  font-weight: globalStyles.$Font-Weight-Medium !important;
+  transition: all globalStyles.$Transition-Fast !important;
+}
+
+.chartSection {
+  height: auto;
+  min-height: 320px; // Increased slightly to take advantage of more space
+  max-height: 450px; // Increased for better visibility
+  border-radius: globalStyles.$Border-Radius-L;
+  position: relative;
+  margin: 0 globalStyles.$Spacing-Base;
+  transition: height globalStyles.$Transition-Normal, min-height globalStyles.$Transition-Normal, max-height globalStyles.$Transition-Normal;
+
+  // Special styling when in table view
+  &.tableView {
+    min-height: 0;
+    max-height: none;
+    height: auto;
+  }
+}
+
+.chartWrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  canvas {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.noChart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: globalStyles.$Secondary-Text;
+  font-family: globalStyles.$Font-Family;
+  font-size: 0.875rem;
+}
+
+.noData {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: globalStyles.$Secondary-Text;
+  font-family: globalStyles.$Font-Family;
+  font-size: 0.875rem;
+}
+
+// UPDATED TABLE STYLING - Matching InsightsDataTable.module.scss
+.tableContainer {
+  width: 100%;
+  overflow: hidden;
+  background: white;
+  border-radius: globalStyles.$Border-Radius-M;
+  box-shadow: globalStyles.$Shadow-SM;
+  margin: 0 globalStyles.$Spacing-Base;
+  border: 1px solid globalStyles.$Border-Color;
+  
+  // FIXED height constraints to match InsightsDataTable
+  height: auto;
+  min-height: 200px;
+  max-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tableWrapper {
+  width: 100%;
+  flex: 1;
+  
+  // CRITICAL: Enable both scrollbars with max height constraint
+  overflow: auto !important;
+  
+  // Consistent scrollbar styling with other components and InsightsDataTable
+  background-color: rgb(247, 144, 29, 0.02);
+  
+  // Enhanced scrollbar styling for better visibility - consistent with InsightsDataTable
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgb(0, 0, 0, 0.05);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgb(247, 144, 29, 0.3);
+    border-radius: 4px;
+    border: 1px solid rgb(255, 255, 255, 0.2);
+    
+    &:hover {
+      background: rgb(247, 144, 29, 0.5);
+    }
+  }
+  
+  &::-webkit-scrollbar-corner {
+    background: rgb(0, 0, 0, 0.05);
+  }
+
+  // Firefox scrollbar
+  scrollbar-width: thin;
+  scrollbar-color: rgb(247, 144, 29, 0.3) rgb(0, 0, 0, 0.05);
+
+  // Ensure table takes minimum required width for horizontal scroll
+  :global(.MuiTable-root) {
+    min-width: 100%;
+    width: max-content;
+  }
+  
+  // Ensure proper table head styling
+  :global(.MuiTableHead-root) {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #f8f6f4;
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: globalStyles.$Font-Family;
+  min-width: 100%;
+  table-layout: auto;
+}
+
+.tableHead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #f8f6f4;
+}
+
+// Updated table header cell styling to match InsightsDataTable
+.tableHeaderCell {
+  padding: 0.75rem !important;
+  text-align: left !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  color: globalStyles.$Text-Color !important;
+  border-bottom: 2px solid rgb(0, 0, 0, 0.08) !important;
+  text-transform: capitalize !important;
+  white-space: nowrap !important;
+  background-color: #f8f6f4 !important;
+  font-family: globalStyles.$Font-Family !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 2 !important;
+  
+  // Ensure proper header styling for MUI tables
+  &:global(.MuiTableCell-head) {
+    background-color: #f8f6f4 !important;
+    border-bottom: 2px solid rgb(0, 0, 0, 0.08) !important;
+    font-weight: 600 !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 2 !important;
+  }
+}
+
+// Updated table row styling to match InsightsDataTable
+.tableRow {
+  transition: background-color 0.2s ease;
+  border: none !important;
+
+  &:hover {
+    background-color: rgb(247, 144, 29, 0.04) !important;
+  }
+
+  &.selectedRow {
+    background-color: rgb(247, 144, 29, 0.1) !important;
+
+    &:hover {
+      background-color: rgb(247, 144, 29, 0.15) !important;
+    }
+
+    .tableCell {
+      font-weight: 500;
+    }
+  }
+
+  // Anomaly type highlighting for table rows - only apply to selected row
+  &.positiveValue {
+    background-color: rgb(76, 175, 80, 0.08) !important;
+    border-left: 3px solid globalStyles.$Success-Color !important;
+    
+    &:hover {
+      background-color: rgb(76, 175, 80, 0.12) !important;
+    }
+    
+    &.selectedRow {
+      background-color: rgb(76, 175, 80, 0.15) !important;
+      
+      &:hover {
+        background-color: rgb(76, 175, 80, 0.18) !important;
+      }
+    }
+  }
+
+  &.negativeValue {
+    background-color: rgb(244, 67, 54, 0.08) !important;
+    border-left: 3px solid globalStyles.$Error-Color !important;
+    
+    &:hover {
+      background-color: rgb(244, 67, 54, 0.12) !important;
+    }
+    
+    &.selectedRow {
+      background-color: rgb(244, 67, 54, 0.15) !important;
+      
+      &:hover {
+        background-color: rgb(244, 67, 54, 0.18) !important;
+      }
+    }
+  }
+
+  &.normalValue {
+    background-color: rgb(255, 193, 7, 0.08) !important;
+    border-left: 3px solid #f0ad4e !important;
+    
+    &:hover {
+      background-color: rgb(255, 193, 7, 0.12) !important;
+    }
+    
+    &.selectedRow {
+      background-color: rgb(255, 193, 7, 0.15) !important;
+      
+      &:hover {
+        background-color: rgb(255, 193, 7, 0.18) !important;
+      }
+    }
+  }
+
+  // Support for MUI table rows
+  &:global(.MuiTableRow-root) {
+    &:hover {
+      background-color: rgb(247, 144, 29, 0.04) !important;
+    }
+  }
+}
+
+// Updated table cell styling to match InsightsDataTable
+.tableCell {
+  padding: 0.5rem 0.75rem !important;
+  font-size: 0.75rem !important;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.04) !important;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: globalStyles.$Font-Family !important;
+  color: globalStyles.$Text-Color !important;
+  
+  // Support for MUI table cells
+  &:global(.MuiTableCell-body) {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.04) !important;
+  }
+}
+
+.highlightsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0 1rem;
+}
+
+.highlight {
+  padding: 0.875rem 0;
+  animation: fade-in-up 0.5s globalStyles.$Transition-Bezier forwards;
+  opacity: 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid rgb(0, 0, 0, 0.08);
+  }
+}
+
+.highlightTitle {
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.375rem;
+  font-family: globalStyles.$Font-Family;
+
+  &.normalValue {
+    color: #f0ad4e;
+  }
+
+  &.positiveValue {
+    color: globalStyles.$Success-Color;
+  }
+
+  &.negativeValue {
+    color: globalStyles.$Error-Color;
+  }
+}
+
+.highlightValue {
+  color: globalStyles.$Text-Color;
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-family: globalStyles.$Font-Family;
+}
+
+.rightPane {
+  flex: 0 0 320px; // Increased from 280px (approximately 25% of wider panel)
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow-y: auto;
+
+  @include globalStyles.scrollbar;
+}
+
+.recommendationsTitle {
+  color: globalStyles.$Main-Color;
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-family: globalStyles.$Font-Family;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgb(247, 144, 29, 0.2);
+}
+
+.recommendationsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.recommendationItem {
+  padding: 0.875rem 0;
+  animation: fade-in-up 0.5s globalStyles.$Transition-Bezier forwards;
+  opacity: 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px dashed rgb(0, 0, 0, 0.1);
+  }
+
+  p {
+    color: globalStyles.$Secondary-Text;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    font-family: globalStyles.$Font-Family;
+  }
+}
+
+// CSS classes for anomaly type colors (used by getAnomalyTypeColor function)
+.positiveValue {
+  color: globalStyles.$Success-Color !important;
+}
+
+.negativeValue {
+  color: globalStyles.$Error-Color !important;
+}
+
+.normalValue {
+  color: #f0ad4e !important;
+}
+
+// Loading state styles - matching InsightsDataTable
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  
+  &::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgb(247, 144, 29, 0.3);
+    border-top: 2px solid globalStyles.$Main-Color;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Error state styles - matching InsightsDataTable
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: globalStyles.$Error-Color;
+  font-family: globalStyles.$Font-Family;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive adjustments for the larger panel
+@media (width <= 1400px) {
+  .leftPane {
+    flex: 0 0 280px;
+  }
+
+  .rightPane {
+    flex: 0 0 300px;
+  }
+  
+  .tableContainer {
+    max-height: 450px;
+  }
+}
+
+@media (width <= 1200px) {
+  .panel {
+    right: -90%;
+    width: 90%;
+  }
+
+  .mainContent {
+    gap: 0;
+  }
+
+  .leftPane {
+    flex: 0 0 260px;
+  }
+
+  .rightPane {
+    flex: 0 0 280px;
+  }
+  
+  .chartSection {
+    min-height: 280px;
+    max-height: 400px;
+
+    &.tableView {
+      min-height: auto;
+      max-height: none;
+    }
+  }
+  
+  .tableContainer {
+    max-height: 400px;
+  }
+}
+
+@media (width <= 768px) {
+  .panel {
+    width: 95%;
+    right: -95%;
+  }
+
+  .tag {
+    display: none;
+  }
+
+  .header {
+    padding: 0.75rem 0.875rem;
+  }
+
+  .mainContent {
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 0;
+
+    & > *:not(:last-child) {
+      border-right: none;
+      border-bottom: 1px solid rgb(0, 0, 0, 0.08);
+    }
+  }
+
+  .leftPane,
+  .middlePane,
+  .rightPane {
+    flex: none;
+    width: 100%;
+  }
+
+  .metricContainer {
+    margin: 0;
+    padding: 0.875rem;
+  }
+
+  .chartSection {
+    min-height: 220px;
+    max-height: 300px;
+    padding: 0.75rem;
+    margin: 0 0.75rem;
+
+    &.tableView {
+      min-height: auto;
+      max-height: none;
+    }
+  }
+
+  .highlightsSection {
+    padding: 0 0.75rem;
+  }
+  
+  .rightPane,
+  .middlePane {
+    padding: 0.75rem;
+  }
+  
+  .tableContainer {
+    max-height: 300px;
+    margin: 0 0.75rem;
+  }
+  
+  .tableHeaderCell {
+    padding: 0.5rem !important;
+    font-size: 0.688rem !important;
+  }
+  
+  .tableCell {
+    padding: 0.375rem 0.5rem !important;
+    font-size: 0.688rem !important;
+    max-width: 150px;
+  }
+}
+
+@media (width <= 480px) {
+  .tableContainer {
+    max-height: 250px;
+  }
+  
+  .tableHeaderCell {
+    padding: 0.375rem !important;
+    font-size: 0.625rem !important;
+  }
+  
+  .tableCell {
+    padding: 0.25rem 0.375rem !important;
+    font-size: 0.625rem !important;
+    max-width: 120px;
+  }
+}
+
+// High contrast mode support - matching InsightsDataTable
+@media (prefers-contrast: high) {
+  .tableContainer {
+    border: 2px solid rgb(0, 0, 0, 0.2);
+  }
+  
+  .tableHeaderCell {
+    background-color: rgb(0, 0, 0, 0.1) !important;
+    border-bottom: 2px solid rgb(0, 0, 0, 0.3) !important;
+  }
+  
+  .tableCell {
+    border-bottom: 1px solid rgb(0, 0, 0, 0.2) !important;
+  }
+}
+
+// Reduced motion preferences - matching InsightsDataTable
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .overlay,
+  .highlight,
+  .recommendationItem,
+  .dataPoint,
+  .tableRow {
+    animation: none;
+    transition: none;
+  }
+  
+  .loading::after {
+    animation: none;
+  }
+}
+
+// Focus management for accessibility - matching InsightsDataTable
+.tableContainer:focus-within {
+  outline: 2px solid globalStyles.$Main-Color;
+  outline-offset: 2px;
+}
+
+.tableCell:focus,
+.tableHeaderCell:focus,
+:global(.MuiTableCell-head):focus,
+:global(.MuiTableCell-body):focus {
+  outline: 2px solid globalStyles.$Main-Color;
+  outline-offset: -2px;
+  background-color: rgb(247, 144, 29, 0.1) !important;
+}
+
+// Keyboard navigation styles - matching InsightsDataTable
+.tableRow:focus,
+.tableHeaderCell:focus,
+.tableCell:focus,
+:global(.MuiTableRow-root):focus,
+:global(.MuiTableCell-head):focus,
+:global(.MuiTableCell-body):focus {
+  outline: 2px solid globalStyles.$Main-Color;
+  outline-offset: -2px;
+}
+
+// RTL support (if needed) - matching InsightsDataTable
+[dir="rtl"] {
+  .tableHeaderCell {
+    text-align: right !important;
+  }
+}
+
+// Print styles
+@media print {
+  .panel {
+    position: static;
+    width: 100%;
+    height: auto;
+    box-shadow: none;
+    background: white;
+  }
+  
+  .overlay {
+    display: none;
+  }
+  
+  .tag {
+    display: none;
+  }
+  
+  .mainContent {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .leftPane,
+  .middlePane,
+  .rightPane {
+    width: 100%;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+  
+  .tableContainer {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    max-height: none;
+    page-break-inside: avoid;
+  }
+  
+  .tableWrapper {
+    overflow: visible;
+  }
+  
+  .tableHeaderCell {
+    background-color: #f0f0f0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

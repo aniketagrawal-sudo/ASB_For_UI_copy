@@ -1,0 +1,271 @@
+// Colors - Base
+$globalColor: #f7901d;
+// $Main-Color: #f7901d;
+// $globalColor: #03AB53;
+$Main-Color: #03AB53;
+$Main-Color-Light: rgb(247, 144, 29, 0.1);
+$Main-Color-Hover: rgb(247, 144, 29, 0.08);
+$Text-Color: #312e2d;
+$Secondary-Text: #666;
+$Background-Color: transparent url('./assets/appBackGround.svg') 0% 0% no-repeat padding-box;
+$Border-Color: #e0e0e0;
+$Error-Color: #d32f2f;
+$Success-Color: #2e7d32;
+$border: #e0e0e0;
+
+// Colors - Enhanced with Opacity Variants
+$Main-Color-5: rgb(247, 144, 29, 0.05);
+$Main-Color-10: rgb(247, 144, 29, 0.1);
+$Main-Color-20: rgb(247, 144, 29, 0.2);
+$Main-Color-40: rgb(247, 144, 29, 0.4);
+$Gray-5: rgb(0, 0, 0, 0.04);
+$Gray-10: rgb(0, 0, 0, 0.08);
+$Gray-20: rgb(0, 0, 0, 0.12);
+$Gray-40: rgb(0, 0, 0, 0.16);
+
+// Typography Scale
+$Font-Family: 'Articulat CF', 'Inter', 'Poppins', sans-serif;
+$Font-Size-Base: clamp(0.6rem, 0.7vw, 1.1rem);
+$Font-Size-XXS: 0.688rem; // 11px
+$Font-Size-XS: 0.75rem; // 12px
+$Font-Size-SM: 0.813rem; // 13px
+$Font-Size-MD: 0.875rem; // 14px
+$Font-Size-LG: 0.938rem; // 15px
+$Font-Size-XL: 1rem; // 16px
+
+// Font Weights
+$Font-Weight-Regular: 400;
+$Font-Weight-Medium: 500;
+$Font-Weight-SemiBold: 600;
+$Font-Weight-Bold: 700;
+
+// Line Heights
+$Line-Height-Tight: 1.2;
+$Line-Height-Normal: 1.4;
+$Line-Height-Relaxed: 1.6;
+
+// Spacing Scale
+$Spacing-XXS: 0.25rem; // 4px
+$Spacing-XS: 0.375rem; // 6px
+$Spacing-S: 0.5rem; // 8px
+$Spacing-M: 0.75rem; // 12px
+$Spacing-Base: 1rem; // 16px
+$Spacing-L: 1.25rem; // 20px
+$Spacing-XL: 1.5rem; // 24px
+$Spacing-2XL: 2rem; // 32px
+$Spacing-3XL: 2.5rem; // 40px
+
+// Border Radius
+$Border-Radius-XS: 4px;
+$Border-Radius-S: 6px;
+$Border-Radius-M: 8px;
+$Border-Radius-L: 12px;
+$Border-Radius-XL: 16px;
+$Border-Radius-2XL: 24px;
+$Border-Radius-Full: 9999px;
+
+// Transitions
+$Transition-Fast: 0.2s ease;
+$Transition-Normal: 0.3s ease;
+$Transition-Bezier: cubic-bezier(0.4, 0, 0.2, 1);
+
+// Z-index Scale
+$Z-Index-Base: 1;
+$Z-Index-Dropdown: 100;
+$Z-Index-Sticky: 200;
+$Z-Index-Fixed: 300;
+$Z-Index-Modal: 1000;
+$Z-Index-Overlay: 1200;
+$Z-Index-Popover: 1300;
+$Z-Index-Tooltip: 1500;
+
+// Shadows
+$Shadow-XS: 0 1px 2px rgb(0, 0, 0, 0.05);
+$Shadow-SM: 0 2px 4px rgb(0, 0, 0, 0.05);
+$Shadow-MD: 0 2px 8px rgb(0, 0, 0, 0.08);
+$Shadow-LG: 0 4px 12px rgb(0, 0, 0, 0.1);
+$Shadow-XL: 0 8px 16px rgb(0, 0, 0, 0.12);
+
+// Breakpoints
+$Breakpoints: (
+  xs: 0,
+  sm: 600px,
+  md: 960px,
+  lg: 1280px,
+  xl: 1920px
+);
+
+// Mixins
+@mixin fontFamily {
+  font-family: $Font-Family;
+}
+
+@mixin centering {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin leftCentering {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+@mixin rightCentering {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+@mixin textEllipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba($Main-Color, 0.2);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba($Main-Color, 0.3);
+    }
+  }
+}
+
+@mixin respond-to($breakpoint) {
+  $value: map-get($Breakpoints, $breakpoint);
+
+  @if $value !=null {
+    @media (max-width: $value) {
+      @content;
+    }
+  }
+}
+
+// Common Component Base Styles
+%card-base {
+  background: white;
+  border-radius: $Border-Radius-L;
+  box-shadow: $Shadow-MD;
+}
+
+%input-base {
+  font-family: $Font-Family;
+  font-size: $Font-Size-SM;
+  color: $Text-Color;
+  padding: $Spacing-M;
+  border-radius: $Border-Radius-M;
+  border: 1px solid $Border-Color;
+  transition: all $Transition-Fast;
+
+  &:focus {
+    border-color: $Main-Color;
+    box-shadow: 0 0 0 2px $Main-Color-Light;
+  }
+}
+
+%button-base {
+  font-family: $Font-Family;
+  font-size: $Font-Size-SM;
+  font-weight: $Font-Weight-Medium;
+  padding: $Spacing-S $Spacing-M;
+  border-radius: $Border-Radius-M;
+  transition: all $Transition-Fast;
+}
+
+// Base styles
+%overlay-base {
+  position: fixed;
+  inset: 0;
+  background: rgb(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: $Transition-Normal;
+  z-index: $Z-Index-Overlay;
+  backdrop-filter: blur(4px);
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// Global styles
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: $Font-Family;
+  color: $Text-Color;
+  background-color: $Background-Color;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+// Button reset
+button {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+// Link reset
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+// List reset
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+// Accessibility
+@media (prefers-contrast: more) {
+  :root {
+    --contrast-border: 2px solid $Text-Color;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

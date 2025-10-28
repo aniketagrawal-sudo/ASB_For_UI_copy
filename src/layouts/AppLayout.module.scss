@@ -1,0 +1,37 @@
+@use '../styles/globalStyles.scss' as globalStyles;
+
+.itemsContainer {
+  @include globalStyles.centering;
+
+  background: white;
+  max-width: 166px;
+  box-shadow: 0 3px 36px #bcc4d048;
+  border: 1px solid #dbdbdb;
+  border-radius: 24px;
+  padding: 0 14px;
+  justify-content: space-around;
+}
+
+.item {
+  @include globalStyles.centering;
+
+  height: 100%;
+}
+
+.iconImg {
+  cursor: pointer;
+  height: 18px;
+  width: 18px;
+}
+
+@media (width <= 416px) {
+  .mainContainer {
+    margin-top: 78px; // for mobile
+  }
+}
+
+@media (width >= 420px) {
+  .mainContainer {
+    margin-top: 64px; // for rest of the devices
+  }
+}

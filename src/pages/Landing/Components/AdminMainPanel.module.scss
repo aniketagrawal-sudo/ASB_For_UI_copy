@@ -1,0 +1,356 @@
+@use '../../../styles/globalStyles.scss' as globalStyles;
+
+.mainPanelContainer {
+  height: 100%;
+  overflow-y: auto;
+  position: relative;
+  border-radius: globalStyles.$Border-Radius-L;
+
+  @include globalStyles.scrollbar;
+}
+
+.contentHeader {
+  padding: 1rem;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.06);
+  border-radius: globalStyles.$Border-Radius-L globalStyles.$Border-Radius-L 0 0;
+
+  .contentHeaderTitle {
+    font-family: globalStyles.$Font-Family;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: globalStyles.$Text-Color;
+  }
+}
+
+// Admin home container
+.adminHomeContainer {
+  padding: globalStyles.$Spacing-Base;
+}
+
+// Welcome title components
+.welcomeTitle {
+  font-size: 1.75rem;
+  font-weight: globalStyles.$Font-Weight-Bold;
+  color: globalStyles.$Text-Color;
+  margin-bottom: 0.5rem;
+  font-family: globalStyles.$Font-Family;
+}
+
+.welcomeSubtitle {
+  color: globalStyles.$Secondary-Text;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  font-family: globalStyles.$Font-Family;
+}
+
+// Search field styling
+.searchField {
+  background-color: white;
+  border-radius: globalStyles.$Border-Radius-M;
+  transition: all 0.3s ease;
+
+  .MuiInputBase-root {
+    padding: 0.5rem 1rem;
+    font-family: globalStyles.$Font-Family;
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border-color: rgb(0, 0, 0, 0.1);
+  }
+
+  &:hover .MuiOutlinedInput-notchedOutline {
+    border-color: rgb(0, 0, 0, 0.2);
+  }
+
+  &.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: globalStyles.$Main-Color;
+  }
+}
+
+// Section title
+.title {
+  font-size: globalStyles.$Font-Size-XL;
+  font-weight: globalStyles.$Font-Weight-SemiBold;
+  color: globalStyles.$Text-Color;
+  margin-bottom: globalStyles.$Spacing-Base;
+  font-family: globalStyles.$Font-Family;
+}
+
+// Stats grid
+.statsGrid {
+  margin-bottom: globalStyles.$Spacing-Base;
+}
+
+// Stat card
+.statCard {
+  background-color: white;
+  border-radius: globalStyles.$Border-Radius-M;
+  border: 1px solid rgb(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgb(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+// Stat title
+.statTitle {
+  font-size: globalStyles.$Font-Size-SM;
+  font-weight: globalStyles.$Font-Weight-SemiBold;
+  color: globalStyles.$Secondary-Text;
+  margin-bottom: globalStyles.$Spacing-S;
+  font-family: globalStyles.$Font-Family;
+}
+
+// Stat value
+.statValue {
+  font-size: 1.5rem;
+  font-weight: globalStyles.$Font-Weight-Bold;
+  color: globalStyles.$Text-Color;
+  font-family: globalStyles.$Font-Family;
+}
+
+// Section paper
+.sectionPaper {
+  padding: globalStyles.$Spacing-Base;
+  margin-bottom: globalStyles.$Spacing-Base;
+  background-color: white;
+  border-radius: globalStyles.$Border-Radius-M;
+  border: 1px solid rgb(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
+}
+
+// Section title
+.sectionTitle {
+  font-size: globalStyles.$Font-Size-LG;
+  font-weight: globalStyles.$Font-Weight-SemiBold;
+  color: globalStyles.$Text-Color;
+  margin-bottom: globalStyles.$Spacing-S;
+  font-family: globalStyles.$Font-Family;
+}
+
+.sectionDescription {
+  font-size: globalStyles.$Font-Size-MD;
+  color: globalStyles.$Secondary-Text;
+  margin-bottom: globalStyles.$Spacing-Base;
+  font-family: globalStyles.$Font-Family;
+}
+
+.sectionSubtitle {
+  font-size: globalStyles.$Font-Size-MD;
+  font-weight: globalStyles.$Font-Weight-SemiBold;
+  color: globalStyles.$Text-Color;
+  margin-bottom: globalStyles.$Spacing-S;
+  font-family: globalStyles.$Font-Family;
+  display: flex;
+  align-items: center;
+}
+
+.sectionIcon {
+  margin-right: globalStyles.$Spacing-S;
+  color: globalStyles.$Main-Color;
+}
+
+// Persona browse container styles
+.personasBrowseContainer {
+  padding: globalStyles.$Spacing-Base;
+}
+
+// Persona card styling
+.personaCard {
+  background-color: white;
+  border-radius: globalStyles.$Border-Radius-M;
+  border: 1px solid rgb(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+  height: 100%;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgb(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    border-color: globalStyles.$Main-Color;
+  }
+}
+
+.personaCardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: globalStyles.$Spacing-Base !important;
+}
+
+.personaCardIcon {
+  font-size: 48px !important;
+  color: globalStyles.$Main-Color;
+  margin-bottom: globalStyles.$Spacing-Base;
+  background-color: rgb(247, 144, 29, 0.05);
+  padding: 12px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.personaCardTitle {
+  font-weight: globalStyles.$Font-Weight-SemiBold !important;
+  color: globalStyles.$Text-Color !important;
+  margin-bottom: globalStyles.$Spacing-XS !important;
+  font-family: globalStyles.$Font-Family !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.personaCardSubtitle {
+  color: globalStyles.$Secondary-Text !important;
+  font-family: globalStyles.$Font-Family !important;
+  font-size: globalStyles.$Font-Size-XS !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  height: 32px;
+}
+
+// Dashboard card styling
+.dashboardCard {
+  background-color: white;
+  border-radius: globalStyles.$Border-Radius-M;
+  border: 1px solid rgb(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 100%;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgb(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    border-color: globalStyles.$Main-Color;
+  }
+}
+
+.dashboardCardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: globalStyles.$Spacing-Base !important;
+}
+
+.dashboardCardIcon {
+  font-size: 40px !important;
+  color: globalStyles.$Main-Color;
+  margin-bottom: globalStyles.$Spacing-S;
+}
+
+.dashboardCardTitle {
+  font-weight: globalStyles.$Font-Weight-SemiBold !important;
+  color: globalStyles.$Text-Color !important;
+  margin-bottom: globalStyles.$Spacing-S !important;
+  font-family: globalStyles.$Font-Family !important;
+}
+
+.dashboardTypeChip {
+  margin-bottom: globalStyles.$Spacing-S !important;
+}
+
+// Details container
+.detailsContainer {
+  padding: globalStyles.$Spacing-Base;
+}
+
+// Details paper
+.detailsPaper {
+  padding: globalStyles.$Spacing-Base;
+  margin-bottom: globalStyles.$Spacing-Base;
+  background-color: white;
+  border-radius: globalStyles.$Border-Radius-M;
+  border: 1px solid rgb(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
+}
+
+// KPI card
+.kpiCard {
+  background-color: white;
+  border-radius: globalStyles.$Border-Radius-M;
+  border: 1px solid rgb(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  height: 100%;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgb(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+// Responsive adjustments
+@media (width <= 960px) {
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .welcomeTitle {
+    font-size: 1.5rem;
+  }
+}
+
+// Small screens
+@media (width <= 600px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .welcomeTitle {
+    font-size: 1.25rem;
+  }
+
+  .personasBrowseContainer {
+    padding: globalStyles.$Spacing-S;
+  }
+}
+
+// Reduced motion preference
+@media (prefers-reduced-motion: reduce) {
+  .statCard,
+  .personaCard,
+  .dashboardCard,
+  .kpiCard {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: more) {
+  .mainPanelContainer {
+    background-color: white;
+  }
+
+  .contentHeader {
+    background-color: #f0f0f0;
+    border-bottom: 2px solid black;
+  }
+
+  .statCard,
+  .personaCard,
+  .dashboardCard,
+  .kpiCard,
+  .sectionPaper,
+  .detailsPaper {
+    border: 2px solid black;
+    box-shadow: none;
+  }
+}

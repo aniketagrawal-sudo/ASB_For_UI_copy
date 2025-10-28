@@ -1,0 +1,157 @@
+@use '../../styles/globalStyles.scss' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: #f9f9fb;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 46px;
+  padding: $Spacing-XS $Spacing-S;
+  margin-bottom: 0.1rem;
+  z-index: $Z-Index-Base;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.title {
+  font-weight: $Font-Weight-SemiBold;
+  font-size: $Font-Size-LG;
+  font-family: $Font-Family;
+  line-height: $Line-Height-Tight;
+  color: $Text-Color;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: $Main-Color;
+    border-radius: 3px;
+  }
+}
+
+.dashboardWrapper {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  border-radius: $Border-Radius-L;
+  box-shadow: $Shadow-MD;
+  border: 1px solid rgb(0, 0, 0, 0.05);
+  background-color: #f9f9fb;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0; // This is important for flexbox to work properly
+
+  iframe {
+    flex: 1;
+    min-height: 0; // Another key rule for proper iframe resizing
+    height: 100% !important; // Ensure iframe takes full height
+    width: 100% !important;
+    display: block;
+  }
+}
+
+/* Responsive styles for different screen sizes and zoom levels */
+@media (width <= 1200px) {
+  .header {
+    height: 42px;
+  }
+  
+  .title {
+    font-size: $Font-Size-MD;
+  }
+}
+
+@media (width <= 960px) {
+  .container {
+    padding: 0;
+  }
+  
+  .header {
+    padding: $Spacing-XS $Spacing-S;
+    height: 40px;
+  }
+
+  .dashboardWrapper {
+    border-radius: $Border-Radius-M;
+  }
+}
+
+@media (width <= 768px) {
+  .header {
+    padding: $Spacing-XS;
+    height: 36px;
+  }
+
+  .title {
+    font-size: $Font-Size-SM;
+    
+    &::after {
+      width: 30px;
+      height: 2px;
+    }
+  }
+
+  .dashboardWrapper {
+    border-radius: $Border-Radius-S;
+  }
+}
+
+@media (width <= 480px) {
+  .header {
+    padding: $Spacing-XXS $Spacing-XS;
+    height: 32px;
+  }
+  
+  .dashboardWrapper {
+    border-radius: $Border-Radius-XS;
+  }
+}
+
+/* High-resolution display support */
+@media (resolution >= 192dpi) {
+  .dashboardWrapper {
+    box-shadow: $Shadow-SM; // Lighter shadow for high-res displays
+  }
+}
+
+/* Support for different zoom levels */
+@media (height <= 600px) {
+  .header {
+    height: 32px;
+  }
+  
+  .title {
+    font-size: $Font-Size-SM;
+  }
+}
+
+/* Print styles */
+@media print {
+  .container {
+    height: 100%;
+    width: 100%;
+    overflow: visible;
+  }
+  
+  .header {
+    display: none;
+  }
+  
+  .dashboardWrapper {
+    box-shadow: none;
+    border: none;
+  }
+}

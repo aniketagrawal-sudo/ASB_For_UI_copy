@@ -1,0 +1,730 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+// Main container styles
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  font-family: globalStyles.$Font-Family;
+  background-color: #f8f6f4;
+  border-radius: globalStyles.$Border-Radius-L;
+  padding: 0 !important;
+}
+
+// Enhanced header styling with proper rounded edges
+.header {
+  border-bottom: 1px solid rgb(0, 0, 0, 0.06);
+  background-color: rgb(247, 144, 29, 0.02);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  min-height: 48px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
+  padding: 0 globalStyles.$Spacing-M;
+  border-radius: globalStyles.$Border-Radius-L globalStyles.$Border-Radius-L 0 0;
+}
+
+.tabs {
+  width: 100%;
+  min-height: 48px;
+  
+  :global(.MuiTabs-flexContainer) {
+    gap: 0.5rem;
+    align-items: center;
+    min-height: 48px;
+  }
+  
+  :global(.MuiTabs-root) {
+    min-height: 48px;
+  }
+}
+
+.tabIndicator {
+  height: 3px !important;
+  border-radius: 3px 3px 0 0 !important;
+  background-color: globalStyles.$Main-Color !important;
+}
+
+.tab {
+  font-family: globalStyles.$Font-Family;
+  font-size: globalStyles.$Font-Size-SM;
+  text-transform: none;
+  font-weight: globalStyles.$Font-Weight-Medium;
+  padding: 0.75rem 1rem;
+  color: globalStyles.$Text-Color;
+  opacity: 0.8;
+  transition: all globalStyles.$Transition-Fast;
+  min-width: auto;
+  min-height: 48px;
+  border-radius: 0;
+  
+  &:hover {
+    opacity: 1;
+    background-color: rgb(247, 144, 29, 0.04);
+  }
+  
+  &[aria-selected="true"] {
+    opacity: 1;
+    color: globalStyles.$Main-Color;
+    font-weight: globalStyles.$Font-Weight-SemiBold;
+  }
+}
+
+// Enhanced tab label styling to prevent overlapping
+.tabLabelContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  min-width: 0;
+  white-space: nowrap;
+  padding: 0.25rem 0;
+}
+
+.tabText {
+  font-size: globalStyles.$Font-Size-SM !important;
+  font-weight: inherit !important;
+  color: inherit !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  flex-shrink: 0;
+}
+
+// Enhanced badge styling to prevent overlapping
+.badge {
+  flex-shrink: 0;
+  margin-left: auto;
+  
+  :global(.MuiBadge-badge) {
+    background-color: globalStyles.$Main-Color;
+    color: white;
+    font-size: 0.625rem;
+    height: 18px;
+    min-width: 18px;
+    padding: 0 6px;
+    border-radius: 9px;
+    font-weight: globalStyles.$Font-Weight-Medium;
+    letter-spacing: 0.02em;
+    font-family: globalStyles.$Font-Family;
+    box-shadow: 0 1px 3px rgb(0, 0, 0, 0.12);
+    transition: all 0.2s ease;
+    transform-origin: center;
+    position: relative;
+    top: 0;
+    right: 0;
+    transform: none;
+    
+    &:empty {
+      display: none;
+    }
+  }
+}
+
+// Content area - proper rounded corners only at the bottom
+.contentArea {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 0 0 globalStyles.$Border-Radius-L globalStyles.$Border-Radius-L;
+}
+
+// Content layout
+.content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  background-color: white;
+}
+
+// Left pane styles to match sidebar
+.leftPane {
+  width: 260px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border-right: 1px solid rgb(0, 0, 0, 0.06);
+  background-color: white;
+  
+  // Enhanced scrollbar for threads list
+  overflow-y: auto;
+
+  @include globalStyles.scrollbar;
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgb(0, 0, 0, 0.05);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgb(247, 144, 29, 0.3);
+    border-radius: 4px;
+    border: 1px solid rgb(255, 255, 255, 0.2);
+    
+    &:hover {
+      background: rgb(247, 144, 29, 0.5);
+    }
+  }
+}
+
+// CLEAN: Thread item styling exactly like sidebar - NO COMPLEX EFFECTS
+.threadItem {
+  display: flex !important;
+  align-items: center !important;
+  padding: globalStyles.$Spacing-M !important;
+  margin: 0 globalStyles.$Spacing-XS !important;
+  transition: background-color globalStyles.$Transition-Fast !important;
+  position: relative;
+  border-radius: globalStyles.$Border-Radius-M;
+  box-sizing: border-box;
+  gap: globalStyles.$Spacing-S;
+  cursor: pointer;
+  min-height: 56px;
+  
+  // Simple hover effect - just background change
+  &:hover {
+    background: globalStyles.$Main-Color-5 !important;
+
+    .deleteButton {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .threadIcon {
+      opacity: 1;
+    }
+  }
+
+  // Simple selected state - just background and border
+  &.selected,
+  &.Mui-selected,
+  &[aria-selected="true"],
+  &:active,
+  &.active {
+    background: globalStyles.$Main-Color-5 !important;
+    border-right: 3px solid globalStyles.$Main-Color !important;
+
+    .threadIcon {
+      opacity: 1;
+    }
+
+    .threadText {
+      span {
+        color: globalStyles.$Main-Color;
+        font-weight: globalStyles.$Font-Weight-SemiBold;
+      }
+
+      p {
+        color: globalStyles.$Main-Color;
+        opacity: 0.8;
+      }
+    }
+
+    .deleteButton {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    &:hover {
+      background: globalStyles.$Main-Color-10 !important;
+    }
+  }
+}
+
+// Thread icon exactly like sidebar
+.threadIcon {
+  min-width: 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity globalStyles.$Transition-Fast;
+  opacity: 0.8;
+  flex-shrink: 0;
+  color: globalStyles.$Secondary-Text;
+
+  svg {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// Thread text exactly like sidebar
+.threadText {
+  margin: 0 !important;
+  padding-right: 32px;
+  min-width: 0;
+  flex: 1;
+
+  span {
+    color: globalStyles.$Text-Color;
+    font-size: globalStyles.$Font-Size-SM;
+    font-weight: globalStyles.$Font-Weight-Medium;
+    font-family: globalStyles.$Font-Family;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  p {
+    color: globalStyles.$Secondary-Text;
+    font-size: globalStyles.$Font-Size-XS;
+    margin: globalStyles.$Spacing-XXS 0 0;
+    font-family: globalStyles.$Font-Family;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// CLEAN: Delete button exactly like sidebar - SIMPLE DELETE ICON
+.deleteButton {
+  position: absolute;
+  right: globalStyles.$Spacing-M;
+  opacity: 0;
+  visibility: hidden;
+  transition: all globalStyles.$Transition-Fast;
+  color: globalStyles.$Secondary-Text;
+  padding: globalStyles.$Spacing-XXS;
+  flex-shrink: 0;
+  border-radius: 50%;
+
+  &:hover {
+    color: globalStyles.$Error-Color;
+    background: rgb(244, 67, 54, 0.08);
+  }
+  
+  &:disabled {
+    opacity: 0.7 !important;
+    visibility: visible !important;
+    color: rgb(0, 0, 0, 0.26) !important;
+  }
+
+  svg {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+// Simple loading icon
+.clockIcon {
+  color: globalStyles.$Main-Color;
+  font-size: 1rem;
+  animation: spin 2s linear infinite;
+  opacity: 1;
+  position: absolute;
+  right: 50px;
+}
+
+// Right pane styles
+.rightPane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: white;
+}
+
+// Sticky header for right pane
+.rightPaneHeader {
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.08);
+  background-color: rgb(247, 144, 29, 0.02);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  min-height: 60px;
+}
+
+// Thread header info styling
+.threadHeaderInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0;
+  
+  .threadTitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: globalStyles.$Text-Color;
+    margin: 0;
+    line-height: 1.3;
+
+    @include globalStyles.textEllipsis;
+  }
+  
+  .threadDate {
+    font-size: 0.75rem;
+    color: globalStyles.$Secondary-Text;
+    opacity: 0.8;
+    margin: 0;
+    line-height: 1.2;
+  }
+}
+
+// Scrollable content area for right pane
+.rightPaneContent {
+  flex: 1;
+  overflow-y: auto;
+
+  @include globalStyles.scrollbar;
+
+  padding: 0;
+  position: relative;
+  background-color: white;
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgb(0, 0, 0, 0.05);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgb(247, 144, 29, 0.3);
+    border-radius: 4px;
+    
+    &:hover {
+      background: rgb(247, 144, 29, 0.5);
+    }
+  }
+}
+
+// CLEAN: Simple content body
+.contentBody {
+  min-height: 100%;
+  background-color: white;
+}
+
+// CLEAN: Simple overlay
+.rerunningOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgb(255, 255, 255, 0.9);
+  z-index: 15;
+  padding: 1.5rem;
+}
+
+// Results container
+.resultsContainer {
+  padding: 1rem;
+  background-color: white;
+  
+  .resultItem {
+    margin-bottom: 1.5rem;
+    border-radius: globalStyles.$Border-Radius-M;
+    overflow: hidden;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// Steps container
+.stepsContainer {
+  padding: 1rem;
+  background-color: white;
+  
+  .stepItem {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background-color: rgb(0, 0, 0, 0.02);
+    border-radius: globalStyles.$Border-Radius-M;
+    border-left: 3px solid globalStyles.$Main-Color;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .stepInsight {
+      margin-top: 0.5rem;
+      color: globalStyles.$Secondary-Text;
+      font-style: italic;
+      font-size: globalStyles.$Font-Size-SM;
+      line-height: 1.4;
+    }
+  }
+}
+
+// Action buttons styling
+.rerunButton, 
+.generateButton {
+  font-family: globalStyles.$Font-Family;
+  font-size: globalStyles.$Font-Size-SM;
+  text-transform: none;
+  padding: 0.5rem 1rem;
+  border-radius: globalStyles.$Border-Radius-M;
+  font-weight: globalStyles.$Font-Weight-Medium;
+  transition: all globalStyles.$Transition-Fast;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 105px;
+  justify-content: center;
+  border: 1px solid globalStyles.$Main-Color;
+  background-color: transparent;
+
+  svg {
+    font-size: 16px;
+  }
+  
+  &:not(:disabled) {
+    color: globalStyles.$Main-Color !important;
+    
+    &:hover {
+      background-color: globalStyles.$Main-Color;
+      color: white !important;
+      box-shadow: 0 4px 12px rgb(247, 144, 29, 0.3);
+    }
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    background-color: #f5f5f5;
+    color: #999;
+    border-color: #ddd;
+    cursor: not-allowed;
+  }
+}
+
+.divider {
+  margin: 0;
+  border-color: rgb(0, 0, 0, 0.08);
+}
+
+// Loading and empty states
+.loadingContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: white;
+  min-height: 200px;
+}
+
+.errorContainer, 
+.noThreadsContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  background-color: white;
+  margin: 1rem;
+  border-radius: globalStyles.$Border-Radius-L;
+  border: 1px solid rgb(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
+  min-height: 200px;
+}
+
+.noSelection {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: globalStyles.$Secondary-Text;
+  font-family: globalStyles.$Font-Family;
+  font-size: globalStyles.$Font-Size-MD;
+  padding: 2rem;
+  background-color: white;
+  border-radius: globalStyles.$Border-Radius-L;
+  margin: 1rem;
+  border: 1px dashed rgb(0, 0, 0, 0.08);
+  min-height: 200px;
+}
+
+.noDataContainer {
+  padding: 2rem;
+  text-align: center;
+  color: globalStyles.$Secondary-Text;
+  font-family: globalStyles.$Font-Family;
+  font-size: globalStyles.$Font-Size-MD;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  border-radius: globalStyles.$Border-Radius-L;
+  background-color: rgb(0, 0, 0, 0.01);
+  border: 1px dashed rgb(0, 0, 0, 0.08);
+  margin: 1rem;
+  
+  p {
+    margin: 0;
+    line-height: 1.4;
+  }
+  
+  &::before {
+    content: '📄';
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
+  }
+}
+
+.spinner {
+  color: globalStyles.$Main-Color;
+  margin-bottom: 0.75rem;
+}
+
+.loadingText {
+  font-family: globalStyles.$Font-Family;
+  font-size: globalStyles.$Font-Size-MD;
+  color: globalStyles.$Secondary-Text;
+  margin-bottom: 1rem;
+}
+
+.progressBar {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 1rem;
+  border-radius: globalStyles.$Border-Radius-Full;
+  height: 4px !important;
+  
+  :global(.MuiLinearProgress-root) {
+    background-color: rgb(247, 144, 29, 0.12);
+    border-radius: globalStyles.$Border-Radius-Full;
+  }
+
+  :global(.MuiLinearProgress-bar) {
+    background-color: globalStyles.$Main-Color;
+    border-radius: globalStyles.$Border-Radius-Full;
+  }
+}
+
+.progressText {
+  font-family: globalStyles.$Font-Family;
+  font-size: globalStyles.$Font-Size-MD;
+  font-weight: globalStyles.$Font-Weight-Medium;
+  color: globalStyles.$Text-Color;
+  text-align: center;
+}
+
+// Simple animations
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Responsive adjustments
+@media (width <= 1200px) {
+  .leftPane {
+    width: 240px;
+  }
+  
+  .header, 
+  .rightPaneHeader {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .tab {
+    padding: 0.5rem 0.8rem;
+  }
+}
+
+@media (width <= 992px) {
+  .content {
+    flex-direction: column;
+  }
+
+  .leftPane {
+    width: 100%;
+    max-height: 200px;
+    border-right: none;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.08);
+  }
+
+  .rightPane {
+    flex: 1;
+    min-height: 400px;
+  }
+
+  .threadItem {
+    padding: 0.6rem 0.75rem;
+  }
+}
+
+@media (width <= 768px) {
+  .container {
+    padding: 0 !important;
+  }
+  
+  .header {
+    padding: 0 globalStyles.$Spacing-S;
+  }
+  
+  .threadItem {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .rightPaneHeader {
+    padding: 0.4rem 0.75rem;
+    min-height: 45px;
+  }
+  
+  .rerunButton,
+  .generateButton {
+    padding: 0.4rem 0.8rem;
+    min-width: 90px;
+    gap: 4px;
+    
+    svg {
+      font-size: 14px;
+    }
+  }
+  
+  .deleteButton {
+    svg {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+// Focus management for accessibility
+.threadItem:focus-visible {
+  outline: 2px solid globalStyles.$Main-Color;
+  outline-offset: -2px;
+  background-color: rgb(247, 144, 29, 0.05);
+}
+
+.deleteButton:focus-visible,
+.rerunButton:focus-visible {
+  outline: 2px solid globalStyles.$Main-Color;
+  outline-offset: 2px;
+}

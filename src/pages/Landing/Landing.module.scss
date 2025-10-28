@@ -1,0 +1,110 @@
+.container {
+  min-height: 100vh;
+  max-height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+
+.contentWrapper {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  position: relative;
+  // padding: 0.75rem 0.75rem 0.75rem 0;
+  // gap: 0.75rem;
+  background: linear-gradient(139.14deg, #FFFFFF 33.67%, #EBFBEB 94.79%);
+
+  
+}
+
+.sidePanel {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 280px;
+  min-width: 280px;
+  height: calc(100vh - 1.5rem);
+  // border-radius: 0 1rem 1rem 0;
+  // box-shadow: 2px 0 20px rgb(0, 0, 0, 0.08);
+  overflow: hidden;
+  z-index: 0;
+  flex-shrink: 0;
+}
+
+.mainPanel {
+  flex: 1;
+  min-width: 0;
+  height: calc(100vh - 1.5rem);
+  // border-radius: 1rem;
+  // box-shadow: 0 4px 20px rgb(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+// Large screens
+@media (width >= 1921px) {
+  .contentWrapper {
+    padding-right: 1rem;
+  }
+}
+
+// Medium screens
+@media (width <= 1400px) {
+  .sidePanel {
+    width: 250px;
+    min-width: 250px;
+  }
+}
+
+// Smaller screens
+@media (width <= 1200px) {
+  .sidePanel {
+    width: 220px;
+    min-width: 220px;
+  }
+}
+
+// Mobile screens
+@media (width <= 768px) {
+  .container {
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .contentWrapper {
+    flex-direction: column;
+    padding: 0.5rem;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .sidePanel {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    min-height: 60px;
+    border-radius: 1rem;
+  }
+
+  .mainPanel {
+    height: auto;
+    min-height: calc(100vh - 80px - 1rem);
+  }
+}
+
+// Handle zoom levels
+@media screen and (max-width: 100%) {
+  .container {
+    min-width: 100vw;
+  }
+  
+  .contentWrapper {
+    min-width: calc(100vw - 0.75rem);
+  }
+}
