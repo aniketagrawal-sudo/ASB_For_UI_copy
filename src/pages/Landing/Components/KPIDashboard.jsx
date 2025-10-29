@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Box, Typography, Tooltip, Divider } from "@mui/material";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -8,10 +8,12 @@ import MeetingIcon from "../../../assets/DashboardPage1/Dashboard/Metting_Icon.s
 import SummaryIcon from "../../../assets/DashboardPage1/Dashboard/Summary_Icon.svg";
 import ArrowRightIcon from "../../../assets/DashboardPage1/Dashboard/Arrow_Right.svg";
 import SummaryPanel from '../../../components/SummaryPanel/SummaryPanel';
+import GenerateReport from '../../../components/GenerateReportPanel/GenerateReport'
 
 
 export default function KPIDashboard() {
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   const topData = [
     { title: "Deposit Balance", value: "$10M", sub: "(+3.2% of LY Avg)", trend: "up" },
@@ -36,7 +38,18 @@ export default function KPIDashboard() {
         <Box className={classes.actions}>
           <Box className={classes.actionItem}>
             <img src={MeetingIcon} alt="Meeting" />
-            <Typography className={classes.actionText}>Generate Pre Meeting Snapshot</Typography>
+            <Typography
+        className={classes.actionText}
+        onClick={() => setIsReportModalOpen(true)}
+        sx={{ cursor: 'pointer', color: '#2e7d32', fontWeight: 500 }}
+      >
+        Generate Pre Meeting Snapshot
+      </Typography>
+
+      <GenerateReport
+        open={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+      />
           </Box>
           <Box className={classes.actionItem}>
             <img src={SummaryIcon} alt="Summary" />

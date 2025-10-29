@@ -1,0 +1,126 @@
+@use '../../styles/globalStyles.scss' as globalStyles;
+
+.generateReportDialog {
+  :global(.MuiPaper-root) {
+    border-radius: globalStyles.$Border-Radius-M;
+  }
+
+  .closeBtn {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    color: globalStyles.$Secondary-Text;
+  }
+
+  .dialogTitle {
+    font-weight: globalStyles.$Font-Weight-SemiBold;
+    color: globalStyles.$Main-Color;
+    margin-bottom: globalStyles.$Spacing-XXS;
+  }
+
+  .dialogSubtitle {
+    color: globalStyles.$Secondary-Text;
+    margin-top: globalStyles.$Spacing-XXS;
+  }
+
+  .templateSelectWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: globalStyles.$Spacing-S 0 globalStyles.$Spacing-Base;
+
+    .templateSelect {
+      width: 180px;
+      background-color: #fff;
+      height: 36px;
+
+      :global(.MuiOutlinedInput-notchedOutline) {
+        border-color: lighten(globalStyles.$Border-Color, 5%);
+      }
+
+      &:hover :global(.MuiOutlinedInput-notchedOutline) {
+        border-color: globalStyles.$Main-Color;
+      }
+
+      &.Mui-focused :global(.MuiOutlinedInput-notchedOutline) {
+        border-color: globalStyles.$Main-Color;
+      }
+    }
+  }
+
+  .previewBox {
+    width: 100%;
+    height: 300px;
+    border: 1px solid globalStyles.$Border-Color;
+    border-radius: globalStyles.$Border-Radius-S;
+    background-color: lighten(globalStyles.$Main-Color-Light, 40%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: globalStyles.$Spacing-Base;
+    padding: globalStyles.$Spacing-Base;
+
+    .generateBtn {
+      border: 1px solid globalStyles.$Main-Color;
+      color: globalStyles.$Main-Color;
+      text-transform: none;
+      font-weight: globalStyles.$Font-Weight-Medium;
+      transition: all globalStyles.$Transition-Fast;
+
+      &:hover {
+        background-color: globalStyles.$Main-Color-Light;
+        border-color: globalStyles.$Main-Color;
+        color: globalStyles.$Main-Color;
+      }
+
+      &:active {
+        background-color: globalStyles.$Main-Color-Hover;
+      }
+    }
+
+    .previewText {
+      white-space: pre-wrap;
+      text-align: center;
+      font-weight: globalStyles.$Font-Weight-Medium;
+      color: globalStyles.$Text-Color;
+    }
+  }
+
+  .footerActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: globalStyles.$Spacing-S;
+    padding: globalStyles.$Spacing-Base;
+
+    .regenerateBtn {
+      font-weight: globalStyles.$Font-Weight-Medium;
+
+      &.enabled {
+        color: globalStyles.$Main-Color;
+      }
+
+      &.disabled {
+        color: globalStyles.$Secondary-Text;
+        opacity: 0.6;
+      }
+    }
+
+    .downloadBtn {
+      font-weight: globalStyles.$Font-Weight-Medium;
+      color: #fff;
+      transition: all globalStyles.$Transition-Fast;
+
+      &.enabled {
+        background-color: globalStyles.$Main-Color;
+
+        &:hover {
+          background-color: darken(globalStyles.$Main-Color, 10%);
+        }
+      }
+
+      &.disabled {
+        background-color: globalStyles.$Gray-20;
+      }
+    }
+  }
+}
