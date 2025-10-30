@@ -190,7 +190,21 @@ export default function GenerateReport({ open, onClose }) {
           onClick={handleRegenerate}
           disabled={!isGenerated}
           startIcon={<AutorenewIcon />}
-          className={`${styles.regenerateBtn} ${isGenerated ? 'enabled' : 'disabled'}`}>
+          className={styles.regenerateBtn}
+          sx={{
+            color: isGenerated ? '#109316' : '#B8B8B8',
+            textTransform: 'none',
+            fontSize: '12px',
+            fontWeight: 500,
+            height: '15px',
+            '& .MuiSvgIcon-root': {
+              border: `1px solid ${isGenerated ? '#109316' : '#B8B8B8'}`,
+              width: 10,
+              height: 10,
+              borderRadius: '2px',
+              padding: '1px',
+            },
+          }}>
           Regenerate
         </Button>
 
@@ -198,7 +212,18 @@ export default function GenerateReport({ open, onClose }) {
           variant="contained"
           onClick={handleDownload}
           disabled={!isGenerated}
-          className={`${styles.downloadBtn} ${isGenerated ? 'enabled' : 'disabled'}`}>
+          className={styles.downloadBtn}
+          sx={{
+            textTransform: 'none',
+            fontSize: '12px',
+            fontWeight: 500,
+            height: '28px',
+            color: '#FFFFFF',
+            backgroundColor: isGenerated ? '#109316' : '#B8B8B8',
+            '&:hover': {
+              backgroundColor: isGenerated ? '#0b7c10' : '#B8B8B8',
+            },
+          }}>
           Download
         </Button>
       </DialogActions>

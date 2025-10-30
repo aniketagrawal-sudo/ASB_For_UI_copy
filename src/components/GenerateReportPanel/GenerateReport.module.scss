@@ -112,15 +112,13 @@
     }
   }
 
- .footerActions {
+.footerActions {
   display: flex;
   justify-content: flex-end;
-  gap: globalStyles.$Spacing-S;
 
   // ✅ Common text style
   .regenerateBtn,
   .downloadBtn {
-    // font-family: Helvetica Neue;
     font-weight: 500;
     font-style: Medium;
     font-size: 12px;
@@ -128,10 +126,8 @@
     letter-spacing: 0%;
     transition: all globalStyles.$Transition-Fast;
 
-    // ✅ make sure MUI button base uses our styles
     :global(.MuiButtonBase-root) {
       text-transform: none;
-      // font-family: Helvetica Neue;
       font-weight: 500;
       font-size: 12px;
     }
@@ -142,29 +138,27 @@
     height: 15px;
     display: flex;
     align-items: center;
-    gap: 4px;
 
     :global(.MuiButtonBase-root) {
       color: #B8B8B8 !important;
       min-height: 15px;
     }
 
+    // ❌ removed border — cleaner icon
     :global(.MuiSvgIcon-root) {
-      border: 1px solid #B8B8B8;
       width: 10px;
       height: 10px;
       opacity: 1;
-      border-width: 1px;
+      border: none; // 🔹 removed border
       border-radius: 2px;
-      padding: 1px;
     }
 
     &.enabled :global(.MuiButtonBase-root) {
-      color: #109316 !important; /* ✅ now will reflect correctly */
+      color: #109316 !important;
     }
 
     &.enabled :global(.MuiSvgIcon-root) {
-      border-color: #109316;
+      color: #109316;
     }
   }
 
@@ -178,7 +172,7 @@
     }
 
     &.enabled :global(.MuiButtonBase-root) {
-      background-color: #109316 !important; /* ✅ green background */
+      background-color: #109316 !important;
       color: #FFFFFF !important;
 
       &:hover {
@@ -187,6 +181,8 @@
     }
   }
 }
+
+
 
 .previewContent {
   display: flex;
