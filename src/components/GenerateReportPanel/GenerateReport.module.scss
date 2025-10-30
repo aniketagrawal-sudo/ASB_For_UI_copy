@@ -9,18 +9,31 @@
     position: absolute;
     right: 8px;
     top: 8px;
+    height: 20px;
+    width: 20px;
     color: globalStyles.$Secondary-Text;
   }
 
   .dialogTitle {
-    font-weight: globalStyles.$Font-Weight-SemiBold;
-    color: globalStyles.$Main-Color;
+    font-weight: 500;
+    color: #109316;
     margin-bottom: globalStyles.$Spacing-XXS;
+    // font-family: Helvetica Neue;
+    font-style: Medium;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
   }
 
   .dialogSubtitle {
-    color: globalStyles.$Secondary-Text;
+    color: #7E7E7E;
     margin-top: globalStyles.$Spacing-XXS;
+    // font-family: Helvetica Neue;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 12px;
+    line-height: 100%;
+    letter-spacing: 0%;
   }
 
   .templateSelectWrapper {
@@ -30,9 +43,15 @@
     margin: globalStyles.$Spacing-S 0 globalStyles.$Spacing-Base;
 
     .templateSelect {
-      width: 180px;
+      width: 151px;
       background-color: #fff;
-      height: 36px;
+      height: 30px;
+      color: #1A1A1A;
+      font-weight: 400;
+      font-style: Regular;
+      font-size: 10px;
+      line-height: 100%;
+      letter-spacing: 0%;
 
       :global(.MuiOutlinedInput-notchedOutline) {
         border-color: lighten(globalStyles.$Border-Color, 5%);
@@ -61,16 +80,23 @@
     padding: globalStyles.$Spacing-Base;
 
     .generateBtn {
-      border: 1px solid globalStyles.$Main-Color;
-      color: globalStyles.$Main-Color;
+      border: 1px solid #109316;
+      color: #109316;
       text-transform: none;
       font-weight: globalStyles.$Font-Weight-Medium;
       transition: all globalStyles.$Transition-Fast;
+      width: 81px;
+      height: 28px;
+      font-weight: 500;
+      font-style: Medium;
+      font-size: 12px;
+      line-height: 100%;
+      letter-spacing: 0%;
 
       &:hover {
         background-color: globalStyles.$Main-Color-Light;
-        border-color: globalStyles.$Main-Color;
-        color: globalStyles.$Main-Color;
+        border-color: #109316;
+        color: #109316;
       }
 
       &:active {
@@ -86,41 +112,96 @@
     }
   }
 
-  .footerActions {
+ .footerActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: globalStyles.$Spacing-S;
+
+  // ✅ Common text style
+  .regenerateBtn,
+  .downloadBtn {
+    // font-family: Helvetica Neue;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 12px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    transition: all globalStyles.$Transition-Fast;
+
+    // ✅ make sure MUI button base uses our styles
+    :global(.MuiButtonBase-root) {
+      text-transform: none;
+      // font-family: Helvetica Neue;
+      font-weight: 500;
+      font-size: 12px;
+    }
+  }
+
+  /* 🔹 Regenerate Button */
+  .regenerateBtn {
+    height: 15px;
     display: flex;
-    justify-content: flex-end;
-    gap: globalStyles.$Spacing-S;
-    padding: globalStyles.$Spacing-Base;
+    align-items: center;
+    gap: 4px;
 
-    .regenerateBtn {
-      font-weight: globalStyles.$Font-Weight-Medium;
-
-      &.enabled {
-        color: globalStyles.$Main-Color;
-      }
-
-      &.disabled {
-        color: globalStyles.$Secondary-Text;
-        opacity: 0.6;
-      }
+    :global(.MuiButtonBase-root) {
+      color: #B8B8B8 !important;
+      min-height: 15px;
     }
 
-    .downloadBtn {
-      font-weight: globalStyles.$Font-Weight-Medium;
-      color: #fff;
-      transition: all globalStyles.$Transition-Fast;
+    :global(.MuiSvgIcon-root) {
+      border: 1px solid #B8B8B8;
+      width: 10px;
+      height: 10px;
+      opacity: 1;
+      border-width: 1px;
+      border-radius: 2px;
+      padding: 1px;
+    }
 
-      &.enabled {
-        background-color: globalStyles.$Main-Color;
+    &.enabled :global(.MuiButtonBase-root) {
+      color: #109316 !important; /* ✅ now will reflect correctly */
+    }
 
-        &:hover {
-          background-color: darken(globalStyles.$Main-Color, 10%);
-        }
-      }
+    &.enabled :global(.MuiSvgIcon-root) {
+      border-color: #109316;
+    }
+  }
 
-      &.disabled {
-        background-color: globalStyles.$Gray-20;
+  /* 🔹 Download Button */
+  .downloadBtn {
+    height: 28px;
+
+    :global(.MuiButtonBase-root) {
+      background-color: #B8B8B8 !important;
+      color: #FFFFFF !important;
+    }
+
+    &.enabled :global(.MuiButtonBase-root) {
+      background-color: #109316 !important; /* ✅ green background */
+      color: #FFFFFF !important;
+
+      &:hover {
+        background-color: darken(#109316, 5%) !important;
       }
     }
   }
+}
+
+.previewContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: globalStyles.$Spacing-S;
+  text-align: center;
+}
+
+.previewImage {
+  width: 100%;
+  max-width: 500px;
+  border-radius: globalStyles.$Border-Radius-S;
+  border: 1px solid globalStyles.$Border-Color;
+  object-fit: contain;
+}
+
 }

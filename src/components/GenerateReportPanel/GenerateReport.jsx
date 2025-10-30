@@ -17,14 +17,17 @@ import CloseIcon from '@mui/icons-material/Close';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import PropTypes from 'prop-types';
 import styles from './GenerateReport.module.scss';
+import reportPreview from '../../assets/reportPreview.svg';
 
 export default function GenerateReport({ open, onClose }) {
   const [templateType, setTemplateType] = useState('');
-  //once real api data will come below state we need to empty array
+
+  //once real api data will come below state we need to keep empty array
   const [templateList, setTemplateList] = useState([
     { id: 'type1', name: 'Template Type 1' },
     { id: 'type2', name: 'Template Type 2' },
   ]); // ✅ Store dropdown options
+
   const [isGenerated, setIsGenerated] = useState(false);
   const [previewText, setPreviewText] = useState('');
   const [loading, setLoading] = useState(false);
@@ -126,7 +129,7 @@ export default function GenerateReport({ open, onClose }) {
           Generate Pre Meeting Snapshot
         </Typography>
         <Typography variant="body2" className={styles.dialogSubtitle}>
-          Click below to generate your meeting snapshot
+          Please click on generate to get a downloadable template for meetings
         </Typography>
       </DialogTitle>
 
@@ -142,7 +145,7 @@ export default function GenerateReport({ open, onClose }) {
                 onChange={handleTemplateChange}
                 className={styles.templateSelect}
                 displayEmpty>
-                <MenuItem value="">
+                <MenuItem disabled value="">
                   <span>Select</span>
                 </MenuItem>
                 {templateList.length === 0 ? (
@@ -160,20 +163,21 @@ export default function GenerateReport({ open, onClose }) {
         </Box>
 
         {/* Preview / Generate Area */}
+        {/* Preview / Generate Area */}
         <Box className={styles.previewBox}>
           {loading ? (
             <CircularProgress color="success" />
           ) : isGenerated ? (
-            <Typography variant="body2" className={styles.previewText}>
-              {previewText}
-            </Typography>
+            <Box className={styles.previewContent}>
+              {/* 🔹 Image shown after generation */}
+              <img src={reportPreview} alt={`${templateType} preview`} className={styles.previewImage} />
+              {/* 🔹 Template info / text */}
+              <Typography variant="body2" className={styles.previewText}>
+                {previewText}
+              </Typography>
+            </Box>
           ) : (
-            <Button
-              variant="outlined"
-              onClick={handleGenerate}
-              className={styles.generateBtn}
-              disabled={!templateType}
-            >
+            <Button variant="outlined" onClick={handleGenerate} className={styles.generateBtn} disabled={!templateType}>
               Generate
             </Button>
           )}
