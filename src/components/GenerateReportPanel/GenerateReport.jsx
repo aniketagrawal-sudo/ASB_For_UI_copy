@@ -16,18 +16,45 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import PropTypes from 'prop-types';
-import styles from './GenerateReport.module.scss'; // ✅ Import SCSS module
+import styles from './GenerateReport.module.scss';
 
 export default function GenerateReport({ open, onClose }) {
-  const [templateType, setTemplateType] = useState('type1');
+  const [templateType, setTemplateType] = useState('');
+  //once real api data will come below state we need to empty array
+  const [templateList, setTemplateList] = useState([
+    { id: 'type1', name: 'Template Type 1' },
+    { id: 'type2', name: 'Template Type 2' },
+  ]); // ✅ Store dropdown options
   const [isGenerated, setIsGenerated] = useState(false);
   const [previewText, setPreviewText] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loadingTemplates, setLoadingTemplates] = useState(false); // ✅ For dropdown loading
+
+  // ✅ Fetch template list from API once api is ready below useEffect we need to uncomment
+  //   useEffect(() => {
+  //     const fetchTemplates = async () => {
+  //       setLoadingTemplates(true);
+  //       try {
+  //         const res = await fetch('http://localhost:5000/api/templates');
+  //         const data = await res.json();
+  //         setTemplateList(data.templates || []); // expects { templates: [ { id, name }, ... ] }
+  //         if (data.templates?.length > 0) setTemplateType(data.templates[0].id); // select first one
+  //       } catch (error) {
+  //         console.error('Error fetching templates:', error);
+  //       } finally {
+  //         setLoadingTemplates(false);
+  //       }
+  //     };
+
+  //     if (open) {
+  //       fetchTemplates();
+  //     }
+  //   }, [open]);
 
   // Reset when modal closes
   useEffect(() => {
     if (!open) {
-      setTemplateType('type1');
+      setTemplateType('');
       setIsGenerated(false);
       setPreviewText('');
       setLoading(false);
@@ -41,7 +68,7 @@ export default function GenerateReport({ open, onClose }) {
     setPreviewText('');
   };
 
-  // Generate report (mock API call)
+  // Generate report (API call)
   const handleGenerate = async () => {
     setLoading(true);
     try {
@@ -90,12 +117,10 @@ export default function GenerateReport({ open, onClose }) {
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth className={styles.generateReportDialog}>
-      {/* Close Button */}
       <IconButton onClick={onClose} className={styles.closeBtn}>
         <CloseIcon />
       </IconButton>
 
-      {/* Title */}
       <DialogTitle>
         <Typography variant="h6" className={styles.dialogTitle}>
           Generate Pre Meeting Snapshot
@@ -105,19 +130,32 @@ export default function GenerateReport({ open, onClose }) {
         </Typography>
       </DialogTitle>
 
-      {/* Content */}
       <DialogContent>
         {/* Template Dropdown */}
         <Box className={styles.templateSelectWrapper}>
           <FormControl>
-            <Select
-              value={templateType}
-              onChange={handleTemplateChange}
-              className={styles.templateSelect}>
-              <MenuItem value="type1">Template Type 1</MenuItem>
-              <MenuItem value="type2">Template Type 2</MenuItem>
-              <MenuItem value="type3">Template Type 3</MenuItem>
-            </Select>
+            {loadingTemplates ? (
+              <CircularProgress size={24} color="success" />
+            ) : (
+              <Select
+                value={templateType}
+                onChange={handleTemplateChange}
+                className={styles.templateSelect}
+                displayEmpty>
+                <MenuItem value="">
+                  <span>Select</span>
+                </MenuItem>
+                {templateList.length === 0 ? (
+                  <MenuItem disabled>No Data available</MenuItem>
+                ) : (
+                  templateList.map((template) => (
+                    <MenuItem key={template.id} value={template.id}>
+                      {template.name}
+                    </MenuItem>
+                  ))
+                )}
+              </Select>
+            )}
           </FormControl>
         </Box>
 
@@ -130,22 +168,25 @@ export default function GenerateReport({ open, onClose }) {
               {previewText}
             </Typography>
           ) : (
-            <Button variant="outlined" onClick={handleGenerate} className={styles.generateBtn}>
+            <Button
+              variant="outlined"
+              onClick={handleGenerate}
+              className={styles.generateBtn}
+              disabled={!templateType}
+            >
               Generate
             </Button>
           )}
         </Box>
       </DialogContent>
 
-      {/* Footer Buttons */}
       <DialogActions className={styles.footerActions}>
         <Button
           variant="text"
           onClick={handleRegenerate}
           disabled={!isGenerated}
           startIcon={<AutorenewIcon />}
-          className={`${styles.regenerateBtn} ${isGenerated ? 'enabled' : 'disabled'}`}
-        >
+          className={`${styles.regenerateBtn} ${isGenerated ? 'enabled' : 'disabled'}`}>
           Regenerate
         </Button>
 
@@ -153,8 +194,7 @@ export default function GenerateReport({ open, onClose }) {
           variant="contained"
           onClick={handleDownload}
           disabled={!isGenerated}
-          className={`${styles.downloadBtn} ${isGenerated ? 'enabled' : 'disabled'}`}
-        >
+          className={`${styles.downloadBtn} ${isGenerated ? 'enabled' : 'disabled'}`}>
           Download
         </Button>
       </DialogActions>
