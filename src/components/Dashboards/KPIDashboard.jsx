@@ -11,6 +11,7 @@ import ArrowRightIcon from '../../assets/DashboardPage1/Dashboard/Arrow_Right.sv
 import SummaryPanel from '../SummaryPanel/SummaryPanel';
 import TrendComponent from './TrendComponent';
 import GenerateReport from '../../components/GenerateReportPanel/GenerateReport';
+import RevenueGraph from './Trends/RevenueGraph';
 
 export default function KPIDashboard() {
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
@@ -181,6 +182,7 @@ export default function KPIDashboard() {
             </Typography>
             {/* Add your Deposit content here */}
             <TrendComponent />
+            {/* <RevenueGraph/> */}
           </Box>
         </Box>
       </Box>

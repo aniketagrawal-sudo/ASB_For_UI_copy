@@ -3,6 +3,7 @@ import { Card, Grid, Typography, Box, Select, MenuItem, useTheme, } from "@mui/m
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Tooltip, Legend, } from "chart.js";
 import { Line, Bar, Pie } from "react-chartjs-2";
 import classes from "./TrendComponent.module.scss";
+import RevenueGraph from "./Trends/RevenueGraph";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Tooltip, Legend);
 
@@ -135,14 +136,24 @@ export default function TrendComponent() {
     return (
         <Box className={classes.trendComponent}>
             <Grid container spacing={2}>
-                {/* <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                     <Card className={classes.card}>
                         <ChartHeader title="Deposit Trends" />
                         <Line data={depositChart} options={lineOptions} />
                     </Card>
-                </Grid> */}
-                       
+
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Card className={classes.card}>
+                        <ChartHeader title="Deposit Trends" />
+                        <Line data={depositChart} options={lineOptions} />
+                    </Card>
+
+                </Grid>
+
             </Grid>
+            <RevenueGraph />
+
         </Box>
     );
 }
