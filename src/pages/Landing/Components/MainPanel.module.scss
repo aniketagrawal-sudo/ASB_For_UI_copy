@@ -187,10 +187,10 @@
   overflow: hidden;
 
   .primaryContent {
-    flex: 0 0 73%;
+    flex: 0 0 100%;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: auto;
     border-radius: globalStyles.$Border-Radius-L;
     background: white;
     box-shadow: globalStyles.$Shadow-MD;
@@ -288,7 +288,7 @@
     }
 
     .primaryContent {
-      height: 65%;
+      height:auto;
     }
 
     .secondaryContent {

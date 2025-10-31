@@ -17,7 +17,11 @@ import {
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useDispatch, useSelector } from 'react-redux';
-import SmartToyOutlinedIcon from '../../assets/conversationDashboard/chatbot.png';
+import ChatBotIcon from '../../assets/conversationDashboard/chatbot-speech-bubble.svg';
+import ChatHistoryIcon from '../../assets/conversationDashboard/ChatHistoryIcon.svg';
+import MaxsimizeIcon from '../../assets/conversationDashboard/MaxsimizeIcon.svg';
+
+
 import ForumIcon from '../../assets/conversationDashboard/ThreadsIcon.png';
 import {
   selectUser,
@@ -236,7 +240,7 @@ function ConversationDashboard() {
     if (chatInputRef.current) {
       // Set the input field value
       chatInputRef.current.setInputValue(query);
-      
+
       // Auto-submit the question if the function is available on the ChatInput component
       if (typeof chatInputRef.current.submitInput === 'function') {
         chatInputRef.current.submitInput(query);
@@ -282,7 +286,7 @@ function ConversationDashboard() {
     <div className={classes.container}>
       <div className={classes.header}>
         <div className={classes.titleSection}>
-          <img src={SmartToyOutlinedIcon} alt="Chat AI" />
+          <img src={ChatBotIcon} alt="Chat AI" />
           <Typography variant="h6" className={classes.title}>
             Chat AI
           </Typography>
@@ -311,7 +315,8 @@ function ConversationDashboard() {
             </div>
           )}
           <Box className={classes.threadButton} onClick={handleThreadsClick}>
-            <img src={ForumIcon} alt="Threads" />
+            <img src={ChatHistoryIcon} alt="ChatHistoryIcon" />
+            <img src={MaxsimizeIcon} alt="MaxsimizeIcon" />
           </Box>
         </div>
       </div>
