@@ -116,7 +116,6 @@
   display: flex;
   justify-content: flex-end;
 
-  // ✅ Common text style
   .regenerateBtn,
   .downloadBtn {
     font-weight: 500;
@@ -144,13 +143,15 @@
       min-height: 15px;
     }
 
-    // ❌ removed border — cleaner icon
     :global(.MuiSvgIcon-root) {
       width: 10px;
       height: 10px;
       opacity: 1;
-      border: none; // 🔹 removed border
+      border: none;
       border-radius: 2px;
+    }
+    :global(.MuiButton-icon) {
+      margin-right: 0px;
     }
 
     &.enabled :global(.MuiButtonBase-root) {
@@ -195,8 +196,6 @@
 .previewImage {
   width: 100%;
   max-width: 500px;
-  border-radius: globalStyles.$Border-Radius-S;
-  border: 1px solid globalStyles.$Border-Color;
   object-fit: contain;
 }
 
