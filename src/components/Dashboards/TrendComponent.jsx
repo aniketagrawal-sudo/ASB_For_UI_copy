@@ -141,50 +141,7 @@ export default function TrendComponent() {
                         <Line data={depositChart} options={lineOptions} />
                     </Card>
                 </Grid> */}
-                        {/* <Grid item xs={12} md={6}>
-                            <Card className={classes.card}>
-                                <ChartHeader title="Loan Outstanding Trends" />
-                                <Line data={loanChart} options={lineOptions} />
-                            </Card>
-                        </Grid> */}
-            </Grid>
-
-            {/* Row 2 */}
-            <Grid container spacing={2}>
-                {/* <Grid item xs={12}>
-                    <Card className={classes.card}>
-                        <ChartHeader title="Revenue" />
-                        <Bar data={revenueChart} options={barOptions} />
-                    </Card>
-                </Grid> */}
-            </Grid>
-
-            {/* Row 3 */}
-            <Grid container spacing={2}>
-                {/* <Grid item xs={12}>
-                    <Card className={classes.card}>
-                        <ChartHeader title="Total P&L of Relationship (Profit)" />
-                        <Bar data={pnlData} options={barOptions} />
-                    </Card>
-                </Grid> */}
-            </Grid>
-
-            {/* Row 4 */}
-            <Grid container spacing={2}>
-                {/* <Grid item xs={12} md={6}>
-                    <Card className={classes.card}>
-                        <ChartHeader title="Revenue and Profits at Product Level" />
-                        <Bar data={productData} options={barOptions} />
-                    </Card>
-                </Grid> */}
-                {/* <Grid item xs={12} md={6}>
-                    <Card className={classes.card}>
-                        <Typography className={classes.headerTitle}>
-                            Volumes of Usage
-                        </Typography>
-                        <Pie data={usageData} options={pieOptions} />
-                    </Card>
-                </Grid> */}
+                       
             </Grid>
         </Box>
     );
