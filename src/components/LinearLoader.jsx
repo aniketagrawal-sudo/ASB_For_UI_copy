@@ -13,7 +13,7 @@ const Dot = styled(Box)({
   height: '8px',
   margin: '0 2px',
   borderRadius: '50%',
-  backgroundColor: '#F7901D',
+  backgroundColor: '#109316',
   animation: 'dot-blink 1.4s infinite both',
   '@keyframes dot-blink': {
     '0%': { opacity: 0.2 },

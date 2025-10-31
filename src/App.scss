@@ -8,6 +8,7 @@ body {
   @include fontFamily;
 
   margin: 0;
-  background: transparent url('./assets/appBackGround.svg') 0% 0% no-repeat padding-box;
+  // background: transparent url('./assets/appBackGround.svg') 0% 0% no-repeat padding-box;
+  background-color: #F1F7F4;
   background-size: cover;
 }
