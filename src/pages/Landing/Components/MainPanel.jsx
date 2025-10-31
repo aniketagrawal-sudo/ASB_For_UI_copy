@@ -31,7 +31,7 @@ import { useRef, useState } from 'react';
 import CalendarIcon from '../../../assets/DashboardPage1/Dashboard/CalanderIcon.svg';
 import DashboardName from '../../../assets/DashboardPage1/Dashboard/DashboardName_Icon.svg';
 import DashNotification from '../../../assets/DashboardPage1/Dashboard/Dashboard_Notification_Icon.svg';
-import KPIDashboard from './KPIDashboard'
+import KPIDashboard from '../../../components/Dashboards/KPIDashboard'
 
 function MainPanel({
   dashboardsReady,
@@ -83,15 +83,15 @@ function MainPanel({
               /> */}
               <KPIDashboard/>
             </div>
-            <div className={classes.secondaryContent}>
-              {/* <ConversationDashboard /> */}
-            </div>
+            {/* <div className={classes.secondaryContent}>
+              <ConversationDashboard />
+            </div> */}
           </>
         );
     }
   };
 
-  // 🕒 Format last refreshed
+ 
   const formatLastRefreshed = (timestamp) => {
     if (!timestamp) return 'Never';
     const date = new Date(timestamp);

@@ -138,7 +138,7 @@ function SidePanel({
             </Tooltip>
           </div>
           <Typography variant="h6" className={classes.title}>
-            Sense AI
+            ASB FOR AI
           </Typography>
         </div>
 

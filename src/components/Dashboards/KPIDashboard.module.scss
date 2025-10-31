@@ -1,9 +1,9 @@
-@use '../../../styles/globalStyles.scss' as globalStyles;
+@use '../../styles/globalStyles.scss' as globalStyles;
 
 .kpiContainer {
-    width: 70%;
-    font-size: 12px !important;
-    font-family: "Inter", sans-serif;
+    // width: 70%;
+    // font-size: 12px !important;
+    // font-family: "Inter", sans-serif;
 }
 
 .header {
@@ -14,8 +14,9 @@
 }
 
 .title {
-    font-weight: 600;
-    color: #333;
+    font-weight: 700;
+    color: #363636;
+    font-weight: bold;
     font-size: 14px;
 }
 
@@ -40,10 +41,14 @@
 }
 
 .kpiBox {
-    border: 1px solid #d0d7de;
-    border-radius: 6px;
-    margin-top: 12px;
-    padding: 16px;
+    width: 700px;
+    border-radius: 8px;
+    margin: 10px 10px;
+    padding: 10px 15px 10px 15px;
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    background-color: #F7F6F5;
 }
 
 .topRow,
@@ -51,19 +56,23 @@
     display: flex;
     justify-content: space-between;
     //  grid-template-columns: repeat(4, 1fr); 
-    gap: 50px;
-    margin-top: 8px;
-    margin-left: -52px;
+    // gap: 50px;
+    // margin-top: 8px;
+    // margin-left: -52px;
 }
 
 .bottomRow {
-    grid-template-columns: repeat(3, 1fr);
-    margin-top: 10px;
+    // grid-template-columns: repeat(3, 1fr);
+    // margin-top: 10px;
+}
+
+.trendContainer {
+    display: flex;
+    align-items: center;
 }
 
 .metricHeader {
     display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
@@ -79,7 +88,7 @@
 }
 
 .metricValue {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 700;
     color: #111;
     margin-top: 4px;
@@ -87,16 +96,14 @@
 
 .metricSub {
     color: #666;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .trendUp {
     color: #28a745;
     display: flex;
     align-items: center;
-    gap: 2px;
-    font-size: 12px;
-    margin-top: 3px;
+    font-size: 9px;
 }
 
 .trendDown {
@@ -104,7 +111,7 @@
     display: flex;
     align-items: center;
     gap: 2px;
-    font-size: 12px;
+    font-size: 10px;
     margin-top: 3px;
 }
 
@@ -133,4 +140,12 @@
 .divider {
     margin: 12px 0;
     border-color: #e0e0e0;
+}
+
+.TrendsTitle {
+    font-weight: 700;
+    color: #363636;
+    font-weight: bold;
+    font-size: 14px;
+   margin: 0px 0px 10px 10px;
 }
