@@ -1,1 +1,116 @@
-// @use '../../styles/globalStyles.scss' as globalStyles;
+.revenueChartContainer {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px 24px 8px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  margin-top: 10px;
+
+  .chartHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .chartTitle {
+      font-size: 12px;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin: 0;
+      //   font-family: Helvetica Neue;
+      font-style: Medium;
+      height: 15px;
+      letter-spacing: 0%;
+    }
+
+    .chartControls {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+
+      .filterButtons {
+        display: flex;
+        gap: 4px;
+        background-color: #f5f1f1;
+        border-radius: 10px;
+
+        .filterBtn {
+          padding: 3px 6px;
+          border-radius: 10px;
+          cursor: pointer;
+          font-size: 10px;
+          font-weight: 400;
+          color: #363636;
+          transition: all 0.2s ease;
+          font-style: Regular;
+          line-height: 12px;
+          letter-spacing: 0%;
+
+          &:hover {
+            color: #d1d5db;
+          }
+
+          &.active {
+            background-color: #ffffff;
+            color: #000000;
+            border-color: #d1d5db;
+          }
+        }
+      }
+
+      .accountDropdown {
+        position: relative;
+
+        .dropdownSelect {
+          padding: 3px 28px 3px 10px;
+          border: 1px solid #e5e7eb;
+          border-radius: 4px;
+          background: #fff;
+          cursor: pointer;
+          font-size: 10px;
+          font-weight: 400;
+          color: #1a1a1a;
+          appearance: none;
+          font-style: Regular;
+          letter-spacing: 0%;
+          line-height: 12px;
+
+          &:hover {
+            border-color: #d1d5db;
+          }
+        }
+
+        .dropdownIcon {
+          position: absolute;
+          right: 8px;
+          top: 50%;
+          transform: translateY(-50%);
+          pointer-events: none;
+          color: #1a1a1a;
+          font-size: 10px;
+        }
+      }
+    }
+  }
+
+  .dividerWrapper {
+    margin-left: -24px;
+    margin-right: -24px;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    width: 100%;
+  }
+
+  .chartWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    width: auto;
+  }
+}
