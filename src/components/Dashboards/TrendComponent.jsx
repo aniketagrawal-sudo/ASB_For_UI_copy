@@ -4,6 +4,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, 
 import { Line, Bar, Pie } from "react-chartjs-2";
 import classes from "./TrendComponent.module.scss";
 import RevenueGraph from "./Trends/RevenueGraph";
+import TotalProfitAndLossRelation from "./Trends/TotalProfitAndLossRelation";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Tooltip, Legend);
 
@@ -153,6 +154,7 @@ export default function TrendComponent() {
 
             </Grid>
             <RevenueGraph />
+            <TotalProfitAndLossRelation />
 
         </Box>
     );

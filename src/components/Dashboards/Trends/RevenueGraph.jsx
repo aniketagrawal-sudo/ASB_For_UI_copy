@@ -1,14 +1,5 @@
 import { useState } from 'react';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  CartesianGrid,
-  ResponsiveContainer,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
 import styles from './RevenueGraph.module.scss';
 
 export default function RevenueGraph() {
@@ -16,22 +7,7 @@ export default function RevenueGraph() {
   const [selectedAccount, setSelectedAccount] = useState('Account Number 1');
   const accounts = ['Account Number 1', 'Account Number 2', 'Account Number 3'];
 
-  //Once real api will come we need to use below useEffect 
-//     useEffect(() => {
-//     async function fetchData() {
-//       try {
-//         const res = await axios.get(`/api/revenue-data?account=${selectedAccount}`);
-//         setDataSets(res.data); // backend returns { YoY: [...], MoM: [...], QoQ: [...] }
-//       } catch (err) {
-//         console.error('Error fetching data:', err);
-//       }
-//     }
-
-//     fetchData();
-//   }, [selectedAccount]); // re-fetch only when account changes
-//   const data = dataSets[timeFilter] || [];
-
-  // ✅ Dummy dataset: each account has its own set for each filter
+  // Dummy dataset: unchanged (keeps months for YoY as you had)
   const dataSets = {
     'Account Number 1': {
       YoY: [
@@ -143,8 +119,33 @@ export default function RevenueGraph() {
     },
   };
 
-  // ✅ Get data dynamically based on account & filter
-  const data = dataSets[selectedAccount][timeFilter];
+  // Safely pick raw data for selected account/timeFilter
+  const raw =
+    dataSets[selectedAccount] && dataSets[selectedAccount][timeFilter] ? dataSets[selectedAccount][timeFilter] : [];
+
+  // Build chartData and X-axis settings:
+  let chartData = raw.slice(); // copy
+  let xAxisKey = 'month';
+  let ticks = undefined;
+
+  if (timeFilter === 'YoY') {
+    // If raw items already provide a 'year' key use it, otherwise synthesize 2021.. based on index.
+    chartData = raw.map((item, idx) => {
+      if (item.year !== undefined) return item;
+      // create year starting from 2021
+      return { ...item, year: 2021 + idx };
+    });
+    xAxisKey = 'year';
+    ticks = chartData.map((d) => String(d.year));
+  } else if (timeFilter === 'QoQ') {
+    // use quarters as X axis (items have 'month' values like 'Q1')
+    xAxisKey = 'month';
+    ticks = chartData.map((d) => d.month);
+  } else {
+    // MoM or others use month
+    xAxisKey = 'month';
+    ticks = chartData.map((d) => d.month);
+  }
 
   return (
     <div className={styles.revenueChartContainer}>
@@ -159,8 +160,7 @@ export default function RevenueGraph() {
               <button
                 key={filter}
                 className={`${styles.filterBtn} ${timeFilter === filter ? styles.active : ''}`}
-                onClick={() => setTimeFilter(filter)}
-              >
+                onClick={() => setTimeFilter(filter)}>
                 {filter}
               </button>
             ))}
@@ -171,8 +171,7 @@ export default function RevenueGraph() {
             <select
               value={selectedAccount}
               onChange={(e) => setSelectedAccount(e.target.value)}
-              className={styles.dropdownSelect}
-            >
+              className={styles.dropdownSelect}>
               {accounts.map((account) => (
                 <option key={account} value={account}>
                   {account}
@@ -192,9 +191,18 @@ export default function RevenueGraph() {
       {/* Chart */}
       <div className={styles.chartWrapper}>
         <ResponsiveContainer width="95%" height={250}>
-          <BarChart data={data} margin={{ top: 10, right: 20, left: 10, bottom: 0 }}>
+          <BarChart data={chartData} margin={{ top: 10, right: 20, left: 10, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+
+            {/* ✅ Dynamic X-Axis key based on selected filter */}
+            <XAxis
+              dataKey={timeFilter === 'YoY' ? 'year' : 'month'}
+              tick={{ fontSize: 12 }}
+              interval={0}
+              angle={timeFilter === 'YoY' ? 0 : 0}
+              textAnchor="middle"
+            />
+
             <YAxis
               tick={{ fontSize: 11 }}
               tickFormatter={(value) => `$${(value / 1000000).toFixed(1)}M`}
@@ -205,11 +213,10 @@ export default function RevenueGraph() {
                 style: { textAnchor: 'middle', fill: '#374151', fontSize: 12 },
               }}
             />
-            <Tooltip
-              formatter={(value) => `$${(value / 1000).toFixed(0)}K`}
-              labelStyle={{ fontWeight: 500 }}
-            />
+
+            <Tooltip formatter={(value) => `$${(value / 1000).toFixed(0)}K`} labelStyle={{ fontWeight: 500 }} />
             <Legend wrapperStyle={{ fontSize: '12px' }} />
+
             <Bar dataKey="net" name="Net Revenue" fill="#03AB53" barSize={11.29} radius={[4, 4, 0, 0]} />
             <Bar dataKey="gross" name="Gross Revenue" fill="#F7901D" barSize={11.29} radius={[4, 4, 0, 0]} />
           </BarChart>
