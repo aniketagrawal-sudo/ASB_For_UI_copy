@@ -1,1 +1,122 @@
-@use '../../styles/globalStyles.scss' as globalStyles;
+@use '../../../styles/globalStyles.scss' as globalStyles;
+
+
+.Depositheader {
+    // width: 100%;
+    // padding: 0px;
+}
+
+.card {
+    // width: 100%;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 10px 10px 10px 10px;
+    box-shadow: none;
+    background: #fff;
+}
+
+// .MuiBox-root {
+//     width: 100%;
+// }
+
+// .MuiGrid-root{
+//     width: 100%;
+// }
+
+.trendCard {
+    // width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+
+}
+
+.chartHeader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .headerTitle {
+        font-size: 7px;
+        font-weight: 600;
+    }
+
+    .headerRight {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+}
+
+/* Thin HR under header */
+.headerHr {
+    border-bottom: 1px solid #DFDFDF;
+    margin: 5px -17px 2px -17px;
+}
+
+/* Segmented pills (YoY / MoM / QoQ) */
+.segment {
+    display: inline-flex;
+    background: #f3f4f6;
+    border-radius: 999px;
+    border: 1px solid #e5e7eb;
+}
+
+.segmentItem {
+    border: 0;
+    outline: 0;
+    padding: 5px 9px;
+    font-size: 8px;
+    background: transparent;
+    border-radius: 999px;
+    color: #6b7280;
+    cursor: pointer;
+}
+
+.segmentItemActive {
+    background: #ffffff;
+    color: #111827;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) inset;
+}
+
+/* Acc dropdown */
+.accountSelect :global(.MuiSelect-select) {
+    padding: 1px 10px;
+    border-radius: 8px;
+    font-size: 8px;
+}
+
+.accountSelect {
+    min-width: 70px;
+}
+
+/* Badges aligned to the RIGHT (as per screenshot) */
+.badgeRowRight {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin: 8px 0 12px;
+}
+
+.badge {
+    background: #f3f4f6;
+    border-radius: 12px;
+    padding: 8px 12px;
+    color: #6b7280;
+    font-size: 9px;
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+
+    strong {
+        color: #111827;
+        font-weight: 600;
+        font-size: 9px;
+    }
+}
+
+/* Keep canvas nicely spaced */
+canvas {
+    margin-top: 6px;
+}

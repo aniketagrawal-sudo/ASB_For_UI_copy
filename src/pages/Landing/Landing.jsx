@@ -506,9 +506,9 @@ function Landing() {
     }
   };
 
-  if (!userFromState?.selectedRole) {
-    return <Navigate to="/dashboard" replace />;
-  }
+  // if (!userFromState?.selectedRole) {
+  //   return <Navigate to="/dashboard" replace />;
+  // }
 
   return (
     <Container maxWidth={false} disableGutters className={classes.container}>

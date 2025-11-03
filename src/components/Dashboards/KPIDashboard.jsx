@@ -11,7 +11,6 @@ import ArrowRightIcon from '../../assets/DashboardPage1/Dashboard/Arrow_Right.sv
 import SummaryPanel from '../SummaryPanel/SummaryPanel';
 import TrendComponent from './TrendComponent';
 import GenerateReport from '../../components/GenerateReportPanel/GenerateReport';
-import RevenueGraph from './Trends/RevenueGraph';
 
 export default function KPIDashboard() {
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
@@ -52,15 +51,16 @@ export default function KPIDashboard() {
   ];
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'row', // side by side layout
-        gap: 2, // spacing between KPI/Deposit and Chat
-        alignItems: 'flex-start',
-      }}>
+    <Box className={classes.wrap}
+      // sx={{
+      //   display: 'flex',
+      //   flexDirection: 'row', 
+      //   gap: 2, 
+      //   alignItems: 'flex-start',
+      // }}
+      >
       {/* Left Section — KPI + Deposit */}
-      <Box sx={{ flex: 1 }}>
+      <Box className={classes.kpileftcontainer}>
         <Box className={classes.kpiContainer}>
           {/* Header */}
           <Box className={classes.header}>
@@ -161,7 +161,6 @@ export default function KPIDashboard() {
                   </Box>
 
                   <Box className={item.trend === 'up' ? classes.trendUp : classes.trendDown}>
-                    {/* {item.trend === 'up' ? <ArrowUpwardIcon fontSize="0px"/> : <ArrowDownwardIcon  fontSize="0px"/>} */}
                     {item.trend === 'up' ? (
                       <ArrowUpwardIcon sx={{ fontSize: '12px' }} />
                     ) : (
@@ -174,15 +173,14 @@ export default function KPIDashboard() {
             </Box>
           </Box>
 
-          {/* Deposit Section (add your deposit JSX here) */}
           <Box className={classes.depositBox}>
-            {/* Example placeholder */}
             <Typography variant="h6" margin={1}>
               Trends
             </Typography>
-            {/* Add your Deposit content here */}
             <TrendComponent />
-            {/* <RevenueGraph/> */}
+             <Typography variant="h6" margin={1}>
+          Client Information
+            </Typography>
           </Box>
         </Box>
       </Box>

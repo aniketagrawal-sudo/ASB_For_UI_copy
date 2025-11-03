@@ -1,16 +1,28 @@
 @use '../../styles/globalStyles.scss' as globalStyles;
 
+
+.wrap {
+    display: flex;
+
+}
+
+.kpileftcontainer {
+    width: 75%;
+}
+
 .kpiContainer {
-    // width: 70%;
-    // font-size: 12px !important;
-    // font-family: "Inter", sans-serif;
+    width: 100%;
+    padding: 0px 20px 0px 10px;
+    overflow-x: hidden;
+    height: 100vh;
 }
 
 .header {
+    width: 99%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 10px 0px 0px 10px;
+    margin: 10px 10px 0px 10px;
 }
 
 .title {
@@ -41,7 +53,7 @@
 }
 
 .kpiBox {
-    width: 700px;
+    width: 99%;
     border-radius: 8px;
     margin: 10px 10px;
     padding: 10px 15px 10px 15px;
@@ -147,5 +159,12 @@
     color: #363636;
     font-weight: bold;
     font-size: 14px;
-   margin: 0px 0px 10px 10px;
+    margin: 0px 0px 10px 10px;
+}
+
+@media (min-width: 1600px) and (max-width: 1706px) {
+    .kpiContainer {
+        width: 100% !important;
+        //    background-color: #008000;
+    }
 }

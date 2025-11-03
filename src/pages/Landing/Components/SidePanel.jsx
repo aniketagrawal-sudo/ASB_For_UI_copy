@@ -121,7 +121,7 @@ function SidePanel({
 
   const renderIcon = (item) => {
     if (item.loading)
-      return <CircularProgress size={20} className={classes.loadingIcon} />;
+      // return <CircularProgress size={20} className={classes.loadingIcon} />;
     return <img src={item.icon} alt={item.label} className={classes.menuIconImage} />;
   };
 
