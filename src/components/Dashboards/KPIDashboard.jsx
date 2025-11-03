@@ -178,9 +178,6 @@ export default function KPIDashboard() {
               Trends
             </Typography>
             <TrendComponent />
-             <Typography variant="h6" margin={1}>
-          Client Information
-            </Typography>
           </Box>
         </Box>
       </Box>
