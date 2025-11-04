@@ -1,0 +1,148 @@
+@use '../../../styles/globalStyles.scss' as globalStyles;
+
+// local defaults (safe if globals are empty)
+$green: #11B613 !default;
+$red: #D43A35 !default;
+$orange: #FF9D00 !default;
+$border: #DEDEDEe0 !default;
+$header-bg: #f8f9fa !default;
+$text: #363636 !default;
+$muted: #767676 !default;
+
+.container {
+    padding: 20px 10px 20px 10px;
+    background-color: #F7F6F5;
+    border-radius: 8px;
+    // margin: 10px 0px 0px 10px;
+    width: 99%;
+}
+
+/* Card */
+.sectionCard {
+    border: 1px solid $border;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    background: #fff;
+}
+
+.sectionHeader {
+    font-size: 1.125rem;
+    font-weight: 600;
+    padding: 14px 16px;
+    border-bottom: 1px solid $border;
+    background-color: #FFFFFF;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.sectionBody {
+    padding: 16px;
+    background-color: #F1F7F4;
+    height: 180px;
+}
+
+.sectionBodyNoPad {
+    padding: 0;
+}
+
+/* Status */
+.statusIndicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.statusDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.active {
+    background-color: $green;
+}
+
+.inactive {
+    background-color: $red;
+}
+
+/* Engagements */
+.engagementRow {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid $border;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.engagementLabel {
+    font-weight: 500;
+    color: $text;
+}
+
+.engagementDate {
+    font-weight: 500;
+    color: $text;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dateDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.dotGreen {
+    background-color: $green;
+}
+
+.dotOrange {
+    background-color: $orange;
+}
+
+/* Teams */
+.teamBlock {
+    margin-bottom: 12px;
+}
+
+.teamBlock {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #DEDEDE;
+}
+
+.teamBlock:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.teamName {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.teamContactInfo {
+    color: $muted;
+    font-size: 0.875rem;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sectionHeader {
+        font-size: 1rem;
+        padding: 12px 14px;
+    }
+
+    .sectionBody {
+        padding: 12px;
+    }
+}

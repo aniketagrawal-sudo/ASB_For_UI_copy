@@ -485,15 +485,15 @@
 
 // Avatar Styles
 .userAvatar {
-  width: 36px !important;
-  height: 36px !important;
+  width: 28px !important;
+  height: 28px !important;
   font-size: globalStyles.$Font-Size-MD !important;
   font-weight: globalStyles.$Font-Weight-SemiBold !important;
   font-family: globalStyles.$Font-Family !important;
-  background-color: globalStyles.$Main-Color-Light !important;
+  // background-color: globalStyles.$Main-Color-Light !important;
   color: globalStyles.$Main-Color !important;
   text-transform: uppercase !important;
-  border: 2px solid rgb(255, 255, 255, 0.1) !important;
+  // border: 2px solid rgb(255, 255, 255, 0.1) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -521,7 +521,7 @@
   font-size: globalStyles.$Font-Size-LG !important;
   font-weight: globalStyles.$Font-Weight-SemiBold !important;
   font-family: globalStyles.$Font-Family !important;
-  background-color: globalStyles.$Main-Color-Light !important;
+  // background-color: globalStyles.$Main-Color-Light !important;
   color: globalStyles.$Main-Color !important;
   text-transform: uppercase !important;
   border: 2px solid rgb(255, 255, 255, 0.1) !important;
@@ -532,8 +532,8 @@
   &.MuiAvatar-root,
   &.MuiAvatar-colorDefault,
   &.MuiAvatar-circular {
-    background-color: globalStyles.$Main-Color-Light !important;
-    color: globalStyles.$Main-Color !important;
+    // background-color: globalStyles.$Main-Color-Light !important;
+    // color: globalStyles.$Main-Color !important;
   }
 
   img {
@@ -553,10 +553,10 @@
   cursor: pointer;
 
   &:hover {
-    background-color: globalStyles.$Main-Color-5 !important;
+    // background-color: globalStyles.$Main-Color-5 !important;
 
     .userAvatar {
-      transform: scale(1.05);
+      // transform: scale(1.05);
     }
   }
 }
