@@ -13,7 +13,7 @@ import {
   Tooltip,
   CircularProgress,
 } from '@mui/material';
-import HelpIcon from '@mui/icons-material/HelpOutline';
+// import HelpIcon from '@mui/icons-material/HelpOutline';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
@@ -44,6 +44,9 @@ import {
 import { useResetVisualMutation } from '../../../services/dashboardApi';
 import classes from './SidePanel.module.scss';
 import AssociatedBankLogo from '../../../assets/Sidepanel/AssociatedBankLogo.svg';
+import ProfileIcon from '../../../assets/Sidepanel/ProfileIcon.svg';
+import HelpIcon from '../../../assets/Sidepanel/HelpIcon.svg';
+
 import MainInfo from '../../../assets/Sidepanel/Main Info.svg';
 import keycloak from '../../../utils/keycloak';
 
@@ -183,23 +186,22 @@ function SidePanel({
       <div className={classes.footer}>
         <div className={classes.footerActions}>
           <Tooltip title="Help" arrow>
-            <IconButton className={classes.footerIcon}>
-              <HelpIcon />
-            </IconButton>
+            {/* <IconButton className={classes.footerIcon}> */}
+              {/* <HelpIcon /> */}
+              <img src={HelpIcon} alt="HelpIcon" />
+            {/* </IconButton> */}
           </Tooltip>
 
           <Tooltip title="Notification" arrow>
-            <IconButton className={classes.footerIcon}>
+            {/* <IconButton className={classes.footerIcon}> */}
               <img src={MainInfo} alt="Main Info" />
-            </IconButton>
+            {/* </IconButton> */}
           </Tooltip>
 
           <Tooltip title="User Menu" arrow>
-            <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} className={classes.footerIcon}>
-              <Avatar src={user?.picture} alt={user?.name} className={classes.userAvatar}>
-                {!user?.picture && user?.name?.[0]}
-              </Avatar>
-            </IconButton>
+            {/* <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} className={classes.footerIcon}> */}
+             <img src={ProfileIcon} alt="ProfileIcon" />
+            {/* </IconButton> */}
           </Tooltip>
         </div>
 

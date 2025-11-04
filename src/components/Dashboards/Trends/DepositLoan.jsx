@@ -1,5 +1,4 @@
-import React, { useMemo, useState } from "react";
-import { Card, Grid, Typography, Box, Select, MenuItem } from "@mui/material";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   ResponsiveContainer,
   LineChart,
@@ -12,86 +11,102 @@ import {
 } from "recharts";
 import classes from "./DepositLoan.module.scss";
 
-/* -------------------- DATA (same as before) -------------------- */
-const depositsData = {
-  MoM: {
-    labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
-    data: [0.65,0.60,0.62,0.70,0.78,0.88,0.98,1.02,1.05,1.10,0.90,0.60], // min 0.6, max 1.1
-  },
-  YoY: { labels: ["2021","2022","2023","2024","2025"], data: [3.0,6.0,13.8,10.5,4.8] },
-  QoQ: { labels: ["Q1","Q2","Q3","Q4"], data: [0.7,0.9,1.0,0.6] },
-};
-
-const loansData = {
-  MoM: {
-    labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
-    data: [0.45,0.55,0.80,0.80,0.60,0.50,0.70,0.90,0.75,1.00,0.85,0.65],
-  },
-  YoY: { labels: ["2021","2022","2023","2024","2025"], data: [2.2,3.1,4.0,3.4,2.8] },
-  QoQ: { labels: ["Q1","Q2","Q3","Q4"], data: [0.5,0.9,1.1,0.7] },
-};
-
-/* -------------------- HELPERS -------------------- */
+/* -------------------- Helpers (JS only) -------------------- */
 const mm = (arr) => {
+  if (!arr || !arr.length) return { min: 0, max: 0 };
   let min = arr[0], max = arr[0];
-  for (let i = 1; i < arr.length; i++) { if (arr[i] < min) min = arr[i]; if (arr[i] > max) max = arr[i]; }
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i] < min) min = arr[i];
+    if (arr[i] > max) max = arr[i];
+  }
   return { min, max };
 };
-const fmtM = (n) => `$${n.toLocaleString(undefined, { maximumFractionDigits: 1 })}M`;
+const fmtM = (n) => `$${Number(n || 0).toLocaleString(undefined, { maximumFractionDigits: 1 })}M`;
 const tickFmt = (v) => fmtM(Number(v) || 0);
+const buildSeries = (cfg) => {
+  const labels = (cfg && cfg.labels) || [];
+  const data = (cfg && cfg.data) || [];
+  if (!labels.length || !data.length) return [{ label: "", value: 0 }];
+  return labels.map((label, i) => ({ label, value: data[i] ?? 0 }));
+};
 
-/* Convert your {labels[], data[]} into Recharts-friendly [{label, value}] */
-const buildSeries = (cfg) => cfg.labels.map((label, i) => ({ label, value: cfg.data[i] }));
-
-/* -------------------- HEADER (unchanged) -------------------- */
+/* -------------------- Header -------------------- */
 function TrendHeader({ title, view, onViewChange, account, onAccountChange }) {
   const views = ["YoY", "MoM", "QoQ"];
   const accounts = ["Acc No.1", "Acc No.2", "Acc No.3"];
 
   return (
-    <Box className={classes.chartHeader}>
-      <Typography className={classes.headerTitle}>{title}</Typography>
+    <div className={classes.chartHeader}>
+      <div className={classes.headerTitle}>{title}</div>
 
-      <Box className={classes.headerRight}>
-        <Box className={classes.segment}>
-          {views.map((v) => (
-            <button
-              key={v}
-              type="button"
-              className={`${classes.segmentItem} ${view === v ? classes.segmentItemActive : ""}`}
-              onClick={() => onViewChange(v)}
-            >
-              {v}
-            </button>
-          ))}
-        </Box>
+      <div className={classes.headerRight}>
+        <div className={classes.segment}>
+          {views.map((v) => {
+            const active = view === v;
+            return (
+              <button
+                key={v}
+                type="button"
+                onClick={() => onViewChange(v)}
+                className={`${classes.segmentItem} ${active ? classes.segmentItemActive : ""}`}
+              >
+                {v}
+              </button>
+            );
+          })}
+        </div>
 
-        <Select
+        <select
           value={account}
           onChange={(e) => onAccountChange(e.target.value)}
-          size="small"
-          className={classes.accountSelect}
+          className={classes.select}
         >
-          {accounts.map((acc) => (
-            <MenuItem key={acc} value={acc}>{acc}</MenuItem>
+          {accounts.map((a) => (
+            <option key={a} value={a}>{a}</option>
           ))}
-        </Select>
-      </Box>
-    </Box>
+        </select>
+      </div>
+    </div>
   );
 }
 
-/* -------------------- CARD (Recharts) -------------------- */
-function TrendCard({ title, series, yTitle, rightAxis = false }) {
+/* -------------------- Card -------------------- */
+function TrendCard({
+  title,
+  yTitle,
+  rightAxis = false,
+  loadData,          // async (account) => Promise<SeriesByView>
+  initialSeries,     // {MoM:{labels,data}, YoY:{...}, QoQ:{...}}
+  defaultAccount = "Acc No.1",
+}) {
   const [view, setView] = useState("MoM");
-  const [account, setAccount] = useState("Acc No.1");
+  const [account, setAccount] = useState(defaultAccount);
 
-  const cfg = series[view];
+  const [series, setSeries] = useState(
+    initialSeries || { MoM: { labels: [], data: [] }, YoY: { labels: [], data: [] }, QoQ: { labels: [], data: [] } }
+  );
+  const cfg = (series && series[view]) || { labels: [], data: [] };
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        if (typeof loadData === "function") {
+          const next = await loadData(account);
+          if (alive && next) setSeries(next);
+        }
+      } catch (e) {
+        console.error(`${title} load failed`, e);
+      }
+    })();
+    return () => { alive = false; };
+  }, [account]); // only when account changes
+
   const data = useMemo(() => buildSeries(cfg), [cfg]);
-  const minMax = useMemo(() => mm(cfg.data), [cfg]);
+  const minMax = useMemo(() => (cfg.data && cfg.data.length ? mm(cfg.data) : { min: 0, max: 0 }), [cfg]);
 
   return (
-    <Card className={classes.card}>
+    <div className={classes.card}>
       <TrendHeader
         title={title}
         view={view}
@@ -100,41 +115,42 @@ function TrendCard({ title, series, yTitle, rightAxis = false }) {
         onAccountChange={setAccount}
       />
 
-      {/* HR under header */}
       <div className={classes.headerHr} />
 
-      {/* Right-aligned badges */}
-      <Box className={classes.badgeRowRight}>
-        <div className={classes.badge}><span>Lowest:</span>&nbsp;<strong>{fmtM(minMax.min)}</strong></div>
-        <div className={classes.badge}><span>Highest:</span>&nbsp;<strong>{fmtM(minMax.max)}</strong></div>
-      </Box>
+      <div className={classes.badgeRowRight}>
+        <div className={classes.badge}>
+          <span>Lowest:</span>&nbsp;<strong>{fmtM(minMax.min)}</strong>
+        </div>
+        <div className={classes.badge}>
+          <span>Highest:</span>&nbsp;<strong>{fmtM(minMax.max)}</strong>
+        </div>
+      </div>
 
-      <Box sx={{ width: "99%", height: 150 }}>
-        <ResponsiveContainer>
-          <LineChart data={data} margin={{ top: 8, right: 16, bottom: 0, left: 0 }}>
+      <div className={classes.chartBox}>
+        {/* ✅ Give explicit size here; parent has fixed height in CSS */}
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={data} margin={{ top: 8, right: 0, bottom: 0, left: 0 }}>
             <CartesianGrid stroke="#eee" vertical={false} />
-            <XAxis dataKey="label" tickLine={false} axisLine={{ stroke: "#ddd" }} />
-            {rightAxis ? (
-              <YAxis
-                yAxisId="right"
-                orientation="right"
-                tickFormatter={tickFmt}
-                axisLine={{ stroke: "#ddd" }}
-                tickLine={false}
-              >
-                <Label value={yTitle} position="insideRight" angle={-90} style={{ textAnchor: "middle", fontWeight: 600 }} />
-              </YAxis>
-            ) : (
-              <YAxis
-                yAxisId="left"
-                orientation="left"
-                tickFormatter={tickFmt}
-                axisLine={{ stroke: "#ddd" }}
-                tickLine={false}
-              >
-                <Label value={yTitle} position="insideLeft" angle={-90} style={{ textAnchor: "middle", fontWeight: 600 }} />
-              </YAxis>
-            )}
+            <XAxis
+              dataKey="label"
+              tickLine={false}
+              axisLine={{ stroke: "#ddd" }}
+              padding={{ left: 20, right: 20 }}
+            />
+            <YAxis
+              yAxisId={rightAxis ? "right" : "left"}
+              orientation={rightAxis ? "right" : "left"}
+              tickFormatter={tickFmt}
+              axisLine={{ stroke: "#ddd" }}
+              tickLine={false}
+            >
+              <Label
+                value={yTitle}
+                position={rightAxis ? "insideRight" : "insideLeft"}
+                angle={-90}
+                style={{ textAnchor: "middle", fontWeight: 600 }}
+              />
+            </YAxis>
             <Tooltip
               formatter={(val) => [fmtM(Number(val)), title]}
               labelFormatter={(l) => l}
@@ -150,33 +166,66 @@ function TrendCard({ title, series, yTitle, rightAxis = false }) {
             />
           </LineChart>
         </ResponsiveContainer>
-      </Box>
-    </Card>
+      </div>
+    </div>
   );
 }
 
-/* -------------------- PAGE (unchanged layout) -------------------- */
+/* -------------------- Page -------------------- */
 export default function DepositLoan() {
+  // Fallback data
+  const depositsFallback = {
+    MoM: { labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], data: [0.65, 0.60, 0.62, 0.70, 0.78, 0.88, 0.98, 1.02, 1.05, 1.10, 0.90, 0.60] },
+    YoY: { labels: ["2021", "2022", "2023", "2024", "2025"], data: [3.0, 6.0, 13.8, 10.5, 4.8] },
+    QoQ: { labels: ["Q1", "Q2", "Q3", "Q4"], data: [0.7, 0.9, 1.0, 0.6] },
+  };
+  const loansFallback = {
+    MoM: { labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], data: [0.45, 0.55, 0.80, 0.80, 0.60, 0.50, 0.70, 0.90, 0.75, 1.00, 0.85, 0.65] },
+    YoY: { labels: ["2021", "2022", "2023", "2024", "2025"], data: [2.2, 3.1, 4.0, 3.4, 2.8] },
+    QoQ: { labels: ["Q1", "Q2", "Q3", "Q4"], data: [0.5, 0.9, 1.1, 0.7] },
+  };
+
+  // Mock API adapters (replace with real fetch)
+  const loadDeposits = async (account) => {
+    const factor = account === "Acc No.2" ? 1.05 : account === "Acc No.3" ? 0.95 : 1;
+    return {
+      ...depositsFallback,
+      MoM: { ...depositsFallback.MoM, data: depositsFallback.MoM.data.map((v) => +(v * factor).toFixed(2)) },
+    };
+  };
+
+  const loadLoans = async (account) => {
+    const factor = account === "Acc No.2" ? 0.95 : account === "Acc No.3" ? 1.08 : 1;
+    return {
+      ...loansFallback,
+      MoM: { ...loansFallback.MoM, data: loansFallback.MoM.data.map((v) => +(v * factor).toFixed(2)) },
+    };
+  };
+
   return (
-    <Box className={classes.Depositheader}>
-      <Grid className={classes.trendCard}>
-        <Grid item xs={12} md={6}>
+    <div className={classes.container}>
+      <div className={classes.row}>
+        <div className={classes.col}>
           <TrendCard
             title="Deposit Trends"
-            series={depositsData}
             yTitle="Deposits"
-            rightAxis={false}  // Y axis left
+            rightAxis={false}
+            loadData={loadDeposits}
+            initialSeries={depositsFallback}
+            defaultAccount="Acc No.1"
           />
-        </Grid>
-        <Grid item xs={12} md={6}>
+        </div>
+        <div className={classes.col}>
           <TrendCard
             title="Loan Outstanding Trends"
-            series={loansData}
             yTitle="Loan Outstanding"
-            rightAxis={false}   // Y axis right
+            rightAxis={false}
+            loadData={loadLoans}
+            initialSeries={loansFallback}
+            defaultAccount="Acc No.1"
           />
-        </Grid>
-      </Grid>
-    </Box>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -13,9 +13,9 @@ import {
   CircularProgress,
   Pagination,
 } from '@mui/material';
-import HomeIcon from '../../assets/Sidepanel/Home.png';
+// import HomeIcon from '../../assets/Sidepanel/Home.png';
 import ReportsIcon from '../../assets/Sidepanel/reports.png';
-import InsightsIcon from '../../assets/Sidepanel/Insights.png';
+// import InsightsIcon from '../../assets/Sidepanel/Insights.png';
 import ThreadsIcon from '../../assets/Sidepanel/threads.png';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
