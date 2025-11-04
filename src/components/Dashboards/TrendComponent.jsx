@@ -5,7 +5,6 @@ import classes from './TrendComponent.module.scss';
 import DepositLoan from './Trends/DepositLoan';
 import RevenueGraph from './Trends/RevenueGraph';
 import TotalProfitAndLossRelation from './Trends/TotalProfitAndLossRelation';
-import ClientInformation from './Trends/ClientInformation';
 
 export default function TrendComponent() {
   return (
@@ -13,7 +12,6 @@ export default function TrendComponent() {
       <DepositLoan />
       <RevenueGraph />
       <TotalProfitAndLossRelation />
-      <ClientInformation />
     </Box>
   );
 }
