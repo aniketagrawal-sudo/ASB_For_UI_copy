@@ -10,18 +10,28 @@ $text: #363636 !default;
 $muted: #767676 !default;
 
 .container {
-    padding: 20px 10px 20px 10px;
+    // padding: 20px 10px 20px 10px;
     background-color: #F7F6F5;
     border-radius: 8px;
     // margin: 10px 0px 0px 10px;
-    width: 99%;
+    // width: 99%;
+}
+
+.infoIcon {
+  color: #6b7280;
+  padding: 1px;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #00796b;
+  }
 }
 
 /* Card */
 .sectionCard {
     border: 1px solid $border;
     border-radius: 8px;
-    margin-bottom: 24px;
+    // margin-bottom: 24px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     background: #fff;
 }
@@ -34,6 +44,8 @@ $muted: #767676 !default;
     background-color: #FFFFFF;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    display: flex;
+    gap: 3px;
 }
 
 .sectionBody {
