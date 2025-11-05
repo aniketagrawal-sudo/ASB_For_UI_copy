@@ -36,7 +36,7 @@ export const SENDER_TYPES_DISP_NAME = {
 
 // Placeholder Texts
 export const PLACEHOLDERS = {
-  CHAT_INPUT: 'Type your query here...',
+  CHAT_INPUT: 'Type here...',
 };
 
 export const MESSAGE_STATUS = {

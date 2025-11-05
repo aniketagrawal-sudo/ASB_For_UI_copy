@@ -3,10 +3,10 @@ import { InputBase, IconButton, Chip, Tooltip } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import CloseIcon from '@mui/icons-material/Close';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import AddIcon from '@mui/icons-material/Add'; // Import the AddIcon
+import MapsUgcIcon from '@mui/icons-material/MapsUgc';
+import UploadSharpIcon from '@mui/icons-material/UploadSharp';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-// Removed UploadFileIcon import as it's no longer used
 import {
   updateConvesationId,
   setCreatingConversation,
@@ -481,41 +481,66 @@ const ChatInput = forwardRef(({ instanceId = 'default' }, ref) => {
   };
   
   // --- Start of Changed Section ---
-  return (
-    <div className={classes.inputMessageFieldContainer}>
-      {fileError && <div className={classes.error}>{fileError}</div>}
+return (
+  <div className={classes.inputMessageFieldContainer}>
+    {fileError && <div className={classes.error}>{fileError}</div>}
 
-      <div className={classes.inputBaseContainer}>
-        {localFiles.length > 0 && (
-          <div className={classes.fileChipsContainer}>
-            {localFiles.slice(0, 2).map((file, index) => (
-              <Chip
-                key={`${file.name}-${index}`}
-                label={file.name}
-                onDelete={() => handleFileRemove(file)}
-                deleteIcon={<CloseIcon />}
-                size="small"
-                icon={<AttachFileIcon />}
-                className={classes.fileChip}
-              />
-            ))}
-            {localFiles.length > 2 && (
-              <Tooltip
-                title={localFiles
-                  .slice(2)
-                  .map((file) => file.name)
-                  .join('\n')}
-                arrow
-                placement="top">
-                <Chip label={`+${localFiles.length - 2} more`} size="small" className={classes.moreFilesChip} />
-              </Tooltip>
-            )}
-          </div>
-        )}
+    <div className={classes.inputBaseContainer}>
+      {localFiles.length > 0 && (
+        <div className={classes.fileChipsContainer}>
+          {localFiles.slice(0, 2).map((file, index) => (
+            <Chip
+              key={`${file.name}-${index}`}
+              label={file.name}
+              onDelete={() => handleFileRemove(file)}
+              deleteIcon={<CloseIcon />}
+              size="small"
+              icon={<AttachFileIcon />}
+              className={classes.fileChip}
+            />
+          ))}
+          {localFiles.length > 2 && (
+            <Tooltip
+              title={localFiles
+                .slice(2)
+                .map((file) => file.name)
+                .join('\n')}
+              arrow
+              placement="top">
+              <Chip label={`+${localFiles.length - 2} more`} size="small" className={classes.moreFilesChip} />
+            </Tooltip>
+          )}
+        </div>
+      )}
 
+      <div className={classes.inputWrapperOuter}>
+        {/* 1️⃣ OUTSIDE ADD ICON */}
+        <IconButton
+          className={classes.outerAddButton}
+           disabled={isProcessing || !question.trim()}
+          size="small"
+          onClick={() => console.log('Outer add clicked')}>
+          <MapsUgcIcon />
+        </IconButton>
+
+        {/* MAIN INPUT AREA */}
         <div className={classes.inputWrapper}>
-          {/* 1. UPLOAD BUTTON MOVED HERE, TO THE LEFT */}
-          <input
+          {/* 2️⃣ UPLOAD BUTTON INSIDE INPUT LEFT SIDE */}
+         
+          {/* 3️⃣ INPUT FIELD */}
+          <InputBase
+            className={classes.inputBase}
+            placeholder={PLACEHOLDERS.CHAT_INPUT}
+            value={question}
+            onChange={handleQuestion}
+            onKeyPress={handleKeyPress}
+            disabled={isProcessing}
+            fullWidth
+            multiline
+            maxRows={4}
+          />
+
+           <input
             type="file"
             accept={ALLOWED_FILE_TYPES.join(',')}
             hidden
@@ -530,35 +555,24 @@ const ChatInput = forwardRef(({ instanceId = 'default' }, ref) => {
               className={classes.uploadButton}
               disabled={isProcessing || localFiles.length >= MAX_FILES_UPLOAD}
               size="small">
-              {/* 2. ICON CHANGED TO A PLUS SYMBOL */}
-              <AddIcon />
+              <UploadSharpIcon />
             </IconButton>
           </label>
 
-          <InputBase
-            className={classes.inputBase}
-            placeholder={PLACEHOLDERS.CHAT_INPUT}
-            value={question}
-            onChange={handleQuestion}
-            onKeyPress={handleKeyPress}
-            disabled={isProcessing}
-            fullWidth
-            multiline
-            maxRows={4}
-          />
-          
-          {/* 3. SEND BUTTON IS NOW A DIRECT CHILD OF THE WRAPPER */}
+          {/* 4️⃣ SEND BUTTON */}
           <IconButton
             onClick={handleSubmitQuestion}
             disabled={isProcessing || !question.trim()}
             className={classes.sendButton}
             size="small">
-            <SendIcon />
+            <SendIcon style={{fontSize: '12px'}}/>
           </IconButton>
         </div>
       </div>
     </div>
-  );
+  </div>
+);
+
 });
 // --- End of Changed Section ---
 
