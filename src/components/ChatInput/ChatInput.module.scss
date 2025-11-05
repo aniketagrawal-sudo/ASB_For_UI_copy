@@ -21,6 +21,10 @@
   &:hover {
     background-color: #059669;
   }
+  &:disabled {
+    background-color: #d0d0d0;
+    color: #999;
+  }
 }
 
 /* Main input wrapper */
