@@ -1,11 +1,11 @@
 .inputWrapperOuter {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  align-items: flex-end; /* ✅ ensures outer + input bar align at bottom */
+  gap: 4px;
   width: 100%;
 }
 
-/* OUTSIDE ADD ICON (left side of bar) */
+/* Keep your existing outer button style */
 .outerAddButton {
   background-color: #10b981;
   color: #fff;
@@ -16,55 +16,69 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.2s ease;
 
   &:hover {
     background-color: #059669;
   }
 }
 
-/* Adjusted input bar */
+/* Main input wrapper */
 .inputWrapper {
   display: flex;
-  align-items: center;
-  // flex: 1;
+  align-items: flex-end; /* ✅ keep all inner icons aligned at bottom */
   background: #ffffff;
   border-radius: 10px;
   padding: 8px;
   border: 1px solid #B4B4B4;
-  height: 38px;
-  gap: 10px;
   width: 100%;
+  gap: 10px;
+
+  /* 👇 lets input grow but keeps consistent layout */
+  min-height: 38px;
+  max-height: 140px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-/* Upload button (now inside bar, left side of input) */
-.uploadButton {
-  color: #000000;
-  border-radius: 6px;
-  width: 14px;
-  height: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    // background-color: #333333;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-}
-
-/* Slightly larger input width so it fits new icons nicely */
+/* Input field */
 .inputBase {
   flex: 1;
   font-size: 12px;
   border: none;
   background: transparent;
+  resize: none;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-y: auto;
+  max-height: 100px; /* grows naturally */
+  display: block;
 
   &:focus {
     outline: none;
+  }
+}
+
+/* Upload and send button styles remain same */
+.uploadButton {
+  color: #000000;
+  border-radius: 6px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    color: #fff;
+    background-color: #333333;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 
@@ -74,6 +88,7 @@
   border-radius: 100%;
   width: 25px;
   height: 25px;
+  transition: background-color 0.2s ease;
 
   &:hover {
     background-color: #059669;
