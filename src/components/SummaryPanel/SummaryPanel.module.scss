@@ -73,7 +73,7 @@
   position: fixed !important;
   top: 10px;
   /* keep it just left of the panel's left edge: panel uses right:0 when open and width:37% */
-  right: calc(37% + 0.5px);
+  right: calc(37% + -1px);
   z-index: 2001 !important; /* higher than panel (1200) and overlay (1000) */
   background-color: #fff !important;
   color: #555 !important;
