@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Box, Typography, CircularProgress } from '@mui/material';
 import WelcomeIcon from '../../assets/welcomeMessage/WelcomeIcon.png';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PropTypes from 'prop-types';
 import classes from './WelcomeMessage.module.scss';
 import { useGetRecommendedQuestionsQuery } from '../../services/recommendationApi';
@@ -13,7 +14,8 @@ const WelcomeMessage = ({
   personaId,
   screenType,
 }) => {
-  // Default queries to show if previous queries are empty
+  const [expandRMQueries, setExpandRMQueries] = useState(false);
+
   const defaultQueries = [
     'Tell me about our market strategy',
     'What are our key performance indicators?',
@@ -21,7 +23,6 @@ const WelcomeMessage = ({
     'What are the current industry trends?',
   ];
 
-  // ✅ Show only 2 previous queries, fallback to defaults if needed
   const displayQueries = useMemo(() => {
     return [...previousQueries]
       .slice(0, 2)
@@ -29,19 +30,17 @@ const WelcomeMessage = ({
       .slice(0, 2);
   }, [previousQueries]);
 
-  // ✅ Fetch suggested questions via RTK Query
   const {
     data: suggestedQueries = [],
     isLoading,
     isError,
   } = useGetRecommendedQuestionsQuery(
     { personaId, screenType },
-    { skip: !personaId || !screenType } // skip if props are missing
+    { skip: !personaId || !screenType }
   );
 
   return (
     <Box className={classes.welcomeMessage}>
-      {/* Header */}
       <div className={classes.welcomeHeader}>
         <div className={classes.iconWrapper}>
           <img src={WelcomeIcon} alt="Welcome" className={classes.chatIcon} />
@@ -54,30 +53,41 @@ const WelcomeMessage = ({
         </Typography>
       </div>
 
-      {/* Previous Queries Section */}
-      {/* {displayQueries.length > 0 && (
-        <div className={classes.queriesSection}>
-          <Typography variant="subtitle2" className={classes.queriesTitle}>
-            Previous Queries
-          </Typography>
-          <div className={classes.queriesList}>
-            {displayQueries.map((query, index) => (
-              <div
-                key={index}
-                className={classes.queryItem}
-                onClick={() => onQuerySelect(query)}
-              >
-                <Typography variant="body2" className={classes.queryText}>
-                  {query}
-                </Typography>
-                <ChevronRightIcon className={classes.arrowIcon} />
-              </div>
-            ))}
-          </div>
-        </div>
-      )} */}
+      <div
+  className={`${classes.rmQueriesWrapper} ${
+    expandRMQueries ? classes.expanded : ''
+  }`}
+>
+  <div
+    className={classes.rmQueriesHeader}
+    onClick={() => setExpandRMQueries((prev) => !prev)}
+  >
+    <Typography variant="subtitle2" className={classes.rmQueriesTitle}>
+      RM Queries
+      {expandRMQueries ? (
+        <ExpandMoreIcon className={classes.rmChevronIcon} />
+      ) : (
+        <ChevronRightIcon className={classes.rmChevronIcon} />
+      )}
+    </Typography>
+  </div>
 
-      {/* Suggested Questions Section */}
+  <div className={classes.rmQueriesContent}>
+    <Typography variant="body2">
+      • Dummy text line 1 explaining RM queries.
+    </Typography>
+    <Typography variant="body2">
+      • Dummy text line 2 with example usage.
+    </Typography>
+    <Typography variant="body2">
+      • Dummy text line 3 describing possible data insights.
+    </Typography>
+    <Typography variant="body2">
+      • Dummy text line 4 placeholder content for expansion.
+    </Typography>
+  </div>
+</div>
+
       {isLoading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
           <CircularProgress size={24} />
@@ -115,7 +125,6 @@ const WelcomeMessage = ({
         </div>
       )}
 
-      {/* Error State */}
       {isError && (
         <Typography color="error" sx={{ mt: 1 }}>
           Failed to load suggestions
