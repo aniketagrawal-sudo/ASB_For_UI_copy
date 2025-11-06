@@ -322,7 +322,7 @@ function ConversationDashboard() {
       </div>
       {renderContent}
       <div className={classes.inputArea}>
-        <ChatInput ref={chatInputRef} instanceId="dashboard" />
+        <ChatInput ref={chatInputRef} instanceId="dashboard"  onResetConversation={handleNewChat}  />
       </div>
       {isThreadsPanelOpen && (
         <ThreadsPanel

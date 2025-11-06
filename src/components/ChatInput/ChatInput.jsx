@@ -44,7 +44,7 @@ import {
 } from '../../utils/constants';
 import classes from './ChatInput.module.scss';
 
-const ChatInput = forwardRef(({ instanceId = 'default' }, ref) => {
+const ChatInput = forwardRef(({ instanceId = 'default', onResetConversation }, ref) => {
   const dispatch = useDispatch();
   const currentPage = useSelector(selectCurrentPage);
   const conversationDetails = useSelector(getConversationDetails);
@@ -63,8 +63,9 @@ const ChatInput = forwardRef(({ instanceId = 'default' }, ref) => {
 
   const [addMessageInDB] = useAddMessageInDBMutation();
   const [createNewConversation] = useCreateNewConversationMutation();
+  const [showOutsideAddIcon, setShowOutsideAddIcon] = useState(true);
+const [isOutsideAddDisabled, setIsOutsideAddDisabled] = useState(true);
 
-  // --- No changes in this section (hooks and logic) ---
   const getMimeType = useCallback((filename) => {
     const ext = filename.split('.').pop().toLowerCase();
     const mimeTypes = {
@@ -81,12 +82,12 @@ const ChatInput = forwardRef(({ instanceId = 'default' }, ref) => {
   useEffect(() => {
     setFileError('');
     setQuestion('');
-    setLocalFiles([]); // Reset local files state
+    setLocalFiles([]);
     dispatch(clearUploadedFiles(instanceId));
 
     return () => {
       if (!activeConversationId || activeConversationId === 'new') {
-        setLocalFiles([]); // Reset local files state
+        setLocalFiles([]);
         dispatch(clearUploadedFiles(instanceId));
       }
     };
@@ -272,10 +273,10 @@ const ChatInput = forwardRef(({ instanceId = 'default' }, ref) => {
               name: file.name,
               type: file.type,
             })),
-            client:currentUser?.industries?.find((i) => i.name === selectedIndustry)?.id,
-            persona:currentUser?.industries
-            ?.find((i) => i.name === selectedIndustry)
-            ?.personas?.find((p) => p.name === selectedRole)?.id,
+            client: currentUser?.industries?.find((i) => i.name === selectedIndustry)?.id,
+            persona: currentUser?.industries
+              ?.find((i) => i.name === selectedIndustry)
+              ?.personas?.find((p) => p.name === selectedRole)?.id,
             topic: currentQuestion.slice(0, 50),
           },
           user: {
@@ -479,105 +480,119 @@ const ChatInput = forwardRef(({ instanceId = 'default' }, ref) => {
       handleSubmitQuestion();
     }
   };
-  
-  // --- Start of Changed Section ---
-return (
-  <div className={classes.inputMessageFieldContainer}>
-    {fileError && <div className={classes.error}>{fileError}</div>}
 
-    <div className={classes.inputBaseContainer}>
-      {localFiles.length > 0 && (
-        <div className={classes.fileChipsContainer}>
-          {localFiles.slice(0, 2).map((file, index) => (
-            <Chip
-              key={`${file.name}-${index}`}
-              label={file.name}
-              onDelete={() => handleFileRemove(file)}
-              deleteIcon={<CloseIcon />}
-              size="small"
-              icon={<AttachFileIcon />}
-              className={classes.fileChip}
+  return (
+    <div className={classes.inputMessageFieldContainer}>
+      {fileError && <div className={classes.error}>{fileError}</div>}
+
+      <div className={classes.inputBaseContainer}>
+        {localFiles.length > 0 && (
+          <div className={classes.fileChipsContainer}>
+            {localFiles.slice(0, 2).map((file, index) => (
+              <Chip
+                key={`${file.name}-${index}`}
+                label={file.name}
+                onDelete={() => handleFileRemove(file)}
+                deleteIcon={<CloseIcon />}
+                size="small"
+                icon={<AttachFileIcon />}
+                className={classes.fileChip}
+              />
+            ))}
+            {localFiles.length > 2 && (
+              <Tooltip
+                title={localFiles
+                  .slice(2)
+                  .map((file) => file.name)
+                  .join('\n')}
+                arrow
+                placement="top">
+                <Chip label={`+${localFiles.length - 2} more`} size="small" className={classes.moreFilesChip} />
+              </Tooltip>
+            )}
+          </div>
+        )}
+
+        <div className={classes.inputWrapperOuter}>
+          {/* 1️⃣ OUTSIDE ADD ICON (Modified behavior) */}
+         {showOutsideAddIcon && (
+  <IconButton
+    className={classes.outerAddButton}
+    size="small"
+    disabled={isOutsideAddDisabled}
+    sx={{ opacity: isOutsideAddDisabled ? 0.5 : 1 }}
+    onClick={() => {
+      if (isOutsideAddDisabled) return;
+      if (typeof onResetConversation === 'function') {
+        onResetConversation();
+      }
+      setIsOutsideAddDisabled(true);
+      setShowOutsideAddIcon(true);
+    }}
+  >
+    <MapsUgcIcon />
+  </IconButton>
+)}
+
+
+          {/* MAIN INPUT AREA */}
+          <div className={classes.inputWrapper}>
+            <InputBase
+              className={classes.inputBase}
+              placeholder={PLACEHOLDERS.CHAT_INPUT}
+              value={question}
+              onChange={(e) => {
+                handleQuestion(e);
+                setIsOutsideAddDisabled(true);
+              }}
+              onKeyPress={handleKeyPress}
+              disabled={isProcessing}
+              fullWidth
+              multiline
+              maxRows={4}
             />
-          ))}
-          {localFiles.length > 2 && (
-            <Tooltip
-              title={localFiles
-                .slice(2)
-                .map((file) => file.name)
-                .join('\n')}
-              arrow
-              placement="top">
-              <Chip label={`+${localFiles.length - 2} more`} size="small" className={classes.moreFilesChip} />
-            </Tooltip>
-          )}
-        </div>
-      )}
 
-      <div className={classes.inputWrapperOuter}>
-        {/* 1️⃣ OUTSIDE ADD ICON */}
-        <IconButton
-          className={classes.outerAddButton}
-           disabled={isProcessing || !question.trim()}
-          size="small"
-          onClick={() => console.log('Outer add clicked')}>
-          <MapsUgcIcon />
-        </IconButton>
-
-        {/* MAIN INPUT AREA */}
-        <div className={classes.inputWrapper}>
-          {/* 2️⃣ UPLOAD BUTTON INSIDE INPUT LEFT SIDE */}
-         
-          {/* 3️⃣ INPUT FIELD */}
-          <InputBase
-            className={classes.inputBase}
-            placeholder={PLACEHOLDERS.CHAT_INPUT}
-            value={question}
-            onChange={handleQuestion}
-            onKeyPress={handleKeyPress}
-            disabled={isProcessing}
-            fullWidth
-            multiline
-            maxRows={4}
-          />
-
-           <input
-            type="file"
-            accept={ALLOWED_FILE_TYPES.join(',')}
-            hidden
-            id={`icon-button-file-${instanceId}`}
-            onChange={handleFileChange}
-            disabled={isProcessing || localFiles.length >= MAX_FILES_UPLOAD}
-            multiple
-          />
-          <label htmlFor={`icon-button-file-${instanceId}`}>
-            <IconButton
-              component="span"
-              className={classes.uploadButton}
+            <input
+              type="file"
+              accept={ALLOWED_FILE_TYPES.join(',')}
+              hidden
+              id={`icon-button-file-${instanceId}`}
+              onChange={handleFileChange}
               disabled={isProcessing || localFiles.length >= MAX_FILES_UPLOAD}
-              size="small">
-              <UploadSharpIcon />
-            </IconButton>
-          </label>
+              multiple
+            />
+            <label htmlFor={`icon-button-file-${instanceId}`}>
+              <IconButton
+                component="span"
+                className={classes.uploadButton}
+                disabled={isProcessing || localFiles.length >= MAX_FILES_UPLOAD}
+                size="small">
+                <UploadSharpIcon />
+              </IconButton>
+            </label>
 
-          {/* 4️⃣ SEND BUTTON */}
-          <IconButton
-            onClick={handleSubmitQuestion}
-            disabled={isProcessing || !question.trim()}
-            className={classes.sendButton}
-            size="small">
-            <SendIcon style={{fontSize: '12px'}}/>
-          </IconButton>
+            <IconButton
+              onClick={async () => {
+                await handleSubmitQuestion();
+                setShowOutsideAddIcon(true);
+                setIsOutsideAddDisabled(false)
+              }}
+              disabled={isProcessing || !question.trim()}
+              className={classes.sendButton}
+              size="small">
+              <SendIcon style={{ fontSize: '12px' }} />
+            </IconButton>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
-
+  );
 });
-// --- End of Changed Section ---
 
 ChatInput.propTypes = {
   instanceId: PropTypes.string,
+  onResetConversation: PropTypes.func,
+  ref: PropTypes.any,
 };
 
 ChatInput.displayName = 'ChatInput';
