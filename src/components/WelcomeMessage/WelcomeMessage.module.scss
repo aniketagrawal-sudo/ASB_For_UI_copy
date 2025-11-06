@@ -12,7 +12,9 @@
   background-color: #ffffff;
   padding: 6px 10px;
   border-radius: 4px;
-  display: inline-flex;
+  display: flex;
+  width: max-content;
+  margin: auto;
 }
 
 .rmQueriesTitle {
@@ -59,6 +61,11 @@
   opacity: 1;
 }
 
+.activeTitle {
+  color: #1A1A1A !important;
+  font-weight: 500 !important;
+  transition: color 0.3s ease;
+}
 .welcomeMessage {
   display: flex;
   flex-direction: column;

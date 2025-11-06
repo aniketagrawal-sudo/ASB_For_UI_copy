@@ -7,13 +7,7 @@ import PropTypes from 'prop-types';
 import classes from './WelcomeMessage.module.scss';
 import { useGetRecommendedQuestionsQuery } from '../../services/recommendationApi';
 
-const WelcomeMessage = ({
-  userName,
-  previousQueries = [],
-  onQuerySelect,
-  personaId,
-  screenType,
-}) => {
+const WelcomeMessage = ({ userName, previousQueries = [], onQuerySelect, personaId, screenType }) => {
   const [expandRMQueries, setExpandRMQueries] = useState(false);
 
   const defaultQueries = [
@@ -24,20 +18,14 @@ const WelcomeMessage = ({
   ];
 
   const displayQueries = useMemo(() => {
-    return [...previousQueries]
-      .slice(0, 2)
-      .concat(defaultQueries.slice(previousQueries.length))
-      .slice(0, 2);
+    return [...previousQueries].slice(0, 2).concat(defaultQueries.slice(previousQueries.length)).slice(0, 2);
   }, [previousQueries]);
 
   const {
     data: suggestedQueries = [],
     isLoading,
     isError,
-  } = useGetRecommendedQuestionsQuery(
-    { personaId, screenType },
-    { skip: !personaId || !screenType }
-  );
+  } = useGetRecommendedQuestionsQuery({ personaId, screenType }, { skip: !personaId || !screenType });
 
   return (
     <Box className={classes.welcomeMessage}>
@@ -53,40 +41,28 @@ const WelcomeMessage = ({
         </Typography>
       </div>
 
-      <div
-  className={`${classes.rmQueriesWrapper} ${
-    expandRMQueries ? classes.expanded : ''
-  }`}
->
-  <div
-    className={classes.rmQueriesHeader}
-    onClick={() => setExpandRMQueries((prev) => !prev)}
-  >
-    <Typography variant="subtitle2" className={classes.rmQueriesTitle}>
-      RM Queries
-      {expandRMQueries ? (
-        <ExpandMoreIcon className={classes.rmChevronIcon} />
-      ) : (
-        <ChevronRightIcon className={classes.rmChevronIcon} />
-      )}
-    </Typography>
-  </div>
+      <div className={`${classes.rmQueriesWrapper} ${expandRMQueries ? classes.expanded : ''}`}>
+        <div className={classes.rmQueriesHeader} onClick={() => setExpandRMQueries((prev) => !prev)}>
+          <Typography
+            variant="subtitle2"
+             className={`${classes.rmQueriesTitle} ${expandRMQueries ? classes.activeTitle : ''}`}
+            >
+            Top RM Queries
+            {expandRMQueries ? (
+              <ExpandMoreIcon className={classes.rmChevronIcon} />
+            ) : (
+              <ChevronRightIcon className={classes.rmChevronIcon} />
+            )}
+          </Typography>
+        </div>
 
-  <div className={classes.rmQueriesContent}>
-    <Typography variant="body2">
-      • Dummy text line 1 explaining RM queries.
-    </Typography>
-    <Typography variant="body2">
-      • Dummy text line 2 with example usage.
-    </Typography>
-    <Typography variant="body2">
-      • Dummy text line 3 describing possible data insights.
-    </Typography>
-    <Typography variant="body2">
-      • Dummy text line 4 placeholder content for expansion.
-    </Typography>
-  </div>
-</div>
+        <div className={classes.rmQueriesContent}>
+          <Typography variant="body2">• Dummy text line 1 explaining RM queries.</Typography>
+          <Typography variant="body2">• Dummy text line 2 with example usage.</Typography>
+          <Typography variant="body2">• Dummy text line 3 describing possible data insights.</Typography>
+          <Typography variant="body2">• Dummy text line 4 placeholder content for expansion.</Typography>
+        </div>
+      </div>
 
       {isLoading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>
@@ -101,11 +77,7 @@ const WelcomeMessage = ({
           </Typography>
           <div className={classes.queriesList}>
             {suggestedQueries.map((query, index) => (
-              <div
-                key={index}
-                className={classes.queryItem}
-                onClick={() => onQuerySelect(query)}
-              >
+              <div key={index} className={classes.queryItem} onClick={() => onQuerySelect(query)}>
                 <Typography
                   variant="body2"
                   className={classes.queryText}
@@ -114,8 +86,7 @@ const WelcomeMessage = ({
                     overflow: 'hidden',
                     WebkitBoxOrient: 'vertical',
                     WebkitLineClamp: 2,
-                  }}
-                >
+                  }}>
                   {query}
                 </Typography>
                 <ChevronRightIcon className={classes.arrowIcon} />
