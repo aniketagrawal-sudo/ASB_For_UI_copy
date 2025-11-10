@@ -1,10 +1,9 @@
 @use '../../styles/globalStyles.scss' as globalStyles;
 
 .container {
-  height: 100%;
+  height: 91vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   position: relative; // IMPORTANT for in-container Drawer
   background: #F5F9F5;
   font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -96,7 +95,7 @@
 }
 
 /* Responsive */
-@media (width <= 1200px) {
+@media (width <=1200px) {
   .header {
     padding: globalStyles.$Spacing-S globalStyles.$Spacing-M;
 
@@ -113,7 +112,7 @@
   }
 }
 
-@media (width <= 768px) {
+@media (width <=768px) {
   .container {
     border-radius: globalStyles.$Border-Radius-M;
   }
