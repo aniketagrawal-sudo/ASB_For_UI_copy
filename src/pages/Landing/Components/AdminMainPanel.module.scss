@@ -2,355 +2,566 @@
 
 .mainPanelContainer {
   height: 100%;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   position: relative;
-  border-radius: globalStyles.$Border-Radius-L;
-
-  @include globalStyles.scrollbar;
+  overflow: hidden;
+  // border-radius: globalStyles.$Border-Radius-L;
 }
 
-.contentHeader {
-  padding: 1rem;
-  border-bottom: 1px solid rgb(0, 0, 0, 0.06);
-  border-radius: globalStyles.$Border-Radius-L globalStyles.$Border-Radius-L 0 0;
+.comingSoonContainer {
+  height: 100%;
+  background: white;
+  padding: globalStyles.$Spacing-XL;
 
-  .contentHeaderTitle {
-    font-family: globalStyles.$Font-Family;
-    font-size: 1.25rem;
-    font-weight: 600;
+  .comingSoonContent {
+    max-width: 689px;
+    font-size: 10px;
+    margin-left: -8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    // max-width: 400px;
+    // padding: globalStyles.$Spacing-XL;
+    // background: white;
+    // border-radius: globalStyles.$Border-Radius-L;
+    // box-shadow: globalStyles.$Shadow-MD;
+    animation: slide-up 0.5s ease-out forwards;
+  }
+
+  .comingSoonIcon {
+    font-size: 64px;
+    color: globalStyles.$Main-Color;
+    margin-bottom: globalStyles.$Spacing-L;
+    animation: wrench 2s ease-in-out infinite;
+  }
+
+  .comingSoonText {
     color: globalStyles.$Text-Color;
-  }
-}
-
-// Admin home container
-.adminHomeContainer {
-  padding: globalStyles.$Spacing-Base;
-}
-
-// Welcome title components
-.welcomeTitle {
-  font-size: 1.75rem;
-  font-weight: globalStyles.$Font-Weight-Bold;
-  color: globalStyles.$Text-Color;
-  margin-bottom: 0.5rem;
-  font-family: globalStyles.$Font-Family;
-}
-
-.welcomeSubtitle {
-  color: globalStyles.$Secondary-Text;
-  font-size: 1rem;
-  margin-bottom: 2rem;
-  font-family: globalStyles.$Font-Family;
-}
-
-// Search field styling
-.searchField {
-  background-color: white;
-  border-radius: globalStyles.$Border-Radius-M;
-  transition: all 0.3s ease;
-
-  .MuiInputBase-root {
-    padding: 0.5rem 1rem;
+    font-weight: globalStyles.$Font-Weight-Bold;
+    font-size: globalStyles.$Font-Size-XL;
+    margin-bottom: globalStyles.$Spacing-S;
     font-family: globalStyles.$Font-Family;
   }
 
-  .MuiOutlinedInput-notchedOutline {
-    border-color: rgb(0, 0, 0, 0.1);
+  .comingSoonSubtext {
+    color: globalStyles.$Secondary-Text;
+    margin-bottom: globalStyles.$Spacing-M;
+    font-weight: globalStyles.$Font-Weight-Medium;
+    font-family: globalStyles.$Font-Family;
   }
 
-  &:hover .MuiOutlinedInput-notchedOutline {
-    border-color: rgb(0, 0, 0, 0.2);
-  }
-
-  &.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: globalStyles.$Main-Color;
-  }
-}
-
-// Section title
-.title {
-  font-size: globalStyles.$Font-Size-XL;
-  font-weight: globalStyles.$Font-Weight-SemiBold;
-  color: globalStyles.$Text-Color;
-  margin-bottom: globalStyles.$Spacing-Base;
-  font-family: globalStyles.$Font-Family;
-}
-
-// Stats grid
-.statsGrid {
-  margin-bottom: globalStyles.$Spacing-Base;
-}
-
-// Stat card
-.statCard {
-  background-color: white;
-  border-radius: globalStyles.$Border-Radius-M;
-  border: 1px solid rgb(0, 0, 0, 0.06);
-  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-
-  &:hover {
-    box-shadow: 0 4px 12px rgb(0, 0, 0, 0.1);
-    transform: translateY(-2px);
+  .comingSoonDetails {
+    padding-top: globalStyles.$Spacing-M;
+    border-top: 1px solid globalStyles.$Border-Color;
+    width: 100%;
+    color: globalStyles.$Text-Color;
+    font-size: globalStyles.$Font-Size-SM;
+    font-family: globalStyles.$Font-Family;
   }
 }
 
-// Stat title
-.statTitle {
-  font-size: globalStyles.$Font-Size-SM;
-  font-weight: globalStyles.$Font-Weight-SemiBold;
-  color: globalStyles.$Secondary-Text;
-  margin-bottom: globalStyles.$Spacing-S;
-  font-family: globalStyles.$Font-Family;
-}
-
-// Stat value
-.statValue {
-  font-size: 1.5rem;
-  font-weight: globalStyles.$Font-Weight-Bold;
-  color: globalStyles.$Text-Color;
-  font-family: globalStyles.$Font-Family;
-}
-
-// Section paper
-.sectionPaper {
-  padding: globalStyles.$Spacing-Base;
-  margin-bottom: globalStyles.$Spacing-Base;
-  background-color: white;
-  border-radius: globalStyles.$Border-Radius-M;
-  border: 1px solid rgb(0, 0, 0, 0.06);
-  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
-}
-
-// Section title
-.sectionTitle {
-  font-size: globalStyles.$Font-Size-LG;
-  font-weight: globalStyles.$Font-Weight-SemiBold;
-  color: globalStyles.$Text-Color;
-  margin-bottom: globalStyles.$Spacing-S;
-  font-family: globalStyles.$Font-Family;
-}
-
-.sectionDescription {
-  font-size: globalStyles.$Font-Size-MD;
-  color: globalStyles.$Secondary-Text;
-  margin-bottom: globalStyles.$Spacing-Base;
-  font-family: globalStyles.$Font-Family;
-}
-
-.sectionSubtitle {
-  font-size: globalStyles.$Font-Size-MD;
-  font-weight: globalStyles.$Font-Weight-SemiBold;
-  color: globalStyles.$Text-Color;
-  margin-bottom: globalStyles.$Spacing-S;
-  font-family: globalStyles.$Font-Family;
+.header {
+  padding: globalStyles.$Spacing-M globalStyles.$Spacing-Base;
+  height: 56px;
   display: flex;
   align-items: center;
-}
+  z-index: globalStyles.$Z-Index-Base;
+  position: relative;
 
-.sectionIcon {
-  margin-right: globalStyles.$Spacing-S;
-  color: globalStyles.$Main-Color;
-}
-
-// Persona browse container styles
-.personasBrowseContainer {
-  padding: globalStyles.$Spacing-Base;
-}
-
-// Persona card styling
-.personaCard {
-  background-color: white;
-  border-radius: globalStyles.$Border-Radius-M;
-  border: 1px solid rgb(0, 0, 0, 0.06);
-  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  overflow: hidden;
-  height: 100%;
-
-  &:hover {
-    box-shadow: 0 4px 12px rgb(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-    border-color: globalStyles.$Main-Color;
-  }
-}
-
-.personaCardContent {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-  padding: globalStyles.$Spacing-Base !important;
-}
-
-.personaCardIcon {
-  font-size: 48px !important;
-  color: globalStyles.$Main-Color;
-  margin-bottom: globalStyles.$Spacing-Base;
-  background-color: rgb(247, 144, 29, 0.05);
-  padding: 12px;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-}
-
-.personaCardTitle {
-  font-weight: globalStyles.$Font-Weight-SemiBold !important;
-  color: globalStyles.$Text-Color !important;
-  margin-bottom: globalStyles.$Spacing-XS !important;
-  font-family: globalStyles.$Font-Family !important;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
-}
-
-.personaCardSubtitle {
-  color: globalStyles.$Secondary-Text !important;
-  font-family: globalStyles.$Font-Family !important;
-  font-size: globalStyles.$Font-Size-XS !important;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  height: 32px;
-}
-
-// Dashboard card styling
-.dashboardCard {
-  background-color: white;
-  border-radius: globalStyles.$Border-Radius-M;
-  border: 1px solid rgb(0, 0, 0, 0.06);
-  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  height: 100%;
-
-  &:hover {
-    box-shadow: 0 4px 12px rgb(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-    border-color: globalStyles.$Main-Color;
-  }
-}
-
-.dashboardCardContent {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: globalStyles.$Spacing-Base !important;
-}
-
-.dashboardCardIcon {
-  font-size: 40px !important;
-  color: globalStyles.$Main-Color;
-  margin-bottom: globalStyles.$Spacing-S;
-}
-
-.dashboardCardTitle {
-  font-weight: globalStyles.$Font-Weight-SemiBold !important;
-  color: globalStyles.$Text-Color !important;
-  margin-bottom: globalStyles.$Spacing-S !important;
-  font-family: globalStyles.$Font-Family !important;
-}
-
-.dashboardTypeChip {
-  margin-bottom: globalStyles.$Spacing-S !important;
-}
-
-// Details container
-.detailsContainer {
-  padding: globalStyles.$Spacing-Base;
-}
-
-// Details paper
-.detailsPaper {
-  padding: globalStyles.$Spacing-Base;
-  margin-bottom: globalStyles.$Spacing-Base;
-  background-color: white;
-  border-radius: globalStyles.$Border-Radius-M;
-  border: 1px solid rgb(0, 0, 0, 0.06);
-  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
-}
-
-// KPI card
-.kpiCard {
-  background-color: white;
-  border-radius: globalStyles.$Border-Radius-M;
-  border: 1px solid rgb(0, 0, 0, 0.06);
-  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  height: 100%;
-
-  &:hover {
-    box-shadow: 0 4px 12px rgb(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-  }
-}
-
-// Responsive adjustments
-@media (width <= 960px) {
-  .statsGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+  .headerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: relative;
   }
 
-  .welcomeTitle {
-    font-size: 1.5rem;
-  }
-}
-
-// Small screens
-@media (width <= 600px) {
-  .statsGrid {
-    grid-template-columns: 1fr;
+  .title {
+    color: white;
+    font-size: globalStyles.$Font-Size-LG;
+    font-weight: globalStyles.$Font-Weight-SemiBold;
+    font-family: globalStyles.$Font-Family;
+    line-height: globalStyles.$Line-Height-Tight;
   }
 
-  .welcomeTitle {
-    font-size: 1.25rem;
+  .headerActions {
+    display: flex;
+    align-items: center;
+    gap: globalStyles.$Spacing-XS;
+    position: absolute;
+    right: calc(27% + globalStyles.$Spacing-Base);
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
   }
 
-  .personasBrowseContainer {
-    padding: globalStyles.$Spacing-S;
-  }
-}
+  .lastRefreshedContainer {
+    display: flex;
+    align-items: center;
+    gap: globalStyles.$Spacing-XS;
+    padding: globalStyles.$Spacing-XS globalStyles.$Spacing-S;
+    border-radius: globalStyles.$Border-Radius-M;
+    margin-right: globalStyles.$Spacing-S;
+    transition: all globalStyles.$Transition-Fast;
 
-// Reduced motion preference
-@media (prefers-reduced-motion: reduce) {
-  .statCard,
-  .personaCard,
-  .dashboardCard,
-  .kpiCard {
-    transition: none;
+    .timeIcon {
+      font-size: globalStyles.$Font-Size-MD;
+      color: white !important;
+    }
+
+    .lastRefreshedText {
+      color: white;
+      font-size: globalStyles.$Font-Size-XS;
+      font-weight: globalStyles.$Font-Weight-Medium;
+      font-family: globalStyles.$Font-Family;
+    }
 
     &:hover {
-      transform: none;
+      background-color: rgb(255, 255, 255, 0.15);
+    }
+  }
+
+  .summaryButton {
+    display: flex;
+    align-items: center;
+    gap: globalStyles.$Spacing-XS;
+    color: white;
+    padding: globalStyles.$Spacing-XS globalStyles.$Spacing-M;
+    border-radius: globalStyles.$Border-Radius-M;
+    transition: all globalStyles.$Transition-Fast;
+    margin-right: globalStyles.$Spacing-S;
+    text-transform: none;
+
+    &:hover {
+      background-color: rgb(255, 255, 255, 0.1);
+    }
+
+    .buttonIcon {
+      font-size: globalStyles.$Font-Size-XL;
+      color: white;
+    }
+
+    .buttonText {
+      font-size: globalStyles.$Font-Size-SM;
+      font-weight: globalStyles.$Font-Weight-Medium;
+      font-family: globalStyles.$Font-Family;
+      color: white;
+    }
+  }
+
+  .actionButton {
+    color: white;
+    transition: all globalStyles.$Transition-Fast;
+    width: 32px;
+    height: 32px;
+    padding: globalStyles.$Spacing-XS;
+    border-radius: globalStyles.$Border-Radius-S;
+
+    @include globalStyles.centering;
+
+    &:hover {
+      background-color: rgb(255, 255, 255, 0.1);
+    }
+
+    svg {
+      font-size: globalStyles.$Font-Size-XL;
     }
   }
 }
 
-// High contrast mode
+.content {
+  flex: 1;
+  display: flex;
+  padding: 0 globalStyles.$Spacing-Base globalStyles.$Spacing-Base globalStyles.$Spacing-Base;
+  min-height: 0;
+  overflow: hidden;
+
+  .primaryContent {
+    overflow: hidden;
+    flex: 0 0 100%;
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    overflow: auto;
+    border-radius: globalStyles.$Border-Radius-L;
+    background: white;
+    box-shadow: globalStyles.$Shadow-MD;
+    border: 1px solid globalStyles.$Border-Color;
+  }
+
+  .secondaryContent {
+    flex: 0 0 27%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: globalStyles.$Border-Radius-L;
+    background: white;
+    box-shadow: globalStyles.$Shadow-MD;
+    border: 1px solid globalStyles.$Border-Color; // Added missing border
+  }
+
+  // UPDATED: Full content styling to match primary/secondary content
+  .fullContent {
+    flex: 1;
+    border-radius: globalStyles.$Border-Radius-L;
+    background: white;
+    box-shadow: globalStyles.$Shadow-MD;
+    border: 1px solid globalStyles.$Border-Color; // Added border like primary/secondary
+    padding: 0; // Removed padding to match primary/secondary content which handle their own padding
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+}
+
+// To ensure consistent styling with the "Last Refreshed" element,
+// you can combine their selectors like this.
+.lastRefreshedContainer,
+.dataPeriodContainer {
+  display: flex;
+  align-items: center;
+  color: white !important;
+}
+
+.lastRefreshedText,
+.dataPeriodText {
+  font-size: 0.8rem !important;
+  margin-left: 4px !important;
+  font-family: Roboto, sans-serif !important;
+}
+
+.timeIcon {
+  font-size: 1.1rem !important;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes wrench {
+  0% {
+    transform: rotate(0);
+  }
+
+  20%,
+  30% {
+    transform: rotate(-12deg);
+  }
+
+  50%,
+  60% {
+    transform: rotate(12deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@media (width <=1280px) {
+  .content {
+    flex-direction: column;
+    padding: globalStyles.$Spacing-S;
+    gap: globalStyles.$Spacing-S;
+
+    .primaryContent,
+    .secondaryContent {
+      flex: none;
+      width: 100%;
+      margin-right: 0;
+    }
+
+    .primaryContent {
+      height: auto;
+      overflow: hidden;
+    }
+
+    .secondaryContent {
+      height: 35%;
+    }
+  }
+
+  .header {
+    .headerActions {
+      right: globalStyles.$Spacing-Base;
+    }
+  }
+
+  .comingSoonContainer {
+    padding: globalStyles.$Spacing-L;
+    border-radius: 15px;
+    margin: 0px 10px 0px 10px;
+
+    .comingSoonContent {
+      padding: globalStyles.$Spacing-L;
+      // max-width: 360px;
+    }
+  }
+}
+
+@media (width <=960px) {
+  .header {
+    padding: globalStyles.$Spacing-S globalStyles.$Spacing-M;
+    height: 48px;
+
+    .headerContent {
+      flex-wrap: nowrap;
+      gap: globalStyles.$Spacing-XS;
+    }
+
+    .title {
+      font-size: globalStyles.$Font-Size-MD;
+    }
+
+    .headerActions {
+      position: static;
+      transform: none;
+      gap: globalStyles.$Spacing-XXS;
+    }
+
+    .lastRefreshedContainer {
+      padding: globalStyles.$Spacing-XXS globalStyles.$Spacing-XS;
+      margin-right: globalStyles.$Spacing-XXS;
+
+      .timeIcon {
+        color: white !important;
+        font-size: globalStyles.$Font-Size-SM;
+      }
+
+      .lastRefreshedText {
+        font-size: globalStyles.$Font-Size-XXS;
+      }
+    }
+
+    .summaryButton {
+      padding: globalStyles.$Spacing-XXS globalStyles.$Spacing-S;
+      margin-right: globalStyles.$Spacing-XS;
+
+      .buttonText {
+        font-size: globalStyles.$Font-Size-XS;
+      }
+
+      .buttonIcon {
+        font-size: globalStyles.$Font-Size-LG;
+      }
+    }
+
+    .actionButton {
+      width: 28px;
+      height: 28px;
+      padding: globalStyles.$Spacing-XXS;
+
+      svg {
+        font-size: globalStyles.$Font-Size-LG;
+      }
+    }
+  }
+
+  .content {
+    padding: globalStyles.$Spacing-S;
+    gap: globalStyles.$Spacing-S;
+  }
+
+  .comingSoonContainer {
+    padding: globalStyles.$Spacing-M;
+
+    .comingSoonContent {
+      padding: globalStyles.$Spacing-M;
+      max-width: 300px;
+    }
+
+    .comingSoonIcon {
+      font-size: 48px;
+    }
+
+    .comingSoonText {
+      font-size: globalStyles.$Font-Size-XL;
+    }
+
+    .comingSoonSubtext {
+      font-size: globalStyles.$Font-Size-SM;
+    }
+  }
+}
+
 @media (prefers-contrast: more) {
   .mainPanelContainer {
-    background-color: white;
+    border: 2px solid globalStyles.$Text-Color;
   }
 
-  .contentHeader {
-    background-color: #f0f0f0;
-    border-bottom: 2px solid black;
+  .header {
+    .lastRefreshedContainer {
+      background-color: transparent;
+      border: 1px solid white;
+    }
   }
 
-  .statCard,
-  .personaCard,
-  .dashboardCard,
-  .kpiCard,
-  .sectionPaper,
-  .detailsPaper {
-    border: 2px solid black;
-    box-shadow: none;
+  .content {
+
+    .primaryContent,
+    .secondaryContent,
+    .fullContent {
+      border: 2px solid globalStyles.$Text-Color; // Updated to 2px for better contrast
+    }
   }
+
+  .comingSoonContainer {
+    .comingSoonContent {
+      border: 2px solid globalStyles.$Text-Color;
+      box-shadow: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .mainPanelContainer,
+  .summaryButton,
+  .actionButton,
+  .lastRefreshedContainer {
+    transition: none;
+  }
+
+  .comingSoonContainer {
+    .comingSoonContent {
+      animation: none;
+    }
+
+    .comingSoonIcon {
+      animation: none;
+    }
+  }
+}
+
+@media print {
+  .mainPanelContainer {
+    background: white;
+    height: auto;
+  }
+
+  .header {
+    display: none;
+  }
+
+  .content {
+    display: block;
+    padding: 0;
+
+    .primaryContent,
+    .secondaryContent,
+    .fullContent {
+      width: 100%;
+      height: auto;
+      box-shadow: none;
+      page-break-inside: avoid;
+    }
+  }
+
+  .comingSoonContainer {
+    display: none;
+  }
+}
+
+/* 🔹 Green Header Bar */
+.headerBar {
+  background-color: #00a651;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 16px;
+  font-family: 'Helvetica Neue';
+  white-space: nowrap;
+  overflow: hidden;
+  height: 80px;
+  font-size: 13px;
+}
+
+/* Left Section */
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerTitle {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.headerDivider {
+  width: 1px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.clientSection {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.clientLabel {
+  font-size: 13px;
+}
+
+.clientSelect {
+  color: #fff !important;
+  font-weight: 500;
+  font-size: 13px !important;
+
+  .MuiSvgIcon-root {
+    color: #fff !important;
+    font-size: 18px;
+  }
+
+  .MuiSelect-select {
+    padding-right: 16px !important;
+  }
+}
+
+/* Right Section */
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.headerText {
+  font-size: 13px;
+}
+
+.headerIcon {
+  font-size: 16px;
+}
+
+.checkIcon {
+  color: #cfffcb;
+  font-size: 16px;
+}
+
+.notificationButton {
+  padding: 0 !important;
+  color: #fff !important;
+}
+
+.notificationIcon {
+  color: orange;
+  font-size: 18px;
 }
