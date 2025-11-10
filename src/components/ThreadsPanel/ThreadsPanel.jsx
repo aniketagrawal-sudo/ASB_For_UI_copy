@@ -630,7 +630,7 @@ const ThreadsPanel = ({ open, onClose, userName, previousQueries = [], onQuerySe
             <div className={classes.titleSection}>
               <SmartToyOutlinedIcon className={classes.titleIcon} />
               <Typography variant="h6" className={classes.title}>
-                Chat AI
+                Chat AI/Histroy
               </Typography>
             </div>
             {!socketConnected && (
@@ -719,7 +719,7 @@ const ThreadsPanel = ({ open, onClose, userName, previousQueries = [], onQuerySe
             </Typography>
           )}
           <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-            Enter a name for your saved thread
+            Enter a name for your saved thread 
           </Typography>
           <TextField
             autoFocus

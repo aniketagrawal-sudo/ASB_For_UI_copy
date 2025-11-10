@@ -15,11 +15,9 @@ export default function TrendComponent() {
 
 
             </Box>
-            {/* <Box className={classes.depositBox}> */}
-            <Typography variant="h6" margin={1}>
+            <Typography variant="h6" margin={1.6}>
                 Client Information
             </Typography>
-            {/* </Box> */}
 
             <Box className={classes.trendComponent}>
                 <Typography variant="body2" component="div">

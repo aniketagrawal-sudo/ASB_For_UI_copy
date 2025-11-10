@@ -13,9 +13,7 @@ import {
   CircularProgress,
   Pagination,
 } from '@mui/material';
-// import HomeIcon from '../../assets/Sidepanel/Home.png';
 import ReportsIcon from '../../assets/Sidepanel/reports.png';
-// import InsightsIcon from '../../assets/Sidepanel/Insights.png';
 import ThreadsIcon from '../../assets/Sidepanel/threads.png';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -38,6 +36,8 @@ import {
 import { useFetchArchivedDataQuery, useDeleteConversationByIdMutation } from '../../services/conversationApi';
 import classes from './Sidebar.module.scss';
 import PropTypes from 'prop-types';
+import HomeIcon from '../../assets/Sidepanel/DashboardIcon.svg';
+import InsightsIcon from '../../assets/Sidepanel/InsightsIcon.svg';
 
 const ITEMS_PER_PAGE = 10;
 

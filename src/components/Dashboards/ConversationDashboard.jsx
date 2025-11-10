@@ -13,14 +13,22 @@ import {
   DialogActions,
   TextField,
   CircularProgress,
+  // ⬇️ NEW: MUI parts for the in-container drawer
+  Drawer,
+  IconButton,
+  Divider,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
 } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
+import CloseIcon from '@mui/icons-material/Close'; // ⬅️ NEW
 import { useDispatch, useSelector } from 'react-redux';
 import ChatBotIcon from '../../assets/conversationDashboard/chatbot-speech-bubble.svg';
 import ChatHistoryIcon from '../../assets/conversationDashboard/ChatHistoryIcon.svg';
 import MaxsimizeIcon from '../../assets/conversationDashboard/MaxsimizeIcon.svg';
-
 
 import ForumIcon from '../../assets/conversationDashboard/ThreadsIcon.png';
 import {
@@ -223,6 +231,24 @@ function ConversationDashboard() {
       }));
   }, [archivedData, currentPage]);
 
+  // =========================
+  // History Drawer (IN-CHAT)
+  // =========================
+  const containerRef = useRef(null);             // ⬅️ container for in-portal rendering
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+
+  // Static items for now — replace with API integration later
+  const historyItems = [
+    { id: 1, title: 'Client Name 1 and Client Name 2 Comparison', timestamp: 'Today, 7:55 PM' },
+    { id: 2, title: 'Client Name 3 Chart for Deposit Trend',     timestamp: 'Today, 6:10 PM' },
+    { id: 3, title: 'Client Name 2 Chart for Deposit Trend',     timestamp: 'Yesterday, 2:40 PM' },
+    { id: 4, title: 'Client Name 3 and Client Name 4 Comparison',timestamp: 'Mon, 11:26 AM' },
+  ];
+
+  // Keep your function name (icon click uses this)
+  const handelHistory = () => setIsHistoryOpen(true);
+  const handleHistoryClose = () => setIsHistoryOpen(false);
+
   const handleThreadsClick = useCallback(() => setIsThreadsPanelOpen(true), []);
   const handleThreadsPanelClose = useCallback(() => setIsThreadsPanelOpen(false), []);
   const handleQuerySelect = useCallback(
@@ -235,19 +261,14 @@ function ConversationDashboard() {
     [dispatch, currentPage],
   );
 
-  // ✨ START: Added handler for suggested questions
   const handleSuggestedQuestionClick = useCallback((query) => {
     if (chatInputRef.current) {
-      // Set the input field value
       chatInputRef.current.setInputValue(query);
-
-      // Auto-submit the question if the function is available on the ChatInput component
       if (typeof chatInputRef.current.submitInput === 'function') {
         chatInputRef.current.submitInput(query);
       }
     }
   }, []);
-  // ✨ END: Added handler for suggested questions
 
   const conversationKey = `conversation-${activeConversationId || 'new'}-${currentPage}`;
   const renderContent = useMemo(() => {
@@ -271,7 +292,6 @@ function ConversationDashboard() {
             Real-time updates unavailable
           </Alert>
         )}
-        {/* ✨ Pass the handler function as a prop */}
         <ConversationScreen
           id={String(activeConversationId)}
           stableInstanceId="main-dashboard"
@@ -280,10 +300,10 @@ function ConversationDashboard() {
         />
       </div>
     );
-  }, [activeConversationId, userName, previousQueries, handleQuerySelect, socketConnected, conversationKey, handleSuggestedQuestionClick]); // ✨ Added handler to dependency array
+  }, [activeConversationId, userName, previousQueries, handleQuerySelect, socketConnected, conversationKey, handleSuggestedQuestionClick]);
 
   return (
-    <div className={classes.container}>
+    <div className={classes.container} ref={containerRef}>
       <div className={classes.header}>
         <div className={classes.titleSection}>
           <img src={ChatBotIcon} alt="Chat AI" />
@@ -291,8 +311,9 @@ function ConversationDashboard() {
             Chat AI
           </Typography>
         </div>
+        
         <div className={classes.headerActions}>
-          {selectedMessages.length > 0 && (
+          {/* {selectedMessages.length > 0 && (
             <div className={classes.saveActions}>
               <Button
                 className={classes.confirmSaveButton}
@@ -313,17 +334,27 @@ function ConversationDashboard() {
                 Cancel
               </Button>
             </div>
-          )}
-          <Box className={classes.threadButton} onClick={handleThreadsClick}>
-            <img src={ChatHistoryIcon} alt="ChatHistoryIcon" />
-            <img src={MaxsimizeIcon} alt="MaxsimizeIcon" />
+          )} */}
+
+          <Box className={classes.threadButtons}>
+            {/* ⬇️ keep your icon, now opens the history drawer */}
+            <Box className={classes.threadButton} onClick={handelHistory}>
+              <img src={ChatHistoryIcon} alt="ChatHistoryIcon" />
+            </Box>
+            <Box className={classes.threadButton} onClick={handleThreadsClick}>
+              <img src={MaxsimizeIcon} alt="MaxsimizeIcon" />
+            </Box>
           </Box>
         </div>
       </div>
+
       {renderContent}
+
       <div className={classes.inputArea}>
         <ChatInput ref={chatInputRef} instanceId="dashboard" />
       </div>
+
+      {/* Threads side panel (existing) */}
       {isThreadsPanelOpen && (
         <ThreadsPanel
           open={isThreadsPanelOpen}
@@ -333,7 +364,9 @@ function ConversationDashboard() {
           onQuerySelect={handleQuerySelect}
         />
       )}
+
       <FeedbackDialog />
+
       <Snackbar
         open={snackbar.open}
         autoHideDuration={snackbar.autoHideDuration || 4000}
@@ -343,6 +376,7 @@ function ConversationDashboard() {
           {snackbar.message}
         </Alert>
       </Snackbar>
+
       <Dialog open={saveDialogOpen} onClose={handleSaveDialogClose} className={classes.saveDialog}>
         <DialogTitle>Save Selected Messages as Thread</DialogTitle>
         <DialogContent>
@@ -376,6 +410,111 @@ function ConversationDashboard() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* ==============================
+          RIGHT HISTORY DRAWER (INSIDE)
+          ============================== */}
+      <Drawer
+        anchor="right"
+        open={isHistoryOpen}
+        onClose={handleHistoryClose}
+        hideBackdrop
+        ModalProps={{
+          container: containerRef.current, // ⬅️ render inside this component
+          keepMounted: true,
+        }}
+        PaperProps={{
+          sx: {
+            width:305,
+            maxWidth: '90vw',
+            height: '100%',
+            position: 'absolute',
+            right: 15,
+            top: 42,
+            borderLeft: '1px solid',
+            borderColor: 'divider',
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 6,
+            boxShadow: 4,
+            bgcolor: 'background.paper',
+          },
+        }}
+      >
+        {/* Drawer Header */}
+        <Box
+          sx={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            px: 2,
+            py: 1.5,
+            bgcolor: 'background.paper',
+            borderBottom: '1px solid',
+            borderColor: 'divider',
+          }}
+        >
+          <IconButton
+            onClick={handleHistoryClose}
+            size="small"
+            sx={{ border: '1px solid', borderColor: 'divider', width: 32, height: 32, mr: 0.5 }}
+            aria-label="Close history"
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+          <Typography variant="subtitle1" fontWeight={700}>
+            History
+          </Typography>
+        </Box>
+
+        {/* Drawer Body */}
+        <Box sx={{ height: '100%' }}>
+          <List disablePadding>
+            {historyItems.map((it, idx) => (
+              <Box key={it.id}>
+                <ListItem disablePadding>
+                  <ListItemButton
+                    onClick={() => {
+                      if (chatInputRef.current) {
+                        chatInputRef.current.setInputValue(it.title);
+                        if (typeof chatInputRef.current.submitInput === 'function') {
+                          chatInputRef.current.submitInput(it.title);
+                        }
+                      }
+                      handleHistoryClose();
+                    }}
+                    sx={{ alignItems: 'flex-start', py: 1.25, px: 2 }}
+                  >
+                    <ListItemText
+                      primary={it.title}
+                      primaryTypographyProps={{
+                        fontSize: 14,
+                        sx: {
+                          display: '-webkit-box',
+                          overflow: 'hidden',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          lineHeight: 1.2,
+                        },
+                      }}
+                      secondary={it.timestamp}
+                      secondaryTypographyProps={{ fontSize: 12, color: 'text.secondary', mt: 0.5 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+                {idx < historyItems.length - 1 && <Divider sx={{ ml: 2 }} />}
+              </Box>
+            ))}
+            {historyItems.length === 0 && (
+              <Typography sx={{ p: 2 }} color="text.secondary" fontSize={14}>
+                No recent items.
+              </Typography>
+            )}
+          </List>
+        </Box>
+      </Drawer>
     </div>
   );
 }

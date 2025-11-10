@@ -189,6 +189,7 @@
   .primaryContent {
     flex: 0 0 100%;
     display: flex;
+    height: 100vh;
     flex-direction: column;
     overflow: auto;
     border-radius: globalStyles.$Border-Radius-L;
