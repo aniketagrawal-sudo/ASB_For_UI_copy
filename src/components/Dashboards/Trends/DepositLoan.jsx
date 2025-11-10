@@ -11,7 +11,6 @@ import {
 } from "recharts";
 import classes from "./DepositLoan.module.scss";
 
-/* -------------------- Helpers (JS only) -------------------- */
 const mm = (arr) => {
   if (!arr || !arr.length) return { min: 0, max: 0 };
   let min = arr[0], max = arr[0];
@@ -30,7 +29,6 @@ const buildSeries = (cfg) => {
   return labels.map((label, i) => ({ label, value: data[i] ?? 0 }));
 };
 
-/* -------------------- Header -------------------- */
 function TrendHeader({ title, view, onViewChange, account, onAccountChange }) {
   const views = ["YoY", "MoM", "QoQ"];
   const accounts = ["Acc No.1", "Acc No.2", "Acc No.3"];
@@ -75,8 +73,8 @@ function TrendCard({
   title,
   yTitle,
   rightAxis = false,
-  loadData,          // async (account) => Promise<SeriesByView>
-  initialSeries,     // {MoM:{labels,data}, YoY:{...}, QoQ:{...}}
+  loadData,
+  initialSeries,
   defaultAccount = "Acc No.1",
 }) {
   const [view, setView] = useState("MoM");
@@ -100,7 +98,7 @@ function TrendCard({
       }
     })();
     return () => { alive = false; };
-  }, [account]); // only when account changes
+  }, [account]);
 
   const data = useMemo(() => buildSeries(cfg), [cfg]);
   const minMax = useMemo(() => (cfg.data && cfg.data.length ? mm(cfg.data) : { min: 0, max: 0 }), [cfg]);
@@ -127,7 +125,6 @@ function TrendCard({
       </div>
 
       <div className={classes.chartBox}>
-        {/* ✅ Give explicit size here; parent has fixed height in CSS */}
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 8, right: 0, bottom: 0, left: 0 }}>
             <CartesianGrid stroke="#eee" vertical={false} />

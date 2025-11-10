@@ -51,15 +51,7 @@ export default function KPIDashboard() {
   ];
 
   return (
-    <Box className={classes.wrap}
-      // sx={{
-      //   display: 'flex',
-      //   flexDirection: 'row', 
-      //   gap: 2, 
-      //   alignItems: 'flex-start',
-      // }}
-      >
-      {/* Left Section — KPI + Deposit */}
+    <Box className={classes.wrap}>
       <Box className={classes.kpileftcontainer}>
         <Box className={classes.kpiContainer}>
           {/* Header */}
@@ -173,12 +165,12 @@ export default function KPIDashboard() {
             </Box>
           </Box>
 
-          <Box className={classes.depositBox}>
-            <Typography variant="h6" margin={1}>
+              
+            <Typography variant="h6" margin={1.6}>
               Trends
             </Typography>
             <TrendComponent />
-          </Box>
+      
         </Box>
       </Box>
 
