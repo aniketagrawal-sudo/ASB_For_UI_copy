@@ -1,0 +1,63 @@
+.kpi-list {
+  background: #fff;
+  border-radius: 12px;
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+.kpi-card {
+  padding: 1.5rem;
+  text-align: left;
+
+  .kpi-title {
+    color: #444;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-style: Bold;
+    font-size: 11px;
+    line-height: 100%;
+    letter-spacing: 0%;
+  }
+
+  .kpi-value {
+    font-size: 16px;
+    color: #111;
+    font-weight: 700;
+    font-style: Bold;
+    line-height: 100%;
+    letter-spacing: 0%;
+    margin-bottom: 0.5rem;
+  }
+
+  .kpi-change {
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 100%;
+    letter-spacing: 0%;
+    font-style: Bold;
+    display: flex;
+    align-items: center;
+
+    &.positive {
+      color: #16a34a; // green
+    }
+
+    &.negative {
+      color: #dc2626; // red
+    }
+
+    .kpi-change-text {
+      color: #666;
+      font-weight: 700;
+      font-style: Bold;
+      font-size: 10px;
+      line-height: 100%;
+      letter-spacing: 0%;
+      margin-left: 4px;
+    }
+  }
+}
