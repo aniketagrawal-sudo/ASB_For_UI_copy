@@ -13,12 +13,10 @@ import {
   Button,
   Box,
   IconButton,
-  MobileStepper,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 export default function OnBoardKPIDialogue({ open, onClose, onSave, mode = "create", initialValues }) {
-  const [activeStep, setActiveStep] = useState(0);
   const [form, setForm] = useState({
     username: "",
     description: "",
@@ -35,7 +33,6 @@ export default function OnBoardKPIDialogue({ open, onClose, onSave, mode = "crea
         category: (initialValues && initialValues.category) || "",
         persona: (initialValues && initialValues.persona) || "",
       });
-      setActiveStep(0);
     }
   }, [open, initialValues]);
 
@@ -90,24 +87,7 @@ export default function OnBoardKPIDialogue({ open, onClose, onSave, mode = "crea
         </Box>
       </DialogContent>
 
-      <DialogActions sx={{ justifyContent: "space-between", px: 2 }}>
-        <MobileStepper
-          variant="dots"
-          steps={3}
-          position="static"
-          activeStep={activeStep}
-          backButton={
-            <Button size="small" onClick={() => setActiveStep((s) => Math.max(0, s - 1))}>
-              Back
-            </Button>
-          }
-          nextButton={
-            <Button size="small" onClick={() => setActiveStep((s) => Math.min(2, s + 1))}>
-              Next
-            </Button>
-          }
-          sx={{ flex: 1, mr: 2 }}
-        />
+      <DialogActions sx={{ px: 2 }}>
         <Button color="primary" onClick={handleSave}>
           Save
         </Button>

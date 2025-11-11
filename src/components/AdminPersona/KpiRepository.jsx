@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import classes from './KpiRepository.module.scss';
 import KpiRepositoryLists from './KpiRepositoryLists';
 import KpiRepositoryTable from './KpiRepositoryTable';
 import { Typography, Box, TextField, InputAdornment, Button, IconButton, Stack } from '@mui/material';
@@ -9,12 +8,14 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import OnBoardKPIDialogue from './OnBoardKPIDialogue';
 import ConfirmDialog from './ConfirmDialog';
+import classes from './KpiRepository.module.scss';
 
 const SAMPLE_USERS = [
   {
     id: '1',
     username: 'William Anderson',
     description: 'VP - Commercial Banking',
+    category: 'OKR',
     persona: 'Regional Manager',
     status: 'In-Active',
   },
@@ -22,6 +23,7 @@ const SAMPLE_USERS = [
     id: '2',
     username: 'Mia White',
     description: 'VP - Commercial Banking',
+    category: 'Widget',
     persona: 'Regional Manager',
     status: 'Active',
   },
@@ -29,6 +31,7 @@ const SAMPLE_USERS = [
     id: '3',
     username: 'Neha Kapoor',
     description: 'Team Leader',
+    category: 'Chart',
     persona: 'Regional Manager',
     status: 'Active',
   },
@@ -36,6 +39,7 @@ const SAMPLE_USERS = [
     id: '4',
     username: 'Emily Johnson',
     description: 'Team Leader',
+    category: 'Dashboard Metric',
     persona: 'Regional Manager',
     status: 'Active',
   },
@@ -200,47 +204,52 @@ const KpiRepository = () => {
   return (
     <div className={classes.kpiMainContainer}>
       <KpiRepositoryLists />
-      <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
+      <Box className={classes.TableContaier}>
         <Box sx={{ flex: 1 }}>
-          {/* User list header */}
-          <Box sx={{ mt: 3, mb: 1.5 }}>
-            <Typography variant="h6">User List</Typography>
+          <Box className={classes.KpisTableHeader}>
+            <Typography
+              className={classes.headerTitle}
+              >
+              OKR List
+            </Typography>
+            <Button
+               className={classes.addButton}
+              startIcon={<AddCircleOutlineIcon className={classes.addIcon} />}
+              onClick={handleCreateOpen}>
+              Add KPI
+            </Button>
           </Box>
 
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={1.5}
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ mb: 1.5 }}>
-            <TextField
-              placeholder="Search Usernames..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              size="small"
-              sx={{ maxWidth: 360, width: '100%' }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <Stack direction="row" spacing={1}>
-              <IconButton>
-                <SortIcon />
-              </IconButton>
-              <IconButton>
-                <FilterListIcon />
-              </IconButton>
-              <Button startIcon={<AddCircleOutlineIcon />} color="primary" onClick={handleCreateOpen}>
-                Onboard User
-              </Button>
+          <Box className={classes.searchContainer}>
+            <Stack
+              className={classes.searchStack}
+              >
+              <TextField
+                placeholder="Search KPIs..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                size="small"
+                className={classes.searchStackTextFiled}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <Stack direction="row" spacing={1} className={classes.iconActions}>
+                <IconButton>
+                  <SortIcon /> Sort By
+                </IconButton>
+                <IconButton>
+                  <FilterListIcon /> Filters
+                </IconButton>
+              </Stack>
             </Stack>
-          </Stack>
 
-          <KpiRepositoryTable users={users} search={search} onEdit={handleEditOpen} onDelete={handleAskDelete} />
+            <KpiRepositoryTable users={users} search={search} onEdit={handleEditOpen} onDelete={handleAskDelete} />
+          </Box>
 
           {loading && <Typography sx={{ mt: 2 }}>Loading users...</Typography>}
           {error && (

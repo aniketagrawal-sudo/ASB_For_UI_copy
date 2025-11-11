@@ -1,5 +1,5 @@
-
 import PropTypes from "prop-types";
+import styles from "./KpiRepositoryTable.module.scss";
 import {
   Box,
   Table,
@@ -23,12 +23,13 @@ export default function KpiRepositoryTable({ users, search, onEdit, onDelete }) 
   );
 
   return (
-    <TableContainer component={Paper} elevation={0} sx={{ border: "1px solid #e5e7eb" }}>
+    <TableContainer component={Paper} elevation={0} className={styles.tableContainer}>
       <Table size="medium" aria-label="user list">
-        <TableHead sx={{ backgroundColor: "#fafafa" }}>
-          <TableRow>
-            <TableCell>Username</TableCell>
+        <TableHead>
+          <TableRow className={styles.tableHeader}>
+            <TableCell>KPI Name</TableCell>
             <TableCell>Description</TableCell>
+            <TableCell>Category</TableCell>
             <TableCell>Allocated Persona</TableCell>
             <TableCell>Status</TableCell>
             <TableCell align="right">Actions</TableCell>
@@ -36,11 +37,12 @@ export default function KpiRepositoryTable({ users, search, onEdit, onDelete }) 
         </TableHead>
         <TableBody>
           {filtered.map((row) => (
-            <TableRow key={row.id} hover>
+            <TableRow key={row.id} hover className={styles.tableRow}>
               <TableCell sx={{ width: 260 }}>
                 <Typography fontWeight={600}>{row.username}</Typography>
               </TableCell>
               <TableCell>{row.description}</TableCell>
+              <TableCell>{row.category}</TableCell>
               <TableCell sx={{ width: 220 }}>{row.persona}</TableCell>
               <TableCell sx={{ width: 120 }}>
                 <Chip
@@ -52,12 +54,21 @@ export default function KpiRepositoryTable({ users, search, onEdit, onDelete }) 
               </TableCell>
               <TableCell align="right" sx={{ width: 120 }}>
                 <Tooltip title="Edit">
-                  <IconButton size="small" onClick={() => onEdit && onEdit(row)} aria-label="edit user">
+                  <IconButton
+                    size="small"
+                    onClick={() => onEdit && onEdit(row)}
+                    aria-label="edit user"
+                  >
                     <EditOutlinedIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
-                  <IconButton size="small" color="error" onClick={() => onDelete && onDelete(row)} aria-label="delete user">
+                  <IconButton
+                    size="small"
+                    color="error"
+                    onClick={() => onDelete && onDelete(row)}
+                    aria-label="delete user"
+                  >
                     <DeleteOutlineIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
@@ -67,7 +78,7 @@ export default function KpiRepositoryTable({ users, search, onEdit, onDelete }) 
           {filtered.length === 0 && (
             <TableRow>
               <TableCell colSpan={5}>
-                <Box sx={{ py: 6, textAlign: "center", color: "text.secondary" }}>No users found.</Box>
+                <Box className={styles.noData}>No KPI found.</Box>
               </TableCell>
             </TableRow>
           )}
