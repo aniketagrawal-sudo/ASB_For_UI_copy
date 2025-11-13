@@ -1,22 +1,20 @@
-@use '../../../styles/globalStyles.scss' as globalStyles;
+@use '../../../../styles/globalStyles.scss' as globalStyles;
 
 // Base container
 .sidePanelContainer {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: globalStyles.$Spacing-L globalStyles.$Spacing-Base;
+  // padding: globalStyles.$Spacing-L globalStyles.$Spacing-Base;
   overflow: hidden;
-  border-radius: globalStyles.$Border-Radius-L;
+  // border-radius: globalStyles.$Border-Radius-L;
   background: transparent;
-  backdrop-filter: blur(10px);
   box-shadow: globalStyles.$Shadow-MD;
+  backdrop-filter: blur(10px);
   transition: all globalStyles.$Transition-Fast;
-  color: globalStyles.$Text-Color;
 
   &:hover {
     background: rgb(255, 255, 255, 0.05);
-    box-shadow: globalStyles.$Shadow-LG;
   }
 }
 
@@ -28,9 +26,12 @@
   margin-bottom: globalStyles.$Spacing-L;
 
   .logoSection {
-    width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    /* Ensure vertical stacking */
+    align-items: center;
+    /* Center horizontally */
+    width: 100%;
     padding: globalStyles.$Spacing-XS;
   }
 
@@ -39,28 +40,31 @@
     flex-direction: column;
     align-items: center;
     gap: globalStyles.$Spacing-XS;
-    cursor: pointer;
     padding: globalStyles.$Spacing-S;
     border-radius: globalStyles.$Border-Radius-L;
     transition: all globalStyles.$Transition-Fast;
 
     &:hover {
-      background-color: globalStyles.$Main-Color-5;
+      // background-color: globalStyles.$Main-Color-5;
 
       .logo {
-        transform: scale(1.05);
+        // transform: scale(1.05);
       }
 
       .title {
-        color: globalStyles.$Main-Color;
+        // color: globalStyles.$Main-Color;
       }
     }
 
     .logo {
-      height: 32px;
-      width: auto;
-      transition: transform globalStyles.$Transition-Fast;
-      filter: brightness(0) saturate(100%);
+      // height: 52px;
+      // width: auto;
+      width: 181px;
+      height: 50px;
+
+
+      // transition: transform globalStyles.$Transition-Fast;
+      // filter: brightness(0) saturate(100%);
     }
 
     .title {
@@ -70,53 +74,79 @@
       font-family: globalStyles.$Font-Family;
       line-height: globalStyles.$Line-Height-Tight;
       transition: color globalStyles.$Transition-Fast;
+      cursor: pointer; // Make title clickable
+    }
+  }
+
+  // ✅ ADDED: Container for Sense AI title and back button
+  .senseAiContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center; // Horizontally center the items within
+    width: 100%;
+    position: relative; // This is crucial for positioning the back button
+    padding: 0 globalStyles.$Spacing-S; // Add some side padding
+    box-sizing: border-box;
+  }
+
+  // ✅ MODIFIED: The back button is now positioned absolutely to the right edge.
+  .backButton {
+    position: absolute;
+    left: 0; // Pushes it all the way to the right
+    color: globalStyles.$Text-Color;
+
+    &:hover {
+      background-color: globalStyles.$Main-Color-5;
+      color: globalStyles.$Main-Color;
     }
   }
 
   .divider {
-    width: 85%;
-    margin: globalStyles.$Spacing-Base 0;
+    width: 74%;
+    margin: 0px 2px 20px 2px;
     background-color: rgb(255, 255, 255, 0.1);
   }
 }
 
 // Role Section
 .roleSection {
-  width: 100%;
+  // width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: globalStyles.$Spacing-S;
   padding: 0 globalStyles.$Spacing-Base;
-  margin-bottom: globalStyles.$Spacing-M;
+
 
   .roleChip {
     width: 100%;
-    background-color: globalStyles.$Main-Color-Light !important;
-    color: globalStyles.$Text-Color !important;
-    padding: globalStyles.$Spacing-S 0 !important;
-    border-radius: globalStyles.$Border-Radius-Full !important;
-    font-family: globalStyles.$Font-Family !important;
-    font-weight: globalStyles.$Font-Weight-SemiBold !important;
-    font-size: globalStyles.$Font-Size-SM !important;
+    background-color: globalStyles.$Main-Color-Light;
+    padding: globalStyles.$Spacing-S globalStyles.$Spacing-L;
+    border-radius: globalStyles.$Border-Radius-Full;
     text-align: center;
-    border: none !important;
     transition: all globalStyles.$Transition-Fast;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
-    &:hover {
-      background-color: rgba(globalStyles.$Main-Color, 0.25) !important;
+    :global(.MuiTypography-root) {
+      color: globalStyles.$Text-Color;
+      font-family: globalStyles.$Font-Family;
+      font-size: globalStyles.$Font-Size-SM;
+      font-weight: globalStyles.$Font-Weight-SemiBold;
+      line-height: globalStyles.$Line-Height-Normal;
     }
   }
 
   .refreshButton {
-    width: 100% !important;
+    border-radius: globalStyles.$Border-Radius-M !important;
     color: globalStyles.$Main-Color !important;
-    padding: globalStyles.$Spacing-XS globalStyles.$Spacing-S !important;
-    text-transform: none !important;
     font-size: globalStyles.$Font-Size-SM !important;
     font-weight: globalStyles.$Font-Weight-Medium !important;
+    padding: globalStyles.$Spacing-XS globalStyles.$Spacing-S !important;
+    text-transform: none !important;
     transition: all globalStyles.$Transition-Fast !important;
-    border-radius: globalStyles.$Border-Radius-M !important;
+    width: 100% !important;
 
     &:hover:not(:disabled) {
       background-color: globalStyles.$Main-Color-5 !important;
@@ -136,9 +166,9 @@
 // Menu List
 .menuList {
   flex: 1;
-  padding: globalStyles.$Spacing-XXS globalStyles.$Spacing-S globalStyles.$Spacing-XXS 0;
-  overflow: hidden auto;
   margin: 0;
+  overflow: hidden auto;
+  padding: globalStyles.$Spacing-XXS globalStyles.$Spacing-S globalStyles.$Spacing-XXS 0;
   position: relative;
 
   @include globalStyles.scrollbar;
@@ -158,6 +188,7 @@
   position: relative;
   width: calc(100% + globalStyles.$Spacing-S);
   margin-left: -#{globalStyles.$Spacing-S};
+
   cursor: pointer;
 
   .menuItemContent {
@@ -183,19 +214,14 @@
       height: 20px;
       color: globalStyles.$Secondary-Text;
       stroke-width: 2px;
-      transition: color globalStyles.$Transition-Fast;
     }
 
     img {
       width: 20px;
       height: 20px;
       object-fit: contain;
-      filter: brightness(0) saturate(100%) invert(46%) sepia(9%) saturate(14%) hue-rotate(321deg) brightness(94%)
-        contrast(87%);
+      filter: brightness(0) saturate(100%) invert(46%) sepia(9%) saturate(14%) hue-rotate(321deg) brightness(94%) contrast(87%);
       opacity: 0.9;
-      transition:
-        filter globalStyles.$Transition-Fast,
-        opacity globalStyles.$Transition-Fast;
     }
 
     .loadingIcon {
@@ -215,6 +241,8 @@
       line-height: globalStyles.$Line-Height-Normal;
       transition: color globalStyles.$Transition-Fast;
       letter-spacing: -0.2px;
+      padding-left: 10px;
+
     }
   }
 
@@ -231,28 +259,23 @@
   }
 
   &:hover {
-    background-color: globalStyles.$Main-Color-5;
+    // background-color: globalStyles.$Main-Color-5;
 
     .menuIcon {
-      color: globalStyles.$Main-Color;
+      // color: globalStyles.$Main-Color;
 
       img {
-        filter: brightness(0) saturate(100%) invert(55%) sepia(94%) saturate(1553%) hue-rotate(346deg) brightness(97%)
-          contrast(95%);
+        // filter: brightness(0) saturate(100%) invert(55%) sepia(94%) saturate(1553%) hue-rotate(346deg) brightness(97%) contrast(95%);
       }
 
       svg {
-        color: globalStyles.$Main-Color;
+        // color: globalStyles.$Main-Color;
       }
     }
 
     .menuText span {
-      color: globalStyles.$Main-Color;
-    }
+      // color: globalStyles.$Main-Color;
 
-    .addButton {
-      opacity: 1;
-      visibility: visible;
     }
   }
 
@@ -264,8 +287,7 @@
       color: white;
 
       img {
-        filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%)
-          contrast(102%);
+        filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
         opacity: 1;
       }
 
@@ -284,16 +306,6 @@
       color: globalStyles.$Main-Color;
     }
 
-    .addButton {
-      color: white !important;
-      opacity: 1;
-      visibility: visible;
-
-      &:hover {
-        background-color: rgb(255, 255, 255, 0.2) !important;
-      }
-    }
-
     &:hover {
       background-color: globalStyles.$Main-Color;
 
@@ -308,61 +320,38 @@
   }
 }
 
-// Add button styles
+// Add button styles - to match parent more precisely
 .addButton {
   width: 24px !important;
   height: 24px !important;
   padding: globalStyles.$Spacing-XXS !important;
   margin-right: globalStyles.$Spacing-XS !important;
   transition: all globalStyles.$Transition-Fast !important;
-  color: globalStyles.$Secondary-Text !important;
-  opacity: 0.6;
-  visibility: visible;
 
   svg {
     font-size: 18px !important;
-  }
-
-  &:hover {
-    background-color: globalStyles.$Main-Color-5 !important;
-    color: globalStyles.$Main-Color !important;
-    opacity: 1;
   }
 }
 
 // Dropdown collapsible container
 .dropdownCollapse {
   padding: 0 !important;
-  background-color: rgb(255, 255, 255, 0.02);
-  border-radius: 0 0 12px;
-  margin-bottom: globalStyles.$Spacing-XS;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 12px;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: linear-gradient(to bottom, rgb(255, 255, 255, 0.1), rgb(255, 255, 255, 0.05), rgb(255, 255, 255, 0));
-  }
 }
 
 // Nested List Styles
 .nestedList {
-  padding: 0 !important;
   margin-left: 0;
+  padding: 0 !important;
   backdrop-filter: blur(5px);
 }
 
 .nestedListItem {
-  padding: globalStyles.$Spacing-XS globalStyles.$Spacing-L !important;
-  margin: 0 !important;
   border-radius: 0 !important;
-  transition: all globalStyles.$Transition-Fast;
-  position: relative;
   cursor: pointer;
+  margin: 0 !important;
+  padding: globalStyles.$Spacing-XS globalStyles.$Spacing-L !important;
+  position: relative;
+  transition: all globalStyles.$Transition-Fast;
 
   &:hover {
     background-color: rgb(247, 144, 29, 0.05) !important;
@@ -370,16 +359,6 @@
 
   &.nestedSelected {
     background-color: rgb(247, 144, 29, 0.1) !important;
-
-    &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background-color: globalStyles.$Main-Color;
-    }
 
     .nestedListText {
       font-weight: globalStyles.$Font-Weight-SemiBold !important;
@@ -393,23 +372,23 @@
 
   // Target MUI Typography
   span {
+    color: globalStyles.$Secondary-Text !important;
     font-family: globalStyles.$Font-Family !important;
     font-size: globalStyles.$Font-Size-SM !important;
     font-weight: globalStyles.$Font-Weight-Medium !important;
-    color: globalStyles.$Secondary-Text !important;
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     transition: all globalStyles.$Transition-Fast;
+    white-space: nowrap;
   }
 }
 
 // Typography for nested items
 .nestedItemTypography {
+  color: globalStyles.$Secondary-Text !important;
   font-family: globalStyles.$Font-Family !important;
   font-size: globalStyles.$Font-Size-SM !important;
   font-weight: globalStyles.$Font-Weight-Medium !important;
-  color: globalStyles.$Secondary-Text !important;
 }
 
 // Pagination styles
@@ -424,12 +403,13 @@
 }
 
 .pagination {
+
   // Style for MUI pagination
   button {
     color: globalStyles.$Secondary-Text !important;
     font-size: globalStyles.$Font-Size-XS !important;
-    min-width: 26px !important;
     height: 26px !important;
+    min-width: 26px !important;
     padding: 0 !important;
 
     &.Mui-selected {
@@ -448,19 +428,6 @@
 .loadingSpinner {
   color: globalStyles.$Main-Color !important;
   margin-right: globalStyles.$Spacing-S !important;
-}
-
-// Empty state for sections
-.emptyState {
-  padding: globalStyles.$Spacing-M;
-  text-align: center;
-  color: globalStyles.$Secondary-Text;
-  font-family: globalStyles.$Font-Family;
-  font-size: globalStyles.$Font-Size-SM;
-  font-style: italic;
-  background-color: rgb(255, 255, 255, 0.02);
-  border-radius: globalStyles.$Border-Radius-M;
-  margin: globalStyles.$Spacing-XS 0;
 }
 
 // Footer Section
@@ -507,32 +474,29 @@
     width: 20px;
     height: 20px;
     object-fit: contain;
-    filter: brightness(0) saturate(100%) invert(46%) sepia(9%) saturate(14%) hue-rotate(321deg) brightness(94%)
-      contrast(87%);
+    filter: brightness(0) saturate(100%) invert(46%) sepia(9%) saturate(14%) hue-rotate(321deg) brightness(94%) contrast(87%);
     opacity: 0.9;
 
     &:hover {
-      filter: brightness(0) saturate(100%) invert(55%) sepia(94%) saturate(1553%) hue-rotate(346deg) brightness(97%)
-        contrast(95%);
+      filter: brightness(0) saturate(100%) invert(55%) sepia(94%) saturate(1553%) hue-rotate(346deg) brightness(97%) contrast(95%);
     }
   }
 }
 
 // Avatar Styles
 .userAvatar {
-  width: 36px !important;
-  height: 36px !important;
+  width: 28px !important;
+  height: 28px !important;
   font-size: globalStyles.$Font-Size-MD !important;
   font-weight: globalStyles.$Font-Weight-SemiBold !important;
   font-family: globalStyles.$Font-Family !important;
-  background-color: globalStyles.$Main-Color-Light !important;
+  // background-color: globalStyles.$Main-Color-Light !important;
   color: globalStyles.$Main-Color !important;
   text-transform: uppercase !important;
-  border: 2px solid rgb(255, 255, 255, 0.1) !important;
+  // border: 2px solid rgb(255, 255, 255, 0.1) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  transition: all globalStyles.$Transition-Fast !important;
 
   &.MuiAvatar-root,
   &.MuiAvatar-colorDefault,
@@ -557,20 +521,19 @@
   font-size: globalStyles.$Font-Size-LG !important;
   font-weight: globalStyles.$Font-Weight-SemiBold !important;
   font-family: globalStyles.$Font-Family !important;
-  background-color: globalStyles.$Main-Color-Light !important;
+  // background-color: globalStyles.$Main-Color-Light !important;
   color: globalStyles.$Main-Color !important;
   text-transform: uppercase !important;
   border: 2px solid rgb(255, 255, 255, 0.1) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  margin-right: globalStyles.$Spacing-S !important;
 
   &.MuiAvatar-root,
   &.MuiAvatar-colorDefault,
   &.MuiAvatar-circular {
-    background-color: globalStyles.$Main-Color-Light !important;
-    color: globalStyles.$Main-Color !important;
+    // background-color: globalStyles.$Main-Color-Light !important;
+    // color: globalStyles.$Main-Color !important;
   }
 
   img {
@@ -590,22 +553,22 @@
   cursor: pointer;
 
   &:hover {
-    background-color: globalStyles.$Main-Color-5 !important;
+    // background-color: globalStyles.$Main-Color-5 !important;
 
     .userAvatar {
-      transform: scale(1.05);
+      // transform: scale(1.05);
     }
   }
 }
 
 // User Menu
 .userMenu {
+  background: rgb(255, 255, 255, 0.05);
+  border-radius: globalStyles.$Border-Radius-L;
+  box-shadow: globalStyles.$Shadow-MD;
   margin-top: globalStyles.$Spacing-Base;
   min-width: 240px;
-  border-radius: globalStyles.$Border-Radius-L;
   overflow: hidden;
-  box-shadow: globalStyles.$Shadow-MD;
-  background: rgb(255, 255, 255, 0.05);
   backdrop-filter: blur(5px);
 
   .userInfo {
@@ -621,56 +584,27 @@
 
     :global(.MuiTypography-root) {
       &:first-child {
+        color: globalStyles.$Text-Color;
+        font-family: globalStyles.$Font-Family;
         font-size: globalStyles.$Font-Size-SM;
         font-weight: globalStyles.$Font-Weight-SemiBold;
-        font-family: globalStyles.$Font-Family;
         line-height: globalStyles.$Line-Height-Normal;
-        color: globalStyles.$Text-Color;
       }
 
       &:last-child {
-        font-size: globalStyles.$Font-Size-XS;
-        font-family: globalStyles.$Font-Family;
-        line-height: globalStyles.$Line-Height-Normal;
         color: globalStyles.$Secondary-Text;
+        font-family: globalStyles.$Font-Family;
+        font-size: globalStyles.$Font-Size-XS;
+        line-height: globalStyles.$Line-Height-Normal;
 
         @include globalStyles.textEllipsis;
       }
     }
   }
-
-  .MuiMenuItem-root {
-    font-family: globalStyles.$Font-Family;
-    font-size: globalStyles.$Font-Size-SM;
-    padding: globalStyles.$Spacing-S globalStyles.$Spacing-M;
-    color: globalStyles.$Text-Color;
-    transition: background-color globalStyles.$Transition-Fast;
-
-    &:hover {
-      background-color: globalStyles.$Main-Color-5;
-    }
-
-    .MuiListItemIcon-root {
-      color: globalStyles.$Secondary-Text;
-      min-width: 36px;
-    }
-  }
-}
-
-// Notification badge
-.notificationBadge {
-  .MuiBadge-badge {
-    background-color: globalStyles.$Main-Color;
-    color: white;
-    min-width: 18px;
-    height: 18px;
-    padding: 0 4px;
-    font-size: globalStyles.$Font-Size-XXS;
-  }
 }
 
 // Responsive Styles
-@media (width <= 768px) {
+@media (width <=768px) {
   .sidePanelContainer {
     padding: globalStyles.$Spacing-Base globalStyles.$Spacing-M;
   }
@@ -688,7 +622,8 @@
       width: 20px !important;
       height: 20px !important;
 
-      svg, img {
+      svg,
+      img {
         width: 16px;
         height: 16px;
         stroke-width: 1.5px;
@@ -700,19 +635,19 @@
       letter-spacing: -0.1px;
     }
   }
-  
+
   .nestedListItem {
     padding: globalStyles.$Spacing-XS globalStyles.$Spacing-M !important;
   }
-  
+
   .nestedListText span {
     font-size: globalStyles.$Font-Size-XS !important;
   }
-  
+
   .nestedItemTypography {
     font-size: globalStyles.$Font-Size-XS !important;
   }
-  
+
   .paginationContainer {
     padding: globalStyles.$Spacing-XXS 0;
   }
@@ -722,7 +657,8 @@
     height: 20px !important;
     padding: globalStyles.$Spacing-XXS;
 
-    svg, img {
+    svg,
+    img {
       width: 16px;
       height: 16px;
       stroke-width: 1.5px;
@@ -746,28 +682,19 @@
   .avatarButton {
     padding: globalStyles.$Spacing-XXS !important;
   }
-  
-  .logoWrapper {
-    .logo {
-      height: 28px;
-    }
-    
-    .title {
-      font-size: globalStyles.$Font-Size-LG;
-    }
-  }
 }
 
 // Reduced Motion
 @media (prefers-reduced-motion: reduce) {
+
   .sidePanelContainer,
   .menuItem,
   .footerIcon,
   .avatarButton,
   .userAvatar,
   .menuAvatar {
-    transition: none !important;
     transform: none !important;
+    transition: none !important;
   }
 }
 
@@ -775,10 +702,6 @@
 @media (prefers-contrast: more) {
   .menuItem.selected {
     border: 1px solid globalStyles.$Main-Color;
-  }
-  
-  .nestedSelected::before {
-    width: 4px;
   }
 }
 
