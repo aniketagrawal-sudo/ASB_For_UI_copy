@@ -100,7 +100,8 @@ const KpiRepository = () => {
       const fallback = {
         id: String(Date.now()),
         username: userPayload.username || `User ${users.length + 1}`,
-        description: userPayload.description || userPayload.category || '—',
+        description: userPayload.description || '—',
+        category: userPayload.category || '—',
         persona: userPayload.persona || 'Regional Manager',
         status: 'Active',
       };
@@ -128,7 +129,8 @@ const KpiRepository = () => {
               ? {
                   ...u,
                   username: userPayload.username || u.username,
-                  description: userPayload.description || userPayload.category || u.description,
+                   description: userPayload.description || '—',
+        category: userPayload.category || '—',
                   persona: userPayload.persona || u.persona,
                 }
               : u,
@@ -144,7 +146,8 @@ const KpiRepository = () => {
             ? {
                 ...u,
                 username: userPayload.username || u.username,
-                description: userPayload.description || userPayload.category || u.description,
+                 description: userPayload.description || '—',
+        category: userPayload.category || '—',
                 persona: userPayload.persona || u.persona,
               }
             : u,
@@ -269,8 +272,8 @@ const KpiRepository = () => {
               ? {
                   username: editingUser.username,
                   description: editingUser.description,
-                  persona: editingUser.persona,
                   category: editingUser.category,
+                  persona: editingUser.persona,
                 }
               : undefined
           }
@@ -278,9 +281,9 @@ const KpiRepository = () => {
 
         <ConfirmDialog
           open={confirmOpen}
-          title="Delete user?"
+          title="Are you sure you want to delete?"
           description={
-            toDelete ? `This will permanently remove ${toDelete.username}. This action cannot be undone.` : undefined
+            toDelete ? `This will permanently remove ${toDelete.username}. Please click on delete to confirm.` : undefined
           }
           confirmText="Delete"
           onCancel={() => {

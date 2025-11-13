@@ -1,0 +1,38 @@
+
+.confirmDialogTitle {
+color: #00a651 !important;
+}
+
+.dialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 12px 24px;
+
+  :global(.MuiButton-root) {
+    text-transform: none;
+    font-weight: 500;
+    border-radius: 8px;
+  }
+
+  /* Customize cancel button */
+  .cancelBtn {
+    color: #666 !important;
+    border: 1px solid #ccc !important;
+    background-color: #f9f9f9 !important;
+
+    &:hover {
+      background-color: #efefef !important;
+    }
+  }
+
+  /* Customize save button */
+  .saveBtn {
+    background-color: #00a651 !important;
+    color: white !important;
+
+    &:hover {
+      background-color: #008b46 !important;
+    }
+  }
+}

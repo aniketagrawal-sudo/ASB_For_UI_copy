@@ -94,6 +94,7 @@ KpiRepositoryTable.propTypes = {
       id: PropTypes.string,
       username: PropTypes.string,
       description: PropTypes.string,
+      category: PropTypes.string,
       persona: PropTypes.string,
       status: PropTypes.string,
     })

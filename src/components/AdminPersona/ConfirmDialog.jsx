@@ -8,10 +8,11 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
+import classes from './ConfirmDialog.module.scss';
 
 export default function ConfirmDialog({
   open,
-  title = "Are you sure?",
+  title = "Are you sure you want to delete?",
   description,
   confirmText = "Delete",
   cancelText = "Cancel",
@@ -20,17 +21,17 @@ export default function ConfirmDialog({
 }) {
   return (
     <Dialog open={open} onClose={onCancel} maxWidth="xs" fullWidth>
-      <DialogTitle>{title}</DialogTitle>
+      <DialogTitle className={classes.confirmDialogTitle}>{title}</DialogTitle>
       {description && (
         <DialogContent>
           <DialogContentText>{description}</DialogContentText>
         </DialogContent>
       )}
-      <DialogActions>
-        <Button variant="outlined" onClick={onCancel}>
+      <DialogActions className={classes.dialogActions}>
+        <Button variant="outlined" onClick={onCancel} className={classes.cancelBtn}>
           {cancelText}
         </Button>
-        <Button color="error" onClick={onConfirm}>
+        <Button color="error" onClick={onConfirm} className={classes.saveBtn}>
           {confirmText}
         </Button>
       </DialogActions>
