@@ -1,0 +1,98 @@
+.kpiMainContainer {
+  padding: 10px;
+  background-color: #f7f6f5;
+  border-radius: 8px;
+  // margin: 10px;
+  // width: 99%;
+}
+
+.TableContaier {
+  display: flex;
+  min-height: 100vh;
+  margin: 10px 0px;
+  padding: '10px';
+}
+
+.KpisTableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Typography */
+.headerTitle {
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #000000;
+}
+
+/* Button */
+.addButton {
+  font-weight: 700 !important;
+  font-style: Bold !important;
+  font-size: 12px !important;
+  line-height: 100% !important;
+  letter-spacing: 0% !important;
+  color: #00a651 !important;
+  text-transform: none !important;
+}
+
+.addIcon {
+  color: #00a651 !important;
+  height: 12px !important;
+  margin-right: -8px !important;
+}
+
+// .searchContainer {
+//   background-color: #ffffff;
+//   border-radius: 8px;
+//   border: 1px solid #f7f6f5;
+// }
+
+.searchContainer {
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #f7f6f5;
+  padding: 10px;
+}
+
+/* Stack around TextField + buttons */
+.searchStack {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px; /* same as sx={{ mb: 1.5 }} */
+  gap: 12px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+// .searchStackTextFiled {
+//     border: 1px solid #D0D0D0;
+//     color: #FFFFFF;
+// height: 26px;
+// opacity: 1;
+// border-radius: 4px;
+// border-width: 1px;
+// gap: 8px;
+// padding-top: 12px;
+// padding-right: 8px;
+// padding-bottom: 12px;
+// padding-left: 8px;
+// }
+
+
+/* Right-side buttons */
+.iconActions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}

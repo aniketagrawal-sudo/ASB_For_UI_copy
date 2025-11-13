@@ -7,7 +7,7 @@ import SortIcon from '@mui/icons-material/Sort';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import OnBoardKPIDialogue from './OnBoardKPIDialogue';
-import ConfirmDialog from './ConfirmDialog';
+import ConfirmDialog from '../../assets/ConfirmDialogBox/ConfirmDialog';
 import classes from './KpiRepository.module.scss';
 
 const SAMPLE_USERS = [
