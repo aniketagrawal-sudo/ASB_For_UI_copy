@@ -3,8 +3,6 @@ import {
   Box,
   Typography,
   Alert,
-  Switch,
-  FormControlLabel,
   Snackbar,
   Button,
   Dialog,
@@ -13,24 +11,16 @@ import {
   DialogActions,
   TextField,
   CircularProgress,
-  // ⬇️ NEW: MUI parts for the in-container drawer
-  Drawer,
-  IconButton,
-  Divider,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
 } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
-import CloseIcon from '@mui/icons-material/Close'; // ⬅️ NEW
 import { useDispatch, useSelector } from 'react-redux';
+
 import ChatBotIcon from '../../assets/conversationDashboard/chatbot-speech-bubble.svg';
 import ChatHistoryIcon from '../../assets/conversationDashboard/ChatHistoryIcon.svg';
 import MaxsimizeIcon from '../../assets/conversationDashboard/MaxsimizeIcon.svg';
-
-import ForumIcon from '../../assets/conversationDashboard/ThreadsIcon.png';
+import MinimizeIcon from '../../assets/conversationDashboard/MinimizeIcon.svg';
+import CloseIcon from '../../assets/conversationDashboard/CloseIcon.svg';
 import {
   selectUser,
   selectCurrentPage,
@@ -39,6 +29,7 @@ import {
   selectSelectedRole,
   selectSelectedIndustry,
 } from '../../features/auth/authSlice';
+
 import ChatInput from '../ChatInput/ChatInput';
 import WelcomeMessage from '../WelcomeMessage/WelcomeMessage';
 import ConversationScreen from '../ConversationScreen/ConversationScreen';
@@ -55,26 +46,26 @@ import {
   selectIsFeedbackEnabled,
   selectSnackbar,
   closeSnackBar,
-  setShowSaveOptions,
-  getSelectedMessages,
   clearSelectedMessages,
+  getSelectedMessages,
   getConversationDetails,
   resetConversationData,
   setActiveConversation,
   getMessageCreationLoading,
 } from '../../redux/store/conversationSlice';
 
-/**
- * ConversationDashboard - Main conversation interface with Azure WebSocket optimizations
- */
 function ConversationDashboard() {
   const dispatch = useDispatch();
   const currentPage = useSelector(selectCurrentPage);
   const user = useSelector(selectUser);
-  const userName = useMemo(() => user?.given_name || user?.name?.split(' ')[0] || 'there', [user]);
+  const userName = useMemo(
+    () => user?.given_name || (user?.name ? user.name.split(' ')[0] : 'there'),
+    [user]
+  );
   const activeConversationId = useSelector(selectCurrentPageConversation);
   const chatInputRef = useRef(null);
   const componentMountedRef = useRef(true);
+
   const selectedRole = useSelector(selectSelectedRole);
   const selectedIndustry = useSelector(selectSelectedIndustry);
   const selectedIndustryId = user?.industries?.find((i) => i.name === selectedIndustry)?.id;
@@ -85,20 +76,19 @@ function ConversationDashboard() {
   // Socket connection state
   const socket = getSocket();
   const [socketConnected, setSocketConnected] = useState(isSocketConnected());
-  const connectAttemptRef = useRef(0);
 
   const [isThreadsPanelOpen, setIsThreadsPanelOpen] = useState(false);
   const snackbar = useSelector(selectSnackbar);
 
-  // --- Start: Logic for Save Thread functionality ---
+  // Save Thread
   const selectedMessages = useSelector(getSelectedMessages);
   const conversationDetails = useSelector(getConversationDetails);
   const isProcessingMessage = useSelector(getMessageCreationLoading);
-
   const [saveThread, { isLoading: isSaving, error: saveError }] = useSaveThreadMutation();
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [threadName, setThreadName] = useState('');
 
+  // New Chat
   const handleNewChat = useCallback(() => {
     dispatch(clearPageConversation(currentPage));
     dispatch(resetConversationData());
@@ -108,21 +98,20 @@ function ConversationDashboard() {
 
   const handleSaveClick = () => {
     if (!selectedMessages.length) return;
-    const failingMessages = selectedMessages.filter((msgId) => {
+    const failing = selectedMessages.filter((msgId) => {
       const msg = conversationDetails.find((m) => String(m.id) === String(msgId));
-      const saveThreadValue = msg?.metadata?.agent_response?.result?.save_thread;
-      return saveThreadValue !== true;
+      const ok = msg?.metadata?.agent_response?.result?.save_thread === true;
+      return !ok;
     });
-
-    if (failingMessages.length === 0) {
+    if (failing.length === 0) {
       setSaveDialogOpen(true);
     } else {
       dispatch(
         notifyViaSnackBar({
-          message: `A thread can only be created from structured data.`,
+          message: 'A thread can only be created from structured data.',
           severity: 'warning',
           open: true,
-        }),
+        })
       );
     }
   };
@@ -158,20 +147,18 @@ function ConversationDashboard() {
           message: 'Thread saved successfully!',
           severity: 'success',
           open: true,
-        }),
+        })
       );
-    } catch (error) {
-      console.error('Error saving thread:', error);
+    } catch (err) {
       dispatch(
         notifyViaSnackBar({
           message: 'Failed to save thread. Please try again.',
           severity: 'error',
           open: true,
-        }),
+        })
       );
     }
   };
-  // --- End: Logic for Save Thread functionality ---
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
@@ -187,7 +174,7 @@ function ConversationDashboard() {
 
   const { data: archivedData } = useFetchArchivedDataQuery(
     { page: 1, limit: 4, selectedIndustryId, selectedPersonaId },
-    { refetchOnMountOrArgChange: true },
+    { refetchOnMountOrArgChange: true }
   );
 
   useEffect(() => {
@@ -220,34 +207,37 @@ function ConversationDashboard() {
       ...(archivedData['Previous'] || []),
     ];
     return allConversations
-      .filter((conv) => conv.conversation_metadata?.currentPage === currentPage && conv.title?.trim())
+      .filter((c) => c.conversation_metadata?.currentPage === currentPage && c.title?.trim())
       .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
       .slice(0, 4)
-      .map((conv) => ({
-        id: conv.id,
-        question: conv.title.trim().replace(/\.\.\.$/, ''),
-        timestamp: conv.created_at,
-        metadata: conv.conversation_metadata,
+      .map((c) => ({
+        id: c.id,
+        question: c.title.trim().replace(/\.\.\.$/, ''),
+        timestamp: c.created_at,
+        metadata: c.conversation_metadata,
       }));
   }, [archivedData, currentPage]);
 
-  // =========================
-  // History Drawer (IN-CHAT)
-  // =========================
-  const containerRef = useRef(null);             // ⬅️ container for in-portal rendering
+  // ========= History Drawer =========
+  const containerRef = useRef(null);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-
-  // Static items for now — replace with API integration later
   const historyItems = [
     { id: 1, title: 'Client Name 1 and Client Name 2 Comparison', timestamp: 'Today, 7:55 PM' },
-    { id: 2, title: 'Client Name 3 Chart for Deposit Trend',     timestamp: 'Today, 6:10 PM' },
-    { id: 3, title: 'Client Name 2 Chart for Deposit Trend',     timestamp: 'Yesterday, 2:40 PM' },
-    { id: 4, title: 'Client Name 3 and Client Name 4 Comparison',timestamp: 'Mon, 11:26 AM' },
+    { id: 2, title: 'Client Name 3 Chart for Deposit Trend', timestamp: 'Today, 6:10 PM' },
+    { id: 3, title: 'Client Name 2 Chart for Deposit Trend', timestamp: 'Yesterday, 2:40 PM' },
+    { id: 4, title: 'Client Name 3 and Client Name 4 Comparison', timestamp: 'Mon, 11:26 AM' },
   ];
 
-  // Keep your function name (icon click uses this)
   const handelHistory = () => setIsHistoryOpen(true);
   const handleHistoryClose = () => setIsHistoryOpen(false);
+
+  // Close History on Escape
+  useEffect(() => {
+    if (!isHistoryOpen) return;
+    const onKey = (e) => e.key === 'Escape' && handleHistoryClose();
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isHistoryOpen]);
 
   const handleThreadsClick = useCallback(() => setIsThreadsPanelOpen(true), []);
   const handleThreadsPanelClose = useCallback(() => setIsThreadsPanelOpen(false), []);
@@ -258,7 +248,7 @@ function ConversationDashboard() {
         dispatch(clearPageConversation(currentPage));
       }
     },
-    [dispatch, currentPage],
+    [dispatch, currentPage]
   );
 
   const handleSuggestedQuestionClick = useCallback((query) => {
@@ -300,20 +290,29 @@ function ConversationDashboard() {
         />
       </div>
     );
-  }, [activeConversationId, userName, previousQueries, handleQuerySelect, socketConnected, conversationKey, handleSuggestedQuestionClick]);
+  }, [
+    activeConversationId,
+    userName,
+    previousQueries,
+    handleQuerySelect,
+    socketConnected,
+    conversationKey,
+    handleSuggestedQuestionClick,
+  ]);
 
   return (
     <div className={classes.container} ref={containerRef}>
       <div className={classes.header}>
         <div className={classes.titleSection}>
-          <img src={ChatBotIcon} alt="Chat AI" />
+          <img src={ChatBotIcon} alt="Chat Ai" />
           <Typography variant="h6" className={classes.title}>
             Chat AI
           </Typography>
         </div>
-        
+
         <div className={classes.headerActions}>
-          {/* {selectedMessages.length > 0 && (
+          {/* Uncomment if you re-enable “Create Thread” buttons
+          {selectedMessages.length > 0 && (
             <div className={classes.saveActions}>
               <Button
                 className={classes.confirmSaveButton}
@@ -337,7 +336,7 @@ function ConversationDashboard() {
           )} */}
 
           <Box className={classes.threadButtons}>
-            {/* ⬇️ keep your icon, now opens the history drawer */}
+            {/* Opens History drawer */}
             <Box className={classes.threadButton} onClick={handelHistory}>
               <img src={ChatHistoryIcon} alt="ChatHistoryIcon" />
             </Box>
@@ -351,7 +350,7 @@ function ConversationDashboard() {
       {renderContent}
 
       <div className={classes.inputArea}>
-        <ChatInput ref={chatInputRef} instanceId="dashboard"  onResetConversation={handleNewChat}  />
+        <ChatInput ref={chatInputRef} instanceId="dashboard" onResetConversation={handleNewChat} />
       </div>
 
       {/* Threads side panel (existing) */}
@@ -371,12 +370,14 @@ function ConversationDashboard() {
         open={snackbar.open}
         autoHideDuration={snackbar.autoHideDuration || 4000}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
         <Alert onClose={handleCloseSnackbar} severity={snackbar.severity || 'info'} sx={{ width: '100%' }}>
           {snackbar.message}
         </Alert>
       </Snackbar>
 
+      {/* Save Thread Dialog */}
       <Dialog open={saveDialogOpen} onClose={handleSaveDialogClose} className={classes.saveDialog}>
         <DialogTitle>Save Selected Messages as Thread</DialogTitle>
         <DialogContent>
@@ -405,116 +406,61 @@ function ConversationDashboard() {
             onClick={handleSaveConfirm}
             disabled={!threadName.trim() || isSaving}
             variant="contained"
-            sx={{ textTransform: 'none' }}>
+            sx={{ textTransform: 'none' }}
+          >
             {isSaving ? <CircularProgress size={24} color="inherit" /> : 'Save'}
           </Button>
         </DialogActions>
       </Dialog>
 
-      {/* ==============================
-          RIGHT HISTORY DRAWER (INSIDE)
-          ============================== */}
-      <Drawer
-        anchor="right"
-        open={isHistoryOpen}
-        onClose={handleHistoryClose}
-        hideBackdrop
-        ModalProps={{
-          container: containerRef.current, // ⬅️ render inside this component
-          keepMounted: true,
+      {/* ===== History Backdrop + Panel ===== */}
+      <div
+        className={classes.historyBackdrop}
+        onClick={handleHistoryClose}
+        aria-hidden={!isHistoryOpen}
+        style={{
+          opacity: isHistoryOpen ? 1 : 0,
+          pointerEvents: isHistoryOpen ? 'auto' : 'none',
         }}
-        PaperProps={{
-          sx: {
-            width:305,
-            maxWidth: '90vw',
-            height: '100%',
-            position: 'absolute',
-            right: 15,
-            top: 42,
-            borderLeft: '1px solid',
-            borderColor: 'divider',
-            borderTopLeftRadius: 16,
-            borderTopRightRadius: 6,
-            boxShadow: 4,
-            bgcolor: 'background.paper',
-          },
+      />
+      <aside
+        className={classes.historyPanel}
+        aria-hidden={!isHistoryOpen}
+        style={{
+          transform: isHistoryOpen ? 'translateX(0)' : 'translateX(100%)',
         }}
       >
-        {/* Drawer Header */}
-        <Box
-          sx={{
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-            px: 2,
-            py: 1.5,
-            bgcolor: 'background.paper',
-            borderBottom: '1px solid',
-            borderColor: 'divider',
-          }}
-        >
-          <IconButton
-            onClick={handleHistoryClose}
-            size="small"
-            sx={{ border: '1px solid', borderColor: 'divider', width: 32, height: 32, mr: 0.5 }}
+        {/* outside-left close; only render when open so it disappears when closed */}
+        {isHistoryOpen && (
+          <button
+            type="button"
             aria-label="Close history"
+            className={classes.historyClose}
+            onClick={handleHistoryClose}
           >
-            <CloseIcon fontSize="small" />
-          </IconButton>
-          <Typography variant="subtitle1" fontWeight={700}>
-            History
-          </Typography>
-        </Box>
+            <img src={CloseIcon} alt="CloseIcon" />
+          </button>
+        )}
 
-        {/* Drawer Body */}
-        <Box sx={{ height: '100%' }}>
-          <List disablePadding>
-            {historyItems.map((it, idx) => (
-              <Box key={it.id}>
-                <ListItem disablePadding>
-                  <ListItemButton
-                    onClick={() => {
-                      if (chatInputRef.current) {
-                        chatInputRef.current.setInputValue(it.title);
-                        if (typeof chatInputRef.current.submitInput === 'function') {
-                          chatInputRef.current.submitInput(it.title);
-                        }
-                      }
-                      handleHistoryClose();
-                    }}
-                    sx={{ alignItems: 'flex-start', py: 1.25, px: 2 }}
-                  >
-                    <ListItemText
-                      primary={it.title}
-                      primaryTypographyProps={{
-                        fontSize: 14,
-                        sx: {
-                          display: '-webkit-box',
-                          overflow: 'hidden',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
-                          lineHeight: 1.2,
-                        },
-                      }}
-                      secondary={it.timestamp}
-                      secondaryTypographyProps={{ fontSize: 12, color: 'text.secondary', mt: 0.5 }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-                {idx < historyItems.length - 1 && <Divider sx={{ ml: 2 }} />}
-              </Box>
-            ))}
-            {historyItems.length === 0 && (
-              <Typography sx={{ p: 2 }} color="text.secondary" fontSize={14}>
-                No recent items.
-              </Typography>
-            )}
-          </List>
-        </Box>
-      </Drawer>
+        <div className={classes.historyHeader}>History</div>
+        <div className={classes.historyList}>
+          {historyItems.map((it) => (
+            <div
+              key={it.id}
+              className={classes.historyItem}
+              onClick={() => {
+                // If you want to prefill and submit a query from history:
+                if (chatInputRef.current) {
+                  chatInputRef.current.setInputValue(it.title);
+                }
+                handleHistoryClose();
+              }}
+            >
+              {it.title}
+            </div>
+          ))}
+        </div>
+      </aside>
     </div>
   );
 }

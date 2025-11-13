@@ -1,14 +1,16 @@
 @use '../../styles/globalStyles.scss' as globalStyles;
 
 .overlay {
-  position: fixed;
-  inset: 0;
-  background: rgb(0, 0, 0, 0.5);
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s globalStyles.$Transition-Bezier;
-  z-index: 1200;
-  backdrop-filter: blur(4px);
+  overflow: hidden;
+  flex: 100%;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  overflow: auto;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
 
   &.visible {
     opacity: 1;
@@ -19,13 +21,15 @@
 
 .panel {
   position: fixed;
-  top: 0;
-  right: -80%;
-  width: 80%;
-  height: 100vh;
-  background: #f8f6f4;
+  top: 41.8px;
+  left: -100;
+  bottom: 0;
+  width: 78.3%;
+  height: 91.8vh;
+  border-radius: 10px;
+  background: #F5F9F5;
   box-shadow: -4px 0 24px rgb(0, 0, 0, 0.15);
-  transition: right 0.3s globalStyles.$Transition-Bezier;
+  transition: right 0.9s ease-out globalStyles.$Transition-Bezier;
   z-index: 1201;
   display: flex;
   flex-direction: column;
@@ -33,7 +37,7 @@
   font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   &.open {
-    right: 0;
+    right: 15px;
 
     .tag {
       opacity: 1;
@@ -43,27 +47,24 @@
 }
 
 .tag {
-  position: absolute;
-  left: -40px; // Adjusted position
-  top: 10px;
-  background: #f8f6f4;
+  position: relative;
+  left: 520px; // Adjusted position
+  top: 26px;
   border-radius: 8px 0 0 8px;
-  box-shadow: -4px 0 12px rgb(0, 0, 0, 0.1);
   z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 1; // Changed from 0
-  visibility: visible; // Changed from hidden
-  transition: all 0.3s globalStyles.$Transition-Bezier;
+  opacity: 0;
+  visibility: visible; 
   padding: globalStyles.$Spacing-XS;
+  cursor: pointer;
 }
 
 .closeButton {
-  position: relative !important; // Changed from absolute
+  position: absolute !important; // Changed from absolute
   color: globalStyles.$Secondary-Text !important;
   padding: globalStyles.$Spacing-XS !important;
-  background: #f8f6f4 !important;
   border-radius: 50% !important;
   width: 32px !important;
   height: 32px !important;
@@ -73,15 +74,15 @@
   z-index: 4;
 
   &:hover {
-    transform: scale(1.1); // Removed translateY
-    background: rgb(0, 0, 0, 0.04) !important;
+    // transform: scale(1.1); // Removed translateY
+    // background: rgb(0, 0, 0, 0.04) !important;
   }
 
   svg {
     font-size: 20px;
     width: 20px;
     height: 20px;
-    color: globalStyles.$Text-Color !important; // Added for better visibility
+    // color: globalStyles.$Text-Color !important; // Added for better visibility
   }
 }
 
@@ -91,12 +92,14 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: #f8f6f4;
+  background: #F5F9F5;
+  border-radius: 10px;
+
 }
 
 .header {
   padding: globalStyles.$Spacing-M;
-  background: white;
+  background: #F5F9F5;
   border-bottom: 1px solid globalStyles.$Main-Color;
   z-index: 3;
   flex-shrink: 0;
@@ -129,7 +132,7 @@
   display: flex;
   overflow: hidden;
   height: calc(100% - 56px);
-  background: #f8f6f4;
+  background: #F5F9F5;
 }
 
 .leftSection {
@@ -154,7 +157,8 @@
   padding: globalStyles.$Spacing-M;
   border-bottom: 1px solid globalStyles.$Main-Color;
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
+  // justify-content: space-between;
   align-items: center;
   height: 56px;
   flex-shrink: 0;
@@ -162,7 +166,7 @@
 }
 
 .sectionTitle {
-  color: #967249;
+  color: #020202;
   font-size: globalStyles.$Font-Size-LG;
   font-weight: globalStyles.$Font-Weight-SemiBold;
   font-family: globalStyles.$Font-Family;
@@ -174,8 +178,8 @@
   gap: globalStyles.$Spacing-M;
 }
 
-.saveButton, 
-.confirmSaveButton, 
+.saveButton,
+.confirmSaveButton,
 .cancelButton {
   text-transform: none !important;
   font-weight: globalStyles.$Font-Weight-Medium !important;
@@ -190,8 +194,8 @@
   color: globalStyles.$Main-Color !important;
 
   &:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: globalStyles.$Shadow-MD;
+    // transform: translateY(-1px);
+    // box-shadow: globalStyles.$Shadow-MD;
   }
 
   &:disabled {
@@ -205,9 +209,9 @@
   color: white !important;
 
   &:hover:not(:disabled) {
-    background: #e67d0a !important;
-    transform: translateY(-1px);
-    box-shadow: globalStyles.$Shadow-MD;
+    // background: #F5F9F5 !important;
+    // transform: translateY(-1px);
+    // box-shadow: globalStyles.$Shadow-MD;
   }
 
   &:disabled {
@@ -220,8 +224,8 @@
   color: globalStyles.$Secondary-Text !important;
 
   &:hover {
-    background: rgb(0, 0, 0, 0.08) !important;
-    transform: translateY(-1px);
+    // background: rgb(0, 0, 0, 0.08) !important;
+    // transform: translateY(-1px);
   }
 }
 
@@ -232,7 +236,7 @@
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
-  background: #f8f6f4;
+  background: #F5F9F5;
 }
 
 .chatArea {
@@ -242,7 +246,7 @@
   justify-content: center;
   padding: globalStyles.$Spacing-XL;
   overflow-y: auto;
-  background: #f8f6f4;
+  background: #F5F9F5;
 }
 
 .conversationArea {
@@ -252,7 +256,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #f8f6f4;
+  background: #F5F9F5;
 }
 
 .inputArea {
@@ -295,7 +299,7 @@
     font-family: globalStyles.$Font-Family;
 
     &:hover fieldset {
-      border-color: rgb(247, 144, 29, 0.5);
+      // border-color: rgb(247, 144, 29, 0.5);
     }
 
     &.Mui-focused fieldset {
@@ -305,13 +309,13 @@
 }
 
 // Media queries
-@media (width <= 1200px) {
+@media (width <=1200px) {
   .panel {
     width: 90%;
   }
 }
 
-@media (width <= 768px) {
+@media (width <=768px) {
   .panel {
     width: 100%;
   }
@@ -336,14 +340,14 @@
     width: 280px;
   }
 
-  .header, 
+  .header,
   .rightHeader {
     padding: globalStyles.$Spacing-S;
     height: 48px;
   }
 
-  .saveButton, 
-  .confirmSaveButton, 
+  .saveButton,
+  .confirmSaveButton,
   .cancelButton {
     padding: globalStyles.$Spacing-XS globalStyles.$Spacing-M !important;
     font-size: globalStyles.$Font-Size-XS !important;
@@ -363,6 +367,7 @@
 
 // Reduced Motion
 @media (prefers-reduced-motion: reduce) {
+
   .panel,
   .overlay,
   .saveButton,

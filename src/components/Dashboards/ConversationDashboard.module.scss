@@ -157,3 +157,67 @@
     transition: none;
   }
 }
+
+
+.historyBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  transition: opacity 220ms ease;
+  z-index: 1000;
+}
+
+.historyPanel {
+  position: fixed;
+  top: 43px;
+  right: 0px;
+  height: 100vh;
+  width: min(314px, 92vw);
+  background: #F1F7F4;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+  border-left: 1px solid #e5e7eb;
+  border-top-left-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 260ms ease;
+  z-index: 1001; // above backdrop
+  overflow: visible; // keep content tidy
+}
+
+.historyClose {
+  position: absolute;
+  top: 10px;
+  right: 95%;
+  transform: translateX(-12px);
+  width: 35px;
+  height: 55px;
+  background: #F7F7F7;
+  color: #000;
+  border-radius: 10px 0px 0px 10px;
+}
+
+.historyHeader {
+  padding: 16px 18px;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  background: #F1F7F4;
+  border-top-left-radius: 18px;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.historyList {
+  overflow: auto;
+  padding: 8px 0;
+}
+
+.historyItem {
+  padding: 14px 18px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.historyItem:hover {
+  background: #fafafa;
+}
