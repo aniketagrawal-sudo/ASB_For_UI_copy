@@ -4,6 +4,8 @@ import DepositLoan from "./Trends/DepositLoan";
 import RevenueGraph from "./Trends/RevenueGraph";
 import TotalProfitAndLossRelation from "./Trends/TotalProfitAndLossRelation";
 import ClinetInformationComponent from "./Trends/ClinetInformationComponent";
+import RevenueProfitAtProductLevel from "./Trends/RevenueProfitAtProductLevel";
+import VolumeUsage from "./Trends/VolumeUsage";
 
 export default function TrendComponent() {
     return (
@@ -12,8 +14,10 @@ export default function TrendComponent() {
                 <DepositLoan />
                 <RevenueGraph />
                 <TotalProfitAndLossRelation />
-
-
+                <div className={classes.revenueProfitVolumeUsage}>
+                    <RevenueProfitAtProductLevel />
+                    <VolumeUsage />
+                </div>
             </Box>
             <Typography variant="h6" margin={1.6}>
                 Client Information
@@ -23,7 +27,6 @@ export default function TrendComponent() {
                 <Typography variant="body2" component="div">
                     <ClinetInformationComponent />
                 </Typography>
-
             </Box>
         </>
 
