@@ -12,6 +12,8 @@ import {
   CircularProgress,
   Switch,
 } from '@mui/material';
+import ChatBotIcon from '../../assets/conversationDashboard/chatbot-speech-bubble.svg';
+import MinimizeIcon from '../../assets/conversationDashboard/MinimizeIcon.svg'
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CloseIcon from '@mui/icons-material/Close';
@@ -103,7 +105,7 @@ const ThreadsPanel = ({ open, onClose, userName, previousQueries = [], onQuerySe
     dispatch(toggleFeedbackMode());
   };
   //helper fnc
-  
+
 
   conversationDetails.forEach(msg => {
     let saveThread;
@@ -124,24 +126,24 @@ const ThreadsPanel = ({ open, onClose, userName, previousQueries = [], onQuerySe
         console.warn(`Message ID ${msg.id}: failed to parse blob link`, err);
       }
     }
-    console.log(`Message ID ${msg.id}: save_thread =`, saveThread,`, blob_link =`, blobLink);
+    console.log(`Message ID ${msg.id}: save_thread =`, saveThread, `, blob_link =`, blobLink);
   });
 
-  
+
 
   // const handleSaveClick = () => {
   //   setSaveDialogOpen(true);
   // };
   const handleSaveClick = () => {
     if (!selectedMessages.length) return;
-  
+
     const failingMessages = selectedMessages.filter(msgId => {
       // Make sure types match
       const msg = conversationDetails.find(m => String(m.id) === String(msgId));
       const saveThreadValue = msg?.metadata?.agent_response?.result?.save_thread;
       return saveThreadValue !== true; // undefined or false → fails
     });
-    
+
     if (failingMessages.length === 0) {
       setSaveDialogOpen(true);
     } else {
@@ -155,10 +157,10 @@ const ThreadsPanel = ({ open, onClose, userName, previousQueries = [], onQuerySe
       );
     }
   };
-  
-  
-  
-  
+
+
+
+
   // ADDED: Handler to cancel message selection
   const handleCancelSelect = () => {
     dispatch(clearSelectedMessages());
@@ -567,7 +569,7 @@ const ThreadsPanel = ({ open, onClose, userName, previousQueries = [], onQuerySe
           autoHideDuration: 5000,
         })
       );
-    
+
     } catch (error) {
       console.error('Error saving thread:', error);
     }
@@ -619,18 +621,19 @@ const ThreadsPanel = ({ open, onClose, userName, previousQueries = [], onQuerySe
       <div className={`${classes.panel} ${open ? classes.open : ''}`}>
         {open && (
           <div className={classes.tag}>
-            <IconButton onClick={handleClose} className={classes.closeButton}>
-              <CloseIcon />
-            </IconButton>
+            <div onClick={handleClose} className={classes.closeButton}>
+              {/* <CloseIcon /> */}
+              <img src={MinimizeIcon} alt="MinimizeIcon" />
+            </div>
           </div>
         )}
 
         <div className={classes.content}>
-          <div className={classes.header}>
+          {/* <div className={classes.header}>
             <div className={classes.titleSection}>
               <SmartToyOutlinedIcon className={classes.titleIcon} />
               <Typography variant="h6" className={classes.title}>
-                Chat AI/Histroy
+                Histroy
               </Typography>
             </div>
             {!socketConnected && (
@@ -638,17 +641,31 @@ const ThreadsPanel = ({ open, onClose, userName, previousQueries = [], onQuerySe
                 Real-time updates unavailable
               </Alert>
             )}
-          </div>
+          </div> */}
 
           <div className={classes.body}>
             <div className={classes.leftSection}>
-              <Sidebar onChatItemClick={handleChatSelect} isMenuMode={true} onNewChat={handleNewChat} />
+              <div className={classes.header}>
+                <div className={classes.titleSection}>
+                  <Typography variant="h6" className={classes.title}>
+                    Histroy
+                  </Typography>
+                </div>
+                {!socketConnected && (
+                  <Alert severity="warning" sx={{ ml: 2, py: 0.5, fontSize: '0.75rem' }}>
+                    Real-time updates unavailable
+                  </Alert>
+                )}
+              </div>
+              
+              {/* <Sidebar onChatItemClick={handleChatSelect} isMenuMode={true} onNewChat={handleNewChat} /> */}
             </div>
 
             <div className={classes.rightSection}>
               <div className={classes.rightHeader}>
+                <img src={ChatBotIcon} alt="Chat AI" />
                 <Typography variant="h6" className={classes.sectionTitle}>
-                  {!activeConversationId ? 'New Chat' : isSelectMode ? 'Select Messages' : 'Chat'}
+                  {!activeConversationId ? 'Chat Ai' : isSelectMode ? 'Select Messages' : 'Chat'}
                 </Typography>
                 <div className={classes.saveOptions}>
                   {!isSelectMode ? (
@@ -657,8 +674,8 @@ const ThreadsPanel = ({ open, onClose, userName, previousQueries = [], onQuerySe
                         className={classes.saveButton}
                         onClick={() => dispatch(setShowSaveOptions(true))}
                         // startIcon={<SaveIcon />}
-                        disabled={!conversationDetails.length || isCreatingConversation || isProcessingMessage|| selectedMessages.length === 0}>
-                        
+                        disabled={!conversationDetails.length || isCreatingConversation || isProcessingMessage || selectedMessages.length === 0}>
+
                       </Button>
                     )
                   ) : (
@@ -719,7 +736,7 @@ const ThreadsPanel = ({ open, onClose, userName, previousQueries = [], onQuerySe
             </Typography>
           )}
           <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-            Enter a name for your saved thread 
+            Enter a name for your saved thread
           </Typography>
           <TextField
             autoFocus

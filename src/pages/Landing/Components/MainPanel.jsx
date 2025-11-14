@@ -58,17 +58,28 @@ function MainPanel({
       case 'insight':
         return (
           <>
-            <div className={classes.primaryContent}>
+            <div
+              className={classes.primaryContent}
+              style={{
+                display: 'flex',
+                // gap: '12px',
+                // alignItems: 'flex-start', // or 'center' if you want vertical centering
+                flexWrap: 'wrap',         // optional, for responsiveness
+              }}
+            >
               <InsightsDashboard
                 dashboardsReady={dashboardsReady}
                 dashboardsLoading={dashboardsLoading}
                 executingQueries={executingQueries}
                 currentProcessingInsight={currentProcessingInsight}
               />
-            </div>
-            <div className={classes.secondaryContent}>
               <ConversationDashboard />
             </div>
+
+            {/* <div className={classes.secondaryContent}>
+              <ConversationDashboard />
+            </div> */}
+            
           </>
         );
       case 'dashboard':
@@ -81,7 +92,7 @@ function MainPanel({
                 isLoading={dashboardsLoading?.home}
                 isReady={dashboardsReady?.home}
               /> */}
-              <KPIDashboard/>
+              <KPIDashboard />
             </div>
             {/* <div className={classes.secondaryContent}>
               <ConversationDashboard />
@@ -91,7 +102,7 @@ function MainPanel({
     }
   };
 
- 
+
   const formatLastRefreshed = (timestamp) => {
     if (!timestamp) return 'Never';
     const date = new Date(timestamp);

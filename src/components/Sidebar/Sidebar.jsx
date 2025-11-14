@@ -450,13 +450,13 @@ const Sidebar = ({ onChatItemClick, isMenuMode = false, onNewChat }) => {
 
   return (
     <div className={`${classes.sidebar} ${isMenuMode ? classes.menuMode : ''}`}>
-      <div className={classes.sidebarHeader}>
+      {/* <div className={classes.sidebarHeader}>
         <Typography variant="h6" className={classes.sidebarTitle}>
           Previous Conversations
         </Typography>
-      </div>
+      </div> */}
 
-      <div className={classes.newChatContainer}>
+      {/* <div className={classes.newChatContainer}>
         <Button
           fullWidth
           variant="contained"
@@ -466,8 +466,8 @@ const Sidebar = ({ onChatItemClick, isMenuMode = false, onNewChat }) => {
           className={classes.newChatButton}>
           {isButtonProcessing ? <CircularProgress size={20} /> : 'New Conversation'}
         </Button>
-      </div>
-
+      </div> */}
+{/* 
       <div className={classes.content}>
         {!conversations || Object.values(conversations).every((group) => !group?.length) ? (
           <div className={classes.noData}>No conversations found</div>
@@ -488,7 +488,7 @@ const Sidebar = ({ onChatItemClick, isMenuMode = false, onNewChat }) => {
             )}
           </>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -45,22 +45,23 @@
   :global(.MuiTypography-root) {
     font-size: 0.8125rem;
     font-weight: 500;
-    color: globalStyles.$Text-Color;
+    color: #0F0F0F;
     font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.4;
   }
 
   &:hover {
-    background-color: rgb(247, 144, 29, 0.03);
-    border-right-color: rgb(247, 144, 29, 0.3);
+    // background-color: rgb(247, 144, 29, 0.03);
+    // border-right-color: rgb(247, 144, 29, 0.3);
   }
 
   &.selected {
-    background-color: rgb(247, 144, 29, 0.08);
+    // background-color: rgb(247, 144, 29, 0.08);
+    background-color: #F1F7F4;
     border-right-color: globalStyles.$Main-Color;
 
     :global(.MuiTypography-root) {
-      color: globalStyles.$Main-Color;
+      color:#1A1A1A;
       font-weight: 600;
     }
   }
@@ -79,7 +80,7 @@
 .header {
   padding: 0.625rem 1rem;
   border-bottom: 1px solid rgb(0, 0, 0, 0.06);
-  background-color: rgb(247, 144, 29, 0.02);
+  background-color: #FFFFFF;
   position: sticky;
   top: 0;
   z-index: 20;
