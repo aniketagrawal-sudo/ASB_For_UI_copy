@@ -206,15 +206,15 @@ const UsageStats = () => {
 
   return (
     <div className={classes.kpiMainContainer}>
-      <UsageStatsKpiList />
+      {/* <UsageStatsKpiList /> */}
       <Box className={classes.TableContaier}>
         <Box sx={{ flex: 1 }}>
           <Box className={classes.KpisTableHeader}>
-            <Typography
+            {/* <Typography
               className={classes.headerTitle}
               >
               User List
-            </Typography>
+            </Typography> */}
             {/* <Button
                className={classes.addButton}
               startIcon={<AddCircleOutlineIcon className={classes.addIcon} />}
@@ -223,7 +223,7 @@ const UsageStats = () => {
             </Button> */}
           </Box>
 
-          <Box className={classes.searchContainer}>
+          {/* <Box className={classes.searchContainer}>
             <Stack
               className={classes.searchStack}
               >
@@ -252,7 +252,7 @@ const UsageStats = () => {
             </Stack>
 
             <UsageStatsTable users={users} search={search} onEdit={handleEditOpen} onDelete={handleAskDelete} />
-          </Box>
+          </Box> */}
 
           {loading && <Typography sx={{ mt: 2 }}>Loading users...</Typography>}
           {error && (

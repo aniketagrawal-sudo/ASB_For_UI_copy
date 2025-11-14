@@ -207,7 +207,7 @@ const KpiRepository = () => {
   return (
     <div className={classes.kpiMainContainer}>
       <KpiRepositoryLists />
-      <Box className={classes.TableContaier}>
+      {/* <Box className={classes.TableContaier}>
         <Box sx={{ flex: 1 }}>
           <Box className={classes.KpisTableHeader}>
             <Typography
@@ -292,7 +292,7 @@ const KpiRepository = () => {
           }}
           onConfirm={handleConfirmDelete}
         />
-      </Box>
+      </Box> */}
     </div>
   );
 };
