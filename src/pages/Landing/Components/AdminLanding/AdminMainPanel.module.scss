@@ -1,0 +1,566 @@
+@use '../../../../styles/globalStyles.scss' as globalStyles;
+
+.mainPanelContainer {
+  // height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  // border-radius: globalStyles.$Border-Radius-L;
+}
+
+.comingSoonContainer {
+  height: 100%;
+  background: white;
+  padding: globalStyles.$Spacing-XL;
+
+  .comingSoonContent {
+    max-width: 689px;
+    font-size: 10px;
+    margin-left: -8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    // max-width: 400px;
+    // padding: globalStyles.$Spacing-XL;
+    // background: white;
+    // border-radius: globalStyles.$Border-Radius-L;
+    // box-shadow: globalStyles.$Shadow-MD;
+    animation: slide-up 0.5s ease-out forwards;
+  }
+
+  .comingSoonIcon {
+    font-size: 64px;
+    color: globalStyles.$Main-Color;
+    margin-bottom: globalStyles.$Spacing-L;
+    animation: wrench 2s ease-in-out infinite;
+  }
+
+  .comingSoonText {
+    color: globalStyles.$Text-Color;
+    font-weight: globalStyles.$Font-Weight-Bold;
+    font-size: globalStyles.$Font-Size-XL;
+    margin-bottom: globalStyles.$Spacing-S;
+    font-family: globalStyles.$Font-Family;
+  }
+
+  .comingSoonSubtext {
+    color: globalStyles.$Secondary-Text;
+    margin-bottom: globalStyles.$Spacing-M;
+    font-weight: globalStyles.$Font-Weight-Medium;
+    font-family: globalStyles.$Font-Family;
+  }
+
+  .comingSoonDetails {
+    padding-top: globalStyles.$Spacing-M;
+    border-top: 1px solid globalStyles.$Border-Color;
+    width: 100%;
+    color: globalStyles.$Text-Color;
+    font-size: globalStyles.$Font-Size-SM;
+    font-family: globalStyles.$Font-Family;
+  }
+}
+
+.header {
+  padding: globalStyles.$Spacing-M globalStyles.$Spacing-Base;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  z-index: globalStyles.$Z-Index-Base;
+  position: relative;
+
+  .headerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: relative;
+  }
+
+  .title {
+    color: white;
+    font-size: globalStyles.$Font-Size-LG;
+    font-weight: globalStyles.$Font-Weight-SemiBold;
+    font-family: globalStyles.$Font-Family;
+    line-height: globalStyles.$Line-Height-Tight;
+  }
+
+  .headerActions {
+    display: flex;
+    align-items: center;
+    gap: globalStyles.$Spacing-XS;
+    position: absolute;
+    right: calc(27% + globalStyles.$Spacing-Base);
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+  }
+
+  .lastRefreshedContainer {
+    display: flex;
+    align-items: center;
+    gap: globalStyles.$Spacing-XS;
+    padding: globalStyles.$Spacing-XS globalStyles.$Spacing-S;
+    border-radius: globalStyles.$Border-Radius-M;
+    margin-right: globalStyles.$Spacing-S;
+    transition: all globalStyles.$Transition-Fast;
+
+    .timeIcon {
+      font-size: globalStyles.$Font-Size-MD;
+      color: white !important;
+    }
+
+    .lastRefreshedText {
+      color: white;
+      font-size: globalStyles.$Font-Size-XS;
+      font-weight: globalStyles.$Font-Weight-Medium;
+      font-family: globalStyles.$Font-Family;
+    }
+
+    &:hover {
+      background-color: rgb(255, 255, 255, 0.15);
+    }
+  }
+
+  .summaryButton {
+    display: flex;
+    align-items: center;
+    gap: globalStyles.$Spacing-XS;
+    color: white;
+    padding: globalStyles.$Spacing-XS globalStyles.$Spacing-M;
+    border-radius: globalStyles.$Border-Radius-M;
+    transition: all globalStyles.$Transition-Fast;
+    margin-right: globalStyles.$Spacing-S;
+    text-transform: none;
+
+    &:hover {
+      background-color: rgb(255, 255, 255, 0.1);
+    }
+
+    .buttonIcon {
+      font-size: globalStyles.$Font-Size-XL;
+      color: white;
+    }
+
+    .buttonText {
+      font-size: globalStyles.$Font-Size-SM;
+      font-weight: globalStyles.$Font-Weight-Medium;
+      font-family: globalStyles.$Font-Family;
+      color: white;
+    }
+  }
+
+  .actionButton {
+    color: white;
+    transition: all globalStyles.$Transition-Fast;
+    width: 32px;
+    height: 32px;
+    padding: globalStyles.$Spacing-XS;
+    border-radius: globalStyles.$Border-Radius-S;
+
+    @include globalStyles.centering;
+
+    &:hover {
+      background-color: rgb(255, 255, 255, 0.1);
+    }
+
+    svg {
+      font-size: globalStyles.$Font-Size-XL;
+    }
+  }
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  padding: 0 globalStyles.$Spacing-Base globalStyles.$Spacing-Base globalStyles.$Spacing-Base;
+  min-height: 0;
+  overflow: hidden;
+
+  .primaryContent {
+    overflow: hidden;
+    flex: 0 0 100%;
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    overflow: auto;
+    border-radius: globalStyles.$Border-Radius-L;
+    background: white;
+    box-shadow: globalStyles.$Shadow-MD;
+    border: 1px solid globalStyles.$Border-Color;
+  }
+
+  .secondaryContent {
+    flex: 0 0 27%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: globalStyles.$Border-Radius-L;
+    background: white;
+    box-shadow: globalStyles.$Shadow-MD;
+    border: 1px solid globalStyles.$Border-Color; // Added missing border
+  }
+
+  // UPDATED: Full content styling to match primary/secondary content
+  .fullContent {
+    flex: 1;
+    border-radius: globalStyles.$Border-Radius-L;
+    background: white;
+    box-shadow: globalStyles.$Shadow-MD;
+    border: 1px solid globalStyles.$Border-Color; // Added border like primary/secondary
+    padding: 0; // Removed padding to match primary/secondary content which handle their own padding
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+}
+
+// To ensure consistent styling with the "Last Refreshed" element,
+// you can combine their selectors like this.
+.lastRefreshedContainer,
+.dataPeriodContainer {
+  display: flex;
+  align-items: center;
+  color: white !important;
+}
+
+.lastRefreshedText,
+.dataPeriodText {
+  font-size: 0.8rem !important;
+  margin-left: 4px !important;
+  font-family: Roboto, sans-serif !important;
+}
+
+.timeIcon {
+  font-size: 1.1rem !important;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes wrench {
+  0% {
+    transform: rotate(0);
+  }
+
+  20%,
+  30% {
+    transform: rotate(-12deg);
+  }
+
+  50%,
+  60% {
+    transform: rotate(12deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@media (width <=1280px) {
+  .content {
+    flex-direction: column;
+    padding: globalStyles.$Spacing-S;
+    gap: globalStyles.$Spacing-S;
+
+    .primaryContent,
+    .secondaryContent {
+      flex: none;
+      width: 100%;
+      margin-right: 0;
+    }
+
+    .primaryContent {
+      height: auto;
+      overflow: hidden;
+    }
+
+    .secondaryContent {
+      height: 35%;
+    }
+  }
+
+  .header {
+    .headerActions {
+      right: globalStyles.$Spacing-Base;
+    }
+  }
+
+  .comingSoonContainer {
+    padding: globalStyles.$Spacing-L;
+    border-radius: 15px;
+    margin: 0px 10px 0px 10px;
+
+    .comingSoonContent {
+      padding: globalStyles.$Spacing-L;
+      // max-width: 360px;
+    }
+  }
+}
+
+@media (width <=960px) {
+  .header {
+    padding: globalStyles.$Spacing-S globalStyles.$Spacing-M;
+    height: 48px;
+
+    .headerContent {
+      flex-wrap: nowrap;
+      gap: globalStyles.$Spacing-XS;
+    }
+
+    .title {
+      font-size: globalStyles.$Font-Size-MD;
+    }
+
+    .headerActions {
+      position: static;
+      transform: none;
+      gap: globalStyles.$Spacing-XXS;
+    }
+
+    .lastRefreshedContainer {
+      padding: globalStyles.$Spacing-XXS globalStyles.$Spacing-XS;
+      margin-right: globalStyles.$Spacing-XXS;
+
+      .timeIcon {
+        color: white !important;
+        font-size: globalStyles.$Font-Size-SM;
+      }
+
+      .lastRefreshedText {
+        font-size: globalStyles.$Font-Size-XXS;
+      }
+    }
+
+    .summaryButton {
+      padding: globalStyles.$Spacing-XXS globalStyles.$Spacing-S;
+      margin-right: globalStyles.$Spacing-XS;
+
+      .buttonText {
+        font-size: globalStyles.$Font-Size-XS;
+      }
+
+      .buttonIcon {
+        font-size: globalStyles.$Font-Size-LG;
+      }
+    }
+
+    .actionButton {
+      width: 28px;
+      height: 28px;
+      padding: globalStyles.$Spacing-XXS;
+
+      svg {
+        font-size: globalStyles.$Font-Size-LG;
+      }
+    }
+  }
+
+  .content {
+    padding: globalStyles.$Spacing-S;
+    gap: globalStyles.$Spacing-S;
+  }
+
+  .comingSoonContainer {
+    padding: globalStyles.$Spacing-M;
+
+    .comingSoonContent {
+      padding: globalStyles.$Spacing-M;
+      max-width: 300px;
+    }
+
+    .comingSoonIcon {
+      font-size: 48px;
+    }
+
+    .comingSoonText {
+      font-size: globalStyles.$Font-Size-XL;
+    }
+
+    .comingSoonSubtext {
+      font-size: globalStyles.$Font-Size-SM;
+    }
+  }
+}
+
+@media (prefers-contrast: more) {
+  .mainPanelContainer {
+    border: 2px solid globalStyles.$Text-Color;
+  }
+
+  .header {
+    .lastRefreshedContainer {
+      background-color: transparent;
+      border: 1px solid white;
+    }
+  }
+
+  .content {
+
+    .primaryContent,
+    .secondaryContent,
+    .fullContent {
+      border: 2px solid globalStyles.$Text-Color; // Updated to 2px for better contrast
+    }
+  }
+
+  .comingSoonContainer {
+    .comingSoonContent {
+      border: 2px solid globalStyles.$Text-Color;
+      box-shadow: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .mainPanelContainer,
+  .summaryButton,
+  .actionButton,
+  .lastRefreshedContainer {
+    transition: none;
+  }
+
+  .comingSoonContainer {
+    .comingSoonContent {
+      animation: none;
+    }
+
+    .comingSoonIcon {
+      animation: none;
+    }
+  }
+}
+
+@media print {
+  .mainPanelContainer {
+    background: white;
+    height: auto;
+  }
+
+  .header {
+    display: none;
+  }
+
+  .content {
+    display: block;
+    padding: 0;
+
+    .primaryContent,
+    .secondaryContent,
+    .fullContent {
+      width: 100%;
+      height: auto;
+      box-shadow: none;
+      page-break-inside: avoid;
+    }
+  }
+
+  .comingSoonContainer {
+    display: none;
+  }
+}
+
+/* 🔹 Green Header Bar */
+.headerBar {
+  background-color: #00a651;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  height: 80px;
+  font-size: 13px;
+}
+
+/* Left Section */
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerTitle {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.headerDivider {
+  width: 1px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.clientSection {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.clientLabel {
+  font-size: 13px;
+}
+
+.clientSelect {
+  color: #fff !important;
+  font-weight: 500;
+  font-size: 13px !important;
+
+  .MuiSvgIcon-root {
+    color: #fff !important;
+    font-size: 18px;
+  }
+
+  .MuiSelect-select {
+    padding-right: 16px !important;
+  }
+}
+
+/* Right Section */
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.headerText {
+  font-size: 13px;
+}
+
+.headerIcon {
+  font-size: 16px;
+}
+
+.checkIcon {
+  color: #cfffcb;
+  font-size: 16px;
+}
+
+.notificationButton {
+  padding: 0 !important;
+  color: #fff !important;
+}
+
+.notificationIcon {
+  color: orange;
+  font-size: 18px;
+}

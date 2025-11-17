@@ -27,10 +27,9 @@ import Persona1 from '../../assets/DashboardPage1/IndustryIcons/PersonaIcons/Per
 import Persona2 from '../../assets/DashboardPage1/IndustryIcons/PersonaIcons/Persona2.png';
 import Persona3 from '../../assets/DashboardPage1/IndustryIcons/PersonaIcons/Persona3.png';
 
-
-import AdminPersonaLogo from '../../assets/Admin Persona_Logo.svg'
-import RelationshipManagerLogo from '../../assets/RelationshipManager_Logo.svg'
-import RightArrow from '../../assets/Right_Arrow.svg'
+import AdminPersonaLogo from '../../assets/Admin Persona_Logo.svg';
+import RelationshipManagerLogo from '../../assets/RelationshipManager_Logo.svg';
+import RightArrow from '../../assets/Right_Arrow.svg';
 import classes from './Dashboard.module.scss';
 import AssociatedBankLogo from '../../assets/Sidepanel/AssociatedBankLogo.svg';
 
@@ -67,8 +66,6 @@ const industryIcons = {
 //   clientId: crypto.randomUUID(),
 // };
 
-
-
 const BANKING_INDUSTRY_DEFAULT = {
   id: crypto.randomUUID(),
   name: 'Banking',
@@ -82,9 +79,7 @@ const BANKING_INDUSTRY_DEFAULT = {
 const BANKING_INDUSTRY_XD =
   'https://www.figma.com/proto/j5zds0ERNMjed2qT4136CB/ASB--Tiger-?node-id=1-3362&t=ga9Xtq6t1dEdkEzb-1&scaling=contain&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A3362';
 
-const RETAIL_INDUSTRY_XD =
-  'https://deepthought.tigeranalyticstest.in/retailsenseai/dashboard';
-
+const RETAIL_INDUSTRY_XD = 'https://deepthought.tigeranalyticstest.in/retailsenseai/dashboard';
 
 const personaIcons = [RelationshipManagerLogo, AdminPersonaLogo, RightArrow];
 
@@ -211,9 +206,7 @@ function Dashboard() {
   // selected in Redux, the component shows the persona selection view.
   useEffect(() => {
     if (globallySelectedIndustryName && transformedData?.industries) {
-      const industryObject = transformedData.industries.find(
-        (ind) => ind.name === globallySelectedIndustryName
-      );
+      const industryObject = transformedData.industries.find((ind) => ind.name === globallySelectedIndustryName);
       if (industryObject) {
         setSelectedIndustry(industryObject);
       }
@@ -302,27 +295,41 @@ function Dashboard() {
     setSelectedIndustry(industry);
   }, []);
 
-  const handlePersonaSelect = useCallback(
-    (persona) => {
-      if (!userFromState || !selectedIndustry) return;
-      // Clear previous states before setting new persona
-      dispatch(clearPageConversation('home'));
-      dispatch(clearPageConversation('insight'));
-      dispatch(resetConversationData());
-      dispatch(clearDashboardData());
-      dispatch(resetQueueState());
+const handlePersonaSelect = useCallback(
+  (persona) => {
+    if (!userFromState || !selectedIndustry) return;
 
-      dispatch(
-        setUser({
-          ...userFromState,
-          selectedIndustry: selectedIndustry.name,
-          selectedRole: persona.name,
-        }),
-      );
+    // Clear old states
+    dispatch(clearPageConversation('home'));
+    dispatch(clearPageConversation('insight'));
+    dispatch(resetConversationData());
+    dispatch(clearDashboardData());
+    dispatch(resetQueueState());
+
+    // ✅ Normalize name and detect admin persona reliably
+    const personaName = persona.name?.trim().toLowerCase();
+    const isAdminPersona = personaName.includes('admin');
+    const role = isAdminPersona ? 'ADMINISTRATOR' : persona.name;
+
+    // ✅ Update Redux user
+    dispatch(
+      setUser({
+        ...userFromState,
+        selectedIndustry: selectedIndustry?.name || selectedIndustry,
+        selectedRole: role,
+      }),
+    );
+
+    // ✅ Navigate to correct UI
+    if (isAdminPersona) {
+      navigate('/adminLanding');
+    } else {
       navigate('/landing');
-    },
-    [dispatch, userFromState, navigate, selectedIndustry],
-  );
+    }
+  },
+  [dispatch, userFromState, navigate, selectedIndustry],
+);
+
 
   // Handle admin card selection
   const handleAdminSelect = useCallback(() => {
@@ -408,7 +415,6 @@ function Dashboard() {
               <>
                 {selectedIndustry ? (
                   <div className={`${classes.personaGrid} ${isAdmin ? classes.hasAdmin : ''}`}>
-
                     {/* Regular personas rendered after the admin card */}
                     <div className={classes.personaGrid}>
                       {selectedIndustry.personas.map((persona, index) => (
@@ -417,8 +423,7 @@ function Dashboard() {
                           className={classes.personaCard}
                           onClick={() => handlePersonaSelect(persona)}
                           role="button"
-                          tabIndex={0}
-                        >
+                          tabIndex={0}>
                           <Typography className={classes.personaNumber}>
                             {String(index + 1).padStart(2, '0')}
                           </Typography>
@@ -428,16 +433,12 @@ function Dashboard() {
                               alt={persona.name}
                               className={classes.personaIcon}
                             />
-                            <Typography className={classes.personaName}>
-                              {persona.name}
-                            </Typography>
+                            <Typography className={classes.personaName}>{persona.name}</Typography>
                             <img src={RightArrow} className={classes.RightArrow} alt="RightArrow" />
                           </div>
                         </div>
                       ))}
                     </div>
-
-
                   </div>
                 ) : (
                   <div className={classes.cardsContainer}>

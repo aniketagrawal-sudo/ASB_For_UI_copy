@@ -7,56 +7,59 @@ import {
   ListItemIcon,
   Divider,
   Avatar,
-  IconButton,
   Menu,
   MenuItem,
   Tooltip,
   CircularProgress,
 } from '@mui/material';
-// import HelpIcon from '@mui/icons-material/HelpOutline';
 import LogoutIcon from '@mui/icons-material/Logout';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import DashboardIcon from '../../../assets/Sidepanel/DashboardIcon.svg';
 import InsightsIcon from '../../../assets/Sidepanel/InsightsIcon.svg';
-
 import PropTypes from 'prop-types';
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {
-  toggleFeedbackMode,
-  selectIsFeedbackEnabled,
-  resetConversationData,
-} from '../../../redux/store/conversationSlice';
 import {
   selectUser,
   selectCurrentPage,
   setCurrentPage,
-  setSelectedRole,
   selectSelectedIndustry,
 } from '../../../features/auth/authSlice';
 import {
   selectHomeDashboardLoading,
   selectInsightsDashboardLoading,
-  setLastRefreshed,
 } from '../../../redux/store/dashboardSlice';
 import { useResetVisualMutation } from '../../../services/dashboardApi';
 import classes from './SidePanel.module.scss';
 import AssociatedBankLogo from '../../../assets/Sidepanel/AssociatedBankLogo.svg';
 import ProfileIcon from '../../../assets/Sidepanel/ProfileIcon.svg';
 import HelpIcon from '../../../assets/Sidepanel/HelpIcon.svg';
-
 import MainInfo from '../../../assets/Sidepanel/Main Info.svg';
 import keycloak from '../../../utils/keycloak';
 
-function SidePanel({
-  onRefresh,
-  isPolling,
-  executingQueries,
-  dashboardsReady,
-  dashboardsLoading,
-}) {
+// ✅ Centralized role-to-menu mapping (easily extendable)
+const ROLE_MENU_CONFIG = {
+  ADMINISTRATOR: [
+    { id: 'kpiRepo', label: 'KPI Repository', icon: DashboardIcon },
+    { id: 'usageStats', label: 'Usage Stats', icon: InsightsIcon },
+  ],
+  'ADMIN PERSONA': [
+    { id: 'kpiRepo', label: 'KPI Repository', icon: DashboardIcon },
+    { id: 'usageStats', label: 'Usage Stats', icon: InsightsIcon },
+  ],
+  ADMIN: [
+    { id: 'kpiRepo', label: 'KPI Repository', icon: DashboardIcon },
+    { id: 'usageStats', label: 'Usage Stats', icon: InsightsIcon },
+  ],
+  'RELATIONSHIP MANAGER': [
+    { id: 'home', label: 'Dashboard', icon: DashboardIcon },
+    { id: 'insight', label: 'Insights', icon: InsightsIcon },
+  ],
+  // 🔹 Add future roles easily
+};
+
+function SidePanel({ onRefresh, isPolling, executingQueries, dashboardsReady, dashboardsLoading }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -64,38 +67,47 @@ function SidePanel({
   const currentPage = useSelector(selectCurrentPage);
   const isHomeLoading = useSelector(selectHomeDashboardLoading);
   const isInsightsLoading = useSelector(selectInsightsDashboardLoading);
-  const isFeedbackEnabled = useSelector(selectIsFeedbackEnabled);
-  const selectedIndustry = useSelector(selectSelectedIndustry);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [localRefreshing, setLocalRefreshing] = useState(false);
   const [resetVisual] = useResetVisualMutation();
 
-  // 🔹 Role selection logic
-  const [selectedRole, setSelectedRoleLocal] = useState('Relationship Manager');
-
-  const handleToggleRole = () => {
-    setSelectedRoleLocal((prev) =>
-      prev === 'Relationship Manager' ? 'Admin Persona' : 'Relationship Manager'
-    );
-    dispatch(
-      setSelectedRole(
-        selectedRole === 'Relationship Manager'
-          ? 'Admin Persona'
-          : 'Relationship Manager'
-      )
-    );
-  };
-
   const isRefreshing = isPolling || localRefreshing;
+
+  // 🧠 Normalize role name
+  const selectedRole = user?.selectedRole || user?.role || 'Relationship Manager';
+  const normalizedRole = selectedRole?.toUpperCase().trim();
+
+  // 🧩 Use memoized role-based menu config
+  const menuItems = useMemo(() => {
+    const baseItems = ROLE_MENU_CONFIG[normalizedRole];
+    if (baseItems) {
+      return baseItems.map((item) => ({
+        ...item,
+        loading:
+          item.id === 'kpiRepo'
+            ? isHomeLoading || isRefreshing
+            : item.id === 'usageStats'
+            ? isInsightsLoading || isRefreshing || executingQueries
+            : isRefreshing,
+      }));
+    }
+    // fallback to default RM menu
+    return ROLE_MENU_CONFIG['RELATIONSHIP MANAGER'];
+  }, [normalizedRole, isHomeLoading, isInsightsLoading, isRefreshing, executingQueries]);
+
+  // 🟢 Auto-select first menu by default
+  useEffect(() => {
+    if (!currentPage && menuItems.length > 0) {
+      dispatch(setCurrentPage(menuItems[0].id));
+    }
+  }, [currentPage, menuItems, dispatch]);
 
   const handlePageChange = (pageId) => {
     dispatch(setCurrentPage(pageId));
-    dispatch(resetConversationData());
   };
 
   const handleLogoClick = () => {
-    dispatch(setSelectedRole(null));
     navigate('/dashboard');
   };
 
@@ -107,25 +119,12 @@ function SidePanel({
     }
   };
 
-  const menuItems = [
-    {
-      id: 'home',
-      label: 'Dashboard',
-      icon: DashboardIcon,
-      loading: isHomeLoading || isRefreshing,
-    },
-    {
-      id: 'insight',
-      label: 'Insights',
-      icon: InsightsIcon,
-      loading: isInsightsLoading || isRefreshing || executingQueries,
-    },
-  ];
-
   const renderIcon = (item) => {
     if (item.loading)
-      // return <CircularProgress size={20} className={classes.loadingIcon} />;
-    return <img src={item.icon} alt={item.label} className={classes.menuIconImage} />;
+      return <CircularProgress size={20} className={classes.loadingIcon} />;
+    return (
+      <img src={item.icon} alt={item.label} className={classes.menuIconImage} />
+    );
   };
 
   return (
@@ -147,19 +146,20 @@ function SidePanel({
 
         <Divider className={classes.divider} />
 
-        {/* 🔹 Selected Role Chip */}
+        {/* 🔹 Role Display (not clickable) */}
         <div className={classes.roleSection}>
           <div
-            className={`${classes.roleChip} ${selectedRole === 'Admin Persona'
-              ? classes.adminActive
-              : classes.managerActive
-              }`}
-            style={{ cursor: 'pointer' }}
-            onClick={handleToggleRole}
-          >
-            <Typography variant="body2">{selectedRole}</Typography>
+            className={`${classes.roleChip} ${
+              selectedRole?.toLowerCase().includes('admin')
+                ? classes.adminActive
+                : classes.managerActive
+            }`}>
+            <Typography variant="body2">
+              {selectedRole?.toLowerCase().includes('admin')
+                ? 'Admin Persona'
+                : selectedRole}
+            </Typography>
           </div>
-
         </div>
       </div>
 
@@ -169,14 +169,17 @@ function SidePanel({
           <Tooltip key={item.id} title={item.label} arrow placement="right">
             <ListItem
               component="button"
-              className={`${classes.menuItem} ${currentPage === item.id ? classes.selected : ''
-                }`}
-              onClick={() => handlePageChange(item.id)}
-            >
+              className={`${classes.menuItem} ${
+                currentPage === item.id ? classes.selected : ''
+              }`}
+              onClick={() => handlePageChange(item.id)}>
               <ListItemIcon className={classes.menuIcon}>
                 {renderIcon(item)}
               </ListItemIcon>
-              <ListItemText primary={item.label} className={classes.menuText} />
+              <ListItemText
+                primary={item.label}
+                className={classes.menuText}
+              />
             </ListItem>
           </Tooltip>
         ))}
@@ -186,22 +189,20 @@ function SidePanel({
       <div className={classes.footer}>
         <div className={classes.footerActions}>
           <Tooltip title="Help" arrow>
-            {/* <IconButton className={classes.footerIcon}> */}
-              {/* <HelpIcon /> */}
-              <img src={HelpIcon} alt="HelpIcon" />
-            {/* </IconButton> */}
+            <img src={HelpIcon} alt="HelpIcon" />
           </Tooltip>
 
           <Tooltip title="Notification" arrow>
-            {/* <IconButton className={classes.footerIcon}> */}
-              <img src={MainInfo} alt="Main Info" />
-            {/* </IconButton> */}
+            <img src={MainInfo} alt="Main Info" />
           </Tooltip>
 
           <Tooltip title="User Menu" arrow>
-            {/* <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} className={classes.footerIcon}> */}
-             <img src={ProfileIcon} alt="ProfileIcon" />
-            {/* </IconButton> */}
+            <img
+              src={ProfileIcon}
+              alt="ProfileIcon"
+              onClick={(e) => setAnchorEl(e.currentTarget)}
+              style={{ cursor: 'pointer' }}
+            />
           </Tooltip>
         </div>
 
@@ -212,8 +213,7 @@ function SidePanel({
           onClose={() => setAnchorEl(null)}
           className={classes.userMenu}
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          transformOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        >
+          transformOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
           <div className={classes.userInfo}>
             <Avatar src={user?.picture} className={classes.menuAvatar}>
               {!user?.picture && user?.name?.[0]}
