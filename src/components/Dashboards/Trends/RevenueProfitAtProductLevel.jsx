@@ -11,35 +11,35 @@ import {
 import PropTypes from 'prop-types';
 import classes from './RevenueProfitAtProductLevel.module.scss';
 
-// -------------------- DUMMY DATA (SHOWN NOW) --------------------
+// -------------------- DUMMY DATA --------------------
 const dummyData = [
-  { name: 'Product 1', revenue: 400000, profit: 24 },
-  { name: 'Product 2', revenue: 300000, profit: 13 },
-  { name: 'Product 3', revenue: 200000, profit: 98 },
-  { name: 'Product 4', revenue: 278000, profit: 39 },
+  { name: 'Product 1', revenue: 400000, profit: 24, category: 'one' },
+  { name: 'Product 2', revenue: 300000, profit: 13, category: 'two' },
+  { name: 'Product 3', revenue: 200000, profit: 98, category: 'one' },
+  { name: 'Product 4', revenue: 278000, profit: 39, category: 'two' },
 ];
 
 export default function RevenueProfitAtProductLevel({ apiUrl }) {
-  const [chartData, setChartData] = useState(dummyData); // default = dummy UI
+  const [allData, setAllData] = useState(dummyData);
+  const [chartData, setChartData] = useState(dummyData);
   const [loading, setLoading] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState("All");
 
-  // -------------------- API CALL (For Future Use) --------------------
+  // -------------------- API CALL (FUTURE) --------------------
   useEffect(() => {
-    if (!apiUrl) return; // if API not passed → keep dummy
+    if (!apiUrl) return;
 
     setLoading(true);
-
     const fetchChartData = async () => {
       try {
         const response = await fetch(apiUrl);
         const result = await response.json();
 
-        // Expected API format:
-        // [{ name: "Product 1", revenue: 1000, profit: 12 }]
-
+        setAllData(result || dummyData);
         setChartData(result || dummyData);
       } catch (err) {
         console.error('API fetch failed. Using dummy data.');
+        setAllData(dummyData);
         setChartData(dummyData);
       } finally {
         setLoading(false);
@@ -49,8 +49,23 @@ export default function RevenueProfitAtProductLevel({ apiUrl }) {
     fetchChartData();
   }, [apiUrl]);
 
+  // -------------------- FILTER LOGIC (ONLY NEW ADDITION) --------------------
+  const handleFilterChange = (value) => {
+    setSelectedFilter(value);
+
+    if (value === "All") {
+      setChartData(allData);
+    } else {
+      const filtered = allData.filter((item) => item.category === value.toLowerCase());
+      setChartData(filtered);
+    }
+  };
+
   // -------------------- DYNAMIC AXIS CALCULATIONS --------------------
-  const maxRevenue = Math.max(...chartData.map((d) => d.revenue));
+  const maxRevenue = chartData.length
+    ? Math.max(...chartData.map((d) => d.revenue))
+    : 0;
+
   const roundedRevenueMax = Math.ceil(maxRevenue / 50000) * 50000;
 
   const revenueTicks = [];
@@ -58,7 +73,10 @@ export default function RevenueProfitAtProductLevel({ apiUrl }) {
     revenueTicks.push(i);
   }
 
-  const maxProfit = Math.max(...chartData.map((d) => d.profit));
+  const maxProfit = chartData.length
+    ? Math.max(...chartData.map((d) => d.profit))
+    : 0;
+
   const roundedProfitMax = Math.ceil(maxProfit / 20) * 20;
 
   const profitTicks = [];
@@ -66,7 +84,7 @@ export default function RevenueProfitAtProductLevel({ apiUrl }) {
     profitTicks.push(i);
   }
 
-  // -------------------- UI --------------------
+  // -------------------- UI (UNCHANGED) --------------------
   return (
     <div className={classes.revenueChartContainer}>
       <div className={classes.chartHeader}>
@@ -74,7 +92,11 @@ export default function RevenueProfitAtProductLevel({ apiUrl }) {
 
         <div className={classes.chartControls}>
           <div className={classes.accountDropdown}>
-            <select className={classes.dropdownSelect}>
+            <select
+              className={classes.dropdownSelect}
+              value={selectedFilter}
+              onChange={(e) => handleFilterChange(e.target.value)}
+            >
               <option>All</option>
               <option>one</option>
               <option>two</option>
@@ -161,5 +183,5 @@ export default function RevenueProfitAtProductLevel({ apiUrl }) {
 
 // -------------------- PROP TYPES --------------------
 RevenueProfitAtProductLevel.propTypes = {
-  apiUrl: PropTypes.string, // Optional API URL
+  apiUrl: PropTypes.string,
 };
