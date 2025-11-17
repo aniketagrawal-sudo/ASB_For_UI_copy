@@ -629,11 +629,11 @@ const ThreadsPanel = ({ open, onClose, userName, previousQueries = [], onQuerySe
         )}
 
         <div className={classes.content}>
-          {/* <div className={classes.header}>
+          <div className={classes.header}>
             <div className={classes.titleSection}>
-              <SmartToyOutlinedIcon className={classes.titleIcon} />
+              {/* <img src={ChatBotIcon} alt='ChatBotIcon' className={classes.titleIcon} /> */}
               <Typography variant="h6" className={classes.title}>
-                Histroy
+                History
               </Typography>
             </div>
             {!socketConnected && (
@@ -641,14 +641,14 @@ const ThreadsPanel = ({ open, onClose, userName, previousQueries = [], onQuerySe
                 Real-time updates unavailable
               </Alert>
             )}
-          </div> */}
+          </div>
 
           <div className={classes.body}>
             <div className={classes.leftSection}>
               <div className={classes.header}>
                 <div className={classes.titleSection}>
                   <Typography variant="h6" className={classes.title}>
-                    Histroy
+                    Previous Conversations
                   </Typography>
                 </div>
                 {!socketConnected && (
@@ -657,8 +657,8 @@ const ThreadsPanel = ({ open, onClose, userName, previousQueries = [], onQuerySe
                   </Alert>
                 )}
               </div>
-              
-              {/* <Sidebar onChatItemClick={handleChatSelect} isMenuMode={true} onNewChat={handleNewChat} /> */}
+
+              <Sidebar onChatItemClick={handleChatSelect} isMenuMode={true} onNewChat={handleNewChat} />
             </div>
 
             <div className={classes.rightSection}>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react'; // useMemo is no longer used, can be removed
 import { Box, Typography, CircularProgress } from '@mui/material';
 import WelcomeIcon from '../../assets/welcomeMessage/WelcomeIcon.png';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -10,16 +10,17 @@ import { useGetRecommendedQuestionsQuery } from '../../services/recommendationAp
 const WelcomeMessage = ({ userName, previousQueries = [], onQuerySelect, personaId, screenType }) => {
   const [expandRMQueries, setExpandRMQueries] = useState(false);
 
-  const defaultQueries = [
+  // Define a default list for the Top RM Queries section
+  const topRmQueries = [
     'Tell me about our market strategy',
     'What are our key performance indicators?',
     'How can we improve customer satisfaction?',
     'What are the current industry trends?',
   ];
-
-  const displayQueries = useMemo(() => {
-    return [...previousQueries].slice(0, 2).concat(defaultQueries.slice(previousQueries.length)).slice(0, 2);
-  }, [previousQueries]);
+  // This useMemo and defaultQueries array were not being used in the JSX.
+  // The 'suggestedQueries' from the API call has replaced this logic.
+  // const defaultQueries = [ ... ];
+  // const displayQueries = useMemo(() => { ... }, [previousQueries]);
 
   const {
     data: suggestedQueries = [],
@@ -45,8 +46,8 @@ const WelcomeMessage = ({ userName, previousQueries = [], onQuerySelect, persona
         <div className={classes.rmQueriesHeader} onClick={() => setExpandRMQueries((prev) => !prev)}>
           <Typography
             variant="subtitle2"
-             className={`${classes.rmQueriesTitle} ${expandRMQueries ? classes.activeTitle : ''}`}
-            >
+            className={`${classes.rmQueriesTitle} ${expandRMQueries ? classes.activeTitle : ''}`}
+          >
             Top RM Queries
             {expandRMQueries ? (
               <ExpandMoreIcon className={classes.rmChevronIcon} />
@@ -56,12 +57,31 @@ const WelcomeMessage = ({ userName, previousQueries = [], onQuerySelect, persona
           </Typography>
         </div>
 
-        <div className={classes.rmQueriesContent}>
-          <Typography variant="body2">• Dummy text line 1 explaining RM queries.</Typography>
-          <Typography variant="body2">• Dummy text line 2 with example usage.</Typography>
-          <Typography variant="body2">• Dummy text line 3 describing possible data insights.</Typography>
-          <Typography variant="body2">• Dummy text line 4 placeholder content for expansion.</Typography>
-        </div>
+        {/* --- MODIFIED SECTION --- */}
+        {/* Conditionally render the list of Top RM Queries */}
+        {expandRMQueries && (
+          <div className={classes.queriesList}> {/* Re-using queriesList style */}
+            {topRmQueries.map((query, index) => (
+              <div key={index} className={classes.queryItem} onClick={() => onQuerySelect(query)}>
+                <Typography
+                  variant="body2"
+                  className={classes.queryText}
+                  sx={{
+                    display: '-webkit-box',
+                    overflow: 'hidden',
+                    WebkitBoxOrient: 'vertical',
+                    WebkitLineClamp: 2,
+                  }}
+                >
+                  {query}
+                </Typography>
+                <ChevronRightIcon className={classes.arrowIcon} />
+              </div>
+            ))}
+          </div>
+        )}
+        {/* --- END MODIFIED SECTION --- */}
+
       </div>
 
       {isLoading && (
@@ -86,7 +106,8 @@ const WelcomeMessage = ({ userName, previousQueries = [], onQuerySelect, persona
                     overflow: 'hidden',
                     WebkitBoxOrient: 'vertical',
                     WebkitLineClamp: 2,
-                  }}>
+                  }}
+                >
                   {query}
                 </Typography>
                 <ChevronRightIcon className={classes.arrowIcon} />

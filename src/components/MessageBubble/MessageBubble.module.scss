@@ -98,16 +98,19 @@
 
 .userMessageBubble {
   background: linear-gradient(135deg, globalStyles.$Main-Color 0%, #f9a94a 100%);
+  // background:#FFFFFF;
   border-radius: globalStyles.$Border-Radius-L globalStyles.$Border-Radius-L 0 globalStyles.$Border-Radius-L;
   margin-right: globalStyles.$Spacing-S;
   color: white;
-  box-shadow: 0 2px 8px rgb(247, 144, 29, 0.15);
+  // color: #1A1A1A;
+box-shadow: 0 2px 8px rgb(247, 144, 29, 0.15);
 
   .answerText {
     color: white !important;
     
     p, div, span, strong, em, code, pre, ul, ol, li, h1, h2, h3, h4, h5, h6 {
       color: white !important;
+      // color: #1A1A1A !important;
     }
     
     // Ensure all content is white
