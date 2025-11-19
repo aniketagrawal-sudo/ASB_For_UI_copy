@@ -11,17 +11,15 @@ import ArrowRightIcon from '../../assets/DashboardPage1/Dashboard/Arrow_Right.sv
 import SummaryPanel from '../SummaryPanel/SummaryPanel';
 import TrendComponent from './TrendComponent';
 import GenerateReport from '../../components/GenerateReportPanel/GenerateReport';
+import { useSelector } from "react-redux";
+import { useGetKpiDashboardQuery } from '../../services/dashboardApi';
+import { selectKpiDashboardData } from '../../redux/store/dashboardSlice';
 
 export default function KPIDashboard() {
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
-
-  const topData = [
-    { title: 'Deposit Balance', value: '$10M', sub: '(+3.2% of LY Avg)', trend: 'up' },
-    { title: 'Loan Outstanding', value: '$1.2M', sub: '(Out of $10M)' },
-    { title: 'Credit Utilisation', value: '60%', sub: '(Out of $22M)' },
-    { title: 'Net Profit', value: '$2.4M', sub: '(+5% YoY)', trend: 'up' },
-  ];
+  const { isLoading } = useGetKpiDashboardQuery();
+const topData = useSelector(selectKpiDashboardData);
 
   const bottomData = [
     {

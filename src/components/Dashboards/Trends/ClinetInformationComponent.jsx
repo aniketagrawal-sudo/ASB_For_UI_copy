@@ -14,62 +14,15 @@ import {
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 // import Grid2 from "@mui/material/Grid2";
 import classes from './ClinetInformation.module.scss';
+import { useSelector } from 'react-redux';
+import { selectAccountDetails, selectEngagementDetails, selectTeamDetails } from '../../../redux/store/dashboardSlice';
+
 export default function ClinetInformationComponent() {
-    const accountData = [
-        {
-            no: '1234567890',
-            openingDate: '21/01/2025',
-            riskRating: '6.2/10',
-            closingDate: '-',
-            status: 'Active',
-            type: 'Type 1',
-            balance: '$65,000',
-            interestRate: '2.5%',
-        },
-        {
-            no: '9876543210',
-            openingDate: '22/10/2024',
-            riskRating: '8.1/10',
-            closingDate: '-',
-            status: 'Active',
-            type: 'Type 3',
-            balance: '$81,000',
-            interestRate: '3.1%',
-        },
-        {
-            no: '5647382910',
-            openingDate: '14/08/2024',
-            riskRating: '7.3/10',
-            closingDate: '-',
-            status: 'Active',
-            type: 'Type 4',
-            balance: '$95,500',
-            interestRate: '2.9%',
-        },
-        {
-            no: '1122334455',
-            openingDate: '02/05/2023',
-            riskRating: '8.5/10',
-            closingDate: '12/08/2025',
-            status: 'Inactive',
-            type: 'Type 2',
-            balance: '$1,000',
-            interestRate: '1.2%',
-        },
-    ];
+    const accountData = useSelector(selectAccountDetails)
 
-    const engagementData = [
-        { label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
-        { label: 'Last Maturity Date', date: '22 Sep 2030', status: 'green' },
-        { label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
-        { label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
-    ];
+    const engagementData = useSelector(selectEngagementDetails)
 
-    const teamData = [
-        { team: 'Name of the Team A', contactName: 'Contact Name A', email: 'a@example.com' },
-        { team: 'Name of the Team B', contactName: 'Contact Name B', email: 'b@example.com' },
-        { team: 'Name of the Team C', contactName: 'Contact Name C', email: 'c@example.com' },
-    ];
+    const teamData = useSelector(selectTeamDetails)
 
     const tableHeaders = [
         'Account No.',

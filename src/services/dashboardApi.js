@@ -13,6 +13,7 @@ import {
   setInsightQueryResult,
   setInsightQueryError,
   updateBatchQueryResults,
+  setKpiDashboardData
 } from '../redux/store/dashboardSlice';
 
 
@@ -560,6 +561,57 @@ export const dashboardApi = api.injectEndpoints({
         body: data,
       }),
     }),
+
+ getKpiDashboard: builder.query({
+  query: () => ({
+    url: `/api/dashboard/kpiDashboard`,
+    method: "GET",
+  }),
+
+  // --- Transform Response (Runs for SUCCESS responses only) ---
+  transformResponse: (response) => {
+    const dummyData = [
+      { title: "Deposit Balance", value: "$10M", sub: "(+3.2% of LY Avg)", trend: "up" },
+      { title: "Loan Outstanding", value: "$1.2M", sub: "(Out of $10M)" },
+      { title: "Credit Utilisation", value: "60%", sub: "(Out of $22M)" },
+      { title: "Net Profit", value: "$2.4M", sub: "(+5% YoY)", trend: "up" },
+    ];
+
+    // If API gives NON-ARRAY response (like your 404), return dummy
+    if (!Array.isArray(response)) {
+      return dummyData;
+    }
+
+    // If API returns empty array → return dummy
+    if (response.length === 0) {
+      return dummyData;
+    }
+
+    // Otherwise return real API data
+    return response;
+  },
+
+  // --- Handles FAILURE or SUCCESS (Runs before transformResponse completely resolves) ---
+  async onQueryStarted(_, { dispatch, queryFulfilled }) {
+    try {
+      const { data } = await queryFulfilled; // `data` is already transformed
+
+      dispatch(setKpiDashboardData(data));
+    } catch (err) {
+      // If API failed (404, 500, network issue, etc.) → send dummy data manually
+      const dummyData = [
+        { title: "Deposit Balance", value: "$10M", sub: "(+3.2% of LY Avg)", trend: "up" },
+        { title: "Loan Outstanding", value: "$1.2M", sub: "(Out of $10M)" },
+        { title: "Credit Utilisation", value: "60%", sub: "(Out of $22M)" },
+        { title: "Net Profit", value: "$2.4M", sub: "(+5% YoY)", trend: "up" },
+      ];
+      dispatch(setKpiDashboardData(dummyData));
+      dispatch(setError(err.message || "Failed to fetch KPI Dashboard data"));
+    }
+  },
+})
+
+
   }),
 });
 
@@ -595,5 +647,6 @@ export const {
   useUpdateBusinessInsightMutation,
   useExecuteInsightQueriesMutation,
   useExecuteInsightQueryMutation,
-  useDownloadInsightsAsPptMutation
+  useDownloadInsightsAsPptMutation,
+  useGetKpiDashboardQuery
 } = dashboardApi;
