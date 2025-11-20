@@ -6,13 +6,14 @@ import TotalProfitAndLossRelation from "./Trends/TotalProfitAndLossRelation";
 import ClinetInformationComponent from "./Trends/ClinetInformationComponent";
 import RevenueProfitAtProductLevel from "./Trends/RevenueProfitAtProductLevel";
 import VolumeUsage from "./Trends/VolumeUsage";
+import PropTypes from "prop-types";
 
-export default function TrendComponent() {
+export default function TrendComponent({revenueForClient}) {
     return (
         <>
             <Box className={classes.trendComponent}>
                 <DepositLoan />
-                <RevenueGraph />
+                <RevenueGraph revenueForClient={revenueForClient}/>
                 <TotalProfitAndLossRelation />
                 <div className={classes.revenueProfitVolumeUsage}>
                     <RevenueProfitAtProductLevel />
@@ -34,3 +35,7 @@ export default function TrendComponent() {
 
     );
 }
+
+TrendComponent.propTypes = {
+   revenueForClient: PropTypes.object.isRequired
+};

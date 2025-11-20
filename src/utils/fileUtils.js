@@ -37,3 +37,24 @@ export const getFileExtension = (url) => {
   const parts = filename.split('.');
   return parts.length > 1 ? parts.pop().toLowerCase() : '';
 };
+
+export const filterByClient = (data, clientId) => {
+  if (!Array.isArray(data)) return [];
+  return data.filter(item => item.clientId === clientId);
+};
+
+export const filterRevenueByClient = (data, clientId) => {
+  if (!data || typeof data !== "object") return {};
+
+  const filtered = {};
+
+  Object.entries(data).forEach(([account, details]) => {
+    if (details.clientId === clientId) {
+      filtered[account] = details;
+    }
+  });
+  return filtered;
+};
+
+
+

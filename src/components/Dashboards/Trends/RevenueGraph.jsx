@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
 import styles from './RevenueGraph.module.scss';
-import { useSelector } from 'react-redux';
-import { selectRevenueGraphDetails } from '../../../redux/store/dashboardSlice';
+// import { useSelector } from 'react-redux';
+// import { selectRevenueGraphDetails } from '../../../redux/store/dashboardSlice';
 import { useGetRevenueGraphDetailsQuery } from '../../../services/dashboardApi';
+import PropTypes from 'prop-types';
 
-export default function RevenueGraph() {
+export default function RevenueGraph({revenueForClient}) {
   const {isLoading} = useGetRevenueGraphDetailsQuery();
-  const dataSets = useSelector(selectRevenueGraphDetails)
+  // const dataSets = useSelector(selectRevenueGraphDetails)
   const [timeFilter, setTimeFilter] = useState('YoY');
   const [selectedAccount, setSelectedAccount] = useState('Account Number 1');
   const accounts = ['Account Number 1', 'Account Number 2', 'Account Number 3'];
 
   // Safely pick raw data for selected account/timeFilter
   const raw =
-    dataSets[selectedAccount] && dataSets[selectedAccount][timeFilter] ? dataSets[selectedAccount][timeFilter] : [];
+    revenueForClient[selectedAccount] && revenueForClient[selectedAccount][timeFilter] ? revenueForClient[selectedAccount][timeFilter] : [];
 
   // Build chartData and X-axis settings:
   let chartData = raw.slice(); // copy
@@ -118,3 +119,7 @@ export default function RevenueGraph() {
     </div>
   );
 }
+
+RevenueGraph.propTypes = {
+   revenueForClient: PropTypes.object.isRequired
+};

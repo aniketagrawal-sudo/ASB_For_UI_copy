@@ -11,15 +11,16 @@ import ArrowRightIcon from '../../assets/DashboardPage1/Dashboard/Arrow_Right.sv
 import SummaryPanel from '../SummaryPanel/SummaryPanel';
 import TrendComponent from './TrendComponent';
 import GenerateReport from '../../components/GenerateReportPanel/GenerateReport';
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { useGetKpiDashboardQuery } from '../../services/dashboardApi';
-import { selectKpiDashboardData } from '../../redux/store/dashboardSlice';
+import PropTypes from 'prop-types';
+// import { selectKpiDashboardData } from '../../redux/store/dashboardSlice';
 
-export default function KPIDashboard() {
+export default function KPIDashboard({filteredKpis, revenueForClient}) {
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const { isLoading } = useGetKpiDashboardQuery();
-const topData = useSelector(selectKpiDashboardData);
+// const topData = useSelector(selectKpiDashboardData);
 
   const bottomData = [
     {
@@ -83,7 +84,7 @@ const topData = useSelector(selectKpiDashboardData);
           {/* KPI Box */}
           <Box className={classes.kpiBox}>
             <Box className={classes.topRow}>
-              {topData.map((item, i) => (
+              {filteredKpis.map((item, i) => (
                 <Box key={i} className={classes.metric}>
                   <Box className={classes.metricHeader} gap={0.7}>
                     <Typography className={classes.metricTitle}>{item.title}</Typography>
@@ -167,7 +168,7 @@ const topData = useSelector(selectKpiDashboardData);
             <Typography variant="h6" margin={1.6}>
               Trends
             </Typography>
-            <TrendComponent />
+            <TrendComponent revenueForClient={revenueForClient}/>
       
         </Box>
       </Box>
@@ -179,3 +180,8 @@ const topData = useSelector(selectKpiDashboardData);
     </Box>
   );
 }
+
+KPIDashboard.propTypes = {
+  filteredKpis: PropTypes.array.isRequired,
+   revenueForClient: PropTypes.object.isRequired
+};

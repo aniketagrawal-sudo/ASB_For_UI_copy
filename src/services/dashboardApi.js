@@ -23,9 +23,6 @@ import {
   setTeamDetails
 } from '../redux/store/dashboardSlice';
 
-
-
-
 export const dashboardApi = api.injectEndpoints({
     endpoints: (builder) => ({
 
@@ -578,10 +575,10 @@ export const dashboardApi = api.injectEndpoints({
   // --- Transform Response (Runs for SUCCESS responses only) ---
   transformResponse: (response) => {
     const dummyData = [
-      { title: "Deposit Balance", value: "$10M", sub: "(+3.2% of LY Avg)", trend: "up" },
-      { title: "Loan Outstanding", value: "$1.2M", sub: "(Out of $10M)" },
-      { title: "Credit Utilisation", value: "60%", sub: "(Out of $22M)" },
-      { title: "Net Profit", value: "$2.4M", sub: "(+5% YoY)", trend: "up" },
+      { clientId: 1, title: "Deposit Balance", value: "$10M", sub: "(+3.2% of LY Avg)", trend: "up" },
+      { clientId: 1, title: "Loan Outstanding", value: "$1.2M", sub: "(Out of $10M)" },
+      { clientId: 2, title: "Credit Utilisation", value: "60%", sub: "(Out of $22M)" },
+      { clientId: 2, title: "Net Profit", value: "$2.4M", sub: "(+5% YoY)", trend: "up" },
     ];
 
     // If API gives NON-ARRAY response (like your 404), return dummy
@@ -607,32 +604,12 @@ export const dashboardApi = api.injectEndpoints({
     } catch (err) {
       // If API failed (404, 500, network issue, etc.) → send dummy data manually
       const dummyData =[
-  {
-    id: 1,
-    title: "Deposit Balance",
-    value: "$10M",
-    sub: "(+3.2% of LY Avg)",
-    trend: "up"
-  },
-  {
-    id: 2,
-    title: "Loan Outstanding",
-    value: "$1.2M",
-    sub: "(Out of $10M)"
-  },
-  {
-    id: 3,
-    title: "Credit Utilisation",
-    value: "60%",
-    sub: "(Out of $22M)"
-  },
-  {
-    id: 4,
-    title: "Net Profit",
-    value: "$2.4M",
-    sub: "(+5% YoY)",
-    trend: "up"
-  }
+      { clientId: 1, title: "Deposit Balance", value: "$10M", sub: "(+3.2% of LY Avg)", trend: "up" },
+      { clientId: 1, title: "Loan Outstanding", value: "$1.2M", sub: "(Out of $10M)" },
+      { clientId: 1, title: "Credit Utilisation", value: "60%", sub: "(Out of $22M)" },
+      { clientId: 1, title: "Net Profit", value: "$2.4M", sub: "(+5% YoY)", trend: "up" },
+      { clientId: 2, title: "Credit Utilisation", value: "60%", sub: "(Out of $22M)" },
+      { clientId: 2, title: "Net Profit", value: "$2.4M", sub: "(+5% YoY)", trend: "up" },
 ]
 
       dispatch(setKpiDashboardData(dummyData));
@@ -765,6 +742,7 @@ getRevenueGraphDetails: builder.query({
   transformResponse: (response) => {
      const dummyData = {
      'Account Number 1': {
+      clientId: 1,
       YoY: [
         { month: 'Jan', net: 700000, gross: 600000 },
         { month: 'Feb', net: 400000, gross: 300000 },
@@ -801,6 +779,7 @@ getRevenueGraphDetails: builder.query({
       ],
     },
     'Account Number 2': {
+      clientId: 1,
       YoY: [
         { month: 'Jan', net: 400000, gross: 350000 },
         { month: 'Feb', net: 450000, gross: 400000 },
@@ -837,6 +816,7 @@ getRevenueGraphDetails: builder.query({
       ],
     },
     'Account Number 3': {
+      clientId: 1,
       YoY: [
         { month: 'Jan', net: 500000, gross: 400000 },
         { month: 'Feb', net: 550000, gross: 450000 },
@@ -892,6 +872,7 @@ getRevenueGraphDetails: builder.query({
       // Prepare fallback dummy
    const dummyData = {
      'Account Number 1': {
+      clientId: 1,
       YoY: [
         { month: 'Jan', net: 700000, gross: 600000 },
         { month: 'Feb', net: 400000, gross: 300000 },
@@ -928,6 +909,7 @@ getRevenueGraphDetails: builder.query({
       ],
     },
     'Account Number 2': {
+      clientId: 1,
       YoY: [
         { month: 'Jan', net: 400000, gross: 350000 },
         { month: 'Feb', net: 450000, gross: 400000 },
@@ -964,6 +946,7 @@ getRevenueGraphDetails: builder.query({
       ],
     },
     'Account Number 3': {
+      clientId: 1,
       YoY: [
         { month: 'Jan', net: 500000, gross: 400000 },
         { month: 'Feb', net: 550000, gross: 450000 },
