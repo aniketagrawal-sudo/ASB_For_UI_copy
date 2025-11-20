@@ -1308,7 +1308,7 @@ const MessageBubble = ({
                 </Tooltip>
 
                 {/* ADDED: Conditional rendering block for feedback icons */}
-                {isFeedbackEnabled && (
+                {/* {isFeedbackEnabled && ( */}
                   <>
                    <Tooltip title="Like">
                     <IconButton
@@ -1332,7 +1332,7 @@ const MessageBubble = ({
                     </IconButton>
                   </Tooltip>
                   </>
-                )}
+                {/* )} */}
               </div>
             )}
             {isUser && (
@@ -1354,7 +1354,7 @@ const MessageBubble = ({
           </div>
 
           {/* Show selection checkbox - positioned on top right edge of bubble */}
-          {showCheckbox && (
+          {/* {showCheckbox && (
             <IconButton
               className={`${classes.selectButton} ${isSelected ? classes.selected : ''}`}
               onClick={() => handleSelect(id)}
@@ -1365,7 +1365,7 @@ const MessageBubble = ({
                 <RadioButtonUncheckedIcon fontSize="small" className={classes.unselectedIcon} />
               )}
             </IconButton>
-          )}
+          )} */}
         </div>
 
         {isUser && (

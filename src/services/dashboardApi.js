@@ -13,7 +13,9 @@ import {
   setInsightQueryResult,
   setInsightQueryError,
   updateBatchQueryResults,
-  setKpiDashboardData
+  setKpiDashboardData,
+  setDepositLoanDetails,
+  setLoanOutstandingDetails
 } from '../redux/store/dashboardSlice';
 
 
@@ -599,17 +601,155 @@ export const dashboardApi = api.injectEndpoints({
       dispatch(setKpiDashboardData(data));
     } catch (err) {
       // If API failed (404, 500, network issue, etc.) → send dummy data manually
-      const dummyData = [
-        { title: "Deposit Balance", value: "$10M", sub: "(+3.2% of LY Avg)", trend: "up" },
-        { title: "Loan Outstanding", value: "$1.2M", sub: "(Out of $10M)" },
-        { title: "Credit Utilisation", value: "60%", sub: "(Out of $22M)" },
-        { title: "Net Profit", value: "$2.4M", sub: "(+5% YoY)", trend: "up" },
-      ];
+      const dummyData =[
+  {
+    id: 1,
+    title: "Deposit Balance",
+    value: "$10M",
+    sub: "(+3.2% of LY Avg)",
+    trend: "up"
+  },
+  {
+    id: 2,
+    title: "Loan Outstanding",
+    value: "$1.2M",
+    sub: "(Out of $10M)"
+  },
+  {
+    id: 3,
+    title: "Credit Utilisation",
+    value: "60%",
+    sub: "(Out of $22M)"
+  },
+  {
+    id: 4,
+    title: "Net Profit",
+    value: "$2.4M",
+    sub: "(+5% YoY)",
+    trend: "up"
+  }
+]
+
       dispatch(setKpiDashboardData(dummyData));
       dispatch(setError(err.message || "Failed to fetch KPI Dashboard data"));
     }
   },
+}),
+
+getDepositLoanDetails: builder.query({
+  query: () => ({
+    url: `/api/dashboard/depositLoan`,
+    method: "GET",
+  }),
+
+  // --- Transform success responses ---
+  transformResponse: (response) => {
+    const dummyData = {
+      MoM: {
+        labels: [
+          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ],
+        data: [0.65, 0.6, 0.62, 0.7, 0.78, 0.88, 0.98, 1.02, 1.05, 1.1, 0.9, 0.6],
+      },
+      YoY: {
+        labels: ['2021', '2022', '2023', '2024', '2025'],
+        data: [3.0, 6.0, 13.8, 10.5, 4.8]
+      },
+      QoQ: {
+        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+        data: [0.7, 0.9, 1.0, 0.6]
+      },
+    };
+
+    // If response is NOT array → send dummy
+    if (!Array.isArray(response)) return dummyData;
+
+    // If empty return dummy
+    if (response.length === 0) return dummyData;
+
+    return response; // Real API data
+  },
+
+  // Handle SUCCESS AND FAILURES
+  async onQueryStarted(_, { dispatch, queryFulfilled }) {
+    try {
+      const { data } = await queryFulfilled; // already transformed
+      dispatch(setDepositLoanDetails(data));
+    } catch (err) {
+      // Prepare fallback dummy
+      const dummyData = {
+        MoM: {
+          labels: [
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+          ],
+          data: [0.65, 0.6, 0.62, 0.7, 0.78, 0.88, 0.98, 1.02, 1.05, 1.1, 0.9, 0.6],
+        },
+        YoY: {
+          labels: ['2021', '2022', '2023', '2024', '2025'],
+          data: [3.0, 6.0, 13.8, 10.5, 4.8]
+        },
+        QoQ: {
+          labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+          data: [0.7, 0.9, 1.0, 0.6]
+        },
+      };
+
+      dispatch(setDepositLoanDetails(dummyData));
+      dispatch(setError(err.message || "Failed to fetch Deposit/Loan details"));
+    }
+  },
+}),
+
+getLoanOutstandingDetails: builder.query({
+  query: () => ({
+    url: `/api/dashboard/loanOutstanding`,
+    method: "GET",
+  }),
+
+  // --- Transform success responses ---
+  transformResponse: (response) => {
+     const dummyData = {
+    MoM: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      data: [0.45, 0.55, 0.8, 0.8, 0.6, 0.5, 0.7, 0.9, 0.75, 1.0, 0.85, 0.65],
+    },
+    YoY: { labels: ['2021', '2022', '2023', '2024', '2025'], data: [2.2, 3.1, 4.0, 3.4, 2.8] },
+    QoQ: { labels: ['Q1', 'Q2', 'Q3', 'Q4'], data: [0.5, 0.9, 1.1, 0.7] },
+  };
+
+    // If response is NOT array → send dummy
+    if (!Array.isArray(response)) return dummyData;
+
+    // If empty return dummy
+    if (response.length === 0) return dummyData;
+
+    return response; // Real API data
+  },
+
+  // Handle SUCCESS AND FAILURES
+  async onQueryStarted(_, { dispatch, queryFulfilled }) {
+    try {
+      const { data } = await queryFulfilled; // already transformed
+      dispatch(setLoanOutstandingDetails(data));
+    } catch (err) {
+      // Prepare fallback dummy
+        const dummyData = {
+    MoM: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      data: [0.45, 0.55, 0.8, 0.8, 0.6, 0.5, 0.7, 0.9, 0.75, 1.0, 0.85, 0.65],
+    },
+    YoY: { labels: ['2021', '2022', '2023', '2024', '2025'], data: [2.2, 3.1, 4.0, 3.4, 2.8] },
+    QoQ: { labels: ['Q1', 'Q2', 'Q3', 'Q4'], data: [0.5, 0.9, 1.1, 0.7] },
+  };
+
+      dispatch(setLoanOutstandingDetails(dummyData));
+      dispatch(setError(err.message || "Failed to fetch Deposit/Loan details"));
+    }
+  },
 })
+
 
 
   }),
@@ -648,5 +788,7 @@ export const {
   useExecuteInsightQueriesMutation,
   useExecuteInsightQueryMutation,
   useDownloadInsightsAsPptMutation,
-  useGetKpiDashboardQuery
+  useGetKpiDashboardQuery,
+  useGetDepositLoanDetailsQuery,
+  useGetLoanOutstandingDetailsQuery
 } = dashboardApi;

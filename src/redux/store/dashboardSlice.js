@@ -33,22 +33,8 @@ const initialState = {
     insights: false,
   },
   KpiDashboardData: [],
-  depositLoanDetails: {
-    MoM: {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      data: [0.65, 0.6, 0.62, 0.7, 0.78, 0.88, 0.98, 1.02, 1.05, 1.1, 0.9, 0.6],
-    },
-    YoY: { labels: ['2021', '2022', '2023', '2024', '2025'], data: [3.0, 6.0, 13.8, 10.5, 4.8] },
-    QoQ: { labels: ['Q1', 'Q2', 'Q3', 'Q4'], data: [0.7, 0.9, 1.0, 0.6] },
-  },
-  loanOutstandingDetails: {
-    MoM: {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      data: [0.45, 0.55, 0.8, 0.8, 0.6, 0.5, 0.7, 0.9, 0.75, 1.0, 0.85, 0.65],
-    },
-    YoY: { labels: ['2021', '2022', '2023', '2024', '2025'], data: [2.2, 3.1, 4.0, 3.4, 2.8] },
-    QoQ: { labels: ['Q1', 'Q2', 'Q3', 'Q4'], data: [0.5, 0.9, 1.1, 0.7] },
-  },
+  depositLoanDetails: {},
+  loanOutstandingDetails: {},
   revenueGraphDetails: {
     'Account Number 1': {
       YoY: [

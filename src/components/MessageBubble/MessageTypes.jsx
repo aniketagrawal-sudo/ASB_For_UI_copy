@@ -418,12 +418,12 @@ export const VisualizationMessage = memo(({ content, messageId }) => {
     <>
       <div className={classes.visualizationContainer}>
         <div className={classes.visActions}>
-          <Tooltip title={isPinned ? 'Pinned' : 'Pin to Artifacts'}>
+          {/* <Tooltip title={isPinned ? 'Pinned' : 'Pin to Artifacts'}> */}
             {/* The disabled attribute prevents multiple clicks while an operation is in progress */}
-            <IconButton onClick={handleTogglePin} disabled={isPinning} className={classes.pinButton} size="small">
+            {/* <IconButton onClick={handleTogglePin} disabled={isPinning} className={classes.pinButton} size="small">
               <PushPinIcon className={isPinned ? classes.pinned : ''} />
-            </IconButton>
-          </Tooltip>
+            </IconButton> */}
+          {/* </Tooltip> */}
           <Tooltip title="View Fullscreen">
             <IconButton onClick={handleOpenModal} className={classes.fullscreenButton} size="small">
               <FullscreenIcon />
