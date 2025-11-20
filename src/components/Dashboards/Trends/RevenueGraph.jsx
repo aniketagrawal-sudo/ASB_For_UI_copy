@@ -3,8 +3,10 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Responsive
 import styles from './RevenueGraph.module.scss';
 import { useSelector } from 'react-redux';
 import { selectRevenueGraphDetails } from '../../../redux/store/dashboardSlice';
+import { useGetRevenueGraphDetailsQuery } from '../../../services/dashboardApi';
 
 export default function RevenueGraph() {
+  const {isLoading} = useGetRevenueGraphDetailsQuery();
   const dataSets = useSelector(selectRevenueGraphDetails)
   const [timeFilter, setTimeFilter] = useState('YoY');
   const [selectedAccount, setSelectedAccount] = useState('Account Number 1');

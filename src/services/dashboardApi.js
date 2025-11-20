@@ -15,7 +15,12 @@ import {
   updateBatchQueryResults,
   setKpiDashboardData,
   setDepositLoanDetails,
-  setLoanOutstandingDetails
+  setLoanOutstandingDetails,
+  setRevenueGraphDetails,
+  setTotalProfitandLossRelationship,
+  setEngagementDetails,
+  setAccountDetails,
+  setTeamDetails
 } from '../redux/store/dashboardSlice';
 
 
@@ -745,12 +750,713 @@ getLoanOutstandingDetails: builder.query({
   };
 
       dispatch(setLoanOutstandingDetails(dummyData));
-      dispatch(setError(err.message || "Failed to fetch Deposit/Loan details"));
+      dispatch(setError(err.message || "Failed to fetch loan outstanding details"));
     }
   },
-})
+}),
+
+getRevenueGraphDetails: builder.query({
+  query: () => ({
+    url: `/api/dashboard/revenue`,
+    method: "GET",
+  }),
+
+  // --- Transform success responses ---
+  transformResponse: (response) => {
+     const dummyData = {
+     'Account Number 1': {
+      YoY: [
+        { month: 'Jan', net: 700000, gross: 600000 },
+        { month: 'Feb', net: 400000, gross: 300000 },
+        { month: 'Mar', net: 200000, gross: 150000 },
+        { month: 'Apr', net: 400000, gross: 300000 },
+        { month: 'May', net: 600000, gross: 500000 },
+        { month: 'Jun', net: 800000, gross: 700000 },
+        { month: 'Jul', net: 800000, gross: 600000 },
+        { month: 'Aug', net: 400000, gross: 300000 },
+        { month: 'Sep', net: 200000, gross: 150000 },
+        { month: 'Oct', net: 400000, gross: 300000 },
+        { month: 'Nov', net: 500000, gross: 400000 },
+        { month: 'Dec', net: 700000, gross: 600000 },
+      ],
+      MoM: [
+        { month: 'Jan', net: 350000, gross: 300000 },
+        { month: 'Feb', net: 420000, gross: 380000 },
+        { month: 'Mar', net: 460000, gross: 410000 },
+        { month: 'Apr', net: 480000, gross: 430000 },
+        { month: 'May', net: 520000, gross: 470000 },
+        { month: 'Jun', net: 550000, gross: 500000 },
+        { month: 'Jul', net: 530000, gross: 480000 },
+        { month: 'Aug', net: 510000, gross: 470000 },
+        { month: 'Sep', net: 560000, gross: 510000 },
+        { month: 'Oct', net: 600000, gross: 550000 },
+        { month: 'Nov', net: 580000, gross: 530000 },
+        { month: 'Dec', net: 620000, gross: 560000 },
+      ],
+      QoQ: [
+        { month: 'Q1', net: 1200000, gross: 900000 },
+        { month: 'Q2', net: 1400000, gross: 1100000 },
+        { month: 'Q3', net: 1600000, gross: 1300000 },
+        { month: 'Q4', net: 1800000, gross: 1500000 },
+      ],
+    },
+    'Account Number 2': {
+      YoY: [
+        { month: 'Jan', net: 400000, gross: 350000 },
+        { month: 'Feb', net: 450000, gross: 400000 },
+        { month: 'Mar', net: 500000, gross: 450000 },
+        { month: 'Apr', net: 550000, gross: 480000 },
+        { month: 'May', net: 600000, gross: 530000 },
+        { month: 'Jun', net: 620000, gross: 540000 },
+        { month: 'Jul', net: 640000, gross: 560000 },
+        { month: 'Aug', net: 660000, gross: 590000 },
+        { month: 'Sep', net: 680000, gross: 610000 },
+        { month: 'Oct', net: 700000, gross: 640000 },
+        { month: 'Nov', net: 720000, gross: 650000 },
+        { month: 'Dec', net: 740000, gross: 670000 },
+      ],
+      MoM: [
+        { month: 'Jan', net: 300000, gross: 250000 },
+        { month: 'Feb', net: 340000, gross: 290000 },
+        { month: 'Mar', net: 360000, gross: 310000 },
+        { month: 'Apr', net: 390000, gross: 340000 },
+        { month: 'May', net: 420000, gross: 370000 },
+        { month: 'Jun', net: 440000, gross: 400000 },
+        { month: 'Jul', net: 470000, gross: 420000 },
+        { month: 'Aug', net: 490000, gross: 440000 },
+        { month: 'Sep', net: 510000, gross: 460000 },
+        { month: 'Oct', net: 530000, gross: 480000 },
+        { month: 'Nov', net: 550000, gross: 500000 },
+        { month: 'Dec', net: 570000, gross: 520000 },
+      ],
+      QoQ: [
+        { month: 'Q1', net: 1000000, gross: 800000 },
+        { month: 'Q2', net: 1200000, gross: 1000000 },
+        { month: 'Q3', net: 1400000, gross: 1200000 },
+        { month: 'Q4', net: 1600000, gross: 1300000 },
+      ],
+    },
+    'Account Number 3': {
+      YoY: [
+        { month: 'Jan', net: 500000, gross: 400000 },
+        { month: 'Feb', net: 550000, gross: 450000 },
+        { month: 'Mar', net: 600000, gross: 500000 },
+        { month: 'Apr', net: 650000, gross: 550000 },
+        { month: 'May', net: 700000, gross: 600000 },
+        { month: 'Jun', net: 750000, gross: 650000 },
+        { month: 'Jul', net: 800000, gross: 700000 },
+        { month: 'Aug', net: 850000, gross: 750000 },
+        { month: 'Sep', net: 900000, gross: 800000 },
+        { month: 'Oct', net: 950000, gross: 850000 },
+        { month: 'Nov', net: 1000000, gross: 900000 },
+        { month: 'Dec', net: 1050000, gross: 950000 },
+      ],
+      MoM: [
+        { month: 'Jan', net: 400000, gross: 350000 },
+        { month: 'Feb', net: 420000, gross: 370000 },
+        { month: 'Mar', net: 440000, gross: 390000 },
+        { month: 'Apr', net: 460000, gross: 410000 },
+        { month: 'May', net: 480000, gross: 430000 },
+        { month: 'Jun', net: 500000, gross: 450000 },
+        { month: 'Jul', net: 520000, gross: 470000 },
+        { month: 'Aug', net: 540000, gross: 490000 },
+        { month: 'Sep', net: 560000, gross: 510000 },
+        { month: 'Oct', net: 580000, gross: 530000 },
+        { month: 'Nov', net: 600000, gross: 550000 },
+        { month: 'Dec', net: 620000, gross: 570000 },
+      ],
+      QoQ: [
+        { month: 'Q1', net: 1300000, gross: 1000000 },
+        { month: 'Q2', net: 1500000, gross: 1200000 },
+        { month: 'Q3', net: 1700000, gross: 1400000 },
+        { month: 'Q4', net: 1900000, gross: 1600000 },
+      ],
+    },
+  }
+
+    // If response is NOT array → send dummy
+    if (!Array.isArray(response)) return dummyData;
+
+    // If empty return dummy
+    if (response.length === 0) return dummyData;
+
+    return response; // Real API data
+  },
+
+  // Handle SUCCESS AND FAILURES
+  async onQueryStarted(_, { dispatch, queryFulfilled }) {
+    try {
+      const { data } = await queryFulfilled; // already transformed
+      dispatch(setRevenueGraphDetails(data));
+    } catch (err) {
+      // Prepare fallback dummy
+   const dummyData = {
+     'Account Number 1': {
+      YoY: [
+        { month: 'Jan', net: 700000, gross: 600000 },
+        { month: 'Feb', net: 400000, gross: 300000 },
+        { month: 'Mar', net: 200000, gross: 150000 },
+        { month: 'Apr', net: 400000, gross: 300000 },
+        { month: 'May', net: 600000, gross: 500000 },
+        { month: 'Jun', net: 800000, gross: 700000 },
+        { month: 'Jul', net: 800000, gross: 600000 },
+        { month: 'Aug', net: 400000, gross: 300000 },
+        { month: 'Sep', net: 200000, gross: 150000 },
+        { month: 'Oct', net: 400000, gross: 300000 },
+        { month: 'Nov', net: 500000, gross: 400000 },
+        { month: 'Dec', net: 700000, gross: 600000 },
+      ],
+      MoM: [
+        { month: 'Jan', net: 350000, gross: 300000 },
+        { month: 'Feb', net: 420000, gross: 380000 },
+        { month: 'Mar', net: 460000, gross: 410000 },
+        { month: 'Apr', net: 480000, gross: 430000 },
+        { month: 'May', net: 520000, gross: 470000 },
+        { month: 'Jun', net: 550000, gross: 500000 },
+        { month: 'Jul', net: 530000, gross: 480000 },
+        { month: 'Aug', net: 510000, gross: 470000 },
+        { month: 'Sep', net: 560000, gross: 510000 },
+        { month: 'Oct', net: 600000, gross: 550000 },
+        { month: 'Nov', net: 580000, gross: 530000 },
+        { month: 'Dec', net: 620000, gross: 560000 },
+      ],
+      QoQ: [
+        { month: 'Q1', net: 1200000, gross: 900000 },
+        { month: 'Q2', net: 1400000, gross: 1100000 },
+        { month: 'Q3', net: 1600000, gross: 1300000 },
+        { month: 'Q4', net: 1800000, gross: 1500000 },
+      ],
+    },
+    'Account Number 2': {
+      YoY: [
+        { month: 'Jan', net: 400000, gross: 350000 },
+        { month: 'Feb', net: 450000, gross: 400000 },
+        { month: 'Mar', net: 500000, gross: 450000 },
+        { month: 'Apr', net: 550000, gross: 480000 },
+        { month: 'May', net: 600000, gross: 530000 },
+        { month: 'Jun', net: 620000, gross: 540000 },
+        { month: 'Jul', net: 640000, gross: 560000 },
+        { month: 'Aug', net: 660000, gross: 590000 },
+        { month: 'Sep', net: 680000, gross: 610000 },
+        { month: 'Oct', net: 700000, gross: 640000 },
+        { month: 'Nov', net: 720000, gross: 650000 },
+        { month: 'Dec', net: 740000, gross: 670000 },
+      ],
+      MoM: [
+        { month: 'Jan', net: 300000, gross: 250000 },
+        { month: 'Feb', net: 340000, gross: 290000 },
+        { month: 'Mar', net: 360000, gross: 310000 },
+        { month: 'Apr', net: 390000, gross: 340000 },
+        { month: 'May', net: 420000, gross: 370000 },
+        { month: 'Jun', net: 440000, gross: 400000 },
+        { month: 'Jul', net: 470000, gross: 420000 },
+        { month: 'Aug', net: 490000, gross: 440000 },
+        { month: 'Sep', net: 510000, gross: 460000 },
+        { month: 'Oct', net: 530000, gross: 480000 },
+        { month: 'Nov', net: 550000, gross: 500000 },
+        { month: 'Dec', net: 570000, gross: 520000 },
+      ],
+      QoQ: [
+        { month: 'Q1', net: 1000000, gross: 800000 },
+        { month: 'Q2', net: 1200000, gross: 1000000 },
+        { month: 'Q3', net: 1400000, gross: 1200000 },
+        { month: 'Q4', net: 1600000, gross: 1300000 },
+      ],
+    },
+    'Account Number 3': {
+      YoY: [
+        { month: 'Jan', net: 500000, gross: 400000 },
+        { month: 'Feb', net: 550000, gross: 450000 },
+        { month: 'Mar', net: 600000, gross: 500000 },
+        { month: 'Apr', net: 650000, gross: 550000 },
+        { month: 'May', net: 700000, gross: 600000 },
+        { month: 'Jun', net: 750000, gross: 650000 },
+        { month: 'Jul', net: 800000, gross: 700000 },
+        { month: 'Aug', net: 850000, gross: 750000 },
+        { month: 'Sep', net: 900000, gross: 800000 },
+        { month: 'Oct', net: 950000, gross: 850000 },
+        { month: 'Nov', net: 1000000, gross: 900000 },
+        { month: 'Dec', net: 1050000, gross: 950000 },
+      ],
+      MoM: [
+        { month: 'Jan', net: 400000, gross: 350000 },
+        { month: 'Feb', net: 420000, gross: 370000 },
+        { month: 'Mar', net: 440000, gross: 390000 },
+        { month: 'Apr', net: 460000, gross: 410000 },
+        { month: 'May', net: 480000, gross: 430000 },
+        { month: 'Jun', net: 500000, gross: 450000 },
+        { month: 'Jul', net: 520000, gross: 470000 },
+        { month: 'Aug', net: 540000, gross: 490000 },
+        { month: 'Sep', net: 560000, gross: 510000 },
+        { month: 'Oct', net: 580000, gross: 530000 },
+        { month: 'Nov', net: 600000, gross: 550000 },
+        { month: 'Dec', net: 620000, gross: 570000 },
+      ],
+      QoQ: [
+        { month: 'Q1', net: 1300000, gross: 1000000 },
+        { month: 'Q2', net: 1500000, gross: 1200000 },
+        { month: 'Q3', net: 1700000, gross: 1400000 },
+        { month: 'Q4', net: 1900000, gross: 1600000 },
+      ],
+    },
+  }
 
 
+      dispatch(setRevenueGraphDetails(dummyData));
+      dispatch(setError(err.message || "Failed to fetch revenue details"));
+    }
+  },
+}),
+
+getTotalProfitAndLossRelationshipDetails: builder.query({
+  query: () => ({
+    url: `/api/dashboard/totalProfitAndLossRelationship`,
+    method: "GET",
+  }),
+
+  // --- Transform success responses ---
+  transformResponse: (response) => {
+     const dummyData = {
+     'Top 1': {
+      YoY: {
+        Profit: [
+          { year: 2021, product1: 700000, product2: 600000, product3: 500000 },
+          { year: 2022, product1: 750000, product2: 630000, product3: 520000 },
+          { year: 2023, product1: 720000, product2: 610000, product3: 540000 },
+          { year: 2024, product1: 760000, product2: 640000, product3: 550000 },
+          { year: 2025, product1: 780000, product2: 660000, product3: 580000 },
+        ],
+        Loss: [
+          { year: 2021, product1: 300000, product2: 250000, product3: 200000 },
+          { year: 2022, product1: 280000, product2: 260000, product3: 210000 },
+          { year: 2023, product1: 290000, product2: 270000, product3: 230000 },
+          { year: 2024, product1: 310000, product2: 280000, product3: 250000 },
+          { year: 2025, product1: 320000, product2: 300000, product3: 270000 },
+        ],
+      },
+      MoM: {
+        Profit: [
+          { month: 'Jan', product1: 400000, product2: 380000, product3: 350000 },
+          { month: 'Feb', product1: 420000, product2: 390000, product3: 370000 },
+          { month: 'Mar', product1: 440000, product2: 410000, product3: 390000 },
+          { month: 'Apr', product1: 460000, product2: 430000, product3: 410000 },
+          { month: 'May', product1: 480000, product2: 450000, product3: 430000 },
+          { month: 'Jun', product1: 500000, product2: 470000, product3: 450000 },
+        ],
+        Loss: [
+          { month: 'Jan', product1: 150000, product2: 130000, product3: 120000 },
+          { month: 'Feb', product1: 140000, product2: 125000, product3: 115000 },
+          { month: 'Mar', product1: 130000, product2: 120000, product3: 110000 },
+          { month: 'Apr', product1: 125000, product2: 115000, product3: 105000 },
+          { month: 'May', product1: 120000, product2: 110000, product3: 100000 },
+          { month: 'Jun', product1: 115000, product2: 105000, product3: 95000 },
+        ],
+      },
+    },
+    'Top 2': {
+      YoY: {
+        Profit: [
+          { year: 2021, product1: 650000, product2: 550000, product3: 500000 },
+          { year: 2022, product1: 690000, product2: 580000, product3: 520000 },
+          { year: 2023, product1: 720000, product2: 600000, product3: 540000 },
+          { year: 2024, product1: 760000, product2: 640000, product3: 560000 },
+          { year: 2025, product1: 800000, product2: 670000, product3: 580000 },
+        ],
+        Loss: [
+          { year: 2021, product1: 280000, product2: 240000, product3: 200000 },
+          { year: 2022, product1: 290000, product2: 250000, product3: 210000 },
+          { year: 2023, product1: 300000, product2: 260000, product3: 220000 },
+          { year: 2024, product1: 320000, product2: 280000, product3: 240000 },
+          { year: 2025, product1: 340000, product2: 300000, product3: 260000 },
+        ],
+      },
+      MoM: {
+        Profit: [
+          { month: 'Jan', product1: 380000, product2: 360000, product3: 340000 },
+          { month: 'Feb', product1: 400000, product2: 370000, product3: 350000 },
+          { month: 'Mar', product1: 420000, product2: 390000, product3: 370000 },
+          { month: 'Apr', product1: 440000, product2: 410000, product3: 390000 },
+          { month: 'May', product1: 460000, product2: 430000, product3: 410000 },
+          { month: 'Jun', product1: 480000, product2: 450000, product3: 430000 },
+        ],
+        Loss: [
+          { month: 'Jan', product1: 140000, product2: 120000, product3: 110000 },
+          { month: 'Feb', product1: 130000, product2: 115000, product3: 105000 },
+          { month: 'Mar', product1: 125000, product2: 110000, product3: 100000 },
+          { month: 'Apr', product1: 120000, product2: 105000, product3: 95000 },
+          { month: 'May', product1: 115000, product2: 100000, product3: 90000 },
+          { month: 'Jun', product1: 110000, product2: 95000, product3: 85000 },
+        ],
+      },
+    },
+    'Top 3': {
+      YoY: {
+        Profit: [
+          { year: 2021, product1: 600000, product2: 520000, product3: 470000 },
+          { year: 2022, product1: 640000, product2: 550000, product3: 490000 },
+          { year: 2023, product1: 680000, product2: 580000, product3: 510000 },
+          { year: 2024, product1: 720000, product2: 610000, product3: 540000 },
+          { year: 2025, product1: 760000, product2: 640000, product3: 560000 },
+        ],
+        Loss: [
+          { year: 2021, product1: 260000, product2: 220000, product3: 200000 },
+          { year: 2022, product1: 270000, product2: 230000, product3: 210000 },
+          { year: 2023, product1: 290000, product2: 250000, product3: 220000 },
+          { year: 2024, product1: 310000, product2: 270000, product3: 230000 },
+          { year: 2025, product1: 320000, product2: 280000, product3: 240000 },
+        ],
+      },
+      MoM: {
+        Profit: [
+          { month: 'Jan', product1: 360000, product2: 330000, product3: 310000 },
+          { month: 'Feb', product1: 380000, product2: 350000, product3: 330000 },
+          { month: 'Mar', product1: 400000, product2: 370000, product3: 350000 },
+          { month: 'Apr', product1: 420000, product2: 390000, product3: 370000 },
+          { month: 'May', product1: 440000, product2: 410000, product3: 390000 },
+          { month: 'Jun', product1: 460000, product2: 430000, product3: 410000 },
+        ],
+        Loss: [
+          { month: 'Jan', product1: 130000, product2: 110000, product3: 100000 },
+          { month: 'Feb', product1: 125000, product2: 105000, product3: 95000 },
+          { month: 'Mar', product1: 120000, product2: 100000, product3: 90000 },
+          { month: 'Apr', product1: 115000, product2: 95000, product3: 85000 },
+          { month: 'May', product1: 110000, product2: 90000, product3: 80000 },
+          { month: 'Jun', product1: 105000, product2: 85000, product3: 75000 },
+        ],
+      },
+    },
+  }
+
+    // If response is NOT array → send dummy
+    if (!Array.isArray(response)) return dummyData;
+
+    // If empty return dummy
+    if (response.length === 0) return dummyData;
+
+    return response; // Real API data
+  },
+
+  // Handle SUCCESS AND FAILURES
+  async onQueryStarted(_, { dispatch, queryFulfilled }) {
+    try {
+      const { data } = await queryFulfilled; // already transformed
+      dispatch(setTotalProfitandLossRelationship(data));
+    } catch (err) {
+      // Prepare fallback dummy
+   const dummyData = {
+     'Top 1': {
+      YoY: {
+        Profit: [
+          { year: 2021, product1: 700000, product2: 600000, product3: 500000 },
+          { year: 2022, product1: 750000, product2: 630000, product3: 520000 },
+          { year: 2023, product1: 720000, product2: 610000, product3: 540000 },
+          { year: 2024, product1: 760000, product2: 640000, product3: 550000 },
+          { year: 2025, product1: 780000, product2: 660000, product3: 580000 },
+        ],
+        Loss: [
+          { year: 2021, product1: 300000, product2: 250000, product3: 200000 },
+          { year: 2022, product1: 280000, product2: 260000, product3: 210000 },
+          { year: 2023, product1: 290000, product2: 270000, product3: 230000 },
+          { year: 2024, product1: 310000, product2: 280000, product3: 250000 },
+          { year: 2025, product1: 320000, product2: 300000, product3: 270000 },
+        ],
+      },
+      MoM: {
+        Profit: [
+          { month: 'Jan', product1: 400000, product2: 380000, product3: 350000 },
+          { month: 'Feb', product1: 420000, product2: 390000, product3: 370000 },
+          { month: 'Mar', product1: 440000, product2: 410000, product3: 390000 },
+          { month: 'Apr', product1: 460000, product2: 430000, product3: 410000 },
+          { month: 'May', product1: 480000, product2: 450000, product3: 430000 },
+          { month: 'Jun', product1: 500000, product2: 470000, product3: 450000 },
+        ],
+        Loss: [
+          { month: 'Jan', product1: 150000, product2: 130000, product3: 120000 },
+          { month: 'Feb', product1: 140000, product2: 125000, product3: 115000 },
+          { month: 'Mar', product1: 130000, product2: 120000, product3: 110000 },
+          { month: 'Apr', product1: 125000, product2: 115000, product3: 105000 },
+          { month: 'May', product1: 120000, product2: 110000, product3: 100000 },
+          { month: 'Jun', product1: 115000, product2: 105000, product3: 95000 },
+        ],
+      },
+    },
+    'Top 2': {
+      YoY: {
+        Profit: [
+          { year: 2021, product1: 650000, product2: 550000, product3: 500000 },
+          { year: 2022, product1: 690000, product2: 580000, product3: 520000 },
+          { year: 2023, product1: 720000, product2: 600000, product3: 540000 },
+          { year: 2024, product1: 760000, product2: 640000, product3: 560000 },
+          { year: 2025, product1: 800000, product2: 670000, product3: 580000 },
+        ],
+        Loss: [
+          { year: 2021, product1: 280000, product2: 240000, product3: 200000 },
+          { year: 2022, product1: 290000, product2: 250000, product3: 210000 },
+          { year: 2023, product1: 300000, product2: 260000, product3: 220000 },
+          { year: 2024, product1: 320000, product2: 280000, product3: 240000 },
+          { year: 2025, product1: 340000, product2: 300000, product3: 260000 },
+        ],
+      },
+      MoM: {
+        Profit: [
+          { month: 'Jan', product1: 380000, product2: 360000, product3: 340000 },
+          { month: 'Feb', product1: 400000, product2: 370000, product3: 350000 },
+          { month: 'Mar', product1: 420000, product2: 390000, product3: 370000 },
+          { month: 'Apr', product1: 440000, product2: 410000, product3: 390000 },
+          { month: 'May', product1: 460000, product2: 430000, product3: 410000 },
+          { month: 'Jun', product1: 480000, product2: 450000, product3: 430000 },
+        ],
+        Loss: [
+          { month: 'Jan', product1: 140000, product2: 120000, product3: 110000 },
+          { month: 'Feb', product1: 130000, product2: 115000, product3: 105000 },
+          { month: 'Mar', product1: 125000, product2: 110000, product3: 100000 },
+          { month: 'Apr', product1: 120000, product2: 105000, product3: 95000 },
+          { month: 'May', product1: 115000, product2: 100000, product3: 90000 },
+          { month: 'Jun', product1: 110000, product2: 95000, product3: 85000 },
+        ],
+      },
+    },
+    'Top 3': {
+      YoY: {
+        Profit: [
+          { year: 2021, product1: 600000, product2: 520000, product3: 470000 },
+          { year: 2022, product1: 640000, product2: 550000, product3: 490000 },
+          { year: 2023, product1: 680000, product2: 580000, product3: 510000 },
+          { year: 2024, product1: 720000, product2: 610000, product3: 540000 },
+          { year: 2025, product1: 760000, product2: 640000, product3: 560000 },
+        ],
+        Loss: [
+          { year: 2021, product1: 260000, product2: 220000, product3: 200000 },
+          { year: 2022, product1: 270000, product2: 230000, product3: 210000 },
+          { year: 2023, product1: 290000, product2: 250000, product3: 220000 },
+          { year: 2024, product1: 310000, product2: 270000, product3: 230000 },
+          { year: 2025, product1: 320000, product2: 280000, product3: 240000 },
+        ],
+      },
+      MoM: {
+        Profit: [
+          { month: 'Jan', product1: 360000, product2: 330000, product3: 310000 },
+          { month: 'Feb', product1: 380000, product2: 350000, product3: 330000 },
+          { month: 'Mar', product1: 400000, product2: 370000, product3: 350000 },
+          { month: 'Apr', product1: 420000, product2: 390000, product3: 370000 },
+          { month: 'May', product1: 440000, product2: 410000, product3: 390000 },
+          { month: 'Jun', product1: 460000, product2: 430000, product3: 410000 },
+        ],
+        Loss: [
+          { month: 'Jan', product1: 130000, product2: 110000, product3: 100000 },
+          { month: 'Feb', product1: 125000, product2: 105000, product3: 95000 },
+          { month: 'Mar', product1: 120000, product2: 100000, product3: 90000 },
+          { month: 'Apr', product1: 115000, product2: 95000, product3: 85000 },
+          { month: 'May', product1: 110000, product2: 90000, product3: 80000 },
+          { month: 'Jun', product1: 105000, product2: 85000, product3: 75000 },
+        ],
+      },
+    },
+  }
+      dispatch(setTotalProfitandLossRelationship(dummyData));
+      dispatch(setError(err.message || "Failed to fetch total profit and loss relationship details"));
+    }
+  },
+}),
+
+getEngagementDetails: builder.query({
+  query: () => ({
+    url: `/api/dashboard/engagementDetails`,
+    method: "GET",
+  }),
+
+  // --- Transform success responses ---
+  transformResponse: (response) => {
+     const dummyData = [
+        { label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
+        { label: 'Last Maturity Date', date: '22 Sep 2030', status: 'green' },
+        { label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
+        { label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
+    ];
+
+    // If response is NOT array → send dummy
+    if (!Array.isArray(response)) return dummyData;
+
+    // If empty return dummy
+    if (response.length === 0) return dummyData;
+
+    return response; // Real API data
+  },
+
+  // Handle SUCCESS AND FAILURES
+  async onQueryStarted(_, { dispatch, queryFulfilled }) {
+    try {
+      const { data } = await queryFulfilled; // already transformed
+      dispatch(setEngagementDetails(data));
+    } catch (err) {
+      // Prepare fallback dummy
+   const dummyData = [
+        { label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
+        { label: 'Last Maturity Date', date: '22 Sep 2030', status: 'green' },
+        { label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
+        { label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
+    ];
+      dispatch(setEngagementDetails(dummyData));
+      dispatch(setError(err.message || "Failed to fetch engagement details"));
+    }
+  },
+}),
+
+getAccountDetails: builder.query({
+  query: () => ({
+    url: `/api/dashboard/accountDetails`,
+    method: "GET",
+  }),
+
+  // --- Transform success responses ---
+  transformResponse: (response) => {
+     const dummyData = [
+    {
+      no: '1234567890',
+      openingDate: '21/01/2025',
+      riskRating: '6.2/10',
+      closingDate: '-',
+      status: 'Active',
+      type: 'Type 1',
+      balance: '$65,000',
+      interestRate: '2.5%',
+    },
+    {
+      no: '9876543210',
+      openingDate: '22/10/2024',
+      riskRating: '8.1/10',
+      closingDate: '-',
+      status: 'Active',
+      type: 'Type 3',
+      balance: '$81,000',
+      interestRate: '3.1%',
+    },
+    {
+      no: '5647382910',
+      openingDate: '14/08/2024',
+      riskRating: '7.3/10',
+      closingDate: '-',
+      status: 'Active',
+      type: 'Type 4',
+      balance: '$95,500',
+      interestRate: '2.9%',
+    },
+    {
+      no: '1122334455',
+      openingDate: '02/05/2023',
+      riskRating: '8.5/10',
+      closingDate: '12/08/2025',
+      status: 'Inactive',
+      type: 'Type 2',
+      balance: '$1,000',
+      interestRate: '1.2%',
+    },
+  ];
+
+    // If response is NOT array → send dummy
+    if (!Array.isArray(response)) return dummyData;
+
+    // If empty return dummy
+    if (response.length === 0) return dummyData;
+
+    return response; // Real API data
+  },
+
+  // Handle SUCCESS AND FAILURES
+  async onQueryStarted(_, { dispatch, queryFulfilled }) {
+    try {
+      const { data } = await queryFulfilled; // already transformed
+      dispatch(setAccountDetails(data));
+    } catch (err) {
+      // Prepare fallback dummy
+     const dummyData = [
+    {
+      no: '1234567890',
+      openingDate: '21/01/2025',
+      riskRating: '6.2/10',
+      closingDate: '-',
+      status: 'Active',
+      type: 'Type 1',
+      balance: '$65,000',
+      interestRate: '2.5%',
+    },
+    {
+      no: '9876543210',
+      openingDate: '22/10/2024',
+      riskRating: '8.1/10',
+      closingDate: '-',
+      status: 'Active',
+      type: 'Type 3',
+      balance: '$81,000',
+      interestRate: '3.1%',
+    },
+    {
+      no: '5647382910',
+      openingDate: '14/08/2024',
+      riskRating: '7.3/10',
+      closingDate: '-',
+      status: 'Active',
+      type: 'Type 4',
+      balance: '$95,500',
+      interestRate: '2.9%',
+    },
+    {
+      no: '1122334455',
+      openingDate: '02/05/2023',
+      riskRating: '8.5/10',
+      closingDate: '12/08/2025',
+      status: 'Inactive',
+      type: 'Type 2',
+      balance: '$1,000',
+      interestRate: '1.2%',
+    },
+  ];
+      dispatch(setAccountDetails(dummyData));
+      dispatch(setError(err.message || "Failed to fetch account details"));
+    }
+  },
+}),
+
+getTeamASBConnetedDetails: builder.query({
+  query: () => ({
+    url: `/api/dashboard/teamDetails`,
+    method: "GET",
+  }),
+
+  // --- Transform success responses ---
+  transformResponse: (response) => {
+     const dummyData = [
+        { team: 'Name of the Team A', contactName: 'Contact Name A', email: 'a@example.com' },
+        { team: 'Name of the Team B', contactName: 'Contact Name B', email: 'b@example.com' },
+        { team: 'Name of the Team C', contactName: 'Contact Name C', email: 'c@example.com' },
+    ];
+
+    // If response is NOT array → send dummy
+    if (!Array.isArray(response)) return dummyData;
+
+    // If empty return dummy
+    if (response.length === 0) return dummyData;
+
+    return response; // Real API data
+  },
+
+  // Handle SUCCESS AND FAILURES
+  async onQueryStarted(_, { dispatch, queryFulfilled }) {
+    try {
+      const { data } = await queryFulfilled; // already transformed
+      dispatch(setTeamDetails(data));
+    } catch (err) {
+      // Prepare fallback dummy
+   const dummyData = [
+        { team: 'Name of the Team A', contactName: 'Contact Name A', email: 'a@example.com' },
+        { team: 'Name of the Team B', contactName: 'Contact Name B', email: 'b@example.com' },
+        { team: 'Name of the Team C', contactName: 'Contact Name C', email: 'c@example.com' },
+    ];
+      dispatch(setTeamDetails(dummyData));
+      dispatch(setError(err.message || "Failed to fetch team ASB connected details"));
+    }
+  },
+}),
 
   }),
 });
@@ -790,5 +1496,10 @@ export const {
   useDownloadInsightsAsPptMutation,
   useGetKpiDashboardQuery,
   useGetDepositLoanDetailsQuery,
-  useGetLoanOutstandingDetailsQuery
+  useGetLoanOutstandingDetailsQuery,
+  useGetRevenueGraphDetailsQuery,
+  useGetTotalProfitAndLossRelationshipDetailsQuery,
+  useGetEngagementDetailsQuery,
+  useGetAccountDetailsQuery,
+  useGetTeamASBConnetedDetailsQuery,
 } = dashboardApi;

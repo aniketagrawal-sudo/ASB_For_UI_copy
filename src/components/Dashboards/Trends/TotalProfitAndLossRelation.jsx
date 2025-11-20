@@ -12,8 +12,10 @@ import {
 import styles from './TotalProfitAndLossRelation.module.scss';
 import { useSelector } from 'react-redux';
 import { selectTotalProfitandLossRelationship } from '../../../redux/store/dashboardSlice';
+import { useGetTotalProfitAndLossRelationshipDetailsQuery } from '../../../services/dashboardApi';
 
 export default function TotalProfitAndLossRelation() {
+  const {isLoading} = useGetTotalProfitAndLossRelationshipDetailsQuery();
   const dataSets = useSelector(selectTotalProfitandLossRelationship);
   const [timeFilter, setTimeFilter] = useState('YoY');
   const [profitLossFilter, setProfitLossFilter] = useState('Profit');

@@ -16,8 +16,12 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import classes from './ClinetInformation.module.scss';
 import { useSelector } from 'react-redux';
 import { selectAccountDetails, selectEngagementDetails, selectTeamDetails } from '../../../redux/store/dashboardSlice';
+import { useGetEngagementDetailsQuery, useGetAccountDetailsQuery, useGetTeamASBConnetedDetailsQuery } from '../../../services/dashboardApi';
 
 export default function ClinetInformationComponent() {
+    const {isLoading} = useGetEngagementDetailsQuery();
+    const {data} = useGetAccountDetailsQuery();
+    const {error} = useGetTeamASBConnetedDetailsQuery();
     const accountData = useSelector(selectAccountDetails)
 
     const engagementData = useSelector(selectEngagementDetails)
