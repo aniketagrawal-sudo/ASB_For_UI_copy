@@ -8,7 +8,7 @@ import RevenueProfitAtProductLevel from "./Trends/RevenueProfitAtProductLevel";
 import VolumeUsage from "./Trends/VolumeUsage";
 import PropTypes from "prop-types";
 
-export default function TrendComponent({revenueForClient, filterdDepositLoans, filterdtLoansOutstanding}) {
+export default function TrendComponent({revenueForClient, filterdDepositLoans, filterdtLoansOutstanding, filteredAccountDetails}) {
     return (
         <>
             <Box className={classes.trendComponent}>
@@ -26,7 +26,7 @@ export default function TrendComponent({revenueForClient, filterdDepositLoans, f
 
             <Box className={classes.trendComponent}>
                 <Typography variant="body2" component="div">
-                    <ClinetInformationComponent />
+                    <ClinetInformationComponent filteredAccountDetails={filteredAccountDetails}/>
                 </Typography>
             </Box>
         </>
@@ -39,5 +39,6 @@ export default function TrendComponent({revenueForClient, filterdDepositLoans, f
 TrendComponent.propTypes = {
    revenueForClient: PropTypes.object.isRequired,
    filterdDepositLoans: PropTypes.object.isRequired,
-   filterdtLoansOutstanding: PropTypes.object.isRequired
+   filterdtLoansOutstanding: PropTypes.object.isRequired,
+     filteredAccountDetails: PropTypes.object.isRequired
 };

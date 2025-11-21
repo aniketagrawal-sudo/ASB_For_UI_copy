@@ -19,8 +19,6 @@ import {
   setRevenueGraphDetails,
   setTotalProfitandLossRelationship,
   setEngagementDetails,
-  setAccountDetails,
-  setTeamDetails,
 } from '../redux/store/dashboardSlice';
 
 export const dashboardApi = api.injectEndpoints({
@@ -1412,12 +1410,92 @@ export const dashboardApi = api.injectEndpoints({
 
       // --- Transform success responses ---
       transformResponse: (response) => {
-        const dummyData = [
-          { label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
-          { label: 'Last Maturity Date', date: '22 Sep 2030', status: 'green' },
-          { label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
-          { label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
-        ];
+     const dummyData = {
+           engagement: [
+          { clientId: 1, label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
+          { clientId: 2, label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
+          { clientId: 1, label: 'Last Maturity Date', date: '22 Sep 2030', status: 'green' },
+          { clientId: 1, label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
+          { clientId: 2, label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
+          { clientId: 1, label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
+          { clientId: 2, label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
+           ],
+          accounts: [
+          {
+            clientId: 1,
+            no: '1234567890',
+            openingDate: '21/01/2025',
+            riskRating: '6.2/10',
+            closingDate: '-',
+            status: 'Active',
+            type: 'Type 1',
+            balance: '$65,000',
+            interestRate: '2.5%',
+          },
+          {
+            clientId: 1,
+            no: '9876543210',
+            openingDate: '22/10/2024',
+            riskRating: '8.1/10',
+            closingDate: '-',
+            status: 'Active',
+            type: 'Type 3',
+            balance: '$81,000',
+            interestRate: '3.1%',
+          },
+          {
+            clientId: 1,
+            no: '5647382910',
+            openingDate: '14/08/2024',
+            riskRating: '7.3/10',
+            closingDate: '-',
+            status: 'Active',
+            type: 'Type 4',
+            balance: '$95,500',
+            interestRate: '2.9%',
+          },
+          {
+            clientId: 1,
+            no: '1122334455',
+            openingDate: '02/05/2023',
+            riskRating: '8.5/10',
+            closingDate: '12/08/2025',
+            status: 'Inactive',
+            type: 'Type 2',
+            balance: '$1,000',
+            interestRate: '1.2%',
+          },
+           {
+            clientId: 2,
+            no: '1122334455',
+            openingDate: '02/05/2023',
+            riskRating: '8.5/10',
+            closingDate: '12/08/2025',
+            status: 'Inactive',
+            type: 'Type 2',
+            balance: '$1,000',
+            interestRate: '1.2%',
+          },
+          {
+            clientId: 2,
+            no: '1122334455',
+            openingDate: '02/05/2023',
+            riskRating: '8.5/10',
+            closingDate: '12/08/2025',
+            status: 'Inactive',
+            type: 'Type 2',
+            balance: '$1,000',
+            interestRate: '1.2%',
+          },
+          ],
+          teams: [
+          { clientId: 1, team: 'Name of the Team A', contactName: 'Contact Name A', email: 'a@example.com' },
+           { clientId: 2, team: 'Name of the Team d', contactName: 'Contact Name d', email: 'd@example.com' },
+          { clientId: 1, team: 'Name of the Team B', contactName: 'Contact Name B', email: 'b@example.com' },
+          {clientId: 1, team: 'Name of the Team C', contactName: 'Contact Name C', email: 'c@example.com' },
+          {clientId: 2, team: 'Name of the Team d', contactName: 'Contact Name d', email: 'd@example.com' },
+        ]
+        };
 
         // If response is NOT array → send dummy
         if (!Array.isArray(response)) return dummyData;
@@ -1435,28 +1513,19 @@ export const dashboardApi = api.injectEndpoints({
           dispatch(setEngagementDetails(data));
         } catch (err) {
           // Prepare fallback dummy
-          const dummyData = [
-            { label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
-            { label: 'Last Maturity Date', date: '22 Sep 2030', status: 'green' },
-            { label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
-            { label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
-          ];
-          dispatch(setEngagementDetails(dummyData));
-          dispatch(setError(err.message || 'Failed to fetch engagement details'));
-        }
-      },
-    }),
-
-    getAccountDetails: builder.query({
-      query: () => ({
-        url: `/api/dashboard/accountDetails`,
-        method: 'GET',
-      }),
-
-      // --- Transform success responses ---
-      transformResponse: (response) => {
-        const dummyData = [
+          const dummyData = {
+           engagement: [
+          { clientId: 1, label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
+          { clientId: 2, label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
+          { clientId: 1, label: 'Last Maturity Date', date: '22 Sep 2030', status: 'green' },
+          { clientId: 1, label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
+          { clientId: 2, label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
+          { clientId: 1, label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
+          { clientId: 2, label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
+           ],
+          accounts: [
           {
+            clientId: 1,
             no: '1234567890',
             openingDate: '21/01/2025',
             riskRating: '6.2/10',
@@ -1467,6 +1536,7 @@ export const dashboardApi = api.injectEndpoints({
             interestRate: '2.5%',
           },
           {
+            clientId: 1,
             no: '9876543210',
             openingDate: '22/10/2024',
             riskRating: '8.1/10',
@@ -1477,6 +1547,7 @@ export const dashboardApi = api.injectEndpoints({
             interestRate: '3.1%',
           },
           {
+            clientId: 1,
             no: '5647382910',
             openingDate: '14/08/2024',
             riskRating: '7.3/10',
@@ -1487,6 +1558,7 @@ export const dashboardApi = api.injectEndpoints({
             interestRate: '2.9%',
           },
           {
+            clientId: 1,
             no: '1122334455',
             openingDate: '02/05/2023',
             riskRating: '8.5/10',
@@ -1496,109 +1568,39 @@ export const dashboardApi = api.injectEndpoints({
             balance: '$1,000',
             interestRate: '1.2%',
           },
-        ];
-
-        // If response is NOT array → send dummy
-        if (!Array.isArray(response)) return dummyData;
-
-        // If empty return dummy
-        if (response.length === 0) return dummyData;
-
-        return response; // Real API data
-      },
-
-      // Handle SUCCESS AND FAILURES
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled; // already transformed
-          dispatch(setAccountDetails(data));
-        } catch (err) {
-          // Prepare fallback dummy
-          const dummyData = [
-            {
-              no: '1234567890',
-              openingDate: '21/01/2025',
-              riskRating: '6.2/10',
-              closingDate: '-',
-              status: 'Active',
-              type: 'Type 1',
-              balance: '$65,000',
-              interestRate: '2.5%',
-            },
-            {
-              no: '9876543210',
-              openingDate: '22/10/2024',
-              riskRating: '8.1/10',
-              closingDate: '-',
-              status: 'Active',
-              type: 'Type 3',
-              balance: '$81,000',
-              interestRate: '3.1%',
-            },
-            {
-              no: '5647382910',
-              openingDate: '14/08/2024',
-              riskRating: '7.3/10',
-              closingDate: '-',
-              status: 'Active',
-              type: 'Type 4',
-              balance: '$95,500',
-              interestRate: '2.9%',
-            },
-            {
-              no: '1122334455',
-              openingDate: '02/05/2023',
-              riskRating: '8.5/10',
-              closingDate: '12/08/2025',
-              status: 'Inactive',
-              type: 'Type 2',
-              balance: '$1,000',
-              interestRate: '1.2%',
-            },
-          ];
-          dispatch(setAccountDetails(dummyData));
-          dispatch(setError(err.message || 'Failed to fetch account details'));
-        }
-      },
-    }),
-
-    getTeamASBConnetedDetails: builder.query({
-      query: () => ({
-        url: `/api/dashboard/teamDetails`,
-        method: 'GET',
-      }),
-
-      // --- Transform success responses ---
-      transformResponse: (response) => {
-        const dummyData = [
-          { team: 'Name of the Team A', contactName: 'Contact Name A', email: 'a@example.com' },
-          { team: 'Name of the Team B', contactName: 'Contact Name B', email: 'b@example.com' },
-          { team: 'Name of the Team C', contactName: 'Contact Name C', email: 'c@example.com' },
-        ];
-
-        // If response is NOT array → send dummy
-        if (!Array.isArray(response)) return dummyData;
-
-        // If empty return dummy
-        if (response.length === 0) return dummyData;
-
-        return response; // Real API data
-      },
-
-      // Handle SUCCESS AND FAILURES
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled; // already transformed
-          dispatch(setTeamDetails(data));
-        } catch (err) {
-          // Prepare fallback dummy
-          const dummyData = [
-            { team: 'Name of the Team A', contactName: 'Contact Name A', email: 'a@example.com' },
-            { team: 'Name of the Team B', contactName: 'Contact Name B', email: 'b@example.com' },
-            { team: 'Name of the Team C', contactName: 'Contact Name C', email: 'c@example.com' },
-          ];
-          dispatch(setTeamDetails(dummyData));
-          dispatch(setError(err.message || 'Failed to fetch team ASB connected details'));
+           {
+            clientId: 2,
+            no: '1122334455',
+            openingDate: '02/05/2023',
+            riskRating: '8.5/10',
+            closingDate: '12/08/2025',
+            status: 'Inactive',
+            type: 'Type 2',
+            balance: '$1,000',
+            interestRate: '1.2%',
+          },
+          {
+            clientId: 2,
+            no: '1122334455',
+            openingDate: '02/05/2023',
+            riskRating: '8.5/10',
+            closingDate: '12/08/2025',
+            status: 'Inactive',
+            type: 'Type 2',
+            balance: '$1,000',
+            interestRate: '1.2%',
+          },
+          ],
+          teams: [
+          { clientId: 1, team: 'Name of the Team A', contactName: 'Contact Name A', email: 'a@example.com' },
+           { clientId: 2, team: 'Name of the Team d', contactName: 'Contact Name d', email: 'd@example.com' },
+          { clientId: 1, team: 'Name of the Team B', contactName: 'Contact Name B', email: 'b@example.com' },
+          {clientId: 1, team: 'Name of the Team C', contactName: 'Contact Name C', email: 'c@example.com' },
+          {clientId: 2, team: 'Name of the Team d', contactName: 'Contact Name d', email: 'd@example.com' },
+        ]
+        };
+          dispatch(setEngagementDetails(dummyData));
+          dispatch(setError(err.message || 'Failed to fetch engagement details'));
         }
       },
     }),
@@ -1644,6 +1646,4 @@ export const {
   useGetRevenueGraphDetailsQuery,
   useGetTotalProfitAndLossRelationshipDetailsQuery,
   useGetEngagementDetailsQuery,
-  useGetAccountDetailsQuery,
-  useGetTeamASBConnetedDetailsQuery,
 } = dashboardApi;

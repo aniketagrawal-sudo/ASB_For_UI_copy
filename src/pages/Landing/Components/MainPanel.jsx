@@ -3,7 +3,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useSelector } from 'react-redux';
 import { selectCurrentPage, selectSelectedIndustry, selectUser } from '../../../features/auth/authSlice';
-import { selectLastRefreshed, selectHomeDashboardLoading, selectKpiDashboardData, selectRevenueGraphDetails, selectDepositLoanDetails, selectLoanOutstandingDetails } from '../../../redux/store/dashboardSlice';
+import { selectLastRefreshed, selectHomeDashboardLoading, selectKpiDashboardData, selectRevenueGraphDetails, selectDepositLoanDetails, selectLoanOutstandingDetails, selectEngagementDetails } from '../../../redux/store/dashboardSlice';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import classes from './MainPanel.module.scss';
 import HomeDashboard from '../../../components/Dashboards/HomeDashboard';
@@ -15,7 +15,7 @@ import CalendarIcon from '../../../assets/DashboardPage1/Dashboard/CalanderIcon.
 import DashboardName from '../../../assets/DashboardPage1/Dashboard/DashboardName_Icon.svg';
 import DashNotification from '../../../assets/DashboardPage1/Dashboard/Dashboard_Notification_Icon.svg';
 import KPIDashboard from '../../../components/Dashboards/KPIDashboard';
-import { filterClientData, filterRevenueByClient, filterDepositLoanByClient } from '../../../utils/fileUtils';
+import { filterClientData, filterRevenueByClient, filterDepositLoanByClient, filterAccountDetailsByClient } from '../../../utils/fileUtils';
 function MainPanel({ dashboardsReady, dashboardsLoading, executingQueries, currentProcessingInsight }) {
   const clientOptions = [
     { id: 1, name: 'Client Name 1' },
@@ -31,6 +31,7 @@ function MainPanel({ dashboardsReady, dashboardsLoading, executingQueries, curre
   const revenueData = useSelector(selectRevenueGraphDetails);
   const depostiLoanData = useSelector(selectDepositLoanDetails);
   const loanOutstandingTrendsData = useSelector(selectLoanOutstandingDetails);
+  const accountDetailsInfo = useSelector(selectEngagementDetails);
 
   const homeDashboardRef = useRef(null);
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
@@ -44,6 +45,9 @@ function MainPanel({ dashboardsReady, dashboardsLoading, executingQueries, curre
   return filterClientData(HomeKpiDetails, client);
 }, [HomeKpiDetails, client]);
 
+const filteredAccountDetails = useMemo(() => {
+  return filterAccountDetailsByClient(accountDetailsInfo, client);
+}, [accountDetailsInfo, client]);
 
   const revenueForClient = useMemo(() => {
   return filterRevenueByClient(revenueData, client);
@@ -94,7 +98,8 @@ const filterdtLoansOutstanding = useMemo(() => {
                 isLoading={dashboardsLoading?.home}
                 isReady={dashboardsReady?.home}
               /> */}
-              <KPIDashboard filteredKpis={filteredKpis} revenueForClient={revenueForClient} filterdDepositLoans={filterdDepositLoans} filterdtLoansOutstanding={filterdtLoansOutstanding}/>
+              <KPIDashboard filteredKpis={filteredKpis} revenueForClient={revenueForClient} filterdDepositLoans={filterdDepositLoans} filterdtLoansOutstanding={filterdtLoansOutstanding}
+              filteredAccountDetails={filteredAccountDetails}/>
             </div>
             {/* <div className={classes.secondaryContent}>
               <ConversationDashboard />

@@ -515,7 +515,7 @@ function Landing() {
       <div className={classes.contentWrapper}>
         <div className={classes.sidePanel}>
           <SidePanel
-            selectedRole={userFromState.selectedRole}
+            selectedRole={userFromState?.selectedRole}
             onRefresh={handleRefresh}
             isPolling={isPolling}
             executingQueries={executingQueries}

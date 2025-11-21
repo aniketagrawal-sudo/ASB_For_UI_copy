@@ -14,19 +14,12 @@ import {
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 // import Grid2 from "@mui/material/Grid2";
 import classes from './ClinetInformation.module.scss';
-import { useSelector } from 'react-redux';
-import { selectAccountDetails, selectEngagementDetails, selectTeamDetails } from '../../../redux/store/dashboardSlice';
-import { useGetEngagementDetailsQuery, useGetAccountDetailsQuery, useGetTeamASBConnetedDetailsQuery } from '../../../services/dashboardApi';
+import PropTypes from 'prop-types';
 
-export default function ClinetInformationComponent() {
-    const {isLoading} = useGetEngagementDetailsQuery();
-    const {data} = useGetAccountDetailsQuery();
-    const {error} = useGetTeamASBConnetedDetailsQuery();
-    const accountData = useSelector(selectAccountDetails)
-
-    const engagementData = useSelector(selectEngagementDetails)
-
-    const teamData = useSelector(selectTeamDetails)
+export default function ClinetInformationComponent({filteredAccountDetails}) {
+    const accountData = filteredAccountDetails['accounts'];
+    const engagementData = filteredAccountDetails['engagement'];
+    const teamData = filteredAccountDetails['teams'];
 
     const tableHeaders = [
         'Account No.',
@@ -171,3 +164,7 @@ export default function ClinetInformationComponent() {
         </Box>
     );
 }
+
+ClinetInformationComponent.propTypes = {
+   filteredAccountDetails: PropTypes.object.isRequired
+};

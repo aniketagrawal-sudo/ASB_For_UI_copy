@@ -82,6 +82,26 @@ export const filterDepositLoanByClient = (data, clientId) => {
   return filtered;
 };
 
+export const filterAccountDetailsByClient = (data, clientId) => {
+  if (!data) {
+    return { engagement: [], accounts: [], teams: [] };
+  }
+
+  const engagement = Array.isArray(data.engagement)
+    ? data.engagement.filter(item => item.clientId === clientId)
+    : [];
+
+  const accounts = Array.isArray(data.accounts)
+    ? data.accounts.filter(item => item.clientId === clientId)
+    : [];
+
+  const teams = Array.isArray(data.teams)
+    ? data.teams.filter(item => item.clientId === clientId)
+    : [];
+
+  return { engagement, accounts, teams };
+};
+
 
 
 
