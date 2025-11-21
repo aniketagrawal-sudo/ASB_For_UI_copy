@@ -38,10 +38,19 @@ export const getFileExtension = (url) => {
   return parts.length > 1 ? parts.pop().toLowerCase() : '';
 };
 
-export const filterByClient = (data, clientId) => {
-  if (!Array.isArray(data)) return [];
-  return data.filter(item => item.clientId === clientId);
+export const filterClientData = (data, clientId) => {
+  if (!data) return { kpis: [], score: [] };
+
+  const kpis = Array.isArray(data.kpis)
+    ? data.kpis.filter(item => item.clientId === clientId)
+    : [];
+
+  const score = Array.isArray(data.score)
+    ? data.score.filter(item => item.clientId === clientId)
+    : [];
+  return { kpis, score };
 };
+
 
 export const filterRevenueByClient = (data, clientId) => {
   if (!data || typeof data !== "object") return {};
@@ -55,6 +64,24 @@ export const filterRevenueByClient = (data, clientId) => {
   });
   return filtered;
 };
+
+export const filterDepositLoanByClient = (data, clientId) => {
+  if (!data || typeof data !== "object") return {};
+
+  const filtered = {};
+
+  Object.entries(data).forEach(([account, entries]) => {
+    // Filter the array of objects for the given clientId
+    const filteredEntries = entries.filter(entry => entry.clientId === clientId);
+
+    if (filteredEntries.length > 0) {
+      filtered[account] = filteredEntries;
+    }
+  });
+
+  return filtered;
+};
+
 
 
 

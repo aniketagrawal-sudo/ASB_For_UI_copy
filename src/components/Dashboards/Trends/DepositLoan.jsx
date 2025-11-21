@@ -11,9 +11,6 @@ import {
   Label,
 } from "recharts";
 import classes from "./DepositLoan.module.scss";
-import { useSelector } from "react-redux";
-import { selectDepositLoanDetails, selectLoanOutstandingDetails } from "../../../redux/store/dashboardSlice";
-import { useGetDepositLoanDetailsQuery, useGetLoanOutstandingDetailsQuery } from "../../../services/dashboardApi";
 
 const mm = (arr) => {
   if (!arr || !arr.length) return { min: 0, max: 0 };
@@ -87,12 +84,54 @@ function TrendCard({
   const [view, setView] = useState("MoM");
   const [account, setAccount] = useState(defaultAccount);
 
-  const [series, setSeries] = useState(initialSeries);
+  const [series, setSeries] = useState(() => {
+    // normalize initialSeries if passed at module load time
+    if (!initialSeries || typeof initialSeries !== "object") {
+      return {
+        MoM: { labels: [], data: [] },
+        YoY: { labels: [], data: [] },
+        QoQ: { labels: [], data: [] },
+      };
+    }
+    const normalized = {};
+    ["MoM", "YoY", "QoQ"].forEach((v) => {
+      const raw = initialSeries[v];
+      if (Array.isArray(raw)) {
+        // pick the first entry if array (common case based on your data)
+        normalized[v] = raw[0] ? { labels: raw[0].labels ?? [], data: raw[0].data ?? [] } : { labels: [], data: [] };
+      } else if (raw && typeof raw === "object") {
+        normalized[v] = { labels: raw.labels ?? [], data: raw.data ?? [] };
+      } else {
+        normalized[v] = { labels: [], data: [] };
+      }
+    });
+    return normalized;
+  });
+
   const cfg = (series && series[view]) || { labels: [], data: [] };
 
   // Update series when initialSeries changes (RTK Query data arrives)
   useEffect(() => {
-    setSeries(initialSeries);
+    if (!initialSeries || typeof initialSeries !== "object") {
+      setSeries({
+        MoM: { labels: [], data: [] },
+        YoY: { labels: [], data: [] },
+        QoQ: { labels: [], data: [] },
+      });
+      return;
+    }
+    const normalized = {};
+    ["MoM", "YoY", "QoQ"].forEach((v) => {
+      const raw = initialSeries[v];
+      if (Array.isArray(raw)) {
+        normalized[v] = raw[0] ? { labels: raw[0].labels ?? [], data: raw[0].data ?? [] } : { labels: [], data: [] };
+      } else if (raw && typeof raw === "object") {
+        normalized[v] = { labels: raw.labels ?? [], data: raw.data ?? [] };
+      } else {
+        normalized[v] = { labels: [], data: [] };
+      }
+    });
+    setSeries(normalized);
   }, [initialSeries]);
 
   useEffect(() => {
@@ -101,7 +140,22 @@ function TrendCard({
       try {
         if (typeof loadData === "function") {
           const next = await loadData(account);
-          if (alive && next) setSeries(next);
+          if (alive && next) {
+            // loadData is expected to return { MoM: {labels,data}, YoY: {...}, QoQ: {...} }
+            // but normalize any arrays just in case
+            const normalized = {};
+            ["MoM", "YoY", "QoQ"].forEach((v) => {
+              const raw = next[v];
+              if (Array.isArray(raw)) {
+                normalized[v] = raw[0] ? { labels: raw[0].labels ?? [], data: raw[0].data ?? [] } : { labels: [], data: [] };
+              } else if (raw && typeof raw === "object") {
+                normalized[v] = { labels: raw.labels ?? [], data: raw.data ?? [] };
+              } else {
+                normalized[v] = { labels: [], data: [] };
+              }
+            });
+            setSeries(normalized);
+          }
         }
       } catch (e) {
         console.error(`${title} load failed`, e);
@@ -179,39 +233,47 @@ function TrendCard({
 }
 
 /* -------------------- Page -------------------- */
-export default function DepositLoan() {
-  const { data: depositData } = useGetDepositLoanDetailsQuery();
-  const { data: loanData } = useGetLoanOutstandingDetailsQuery();
-  const reduxDeposits = useSelector(selectDepositLoanDetails);
-  const reduxLoans = useSelector(selectLoanOutstandingDetails);
+export default function DepositLoan({ filterdDepositLoans, filterdtLoansOutstanding }) {
 
-  const depositsFallback = depositData ?? reduxDeposits;
-  const loansFallback = loanData ?? reduxLoans;
+  // helper to get view object whether fallback provides array or object
+  const extractView = (fallback, view) => {
+    if (!fallback) return { labels: [], data: [] };
+    const raw = fallback[view];
+    if (Array.isArray(raw)) {
+      return raw[0] ? { labels: raw[0].labels ?? [], data: raw[0].data ?? [] } : { labels: [], data: [] };
+    }
+    if (raw && typeof raw === "object") {
+      return { labels: raw.labels ?? [], data: raw.data ?? [] };
+    }
+    return { labels: [], data: [] };
+  };
 
   // Mock API adapters (handle all views dynamically)
   const loadDeposits = async (account) => {
-    if (!depositsFallback) return { MoM: { labels: [], data: [] }, YoY: { labels: [], data: [] }, QoQ: { labels: [], data: [] } };
+    if (!filterdDepositLoans) return { MoM: { labels: [], data: [] }, YoY: { labels: [], data: [] }, QoQ: { labels: [], data: [] } };
     const factor = account === "Acc No.2" ? 1.05 : account === "Acc No.3" ? 0.95 : 1;
 
     const updatedSeries = {};
     ["MoM", "YoY", "QoQ"].forEach((view) => {
+      const viewObj = extractView(filterdDepositLoans, view);
       updatedSeries[view] = {
-        labels: depositsFallback[view]?.labels ?? [],
-        data: depositsFallback[view]?.data.map((v) => +(v * factor).toFixed(2)) ?? [],
+        labels: viewObj.labels,
+        data: (viewObj.data || []).map((v) => +(v * factor).toFixed(2)),
       };
     });
     return updatedSeries;
   };
 
   const loadLoans = async (account) => {
-    if (!loansFallback) return { MoM: { labels: [], data: [] }, YoY: { labels: [], data: [] }, QoQ: { labels: [], data: [] } };
+    if (!filterdtLoansOutstanding) return { MoM: { labels: [], data: [] }, YoY: { labels: [], data: [] }, QoQ: { labels: [], data: [] } };
     const factor = account === "Acc No.2" ? 0.95 : account === "Acc No.3" ? 1.08 : 1;
 
     const updatedSeries = {};
     ["MoM", "YoY", "QoQ"].forEach((view) => {
+      const viewObj = extractView(filterdtLoansOutstanding, view);
       updatedSeries[view] = {
-        labels: loansFallback[view]?.labels ?? [],
-        data: loansFallback[view]?.data.map((v) => +(v * factor).toFixed(2)) ?? [],
+        labels: viewObj.labels,
+        data: (viewObj.data || []).map((v) => +(v * factor).toFixed(2)),
       };
     });
     return updatedSeries;
@@ -226,7 +288,7 @@ export default function DepositLoan() {
             yTitle="Deposits"
             rightAxis={false}
             loadData={loadDeposits}
-            initialSeries={depositsFallback}
+            initialSeries={filterdDepositLoans}
             defaultAccount="Acc No.1"
           />
         </div>
@@ -236,7 +298,7 @@ export default function DepositLoan() {
             yTitle="Loan Outstanding"
             rightAxis={false}
             loadData={loadLoans}
-            initialSeries={loansFallback}
+            initialSeries={filterdtLoansOutstanding}
             defaultAccount="Acc No.1"
           />
         </div>
@@ -246,6 +308,11 @@ export default function DepositLoan() {
 }
 
 /* -------------------- PropTypes -------------------- */
+
+DepositLoan.propTypes = {
+   filterdDepositLoans: PropTypes.object.isRequired,
+   filterdtLoansOutstanding: PropTypes.object.isRequired
+};
 TrendHeader.propTypes = {
   title: PropTypes.string.isRequired,
   view: PropTypes.oneOf(["YoY", "MoM", "QoQ"]).isRequired,
@@ -254,25 +321,27 @@ TrendHeader.propTypes = {
   onAccountChange: PropTypes.func.isRequired,
 };
 
+const singleViewShape = PropTypes.shape({
+  labels: PropTypes.arrayOf(PropTypes.string),
+  data: PropTypes.arrayOf(PropTypes.number),
+});
+
 TrendCard.propTypes = {
   title: PropTypes.string.isRequired,
   yTitle: PropTypes.string.isRequired,
   rightAxis: PropTypes.bool,
   loadData: PropTypes.func.isRequired,
-  initialSeries: PropTypes.shape({
-    MoM: PropTypes.shape({
-      labels: PropTypes.arrayOf(PropTypes.string),
-      data: PropTypes.arrayOf(PropTypes.number),
-    }),
-    YoY: PropTypes.shape({
-      labels: PropTypes.arrayOf(PropTypes.string),
-      data: PropTypes.arrayOf(PropTypes.number),
-    }),
-    QoQ: PropTypes.shape({
-      labels: PropTypes.arrayOf(PropTypes.string),
-      data: PropTypes.arrayOf(PropTypes.number),
-    }),
-  }),
+  // initialSeries can be either the old object { MoM: {labels,data} } OR the new array form [ {clientId, labels, data}, ... ]
+  initialSeries: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      singleViewShape,
+      PropTypes.arrayOf(PropTypes.shape({
+        clientId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        labels: PropTypes.arrayOf(PropTypes.string),
+        data: PropTypes.arrayOf(PropTypes.number),
+      }))
+    ])
+  ),
   defaultAccount: PropTypes.string,
 };
 

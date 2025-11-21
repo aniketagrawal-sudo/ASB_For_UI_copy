@@ -3,7 +3,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useSelector } from 'react-redux';
 import { selectCurrentPage, selectSelectedIndustry, selectUser } from '../../../features/auth/authSlice';
-import { selectLastRefreshed, selectHomeDashboardLoading, selectRevenueGraphDetails } from '../../../redux/store/dashboardSlice';
+import { selectLastRefreshed, selectHomeDashboardLoading, selectKpiDashboardData, selectRevenueGraphDetails, selectDepositLoanDetails, selectLoanOutstandingDetails } from '../../../redux/store/dashboardSlice';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import classes from './MainPanel.module.scss';
 import HomeDashboard from '../../../components/Dashboards/HomeDashboard';
@@ -15,9 +15,7 @@ import CalendarIcon from '../../../assets/DashboardPage1/Dashboard/CalanderIcon.
 import DashboardName from '../../../assets/DashboardPage1/Dashboard/DashboardName_Icon.svg';
 import DashNotification from '../../../assets/DashboardPage1/Dashboard/Dashboard_Notification_Icon.svg';
 import KPIDashboard from '../../../components/Dashboards/KPIDashboard';
-import { useGetKpiDashboardQuery } from '../../../services/dashboardApi';
-import { selectKpiDashboardData } from '../../../redux/store/dashboardSlice';
-import { filterByClient, filterRevenueByClient } from '../../../utils/fileUtils';
+import { filterClientData, filterRevenueByClient, filterDepositLoanByClient } from '../../../utils/fileUtils';
 function MainPanel({ dashboardsReady, dashboardsLoading, executingQueries, currentProcessingInsight }) {
   const clientOptions = [
     { id: 1, name: 'Client Name 1' },
@@ -28,8 +26,11 @@ function MainPanel({ dashboardsReady, dashboardsLoading, executingQueries, curre
   const isHomeLoading = useSelector(selectHomeDashboardLoading);
   const user = useSelector(selectUser);
   const selectedIndustry = useSelector(selectSelectedIndustry);
-  const HomeKpiDetails = useSelector(selectKpiDashboardData);
+   const HomeKpiDetails = useSelector(selectKpiDashboardData);
+   const { kpis = [], score = [] } = HomeKpiDetails || {};
   const revenueData = useSelector(selectRevenueGraphDetails);
+  const depostiLoanData = useSelector(selectDepositLoanDetails);
+  const loanOutstandingTrendsData = useSelector(selectLoanOutstandingDetails);
 
   const homeDashboardRef = useRef(null);
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
@@ -38,13 +39,23 @@ function MainPanel({ dashboardsReady, dashboardsLoading, executingQueries, curre
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const notificationAnchorRef = useRef(null);
   const isSmallScreen = useMediaQuery('(max-width:900px)');
-  const revenueForClient = filterRevenueByClient(revenueData, client);
-
-  const { loading } = useGetKpiDashboardQuery();
  
   const filteredKpis = useMemo(() => {
-  return filterByClient(HomeKpiDetails, client);
+  return filterClientData(HomeKpiDetails, client);
 }, [HomeKpiDetails, client]);
+
+
+  const revenueForClient = useMemo(() => {
+  return filterRevenueByClient(revenueData, client);
+}, [revenueData, client]);
+
+  const filterdDepositLoans = useMemo(() => {
+  return filterDepositLoanByClient(depostiLoanData, client);
+}, [depostiLoanData, client]);
+
+const filterdtLoansOutstanding = useMemo(() => {
+  return filterDepositLoanByClient(loanOutstandingTrendsData, client);
+}, [loanOutstandingTrendsData, client]);
 
   const renderDashboard = () => {
     switch (currentPage) {
@@ -83,7 +94,7 @@ function MainPanel({ dashboardsReady, dashboardsLoading, executingQueries, curre
                 isLoading={dashboardsLoading?.home}
                 isReady={dashboardsReady?.home}
               /> */}
-              <KPIDashboard filteredKpis={filteredKpis} revenueForClient={revenueForClient}/>
+              <KPIDashboard filteredKpis={filteredKpis} revenueForClient={revenueForClient} filterdDepositLoans={filterdDepositLoans} filterdtLoansOutstanding={filterdtLoansOutstanding}/>
             </div>
             {/* <div className={classes.secondaryContent}>
               <ConversationDashboard />

@@ -32,9 +32,118 @@ const initialState = {
     home: false,
     insights: false,
   },
-  KpiDashboardData: [],
-  depositLoanDetails: {},
-  loanOutstandingDetails: {},
+  KpiDashboardData: { kpis: [
+            { clientId: 1, title: 'Deposit Balance', value: '$10M', sub: '(+3.2% of LY Avg)', trend: 'up' },
+            { clientId: 1, title: 'Loan Outstanding', value: '$1.2M', sub: '(Out of $10M)' },
+            { clientId: 1, title: 'Credit Utilisation', value: '60%', sub: '(Out of $22M)' },
+            { clientId: 1, title: 'Net Profit', value: '$2.4M', sub: '(+5% YoY)', trend: 'up' },
+            { clientId: 2, title: 'Credit Utilisation', value: '60%', sub: '(Out of $22M)' },
+            { clientId: 2, title: 'Net Profit', value: '$2.4M', sub: '(+5% YoY)', trend: 'up' },
+          ],
+          score: [
+            {
+              clientId: 1,
+              title: 'Financial Score',
+              value: '8.1/10',
+              sub: '(+0.5 of MoM)',
+              badge: 'Good',
+              badgeColor: 'yellow',
+              trend: 'up',
+            },
+            { 
+              clientId: 1,
+              title: 'Relationship Score',
+              value: '8.6/10',
+              sub: '(+1.5% MoM)',
+              badge: 'Great',
+              badgeColor: 'green',
+              trend: 'up',
+            },
+            {
+              clientId: 2,
+              title: 'Risk and Stability Score',
+              value: '7.2/10',
+              sub: '(-0.5% MoM)',
+              badge: 'Low Risk',
+              badgeColor: 'lightGreen',
+              trend: 'down',
+            },
+          ]},
+  depositLoanDetails: {
+          MoM: [
+            {
+            clientId: 1,
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            data: [0.65, 0.6, 0.62, 0.7, 0.78, 0.88, 0.98, 1.02, 1.05, 1.1, 0.9, 0.6],
+            },
+            {
+            clientId: 2, 
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], 
+            data: [0.6, 0.61, 0.4, 0.8, 0.12, 0.44, 0.45, 1.08, 1.98, 1.2, 0.2, 0.7],
+            },
+          ],
+          YoY: [
+          {
+            clientId: 1,
+            labels: ['2021', '2022', '2023', '2024', '2025'],
+            data: [3.0, 6.0, 13.8, 10.5, 4.8],
+          },
+          {
+            clientId: 2,
+            labels: ['2021', '2022', '2023', '2024', '2025'],
+            data: [4.0, 7.0, 10.8, 10.5, 2.8],
+          },
+        ],
+          QoQ: [
+          {
+            clientId: 1,
+            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+            data: [0.7, 0.9, 1.0, 0.6],
+          },
+          {
+            clientId: 2,
+            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+            data: [0.3, 0.9, 1.0, 0.8],
+          },
+        ]},
+  loanOutstandingDetails: {
+          MoM: [
+            {
+              clientId: 1,
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            data: [0.45, 0.55, 0.8, 0.8, 0.6, 0.5, 0.7, 0.9, 0.75, 1.0, 0.85, 0.65],
+            },
+            {
+              clientId: 2,
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            data: [0.4, 0.9, 0.2, 0.1, 0.6, 0.9, 0.3, 0.9, 0.75, 2.0, 0.85, 0.5],
+            },
+          ],
+          YoY: [ 
+            {
+              clientId: 1,
+            labels: ['2021', '2022', '2023', '2024', '2025'], 
+            data: [2.2, 3.1, 4.0, 3.4, 2.8] ,
+        },
+         {
+              clientId: 2,
+            labels: ['2021', '2022', '2023', '2024', '2025'], 
+            data: [4.0, 1.1, 4.0, 3.4, 2.8] ,
+        },
+      ],
+          QoQ: [
+            {
+              clientId: 1,
+             labels: ['Q1', 'Q2', 'Q3', 'Q4'], 
+             data: [0.5, 0.9, 1.1, 0.7] 
+            },
+            {
+              clientId: 2,
+             labels: ['Q1', 'Q2', 'Q3', 'Q4'], 
+             data: [0.9, 0.9, 0.9, 0.7] 
+            },
+            ],
+        },
   revenueGraphDetails: {},
   TotalProfitandLossRelationship: {},
   accountDetails: [],
@@ -553,7 +662,7 @@ export const selectInsightsWithQueryData = (state) => {
 };
 
 export const selectKpiDashboardData = (state) => {
-  return state.dashboard?.KpiDashboardData || [];
+  return state.dashboard?.KpiDashboardData || { kpis: [], score: [] };
 };
 
 export const selectDepositLoanDetails = (state) => {

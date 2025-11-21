@@ -16,38 +16,13 @@ import { useGetKpiDashboardQuery } from '../../services/dashboardApi';
 import PropTypes from 'prop-types';
 // import { selectKpiDashboardData } from '../../redux/store/dashboardSlice';
 
-export default function KPIDashboard({filteredKpis, revenueForClient}) {
+export default function KPIDashboard({filteredKpis, revenueForClient, filterdDepositLoans, filterdtLoansOutstanding}) {
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const { isLoading } = useGetKpiDashboardQuery();
 // const topData = useSelector(selectKpiDashboardData);
-
-  const bottomData = [
-    {
-      title: 'Financial Score',
-      value: '8.1/10',
-      sub: '(+0.5 of MoM)',
-      badge: 'Good',
-      badgeColor: 'yellow',
-      trend: 'up',
-    },
-    {
-      title: 'Relationship Score',
-      value: '8.6/10',
-      sub: '(+1.5% MoM)',
-      badge: 'Great',
-      badgeColor: 'green',
-      trend: 'up',
-    },
-    {
-      title: 'Risk and Stability Score',
-      value: '7.2/10',
-      sub: '(-0.5% MoM)',
-      badge: 'Low Risk',
-      badgeColor: 'lightGreen',
-      trend: 'down',
-    },
-  ];
+const kpisLists = filteredKpis['kpis'];
+const kpiScoreLists = filteredKpis['score'];
 
   return (
     <Box className={classes.wrap}>
@@ -84,7 +59,7 @@ export default function KPIDashboard({filteredKpis, revenueForClient}) {
           {/* KPI Box */}
           <Box className={classes.kpiBox}>
             <Box className={classes.topRow}>
-              {filteredKpis.map((item, i) => (
+              {kpisLists?.map((item, i) => (
                 <Box key={i} className={classes.metric}>
                   <Box className={classes.metricHeader} gap={0.7}>
                     <Typography className={classes.metricTitle}>{item.title}</Typography>
@@ -110,7 +85,7 @@ export default function KPIDashboard({filteredKpis, revenueForClient}) {
             <Divider className={classes.divider} />
 
             <Box className={classes.bottomRow}>
-              {bottomData.map((item, i) => (
+              {kpiScoreLists?.map((item, i) => (
                 <Box key={i} className={classes.metric}>
                   <Box className={classes.metricHeader} gap={1}>
                     <Typography className={classes.metricTitle}>{item.title}</Typography>
@@ -168,7 +143,7 @@ export default function KPIDashboard({filteredKpis, revenueForClient}) {
             <Typography variant="h6" margin={1.6}>
               Trends
             </Typography>
-            <TrendComponent revenueForClient={revenueForClient}/>
+            <TrendComponent revenueForClient={revenueForClient} filterdDepositLoans={filterdDepositLoans} filterdtLoansOutstanding={filterdtLoansOutstanding}/>
       
         </Box>
       </Box>
@@ -182,6 +157,8 @@ export default function KPIDashboard({filteredKpis, revenueForClient}) {
 }
 
 KPIDashboard.propTypes = {
-  filteredKpis: PropTypes.array.isRequired,
-   revenueForClient: PropTypes.object.isRequired
+  filteredKpis: PropTypes.object.isRequired,
+   revenueForClient: PropTypes.object.isRequired,
+   filterdDepositLoans: PropTypes.object.isRequired,
+   filterdtLoansOutstanding: PropTypes.object.isRequired
 };
