@@ -16,7 +16,7 @@ import { useGetKpiDashboardQuery } from '../../services/dashboardApi';
 import PropTypes from 'prop-types';
 // import { selectKpiDashboardData } from '../../redux/store/dashboardSlice';
 
-export default function KPIDashboard({filteredKpis, revenueForClient, filterdDepositLoans, filterdtLoansOutstanding, filteredAccountDetails}) {
+export default function KPIDashboard({filteredKpis, revenueForClient, filterdDepositLoans, filterdtLoansOutstanding, filteredAccountDetails, filterdtTotalProfiandLossRelationship}) {
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const { isLoading } = useGetKpiDashboardQuery();
@@ -143,7 +143,7 @@ const kpiScoreLists = filteredKpis['score'];
             <Typography variant="h6" margin={1.6}>
               Trends
             </Typography>
-            <TrendComponent revenueForClient={revenueForClient} filterdDepositLoans={filterdDepositLoans} filterdtLoansOutstanding={filterdtLoansOutstanding} filteredAccountDetails={filteredAccountDetails}/>
+            <TrendComponent revenueForClient={revenueForClient} filterdDepositLoans={filterdDepositLoans} filterdtLoansOutstanding={filterdtLoansOutstanding} filteredAccountDetails={filteredAccountDetails} filterdtTotalProfiandLossRelationship={filterdtTotalProfiandLossRelationship}/>
       
         </Box>
       </Box>
@@ -161,5 +161,6 @@ KPIDashboard.propTypes = {
    revenueForClient: PropTypes.object.isRequired,
    filterdDepositLoans: PropTypes.object.isRequired,
    filterdtLoansOutstanding: PropTypes.object.isRequired,
-   filteredAccountDetails: PropTypes.object.isRequired
+   filteredAccountDetails: PropTypes.object.isRequired,
+   filterdtTotalProfiandLossRelationship: PropTypes.object.isRequired
 };

@@ -102,6 +102,31 @@ export const filterAccountDetailsByClient = (data, clientId) => {
   return { engagement, accounts, teams };
 };
 
+export const filterTotalProfitAndLossRelationshipData = (data, clientId) => {
+  if (!data) return {};
+
+  const output = {};
+
+  Object.keys(data).forEach(topKey => {
+    output[topKey] = {};
+
+    Object.keys(data[topKey]).forEach(sectionKey => {
+      output[topKey][sectionKey] = {};
+
+      Object.keys(data[topKey][sectionKey]).forEach(typeKey => {
+        const arr = data[topKey][sectionKey][typeKey];
+
+        output[topKey][sectionKey][typeKey] = Array.isArray(arr)
+          ? arr.filter(item => item.clientId === clientId)
+          : [];
+      });
+    });
+  });
+
+  return output;
+};
+
+
 
 
 

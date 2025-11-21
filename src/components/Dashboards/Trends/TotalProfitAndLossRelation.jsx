@@ -10,21 +10,19 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import styles from './TotalProfitAndLossRelation.module.scss';
-import { useSelector } from 'react-redux';
-import { selectTotalProfitandLossRelationship } from '../../../redux/store/dashboardSlice';
 import { useGetTotalProfitAndLossRelationshipDetailsQuery } from '../../../services/dashboardApi';
+import PropTypes from 'prop-types';
 
-export default function TotalProfitAndLossRelation() {
+export default function TotalProfitAndLossRelation({filterdtTotalProfiandLossRelationship}) {
   const {isLoading} = useGetTotalProfitAndLossRelationshipDetailsQuery();
-  const dataSets = useSelector(selectTotalProfitandLossRelationship);
   const [timeFilter, setTimeFilter] = useState('YoY');
   const [profitLossFilter, setProfitLossFilter] = useState('Profit');
-  const [selectedAccount, setSelectedAccount] = useState('Top 1');
+  const [selectedAccount, setSelectedAccount] = useState('Top1');
   const [loading, setLoading] = useState(false);
 
-  const accounts = ['Top 1', 'Top 2', 'Top 3'];
+  const accounts = ['Top1', 'Top2', 'Top3'];
 
-  const data = dataSets[selectedAccount]?.[timeFilter]?.[profitLossFilter] || [];
+  const data = filterdtTotalProfiandLossRelationship[selectedAccount]?.[timeFilter]?.[profitLossFilter] || [];
   const xAxisKey = timeFilter === 'YoY' ? 'year' : 'month';
 
   return (
@@ -110,3 +108,7 @@ export default function TotalProfitAndLossRelation() {
     </div>
   );
 }
+
+TotalProfitAndLossRelation.propTypes = {
+filterdtTotalProfiandLossRelationship: PropTypes.object.isRequired
+};

@@ -588,7 +588,7 @@ export const dashboardApi = api.injectEndpoints({
               badgeColor: 'yellow',
               trend: 'up',
             },
-            { 
+            {
               clientId: 1,
               title: 'Relationship Score',
               value: '8.6/10',
@@ -632,44 +632,44 @@ export const dashboardApi = api.injectEndpoints({
           // If API failed (404, 500, network issue, etc.) → send dummy data manuall
 
           const dummyData = {
-          kpis: [
-            { clientId: 1, title: 'Deposit Balance', value: '$10M', sub: '(+3.2% of LY Avg)', trend: 'up' },
-            { clientId: 1, title: 'Loan Outstanding', value: '$1.2M', sub: '(Out of $10M)' },
-            { clientId: 1, title: 'Credit Utilisation', value: '60%', sub: '(Out of $22M)' },
-            { clientId: 1, title: 'Net Profit', value: '$2.4M', sub: '(+5% YoY)', trend: 'up' },
-            { clientId: 2, title: 'Credit Utilisation', value: '60%', sub: '(Out of $22M)' },
-            { clientId: 2, title: 'Net Profit', value: '$2.4M', sub: '(+5% YoY)', trend: 'up' },
-          ],
-          score: [
-            {
-              clientId: 1,
-              title: 'Financial Score',
-              value: '8.1/10',
-              sub: '(+0.5 of MoM)',
-              badge: 'Good',
-              badgeColor: 'yellow',
-              trend: 'up',
-            },
-            { 
-              clientId: 1,
-              title: 'Relationship Score',
-              value: '8.6/10',
-              sub: '(+1.5% MoM)',
-              badge: 'Great',
-              badgeColor: 'green',
-              trend: 'up',
-            },
-            {
-              clientId: 2,
-              title: 'Risk and Stability Score',
-              value: '7.2/10',
-              sub: '(-0.5% MoM)',
-              badge: 'Low Risk',
-              badgeColor: 'lightGreen',
-              trend: 'down',
-            },
-          ],
-        };
+            kpis: [
+              { clientId: 1, title: 'Deposit Balance', value: '$10M', sub: '(+3.2% of LY Avg)', trend: 'up' },
+              { clientId: 1, title: 'Loan Outstanding', value: '$1.2M', sub: '(Out of $10M)' },
+              { clientId: 1, title: 'Credit Utilisation', value: '60%', sub: '(Out of $22M)' },
+              { clientId: 1, title: 'Net Profit', value: '$2.4M', sub: '(+5% YoY)', trend: 'up' },
+              { clientId: 2, title: 'Credit Utilisation', value: '60%', sub: '(Out of $22M)' },
+              { clientId: 2, title: 'Net Profit', value: '$2.4M', sub: '(+5% YoY)', trend: 'up' },
+            ],
+            score: [
+              {
+                clientId: 1,
+                title: 'Financial Score',
+                value: '8.1/10',
+                sub: '(+0.5 of MoM)',
+                badge: 'Good',
+                badgeColor: 'yellow',
+                trend: 'up',
+              },
+              {
+                clientId: 1,
+                title: 'Relationship Score',
+                value: '8.6/10',
+                sub: '(+1.5% MoM)',
+                badge: 'Great',
+                badgeColor: 'green',
+                trend: 'up',
+              },
+              {
+                clientId: 2,
+                title: 'Risk and Stability Score',
+                value: '7.2/10',
+                sub: '(-0.5% MoM)',
+                badge: 'Low Risk',
+                badgeColor: 'lightGreen',
+                trend: 'down',
+              },
+            ],
+          };
 
           dispatch(setKpiDashboardData(dummyData));
           dispatch(setError(err.message || 'Failed to fetch KPI Dashboard data'));
@@ -688,40 +688,40 @@ export const dashboardApi = api.injectEndpoints({
         const dummyData = {
           MoM: [
             {
-            clientId: 1,
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            data: [0.65, 0.6, 0.62, 0.7, 0.78, 0.88, 0.98, 1.02, 1.05, 1.1, 0.9, 0.6],
+              clientId: 1,
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              data: [0.65, 0.6, 0.62, 0.7, 0.78, 0.88, 0.98, 1.02, 1.05, 1.1, 0.9, 0.6],
             },
             {
-            clientId: 2, 
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], 
-            data: [0.6, 0.61, 0.4, 0.8, 0.12, 0.44, 0.45, 1.08, 1.98, 1.2, 0.2, 0.7],
+              clientId: 2,
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              data: [0.6, 0.61, 0.4, 0.8, 0.12, 0.44, 0.45, 1.08, 1.98, 1.2, 0.2, 0.7],
             },
           ],
           YoY: [
-          {
-            clientId: 1,
-            labels: ['2021', '2022', '2023', '2024', '2025'],
-            data: [3.0, 6.0, 13.8, 10.5, 4.8],
-          },
-          {
-            clientId: 2,
-            labels: ['2021', '2022', '2023', '2024', '2025'],
-            data: [4.0, 7.0, 10.8, 10.5, 2.8],
-          },
-        ],
+            {
+              clientId: 1,
+              labels: ['2021', '2022', '2023', '2024', '2025'],
+              data: [3.0, 6.0, 13.8, 10.5, 4.8],
+            },
+            {
+              clientId: 2,
+              labels: ['2021', '2022', '2023', '2024', '2025'],
+              data: [4.0, 7.0, 10.8, 10.5, 2.8],
+            },
+          ],
           QoQ: [
-          {
-            clientId: 1,
-            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-            data: [0.7, 0.9, 1.0, 0.6],
-          },
-          {
-            clientId: 2,
-            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-            data: [0.3, 0.9, 1.0, 0.8],
-          },
-        ],
+            {
+              clientId: 1,
+              labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+              data: [0.7, 0.9, 1.0, 0.6],
+            },
+            {
+              clientId: 2,
+              labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+              data: [0.3, 0.9, 1.0, 0.8],
+            },
+          ],
         };
 
         // If response is NOT array → send dummy
@@ -740,44 +740,44 @@ export const dashboardApi = api.injectEndpoints({
           dispatch(setDepositLoanDetails(data));
         } catch (err) {
           // Prepare fallback dummy
-           const dummyData = {
-          MoM: [
-            {
-            clientId: 1,
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            data: [0.65, 0.6, 0.62, 0.7, 0.78, 0.88, 0.98, 1.02, 1.05, 1.1, 0.9, 0.6],
-            },
-            {
-            clientId: 2, 
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], 
-            data: [0.6, 0.61, 0.4, 0.8, 0.12, 0.44, 0.45, 1.08, 1.98, 1.2, 0.2, 0.7],
-            },
-          ],
-          YoY: [
-          {
-            clientId: 1,
-            labels: ['2021', '2022', '2023', '2024', '2025'],
-            data: [3.0, 6.0, 13.8, 10.5, 4.8],
-          },
-          {
-            clientId: 2,
-            labels: ['2021', '2022', '2023', '2024', '2025'],
-            data: [4.0, 7.0, 10.8, 10.5, 2.8],
-          },
-        ],
-          QoQ: [
-          {
-            clientId: 1,
-            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-            data: [0.7, 0.9, 1.0, 0.6],
-          },
-          {
-            clientId: 2,
-            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-            data: [0.3, 0.9, 1.0, 0.8],
-          },
-        ],
-        };
+          const dummyData = {
+            MoM: [
+              {
+                clientId: 1,
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                data: [0.65, 0.6, 0.62, 0.7, 0.78, 0.88, 0.98, 1.02, 1.05, 1.1, 0.9, 0.6],
+              },
+              {
+                clientId: 2,
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                data: [0.6, 0.61, 0.4, 0.8, 0.12, 0.44, 0.45, 1.08, 1.98, 1.2, 0.2, 0.7],
+              },
+            ],
+            YoY: [
+              {
+                clientId: 1,
+                labels: ['2021', '2022', '2023', '2024', '2025'],
+                data: [3.0, 6.0, 13.8, 10.5, 4.8],
+              },
+              {
+                clientId: 2,
+                labels: ['2021', '2022', '2023', '2024', '2025'],
+                data: [4.0, 7.0, 10.8, 10.5, 2.8],
+              },
+            ],
+            QoQ: [
+              {
+                clientId: 1,
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                data: [0.7, 0.9, 1.0, 0.6],
+              },
+              {
+                clientId: 2,
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                data: [0.3, 0.9, 1.0, 0.8],
+              },
+            ],
+          };
 
           dispatch(setDepositLoanDetails(dummyData));
           dispatch(setError(err.message || 'Failed to fetch Deposit/Loan details'));
@@ -797,39 +797,39 @@ export const dashboardApi = api.injectEndpoints({
           MoM: [
             {
               clientId: 1,
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            data: [0.45, 0.55, 0.8, 0.8, 0.6, 0.5, 0.7, 0.9, 0.75, 1.0, 0.85, 0.65],
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              data: [0.45, 0.55, 0.8, 0.8, 0.6, 0.5, 0.7, 0.9, 0.75, 1.0, 0.85, 0.65],
             },
             {
               clientId: 2,
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            data: [0.4, 0.9, 0.2, 0.1, 0.6, 0.9, 0.3, 0.9, 0.75, 2.0, 0.85, 0.5],
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              data: [0.4, 0.9, 0.2, 0.1, 0.6, 0.9, 0.3, 0.9, 0.75, 2.0, 0.85, 0.5],
             },
           ],
-          YoY: [ 
+          YoY: [
             {
               clientId: 1,
-            labels: ['2021', '2022', '2023', '2024', '2025'], 
-            data: [2.2, 3.1, 4.0, 3.4, 2.8] ,
-        },
-         {
+              labels: ['2021', '2022', '2023', '2024', '2025'],
+              data: [2.2, 3.1, 4.0, 3.4, 2.8],
+            },
+            {
               clientId: 2,
-            labels: ['2021', '2022', '2023', '2024', '2025'], 
-            data: [4.0, 1.1, 4.0, 3.4, 2.8] ,
-        },
-      ],
+              labels: ['2021', '2022', '2023', '2024', '2025'],
+              data: [4.0, 1.1, 4.0, 3.4, 2.8],
+            },
+          ],
           QoQ: [
             {
               clientId: 1,
-             labels: ['Q1', 'Q2', 'Q3', 'Q4'], 
-             data: [0.5, 0.9, 1.1, 0.7] 
+              labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+              data: [0.5, 0.9, 1.1, 0.7],
             },
             {
               clientId: 2,
-             labels: ['Q1', 'Q2', 'Q3', 'Q4'], 
-             data: [0.9, 0.9, 0.9, 0.7] 
+              labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+              data: [0.9, 0.9, 0.9, 0.7],
             },
-            ],
+          ],
         };
 
         // If response is NOT array → send dummy
@@ -848,44 +848,44 @@ export const dashboardApi = api.injectEndpoints({
           dispatch(setLoanOutstandingDetails(data));
         } catch (err) {
           // Prepare fallback dummy
-            const dummyData = {
-          MoM: [
-            {
-              clientId: 1,
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            data: [0.45, 0.55, 0.8, 0.8, 0.6, 0.5, 0.7, 0.9, 0.75, 1.0, 0.85, 0.65],
-            },
-            {
-              clientId: 2,
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            data: [0.4, 0.9, 0.2, 0.1, 0.6, 0.9, 0.3, 0.9, 0.75, 2.0, 0.85, 0.5],
-            },
-          ],
-          YoY: [ 
-            {
-              clientId: 1,
-            labels: ['2021', '2022', '2023', '2024', '2025'], 
-            data: [2.2, 3.1, 4.0, 3.4, 2.8] ,
-        },
-         {
-              clientId: 2,
-            labels: ['2021', '2022', '2023', '2024', '2025'], 
-            data: [4.0, 1.1, 4.0, 3.4, 2.8] ,
-        },
-      ],
-          QoQ: [
-            {
-              clientId: 1,
-             labels: ['Q1', 'Q2', 'Q3', 'Q4'], 
-             data: [0.5, 0.9, 1.1, 0.7] 
-            },
-            {
-              clientId: 2,
-             labels: ['Q1', 'Q2', 'Q3', 'Q4'], 
-             data: [0.9, 0.9, 0.9, 0.7] 
-            },
+          const dummyData = {
+            MoM: [
+              {
+                clientId: 1,
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                data: [0.45, 0.55, 0.8, 0.8, 0.6, 0.5, 0.7, 0.9, 0.75, 1.0, 0.85, 0.65],
+              },
+              {
+                clientId: 2,
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                data: [0.4, 0.9, 0.2, 0.1, 0.6, 0.9, 0.3, 0.9, 0.75, 2.0, 0.85, 0.5],
+              },
             ],
-        };
+            YoY: [
+              {
+                clientId: 1,
+                labels: ['2021', '2022', '2023', '2024', '2025'],
+                data: [2.2, 3.1, 4.0, 3.4, 2.8],
+              },
+              {
+                clientId: 2,
+                labels: ['2021', '2022', '2023', '2024', '2025'],
+                data: [4.0, 1.1, 4.0, 3.4, 2.8],
+              },
+            ],
+            QoQ: [
+              {
+                clientId: 1,
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                data: [0.5, 0.9, 1.1, 0.7],
+              },
+              {
+                clientId: 2,
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                data: [0.9, 0.9, 0.9, 0.7],
+              },
+            ],
+          };
 
           dispatch(setLoanOutstandingDetails(dummyData));
           dispatch(setError(err.message || 'Failed to fetch loan outstanding details'));
@@ -1160,111 +1160,117 @@ export const dashboardApi = api.injectEndpoints({
       // --- Transform success responses ---
       transformResponse: (response) => {
         const dummyData = {
-          'Top 1': {
+          Top1: {
             YoY: {
               Profit: [
-                { year: 2021, product1: 700000, product2: 600000, product3: 500000 },
-                { year: 2022, product1: 750000, product2: 630000, product3: 520000 },
-                { year: 2023, product1: 720000, product2: 610000, product3: 540000 },
-                { year: 2024, product1: 760000, product2: 640000, product3: 550000 },
-                { year: 2025, product1: 780000, product2: 660000, product3: 580000 },
+                { year: 2021, product1: 700000, product2: 600000, product3: 500000, clientId: 1 },
+                { year: 2022, product1: 800000, product2: 700000, product3: 650000, clientId: 1 },
+                { year: 2023, product1: 900000, product2: 850000, product3: 800000, clientId: 1 },
+                { year: 2021, product1: 750000, product2: 620000, product3: 480000, clientId: 2 },
+                { year: 2022, product1: 830000, product2: 710000, product3: 660000, clientId: 2 },
+                { year: 2023, product1: 920000, product2: 860000, product3: 790000, clientId: 2 },
               ],
               Loss: [
-                { year: 2021, product1: 300000, product2: 250000, product3: 200000 },
-                { year: 2022, product1: 280000, product2: 260000, product3: 210000 },
-                { year: 2023, product1: 290000, product2: 270000, product3: 230000 },
-                { year: 2024, product1: 310000, product2: 280000, product3: 250000 },
-                { year: 2025, product1: 320000, product2: 300000, product3: 270000 },
+                { year: 2021, product1: 200000, product2: 180000, product3: 160000, clientId: 1 },
+                { year: 2022, product1: 150000, product2: 140000, product3: 130000, clientId: 1 },
+                { year: 2023, product1: 100000, product2: 90000, product3: 80000, clientId: 1 },
+                { year: 2021, product1: 210000, product2: 170000, product3: 150000, clientId: 2 },
+                { year: 2022, product1: 160000, product2: 130000, product3: 120000, clientId: 2 },
+                { year: 2023, product1: 110000, product2: 85000, product3: 82000, clientId: 2 },
               ],
             },
             MoM: {
               Profit: [
-                { month: 'Jan', product1: 400000, product2: 380000, product3: 350000 },
-                { month: 'Feb', product1: 420000, product2: 390000, product3: 370000 },
-                { month: 'Mar', product1: 440000, product2: 410000, product3: 390000 },
-                { month: 'Apr', product1: 460000, product2: 430000, product3: 410000 },
-                { month: 'May', product1: 480000, product2: 450000, product3: 430000 },
-                { month: 'Jun', product1: 500000, product2: 470000, product3: 450000 },
+                { month: 'Jan', product1: 90000, product2: 85000, product3: 80000, clientId: 1 },
+                { month: 'Feb', product1: 95000, product2: 90000, product3: 88000, clientId: 1 },
+                { month: 'Mar', product1: 100000, product2: 95000, product3: 92000, clientId: 1 },
+                { month: 'Jan', product1: 88000, product2: 83000, product3: 81000, clientId: 2 },
+                { month: 'Feb', product1: 96000, product2: 91000, product3: 87000, clientId: 2 },
+                { month: 'Mar', product1: 102000, product2: 97000, product3: 93000, clientId: 2 },
               ],
               Loss: [
-                { month: 'Jan', product1: 150000, product2: 130000, product3: 120000 },
-                { month: 'Feb', product1: 140000, product2: 125000, product3: 115000 },
-                { month: 'Mar', product1: 130000, product2: 120000, product3: 110000 },
-                { month: 'Apr', product1: 125000, product2: 115000, product3: 105000 },
-                { month: 'May', product1: 120000, product2: 110000, product3: 100000 },
-                { month: 'Jun', product1: 115000, product2: 105000, product3: 95000 },
+                { month: 'Jan', product1: 30000, product2: 28000, product3: 25000, clientId: 1 },
+                { month: 'Feb', product1: 25000, product2: 23000, product3: 22000, clientId: 1 },
+                { month: 'Mar', product1: 20000, product2: 18000, product3: 17000, clientId: 1 },
+                { month: 'Jan', product1: 32000, product2: 29000, product3: 26000, clientId: 2 },
+                { month: 'Feb', product1: 26000, product2: 24000, product3: 21000, clientId: 2 },
+                { month: 'Mar', product1: 19000, product2: 17000, product3: 16000, clientId: 2 },
               ],
             },
           },
-          'Top 2': {
+          Top2: {
             YoY: {
               Profit: [
-                { year: 2021, product1: 650000, product2: 550000, product3: 500000 },
-                { year: 2022, product1: 690000, product2: 580000, product3: 520000 },
-                { year: 2023, product1: 720000, product2: 600000, product3: 540000 },
-                { year: 2024, product1: 760000, product2: 640000, product3: 560000 },
-                { year: 2025, product1: 800000, product2: 670000, product3: 580000 },
+                { year: 2021, product1: 600000, product2: 550000, product3: 450000, clientId: 1 },
+                { year: 2022, product1: 700000, product2: 650000, product3: 550000, clientId: 1 },
+                { year: 2023, product1: 780000, product2: 720000, product3: 650000, clientId: 1 },
+                { year: 2021, product1: 620000, product2: 530000, product3: 440000, clientId: 2 },
+                { year: 2022, product1: 710000, product2: 640000, product3: 560000, clientId: 2 },
+                { year: 2023, product1: 800000, product2: 740000, product3: 660000, clientId: 2 },
               ],
               Loss: [
-                { year: 2021, product1: 280000, product2: 240000, product3: 200000 },
-                { year: 2022, product1: 290000, product2: 250000, product3: 210000 },
-                { year: 2023, product1: 300000, product2: 260000, product3: 220000 },
-                { year: 2024, product1: 320000, product2: 280000, product3: 240000 },
-                { year: 2025, product1: 340000, product2: 300000, product3: 260000 },
+                { year: 2021, product1: 180000, product2: 160000, product3: 140000, clientId: 1 },
+                { year: 2022, product1: 140000, product2: 120000, product3: 110000, clientId: 1 },
+                { year: 2023, product1: 100000, product2: 90000, product3: 85000, clientId: 1 },
+                { year: 2021, product1: 190000, product2: 150000, product3: 130000, clientId: 2 },
+                { year: 2022, product1: 150000, product2: 125000, product3: 105000, clientId: 2 },
+                { year: 2023, product1: 95000, product2: 88000, product3: 82000, clientId: 2 },
               ],
             },
             MoM: {
               Profit: [
-                { month: 'Jan', product1: 380000, product2: 360000, product3: 340000 },
-                { month: 'Feb', product1: 400000, product2: 370000, product3: 350000 },
-                { month: 'Mar', product1: 420000, product2: 390000, product3: 370000 },
-                { month: 'Apr', product1: 440000, product2: 410000, product3: 390000 },
-                { month: 'May', product1: 460000, product2: 430000, product3: 410000 },
-                { month: 'Jun', product1: 480000, product2: 450000, product3: 430000 },
+                { month: 'Jan', product1: 80000, product2: 75000, product3: 70000, clientId: 1 },
+                { month: 'Feb', product1: 85000, product2: 80000, product3: 76000, clientId: 1 },
+                { month: 'Mar', product1: 90000, product2: 85000, product3: 82000, clientId: 1 },
+                { month: 'Jan', product1: 78000, product2: 74000, product3: 69000, clientId: 2 },
+                { month: 'Feb', product1: 83000, product2: 79000, product3: 75000, clientId: 2 },
+                { month: 'Mar', product1: 91000, product2: 86000, product3: 83000, clientId: 2 },
               ],
               Loss: [
-                { month: 'Jan', product1: 140000, product2: 120000, product3: 110000 },
-                { month: 'Feb', product1: 130000, product2: 115000, product3: 105000 },
-                { month: 'Mar', product1: 125000, product2: 110000, product3: 100000 },
-                { month: 'Apr', product1: 120000, product2: 105000, product3: 95000 },
-                { month: 'May', product1: 115000, product2: 100000, product3: 90000 },
-                { month: 'Jun', product1: 110000, product2: 95000, product3: 85000 },
+                { month: 'Jan', product1: 25000, product2: 23000, product3: 21000, clientId: 1 },
+                { month: 'Feb', product1: 22000, product2: 20000, product3: 18000, clientId: 1 },
+                { month: 'Mar', product1: 20000, product2: 17000, product3: 16000, clientId: 1 },
+                { month: 'Jan', product1: 26000, product2: 24000, product3: 22000, clientId: 2 },
+                { month: 'Feb', product1: 21000, product2: 19000, product3: 17000, clientId: 2 },
+                { month: 'Mar', product1: 19000, product2: 16000, product3: 15000, clientId: 2 },
               ],
             },
           },
-          'Top 3': {
+          Top3: {
             YoY: {
               Profit: [
-                { year: 2021, product1: 600000, product2: 520000, product3: 470000 },
-                { year: 2022, product1: 640000, product2: 550000, product3: 490000 },
-                { year: 2023, product1: 680000, product2: 580000, product3: 510000 },
-                { year: 2024, product1: 720000, product2: 610000, product3: 540000 },
-                { year: 2025, product1: 760000, product2: 640000, product3: 560000 },
+                { year: 2021, product1: 500000, product2: 450000, product3: 400000, clientId: 1 },
+                { year: 2022, product1: 580000, product2: 520000, product3: 470000, clientId: 1 },
+                { year: 2023, product1: 650000, product2: 600000, product3: 550000, clientId: 1 },
+                { year: 2021, product1: 520000, product2: 460000, product3: 380000, clientId: 2 },
+                { year: 2022, product1: 600000, product2: 540000, product3: 490000, clientId: 2 },
+                { year: 2023, product1: 670000, product2: 610000, product3: 560000, clientId: 2 },
               ],
               Loss: [
-                { year: 2021, product1: 260000, product2: 220000, product3: 200000 },
-                { year: 2022, product1: 270000, product2: 230000, product3: 210000 },
-                { year: 2023, product1: 290000, product2: 250000, product3: 220000 },
-                { year: 2024, product1: 310000, product2: 270000, product3: 230000 },
-                { year: 2025, product1: 320000, product2: 280000, product3: 240000 },
+                { year: 2021, product1: 150000, product2: 140000, product3: 130000, clientId: 1 },
+                { year: 2022, product1: 120000, product2: 110000, product3: 100000, clientId: 1 },
+                { year: 2023, product1: 90000, product2: 85000, product3: 80000, clientId: 1 },
+                { year: 2021, product1: 160000, product2: 145000, product3: 125000, clientId: 2 },
+                { year: 2022, product1: 125000, product2: 115000, product3: 95000, clientId: 2 },
+                { year: 2023, product1: 88000, product2: 82000, product3: 78000, clientId: 2 },
               ],
             },
             MoM: {
               Profit: [
-                { month: 'Jan', product1: 360000, product2: 330000, product3: 310000 },
-                { month: 'Feb', product1: 380000, product2: 350000, product3: 330000 },
-                { month: 'Mar', product1: 400000, product2: 370000, product3: 350000 },
-                { month: 'Apr', product1: 420000, product2: 390000, product3: 370000 },
-                { month: 'May', product1: 440000, product2: 410000, product3: 390000 },
-                { month: 'Jun', product1: 460000, product2: 430000, product3: 410000 },
+                { month: 'Jan', product1: 70000, product2: 66000, product3: 62000, clientId: 1 },
+                { month: 'Feb', product1: 74000, product2: 70000, product3: 66000, clientId: 1 },
+                { month: 'Mar', product1: 78000, product2: 74000, product3: 70000, clientId: 1 },
+                { month: 'Jan', product1: 68000, product2: 64000, product3: 60000, clientId: 2 },
+                { month: 'Feb', product1: 72000, product2: 69000, product3: 65000, clientId: 2 },
+                { month: 'Mar', product1: 79000, product2: 75000, product3: 71000, clientId: 2 },
               ],
               Loss: [
-                { month: 'Jan', product1: 130000, product2: 110000, product3: 100000 },
-                { month: 'Feb', product1: 125000, product2: 105000, product3: 95000 },
-                { month: 'Mar', product1: 120000, product2: 100000, product3: 90000 },
-                { month: 'Apr', product1: 115000, product2: 95000, product3: 85000 },
-                { month: 'May', product1: 110000, product2: 90000, product3: 80000 },
-                { month: 'Jun', product1: 105000, product2: 85000, product3: 75000 },
+                { month: 'Jan', product1: 22000, product2: 21000, product3: 20000, clientId: 1 },
+                { month: 'Feb', product1: 20000, product2: 19000, product3: 18000, clientId: 1 },
+                { month: 'Mar', product1: 18000, product2: 16000, product3: 15000, clientId: 1 },
+                { month: 'Jan', product1: 23000, product2: 21500, product3: 20500, clientId: 2 },
+                { month: 'Feb', product1: 19000, product2: 18000, product3: 17000, clientId: 2 },
+                { month: 'Mar', product1: 17000, product2: 15500, product3: 14500, clientId: 2 },
               ],
             },
           },
@@ -1285,117 +1291,123 @@ export const dashboardApi = api.injectEndpoints({
           const { data } = await queryFulfilled; // already transformed
           dispatch(setTotalProfitandLossRelationship(data));
         } catch (err) {
-          // Prepare fallback dummy
           const dummyData = {
-            'Top 1': {
+            Top1: {
               YoY: {
                 Profit: [
-                  { year: 2021, product1: 700000, product2: 600000, product3: 500000 },
-                  { year: 2022, product1: 750000, product2: 630000, product3: 520000 },
-                  { year: 2023, product1: 720000, product2: 610000, product3: 540000 },
-                  { year: 2024, product1: 760000, product2: 640000, product3: 550000 },
-                  { year: 2025, product1: 780000, product2: 660000, product3: 580000 },
+                  { year: 2021, product1: 700000, product2: 600000, product3: 500000, clientId: 1 },
+                  { year: 2022, product1: 800000, product2: 700000, product3: 650000, clientId: 1 },
+                  { year: 2023, product1: 900000, product2: 850000, product3: 800000, clientId: 1 },
+                  { year: 2021, product1: 750000, product2: 620000, product3: 480000, clientId: 2 },
+                  { year: 2022, product1: 830000, product2: 710000, product3: 660000, clientId: 2 },
+                  { year: 2023, product1: 920000, product2: 860000, product3: 790000, clientId: 2 },
                 ],
                 Loss: [
-                  { year: 2021, product1: 300000, product2: 250000, product3: 200000 },
-                  { year: 2022, product1: 280000, product2: 260000, product3: 210000 },
-                  { year: 2023, product1: 290000, product2: 270000, product3: 230000 },
-                  { year: 2024, product1: 310000, product2: 280000, product3: 250000 },
-                  { year: 2025, product1: 320000, product2: 300000, product3: 270000 },
+                  { year: 2021, product1: 200000, product2: 180000, product3: 160000, clientId: 1 },
+                  { year: 2022, product1: 150000, product2: 140000, product3: 130000, clientId: 1 },
+                  { year: 2023, product1: 100000, product2: 90000, product3: 80000, clientId: 1 },
+                  { year: 2021, product1: 210000, product2: 170000, product3: 150000, clientId: 2 },
+                  { year: 2022, product1: 160000, product2: 130000, product3: 120000, clientId: 2 },
+                  { year: 2023, product1: 110000, product2: 85000, product3: 82000, clientId: 2 },
                 ],
               },
               MoM: {
                 Profit: [
-                  { month: 'Jan', product1: 400000, product2: 380000, product3: 350000 },
-                  { month: 'Feb', product1: 420000, product2: 390000, product3: 370000 },
-                  { month: 'Mar', product1: 440000, product2: 410000, product3: 390000 },
-                  { month: 'Apr', product1: 460000, product2: 430000, product3: 410000 },
-                  { month: 'May', product1: 480000, product2: 450000, product3: 430000 },
-                  { month: 'Jun', product1: 500000, product2: 470000, product3: 450000 },
+                  { month: 'Jan', product1: 90000, product2: 85000, product3: 80000, clientId: 1 },
+                  { month: 'Feb', product1: 95000, product2: 90000, product3: 88000, clientId: 1 },
+                  { month: 'Mar', product1: 100000, product2: 95000, product3: 92000, clientId: 1 },
+                  { month: 'Jan', product1: 88000, product2: 83000, product3: 81000, clientId: 2 },
+                  { month: 'Feb', product1: 96000, product2: 91000, product3: 87000, clientId: 2 },
+                  { month: 'Mar', product1: 102000, product2: 97000, product3: 93000, clientId: 2 },
                 ],
                 Loss: [
-                  { month: 'Jan', product1: 150000, product2: 130000, product3: 120000 },
-                  { month: 'Feb', product1: 140000, product2: 125000, product3: 115000 },
-                  { month: 'Mar', product1: 130000, product2: 120000, product3: 110000 },
-                  { month: 'Apr', product1: 125000, product2: 115000, product3: 105000 },
-                  { month: 'May', product1: 120000, product2: 110000, product3: 100000 },
-                  { month: 'Jun', product1: 115000, product2: 105000, product3: 95000 },
+                  { month: 'Jan', product1: 30000, product2: 28000, product3: 25000, clientId: 1 },
+                  { month: 'Feb', product1: 25000, product2: 23000, product3: 22000, clientId: 1 },
+                  { month: 'Mar', product1: 20000, product2: 18000, product3: 17000, clientId: 1 },
+                  { month: 'Jan', product1: 32000, product2: 29000, product3: 26000, clientId: 2 },
+                  { month: 'Feb', product1: 26000, product2: 24000, product3: 21000, clientId: 2 },
+                  { month: 'Mar', product1: 19000, product2: 17000, product3: 16000, clientId: 2 },
                 ],
               },
             },
-            'Top 2': {
+            Top2: {
               YoY: {
                 Profit: [
-                  { year: 2021, product1: 650000, product2: 550000, product3: 500000 },
-                  { year: 2022, product1: 690000, product2: 580000, product3: 520000 },
-                  { year: 2023, product1: 720000, product2: 600000, product3: 540000 },
-                  { year: 2024, product1: 760000, product2: 640000, product3: 560000 },
-                  { year: 2025, product1: 800000, product2: 670000, product3: 580000 },
+                  { year: 2021, product1: 600000, product2: 550000, product3: 450000, clientId: 1 },
+                  { year: 2022, product1: 700000, product2: 650000, product3: 550000, clientId: 1 },
+                  { year: 2023, product1: 780000, product2: 720000, product3: 650000, clientId: 1 },
+                  { year: 2021, product1: 620000, product2: 530000, product3: 440000, clientId: 2 },
+                  { year: 2022, product1: 710000, product2: 640000, product3: 560000, clientId: 2 },
+                  { year: 2023, product1: 800000, product2: 740000, product3: 660000, clientId: 2 },
                 ],
                 Loss: [
-                  { year: 2021, product1: 280000, product2: 240000, product3: 200000 },
-                  { year: 2022, product1: 290000, product2: 250000, product3: 210000 },
-                  { year: 2023, product1: 300000, product2: 260000, product3: 220000 },
-                  { year: 2024, product1: 320000, product2: 280000, product3: 240000 },
-                  { year: 2025, product1: 340000, product2: 300000, product3: 260000 },
+                  { year: 2021, product1: 180000, product2: 160000, product3: 140000, clientId: 1 },
+                  { year: 2022, product1: 140000, product2: 120000, product3: 110000, clientId: 1 },
+                  { year: 2023, product1: 100000, product2: 90000, product3: 85000, clientId: 1 },
+                  { year: 2021, product1: 190000, product2: 150000, product3: 130000, clientId: 2 },
+                  { year: 2022, product1: 150000, product2: 125000, product3: 105000, clientId: 2 },
+                  { year: 2023, product1: 95000, product2: 88000, product3: 82000, clientId: 2 },
                 ],
               },
               MoM: {
                 Profit: [
-                  { month: 'Jan', product1: 380000, product2: 360000, product3: 340000 },
-                  { month: 'Feb', product1: 400000, product2: 370000, product3: 350000 },
-                  { month: 'Mar', product1: 420000, product2: 390000, product3: 370000 },
-                  { month: 'Apr', product1: 440000, product2: 410000, product3: 390000 },
-                  { month: 'May', product1: 460000, product2: 430000, product3: 410000 },
-                  { month: 'Jun', product1: 480000, product2: 450000, product3: 430000 },
+                  { month: 'Jan', product1: 80000, product2: 75000, product3: 70000, clientId: 1 },
+                  { month: 'Feb', product1: 85000, product2: 80000, product3: 76000, clientId: 1 },
+                  { month: 'Mar', product1: 90000, product2: 85000, product3: 82000, clientId: 1 },
+                  { month: 'Jan', product1: 78000, product2: 74000, product3: 69000, clientId: 2 },
+                  { month: 'Feb', product1: 83000, product2: 79000, product3: 75000, clientId: 2 },
+                  { month: 'Mar', product1: 91000, product2: 86000, product3: 83000, clientId: 2 },
                 ],
                 Loss: [
-                  { month: 'Jan', product1: 140000, product2: 120000, product3: 110000 },
-                  { month: 'Feb', product1: 130000, product2: 115000, product3: 105000 },
-                  { month: 'Mar', product1: 125000, product2: 110000, product3: 100000 },
-                  { month: 'Apr', product1: 120000, product2: 105000, product3: 95000 },
-                  { month: 'May', product1: 115000, product2: 100000, product3: 90000 },
-                  { month: 'Jun', product1: 110000, product2: 95000, product3: 85000 },
+                  { month: 'Jan', product1: 25000, product2: 23000, product3: 21000, clientId: 1 },
+                  { month: 'Feb', product1: 22000, product2: 20000, product3: 18000, clientId: 1 },
+                  { month: 'Mar', product1: 20000, product2: 17000, product3: 16000, clientId: 1 },
+                  { month: 'Jan', product1: 26000, product2: 24000, product3: 22000, clientId: 2 },
+                  { month: 'Feb', product1: 21000, product2: 19000, product3: 17000, clientId: 2 },
+                  { month: 'Mar', product1: 19000, product2: 16000, product3: 15000, clientId: 2 },
                 ],
               },
             },
-            'Top 3': {
+            Top3: {
               YoY: {
                 Profit: [
-                  { year: 2021, product1: 600000, product2: 520000, product3: 470000 },
-                  { year: 2022, product1: 640000, product2: 550000, product3: 490000 },
-                  { year: 2023, product1: 680000, product2: 580000, product3: 510000 },
-                  { year: 2024, product1: 720000, product2: 610000, product3: 540000 },
-                  { year: 2025, product1: 760000, product2: 640000, product3: 560000 },
+                  { year: 2021, product1: 500000, product2: 450000, product3: 400000, clientId: 1 },
+                  { year: 2022, product1: 580000, product2: 520000, product3: 470000, clientId: 1 },
+                  { year: 2023, product1: 650000, product2: 600000, product3: 550000, clientId: 1 },
+                  { year: 2021, product1: 520000, product2: 460000, product3: 380000, clientId: 2 },
+                  { year: 2022, product1: 600000, product2: 540000, product3: 490000, clientId: 2 },
+                  { year: 2023, product1: 670000, product2: 610000, product3: 560000, clientId: 2 },
                 ],
                 Loss: [
-                  { year: 2021, product1: 260000, product2: 220000, product3: 200000 },
-                  { year: 2022, product1: 270000, product2: 230000, product3: 210000 },
-                  { year: 2023, product1: 290000, product2: 250000, product3: 220000 },
-                  { year: 2024, product1: 310000, product2: 270000, product3: 230000 },
-                  { year: 2025, product1: 320000, product2: 280000, product3: 240000 },
+                  { year: 2021, product1: 150000, product2: 140000, product3: 130000, clientId: 1 },
+                  { year: 2022, product1: 120000, product2: 110000, product3: 100000, clientId: 1 },
+                  { year: 2023, product1: 90000, product2: 85000, product3: 80000, clientId: 1 },
+                  { year: 2021, product1: 160000, product2: 145000, product3: 125000, clientId: 2 },
+                  { year: 2022, product1: 125000, product2: 115000, product3: 95000, clientId: 2 },
+                  { year: 2023, product1: 88000, product2: 82000, product3: 78000, clientId: 2 },
                 ],
               },
               MoM: {
                 Profit: [
-                  { month: 'Jan', product1: 360000, product2: 330000, product3: 310000 },
-                  { month: 'Feb', product1: 380000, product2: 350000, product3: 330000 },
-                  { month: 'Mar', product1: 400000, product2: 370000, product3: 350000 },
-                  { month: 'Apr', product1: 420000, product2: 390000, product3: 370000 },
-                  { month: 'May', product1: 440000, product2: 410000, product3: 390000 },
-                  { month: 'Jun', product1: 460000, product2: 430000, product3: 410000 },
+                  { month: 'Jan', product1: 70000, product2: 66000, product3: 62000, clientId: 1 },
+                  { month: 'Feb', product1: 74000, product2: 70000, product3: 66000, clientId: 1 },
+                  { month: 'Mar', product1: 78000, product2: 74000, product3: 70000, clientId: 1 },
+                  { month: 'Jan', product1: 68000, product2: 64000, product3: 60000, clientId: 2 },
+                  { month: 'Feb', product1: 72000, product2: 69000, product3: 65000, clientId: 2 },
+                  { month: 'Mar', product1: 79000, product2: 75000, product3: 71000, clientId: 2 },
                 ],
                 Loss: [
-                  { month: 'Jan', product1: 130000, product2: 110000, product3: 100000 },
-                  { month: 'Feb', product1: 125000, product2: 105000, product3: 95000 },
-                  { month: 'Mar', product1: 120000, product2: 100000, product3: 90000 },
-                  { month: 'Apr', product1: 115000, product2: 95000, product3: 85000 },
-                  { month: 'May', product1: 110000, product2: 90000, product3: 80000 },
-                  { month: 'Jun', product1: 105000, product2: 85000, product3: 75000 },
+                  { month: 'Jan', product1: 22000, product2: 21000, product3: 20000, clientId: 1 },
+                  { month: 'Feb', product1: 20000, product2: 19000, product3: 18000, clientId: 1 },
+                  { month: 'Mar', product1: 18000, product2: 16000, product3: 15000, clientId: 1 },
+                  { month: 'Jan', product1: 23000, product2: 21500, product3: 20500, clientId: 2 },
+                  { month: 'Feb', product1: 19000, product2: 18000, product3: 17000, clientId: 2 },
+                  { month: 'Mar', product1: 17000, product2: 15500, product3: 14500, clientId: 2 },
                 ],
               },
             },
           };
+
           dispatch(setTotalProfitandLossRelationship(dummyData));
           dispatch(setError(err.message || 'Failed to fetch total profit and loss relationship details'));
         }
@@ -1410,91 +1422,91 @@ export const dashboardApi = api.injectEndpoints({
 
       // --- Transform success responses ---
       transformResponse: (response) => {
-     const dummyData = {
-           engagement: [
-          { clientId: 1, label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
-          { clientId: 2, label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
-          { clientId: 1, label: 'Last Maturity Date', date: '22 Sep 2030', status: 'green' },
-          { clientId: 1, label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
-          { clientId: 2, label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
-          { clientId: 1, label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
-          { clientId: 2, label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
-           ],
+        const dummyData = {
+          engagement: [
+            { clientId: 1, label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
+            { clientId: 2, label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
+            { clientId: 1, label: 'Last Maturity Date', date: '22 Sep 2030', status: 'green' },
+            { clientId: 1, label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
+            { clientId: 2, label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
+            { clientId: 1, label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
+            { clientId: 2, label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
+          ],
           accounts: [
-          {
-            clientId: 1,
-            no: '1234567890',
-            openingDate: '21/01/2025',
-            riskRating: '6.2/10',
-            closingDate: '-',
-            status: 'Active',
-            type: 'Type 1',
-            balance: '$65,000',
-            interestRate: '2.5%',
-          },
-          {
-            clientId: 1,
-            no: '9876543210',
-            openingDate: '22/10/2024',
-            riskRating: '8.1/10',
-            closingDate: '-',
-            status: 'Active',
-            type: 'Type 3',
-            balance: '$81,000',
-            interestRate: '3.1%',
-          },
-          {
-            clientId: 1,
-            no: '5647382910',
-            openingDate: '14/08/2024',
-            riskRating: '7.3/10',
-            closingDate: '-',
-            status: 'Active',
-            type: 'Type 4',
-            balance: '$95,500',
-            interestRate: '2.9%',
-          },
-          {
-            clientId: 1,
-            no: '1122334455',
-            openingDate: '02/05/2023',
-            riskRating: '8.5/10',
-            closingDate: '12/08/2025',
-            status: 'Inactive',
-            type: 'Type 2',
-            balance: '$1,000',
-            interestRate: '1.2%',
-          },
-           {
-            clientId: 2,
-            no: '1122334455',
-            openingDate: '02/05/2023',
-            riskRating: '8.5/10',
-            closingDate: '12/08/2025',
-            status: 'Inactive',
-            type: 'Type 2',
-            balance: '$1,000',
-            interestRate: '1.2%',
-          },
-          {
-            clientId: 2,
-            no: '1122334455',
-            openingDate: '02/05/2023',
-            riskRating: '8.5/10',
-            closingDate: '12/08/2025',
-            status: 'Inactive',
-            type: 'Type 2',
-            balance: '$1,000',
-            interestRate: '1.2%',
-          },
+            {
+              clientId: 1,
+              no: '1234567890',
+              openingDate: '21/01/2025',
+              riskRating: '6.2/10',
+              closingDate: '-',
+              status: 'Active',
+              type: 'Type 1',
+              balance: '$65,000',
+              interestRate: '2.5%',
+            },
+            {
+              clientId: 1,
+              no: '9876543210',
+              openingDate: '22/10/2024',
+              riskRating: '8.1/10',
+              closingDate: '-',
+              status: 'Active',
+              type: 'Type 3',
+              balance: '$81,000',
+              interestRate: '3.1%',
+            },
+            {
+              clientId: 1,
+              no: '5647382910',
+              openingDate: '14/08/2024',
+              riskRating: '7.3/10',
+              closingDate: '-',
+              status: 'Active',
+              type: 'Type 4',
+              balance: '$95,500',
+              interestRate: '2.9%',
+            },
+            {
+              clientId: 1,
+              no: '1122334455',
+              openingDate: '02/05/2023',
+              riskRating: '8.5/10',
+              closingDate: '12/08/2025',
+              status: 'Inactive',
+              type: 'Type 2',
+              balance: '$1,000',
+              interestRate: '1.2%',
+            },
+            {
+              clientId: 2,
+              no: '1122334455',
+              openingDate: '02/05/2023',
+              riskRating: '8.5/10',
+              closingDate: '12/08/2025',
+              status: 'Inactive',
+              type: 'Type 2',
+              balance: '$1,000',
+              interestRate: '1.2%',
+            },
+            {
+              clientId: 2,
+              no: '1122334455',
+              openingDate: '02/05/2023',
+              riskRating: '8.5/10',
+              closingDate: '12/08/2025',
+              status: 'Inactive',
+              type: 'Type 2',
+              balance: '$1,000',
+              interestRate: '1.2%',
+            },
           ],
           teams: [
-          { clientId: 1, team: 'Name of the Team A', contactName: 'Contact Name A', email: 'a@example.com' },
-           { clientId: 2, team: 'Name of the Team d', contactName: 'Contact Name d', email: 'd@example.com' },
-          { clientId: 1, team: 'Name of the Team B', contactName: 'Contact Name B', email: 'b@example.com' },
-          {clientId: 1, team: 'Name of the Team C', contactName: 'Contact Name C', email: 'c@example.com' },
-          {clientId: 2, team: 'Name of the Team d', contactName: 'Contact Name d', email: 'd@example.com' },
-        ]
+            { clientId: 1, team: 'Name of the Team A', contactName: 'Contact Name A', email: 'a@example.com' },
+            { clientId: 2, team: 'Name of the Team d', contactName: 'Contact Name d', email: 'd@example.com' },
+            { clientId: 1, team: 'Name of the Team B', contactName: 'Contact Name B', email: 'b@example.com' },
+            { clientId: 1, team: 'Name of the Team C', contactName: 'Contact Name C', email: 'c@example.com' },
+            { clientId: 2, team: 'Name of the Team d', contactName: 'Contact Name d', email: 'd@example.com' },
+          ],
         };
 
         // If response is NOT array → send dummy
@@ -1514,91 +1526,91 @@ export const dashboardApi = api.injectEndpoints({
         } catch (err) {
           // Prepare fallback dummy
           const dummyData = {
-           engagement: [
-          { clientId: 1, label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
-          { clientId: 2, label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
-          { clientId: 1, label: 'Last Maturity Date', date: '22 Sep 2030', status: 'green' },
-          { clientId: 1, label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
-          { clientId: 2, label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
-          { clientId: 1, label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
-          { clientId: 2, label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
-           ],
-          accounts: [
-          {
-            clientId: 1,
-            no: '1234567890',
-            openingDate: '21/01/2025',
-            riskRating: '6.2/10',
-            closingDate: '-',
-            status: 'Active',
-            type: 'Type 1',
-            balance: '$65,000',
-            interestRate: '2.5%',
-          },
-          {
-            clientId: 1,
-            no: '9876543210',
-            openingDate: '22/10/2024',
-            riskRating: '8.1/10',
-            closingDate: '-',
-            status: 'Active',
-            type: 'Type 3',
-            balance: '$81,000',
-            interestRate: '3.1%',
-          },
-          {
-            clientId: 1,
-            no: '5647382910',
-            openingDate: '14/08/2024',
-            riskRating: '7.3/10',
-            closingDate: '-',
-            status: 'Active',
-            type: 'Type 4',
-            balance: '$95,500',
-            interestRate: '2.9%',
-          },
-          {
-            clientId: 1,
-            no: '1122334455',
-            openingDate: '02/05/2023',
-            riskRating: '8.5/10',
-            closingDate: '12/08/2025',
-            status: 'Inactive',
-            type: 'Type 2',
-            balance: '$1,000',
-            interestRate: '1.2%',
-          },
-           {
-            clientId: 2,
-            no: '1122334455',
-            openingDate: '02/05/2023',
-            riskRating: '8.5/10',
-            closingDate: '12/08/2025',
-            status: 'Inactive',
-            type: 'Type 2',
-            balance: '$1,000',
-            interestRate: '1.2%',
-          },
-          {
-            clientId: 2,
-            no: '1122334455',
-            openingDate: '02/05/2023',
-            riskRating: '8.5/10',
-            closingDate: '12/08/2025',
-            status: 'Inactive',
-            type: 'Type 2',
-            balance: '$1,000',
-            interestRate: '1.2%',
-          },
-          ],
-          teams: [
-          { clientId: 1, team: 'Name of the Team A', contactName: 'Contact Name A', email: 'a@example.com' },
-           { clientId: 2, team: 'Name of the Team d', contactName: 'Contact Name d', email: 'd@example.com' },
-          { clientId: 1, team: 'Name of the Team B', contactName: 'Contact Name B', email: 'b@example.com' },
-          {clientId: 1, team: 'Name of the Team C', contactName: 'Contact Name C', email: 'c@example.com' },
-          {clientId: 2, team: 'Name of the Team d', contactName: 'Contact Name d', email: 'd@example.com' },
-        ]
-        };
+            engagement: [
+              { clientId: 1, label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
+              { clientId: 2, label: 'Last Meeting Attended', date: '20 Aug 2025', status: 'none' },
+              { clientId: 1, label: 'Last Maturity Date', date: '22 Sep 2030', status: 'green' },
+              { clientId: 1, label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
+              { clientId: 2, label: 'Upcoming Quarterly Review', date: '25 Aug 2025', status: 'orange' },
+              { clientId: 1, label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
+              { clientId: 2, label: 'Upcoming Annual Review', date: '20 Dec 2025', status: 'green' },
+            ],
+            accounts: [
+              {
+                clientId: 1,
+                no: '1234567890',
+                openingDate: '21/01/2025',
+                riskRating: '6.2/10',
+                closingDate: '-',
+                status: 'Active',
+                type: 'Type 1',
+                balance: '$65,000',
+                interestRate: '2.5%',
+              },
+              {
+                clientId: 1,
+                no: '9876543210',
+                openingDate: '22/10/2024',
+                riskRating: '8.1/10',
+                closingDate: '-',
+                status: 'Active',
+                type: 'Type 3',
+                balance: '$81,000',
+                interestRate: '3.1%',
+              },
+              {
+                clientId: 1,
+                no: '5647382910',
+                openingDate: '14/08/2024',
+                riskRating: '7.3/10',
+                closingDate: '-',
+                status: 'Active',
+                type: 'Type 4',
+                balance: '$95,500',
+                interestRate: '2.9%',
+              },
+              {
+                clientId: 1,
+                no: '1122334455',
+                openingDate: '02/05/2023',
+                riskRating: '8.5/10',
+                closingDate: '12/08/2025',
+                status: 'Inactive',
+                type: 'Type 2',
+                balance: '$1,000',
+                interestRate: '1.2%',
+              },
+              {
+                clientId: 2,
+                no: '1122334455',
+                openingDate: '02/05/2023',
+                riskRating: '8.5/10',
+                closingDate: '12/08/2025',
+                status: 'Inactive',
+                type: 'Type 2',
+                balance: '$1,000',
+                interestRate: '1.2%',
+              },
+              {
+                clientId: 2,
+                no: '1122334455',
+                openingDate: '02/05/2023',
+                riskRating: '8.5/10',
+                closingDate: '12/08/2025',
+                status: 'Inactive',
+                type: 'Type 2',
+                balance: '$1,000',
+                interestRate: '1.2%',
+              },
+            ],
+            teams: [
+              { clientId: 1, team: 'Name of the Team A', contactName: 'Contact Name A', email: 'a@example.com' },
+              { clientId: 2, team: 'Name of the Team d', contactName: 'Contact Name d', email: 'd@example.com' },
+              { clientId: 1, team: 'Name of the Team B', contactName: 'Contact Name B', email: 'b@example.com' },
+              { clientId: 1, team: 'Name of the Team C', contactName: 'Contact Name C', email: 'c@example.com' },
+              { clientId: 2, team: 'Name of the Team d', contactName: 'Contact Name d', email: 'd@example.com' },
+            ],
+          };
           dispatch(setEngagementDetails(dummyData));
           dispatch(setError(err.message || 'Failed to fetch engagement details'));
         }
