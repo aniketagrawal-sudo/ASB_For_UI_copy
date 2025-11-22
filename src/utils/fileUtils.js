@@ -57,13 +57,23 @@ export const filterRevenueByClient = (data, clientId) => {
 
   const filtered = {};
 
-  Object.entries(data).forEach(([account, details]) => {
-    if (details.clientId === clientId) {
-      filtered[account] = details;
-    }
+  Object.entries(data).forEach(([accountName, periods]) => {
+    const filteredPeriods = {};
+
+    Object.entries(periods).forEach(([periodType, rows]) => {
+      if (Array.isArray(rows)) {
+        filteredPeriods[periodType] = rows.filter(
+          (row) => row.clientId === clientId
+        );
+      }
+    });
+
+    filtered[accountName] = filteredPeriods;
   });
+
   return filtered;
 };
+
 
 export const filterDepositLoanByClient = (data, clientId) => {
   if (!data || typeof data !== "object") return {};

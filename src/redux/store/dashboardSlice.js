@@ -61,6 +61,15 @@ const initialState = {
         trend: 'up',
       },
       {
+        clientId: 1,
+        title: 'Risk and Stability Score',
+        value: '7.2/10',
+        sub: '(-0.5% MoM)',
+        badge: 'Low Risk',
+        badgeColor: 'lightGreen',
+        trend: 'down',
+      },
+      {
         clientId: 2,
         title: 'Risk and Stability Score',
         value: '7.2/10',
