@@ -11,6 +11,13 @@ export default [
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+      describe: 'readonly',
+      test: 'readonly',
+      it: 'readonly',
+      expect: 'readonly',
+      beforeEach: 'readonly',
+      afterEach: 'readonly',
+      jest: 'readonly',
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
