@@ -136,6 +136,9 @@ export const filterTotalProfitAndLossRelationshipData = (data, clientId) => {
   return output;
 };
 
+export const filterVolumeOfUsageByClient = (data, clientId) => {
+  return data.filter(item => item.clientId === clientId);
+};
 
 
 

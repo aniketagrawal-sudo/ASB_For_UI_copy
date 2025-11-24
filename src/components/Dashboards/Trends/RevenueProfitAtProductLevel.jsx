@@ -10,18 +10,10 @@ import {
 } from 'recharts';
 import PropTypes from 'prop-types';
 import classes from './RevenueProfitAtProductLevel.module.scss';
+export default function RevenueProfitAtProductLevel({ apiUrl, filterdtRevenueProfirPrductLevel }) {
 
-// -------------------- DUMMY DATA --------------------
-const dummyData = [
-  { name: 'Product 1', revenue: 400000, profit: 24, category: 'one' },
-  { name: 'Product 2', revenue: 300000, profit: 13, category: 'two' },
-  { name: 'Product 3', revenue: 200000, profit: 98, category: 'one' },
-  { name: 'Product 4', revenue: 278000, profit: 39, category: 'two' },
-];
-
-export default function RevenueProfitAtProductLevel({ apiUrl }) {
-  const [allData, setAllData] = useState(dummyData);
-  const [chartData, setChartData] = useState(dummyData);
+  const [allData, setAllData] = useState(filterdtRevenueProfirPrductLevel);
+  const [chartData, setChartData] = useState(filterdtRevenueProfirPrductLevel);
   const [loading, setLoading] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("All");
 
@@ -35,12 +27,12 @@ export default function RevenueProfitAtProductLevel({ apiUrl }) {
         const response = await fetch(apiUrl);
         const result = await response.json();
 
-        setAllData(result || dummyData);
-        setChartData(result || dummyData);
+        setAllData(result || filterdtRevenueProfirPrductLevel);
+        setChartData(result || filterdtRevenueProfirPrductLevel);
       } catch (err) {
         console.error('API fetch failed. Using dummy data.');
-        setAllData(dummyData);
-        setChartData(dummyData);
+        setAllData(filterdtRevenueProfirPrductLevel);
+        setChartData(filterdtRevenueProfirPrductLevel);
       } finally {
         setLoading(false);
       }
@@ -48,6 +40,11 @@ export default function RevenueProfitAtProductLevel({ apiUrl }) {
 
     fetchChartData();
   }, [apiUrl]);
+
+  useEffect(() => {
+  setAllData(filterdtRevenueProfirPrductLevel);
+  setChartData(filterdtRevenueProfirPrductLevel);
+}, [filterdtRevenueProfirPrductLevel]);
 
   // -------------------- FILTER LOGIC (ONLY NEW ADDITION) --------------------
   const handleFilterChange = (value) => {
@@ -184,4 +181,5 @@ export default function RevenueProfitAtProductLevel({ apiUrl }) {
 // -------------------- PROP TYPES --------------------
 RevenueProfitAtProductLevel.propTypes = {
   apiUrl: PropTypes.string,
+  filterdtRevenueProfirPrductLevel: PropTypes.array.isRequired,
 };

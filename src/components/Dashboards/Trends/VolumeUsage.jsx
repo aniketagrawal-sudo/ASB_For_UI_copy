@@ -1,39 +1,12 @@
-import { useEffect, useState } from 'react';
 import { Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
 import PropTypes from 'prop-types';
 import classes from './VolumeUsage.module.scss';
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042'];
 
-export default function CustomActiveShapePieChart({ isAnimationActive }) {
-  const [chartData, setChartData] = useState([
-    // Dummy data (WILL BE REPLACED by API in future)
-    { name: 'Product A', value: 12 },
-    { name: 'Product B', value: 20 },
-    { name: 'Product C', value: 28 },
-    { name: 'Product D', value: 16 },
-  ]);
+export default function VolumeUsage({ isAnimationActive, filterdtVoumeOfUsage}) {
 
-  // ───────────────────────────────────────────
-  // Future API Integration (Already Structured)
-  // ───────────────────────────────────────────
-  /*
-  useEffect(() => {
-    async function fetchChartData() {
-      try {
-        const res = await fetch('/api/volume-usage'); // example API endpoint
-        const json = await res.json();
-        setChartData(json.data);  // API structure should return array [{name,value}]
-      } catch (err) {
-        console.error("API error:", err);
-      }
-    }
-
-    fetchChartData();
-  }, []);
-  */
-
-  const totalValue = chartData.reduce((sum, item) => sum + item.value, 0);
+  const totalValue = filterdtVoumeOfUsage.reduce((sum, item) => sum + item.value, 0);
 
   return (
     <div className={classes.revenueChartContainer}>
@@ -50,7 +23,7 @@ export default function CustomActiveShapePieChart({ isAnimationActive }) {
           <PieChart>
 
             <Pie
-              data={chartData}
+              data={filterdtVoumeOfUsage}
               cx="50%"
               cy="50%"
               innerRadius="50%"
@@ -66,7 +39,7 @@ export default function CustomActiveShapePieChart({ isAnimationActive }) {
               activeIndex={null}
               activeShape={null}
             >
-              {chartData.map((entry, index) => (
+              {filterdtVoumeOfUsage.map((entry, index) => (
                 <Cell key={index} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
@@ -91,10 +64,11 @@ export default function CustomActiveShapePieChart({ isAnimationActive }) {
   );
 }
 
-CustomActiveShapePieChart.propTypes = {
+VolumeUsage.propTypes = {
   isAnimationActive: PropTypes.bool,
+  filterdtVoumeOfUsage: PropTypes.array.isRequired,
 };
 
-CustomActiveShapePieChart.defaultProps = {
+VolumeUsage.defaultProps = {
   isAnimationActive: true,
 };

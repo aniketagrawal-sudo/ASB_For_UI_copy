@@ -16,7 +16,7 @@ import { useGetKpiDashboardQuery } from '../../services/dashboardApi';
 import PropTypes from 'prop-types';
 // import { selectKpiDashboardData } from '../../redux/store/dashboardSlice';
 
-export default function KPIDashboard({filteredKpis, revenueForClient, filterdDepositLoans, filterdtLoansOutstanding, filteredAccountDetails, filterdtTotalProfiandLossRelationship}) {
+export default function KPIDashboard({filteredKpis, revenueForClient, filterdDepositLoans, filterdtLoansOutstanding, filteredAccountDetails, filterdtTotalProfiandLossRelationship,filterdtVoumeOfUsage, filterdtRevenueProfirPrductLevel}) {
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const { isLoading } = useGetKpiDashboardQuery();
@@ -143,7 +143,7 @@ const kpiScoreLists = filteredKpis['score'];
             <Typography variant="h6" margin={1.6}>
               Trends
             </Typography>
-            <TrendComponent revenueForClient={revenueForClient} filterdDepositLoans={filterdDepositLoans} filterdtLoansOutstanding={filterdtLoansOutstanding} filteredAccountDetails={filteredAccountDetails} filterdtTotalProfiandLossRelationship={filterdtTotalProfiandLossRelationship}/>
+            <TrendComponent revenueForClient={revenueForClient} filterdDepositLoans={filterdDepositLoans} filterdtLoansOutstanding={filterdtLoansOutstanding} filteredAccountDetails={filteredAccountDetails} filterdtTotalProfiandLossRelationship={filterdtTotalProfiandLossRelationship} filterdtVoumeOfUsage={filterdtVoumeOfUsage} filterdtRevenueProfirPrductLevel={filterdtRevenueProfirPrductLevel}/>
       
         </Box>
       </Box>
@@ -162,5 +162,7 @@ KPIDashboard.propTypes = {
    filterdDepositLoans: PropTypes.object.isRequired,
    filterdtLoansOutstanding: PropTypes.object.isRequired,
    filteredAccountDetails: PropTypes.object.isRequired,
-   filterdtTotalProfiandLossRelationship: PropTypes.object.isRequired
+   filterdtTotalProfiandLossRelationship: PropTypes.object.isRequired,
+   filterdtVoumeOfUsage: PropTypes.array.isRequired,
+   filterdtRevenueProfirPrductLevel: PropTypes.array.isRequired,
 };

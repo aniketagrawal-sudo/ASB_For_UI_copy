@@ -359,6 +359,22 @@ const initialState = {
       { clientId: 2, team: 'Name of the Team d', contactName: 'Contact Name d', email: 'd@example.com' },
     ],
   },
+  volumeOfUsageDetails: [
+    { clientId: 1, name: 'Product A', value: 12 },
+    { clientId: 1, name: 'Product B', value: 20 },
+    { clientId: 1, name: 'Product C', value: 28 },
+    { clientId: 1, name: 'Product D', value: 16 },
+    { clientId: 2, name: 'Product B', value: 26 },
+    { clientId: 2, name: 'Product D', value: 20 },
+  ],
+  revenueAndProfitAtProductLevel: [
+  { clientId: 1, name: 'Product 1', revenue: 400000, profit: 24, category: 'one' },
+  { clientId: 1, name: 'Product 2', revenue: 300000, profit: 13, category: 'two' },
+  { clientId: 1, name: 'Product 3', revenue: 200000, profit: 98, category: 'one' },
+  { clientId: 1, name: 'Product 4', revenue: 278000, profit: 39, category: 'two' },
+  { clientId: 2, name: 'Product 1', revenue: 278000, profit: 29, category: 'one' },
+  { clientId: 2, name: 'Product 2', revenue: 278000, profit: 19, category: 'two' },
+],
 };
 
 const dashboardSlice = createSlice({
@@ -745,6 +761,12 @@ const dashboardSlice = createSlice({
     setEngagementDetails: (state, action) => {
       state.engagementDetails = action.payload;
     },
+    setVolumeOfUsageDetails: (state, action) => {
+      state.volumeOfUsageDetails = action.payload;
+    },
+    setRevenueAndProfitAtProductLevelDetails: (state, action) => {
+      state.revenueAndProfitAtProductLevel = action.payload;
+    },
   },
 });
 
@@ -782,6 +804,8 @@ export const {
   setAccountDetails,
   setEngagementDetails,
   setTeamDetails,
+  setVolumeOfUsageDetails,
+  setRevenueAndProfitAtProductLevelDetails,
 } = dashboardSlice.actions;
 
 // Selectors
@@ -887,6 +911,14 @@ export const selectTotalProfitandLossRelationship = (state) => {
 
 export const selectEngagementDetails = (state) => {
   return state.dashboard?.engagementDetails || [];
+};
+
+export const selectVolumeOfUsageDetails = (state) => {
+  return state.dashboard?.volumeOfUsageDetails || [];
+};
+
+export const selectrevenueAndProfitAtProductLevelDetails = (state) => {
+  return state.dashboard?.revenueAndProfitAtProductLevel || [];
 };
 
 export default dashboardSlice.reducer;

@@ -8,7 +8,7 @@ import RevenueProfitAtProductLevel from "./Trends/RevenueProfitAtProductLevel";
 import VolumeUsage from "./Trends/VolumeUsage";
 import PropTypes from "prop-types";
 
-export default function TrendComponent({revenueForClient, filterdDepositLoans, filterdtLoansOutstanding, filteredAccountDetails, filterdtTotalProfiandLossRelationship}) {
+export default function TrendComponent({revenueForClient, filterdDepositLoans, filterdtLoansOutstanding, filteredAccountDetails, filterdtTotalProfiandLossRelationship, filterdtVoumeOfUsage, filterdtRevenueProfirPrductLevel}) {
     return (
         <>
             <Box className={classes.trendComponent}>
@@ -16,8 +16,8 @@ export default function TrendComponent({revenueForClient, filterdDepositLoans, f
                 <RevenueGraph revenueForClient={revenueForClient}/>
                 <TotalProfitAndLossRelation filterdtTotalProfiandLossRelationship={filterdtTotalProfiandLossRelationship}/>
                 <div className={classes.revenueProfitVolumeUsage}>
-                    <RevenueProfitAtProductLevel />
-                    <VolumeUsage />
+                    <RevenueProfitAtProductLevel filterdtRevenueProfirPrductLevel={filterdtRevenueProfirPrductLevel}/>
+                    <VolumeUsage filterdtVoumeOfUsage={filterdtVoumeOfUsage} />
                 </div>
             </Box>
             <Typography variant="h6" margin={1.6}>
@@ -41,5 +41,7 @@ TrendComponent.propTypes = {
    filterdDepositLoans: PropTypes.object.isRequired,
    filterdtLoansOutstanding: PropTypes.object.isRequired,
    filteredAccountDetails: PropTypes.object.isRequired,
-   filterdtTotalProfiandLossRelationship: PropTypes.object.isRequired
+   filterdtTotalProfiandLossRelationship: PropTypes.object.isRequired,
+   filterdtVoumeOfUsage: PropTypes.array.isRequired,
+   filterdtRevenueProfirPrductLevel: PropTypes.array.isRequired,
 };
