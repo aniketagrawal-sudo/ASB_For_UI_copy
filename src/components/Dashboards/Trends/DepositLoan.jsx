@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import classes from "./DepositLoan.module.scss";
 
-const mm = (arr) => {
+export const mm = (arr) => {
   if (!arr || !arr.length) return { min: 0, max: 0 };
   let min = arr[0], max = arr[0];
   for (let i = 1; i < arr.length; i++) {
@@ -25,7 +25,7 @@ const mm = (arr) => {
 const fmtM = (n) => `$${Number(n || 0).toLocaleString(undefined, { maximumFractionDigits: 1 })}M`;
 const tickFmt = (v) => fmtM(Number(v) || 0);
 
-const buildSeries = (cfg) => {
+export const buildSeries = (cfg) => {
   const labels = (cfg && cfg.labels) || [];
   const data = (cfg && cfg.data) || [];
   if (!labels.length || !data.length) return [{ label: "", value: 0 }];

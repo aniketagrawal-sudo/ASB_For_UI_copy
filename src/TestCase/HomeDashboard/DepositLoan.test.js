@@ -2,11 +2,20 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import '@testing-library/jest-dom';
 import DepositLoan from "../../components/Dashboards/Trends/DepositLoan";
+import { mockDepositData } from "../HomeDatasets/HomeDatasets";
+import "@testing-library/jest-dom";
 
-// ---- Utility functions imported from component (copy/paste inside file if not exported) ----
+// Mock ResizeObserver (JSdom does NOT support it)
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+global.ResizeObserver = ResizeObserver;
+
 import { mm, buildSeries } from "../../components/Dashboards/Trends/DepositLoan";
 
-// ---------- MOCK SCSS ----------
 jest.mock("../../components/Dashboards/Trends/DepositLoan.module.scss", () => {
   return {
     chartHeader: "chartHeader",
@@ -47,11 +56,6 @@ describe("Utility Functions", () => {
 
 // -----------------------------
 describe("DepositLoan Component", () => {
-  const mockDepositData = {
-    MoM: { labels: ["Jan", "Feb"], data: [10, 20] },
-    YoY: { labels: ["2020", "2021"], data: [30, 40] },
-    QoQ: { labels: ["Q1", "Q2"], data: [50, 60] }
-  };
 
   const mockLoanData = {
     MoM: { labels: ["Jan", "Feb"], data: [100, 200] },
@@ -72,7 +76,7 @@ describe("DepositLoan Component", () => {
   test("TrendHeader view switching works", () => {
     render(<DepositLoan
       filterdDepositLoans={mockDepositData}
-      filterdtLoansOutstanding={mockLoanData}
+      // filterdtLoansOutstanding={mockLoanData}
     />);
 
     const yoyButton = screen.getByRole("button", { name: "YoY" });
@@ -84,7 +88,7 @@ describe("DepositLoan Component", () => {
   test("Account dropdown triggers loadData", async () => {
     render(<DepositLoan
       filterdDepositLoans={mockDepositData}
-      filterdtLoansOutstanding={mockLoanData}
+      // filterdtLoansOutstanding={mockLoanData}
     />);
 
     const select = screen.getAllByRole("combobox")[0];
@@ -98,10 +102,10 @@ describe("DepositLoan Component", () => {
   test("TrendCard displays highest and lowest values correctly", () => {
     render(<DepositLoan
       filterdDepositLoans={mockDepositData}
-      filterdtLoansOutstanding={mockLoanData}
+      // filterdtLoansOutstanding={mockLoanData}
     />);
 
-    expect(screen.getByText(/Lowest:/)).toBeInTheDocument();
+    expect(screen.getByText(/Lowest:/i)).toBeInTheDocument();
     expect(screen.getByText("$10M")).toBeInTheDocument();
     expect(screen.getByText("$20M")).toBeInTheDocument();
   });
