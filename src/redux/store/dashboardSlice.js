@@ -375,6 +375,114 @@ const initialState = {
   { clientId: 2, name: 'Product 1', revenue: 278000, profit: 29, category: 'one' },
   { clientId: 2, name: 'Product 2', revenue: 278000, profit: 19, category: 'two' },
 ],
+insightsData: [
+  {
+    clientId: 1,
+    insight_id: 'i1',
+    insight_title: 'Reports based on previous meetings ',
+    insight_brief:
+      'The **Q3 revenue** for the Northeast region shows a significant **20% drop**, primarily due to the underperformance of **Product X**. This requires immediate investigation.',
+    data_points: JSON.stringify({
+      type: 'bar',
+      labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+      datasets: [
+        {
+          label: 'Revenue (M)',
+          data: [150, 160, 128, 175],
+          backgroundColor: ['#4caf50', '#4caf50', '#f44336', '#4caf50'],
+        },
+      ],
+    }),
+    confidence_score: 85,
+    explainability_summary: JSON.stringify([
+      'The primary driver for the revenue drop is a **supply chain disruption** affecting Product X.',
+      '<strong>Competitor Z</strong> launched a similar product at a lower price in July.',
+    ]),
+    insight_faqs: JSON.stringify([
+      { question: 'What is the recommended action?', answer: 'Immediately investigate the supply chain issue and run a competitive pricing analysis.' },
+      { question: 'Is this trend expected to continue?', answer: 'If no intervention is made, the downward trend will likely continue into Q4.' },
+    ]),
+    has_query: true,
+    sql_query: 'SELECT * FROM quarterly_revenue_data WHERE quarter = 3',
+    query_result: [
+      { Quarter: 'Q3', Region: 'Northeast', Product: 'Product X', Revenue: 128, Sales_Reps: 5 },
+      { Quarter: 'Q3', Region: 'Northeast', Product: 'Product Y', Revenue: 85, Sales_Reps: 3 },
+      { Quarter: 'Q3', Region: 'Midwest', Product: 'Product X', Revenue: 150, Sales_Reps: 6 },
+    ],
+  },
+  {
+    clientId: 2,
+    insight_id: 'i2',
+    insight_title: 'Loan default rates over the past year',
+    insight_brief:
+      "The monthly churn rate has stabilized at **5%**, which is within the historical average. <br>However, churn is concentrated among customers with 'Basic' tier subscriptions. The data shows <b>90% of churn</b> comes from the basic tier.",
+    data_points: JSON.stringify({
+      type: 'pie',
+      labels: ['Basic Tier', 'Premium Tier', 'Enterprise Tier'],
+      datasets: [
+        {
+          label: 'Churn %',
+          data: [90, 8, 2],
+          backgroundColor: ['#f44336', '#ffeb3b', '#4caf50'],
+        },
+      ],
+    }),
+    confidence_score: 65,
+    explainability_summary: '',
+    insight_faqs: JSON.stringify([{ question: 'What is the retention rate?', answer: 'The overall retention rate is 95%.' }]),
+    has_query: true,
+    sql_query: 'SELECT * FROM churn_data',
+    query_result: [], // Simulating no query result yet
+  },
+  {
+    clientId: 1,
+    insight_id: 'i3',
+    insight_title: 'The loan approval rate increased in the last quarter',
+    insight_brief: 'The R&D budget utilization is currently at **75%**, slightly below the target of 80% for this period.',
+    data_points: JSON.stringify({
+      type: 'line',
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+      datasets: [
+        {
+          label: 'Utilization %',
+          data: [60, 65, 70, 75, 75],
+          borderColor: '#2196f3',
+          fill: false,
+        },
+      ],
+    }),
+    confidence_score: 92,
+    explainability_summary: null,
+    insight_faqs: null,
+    has_query: false,
+    sql_query: null,
+    query_result: null,
+  },
+   {
+    clientId: 2,
+    insight_id: 'i3',
+    insight_title: 'Average score of loan applicants is 720',
+    insight_brief: 'The R&D budget utilization is currently at **75%**, slightly below the target of 80% for this period.',
+    data_points: JSON.stringify({
+      type: 'line',
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+      datasets: [
+        {
+          label: 'Utilization %',
+          data: [60, 65, 70, 75, 75],
+          borderColor: '#2196f3',
+          fill: false,
+        },
+      ],
+    }),
+    confidence_score: 92,
+    explainability_summary: null,
+    insight_faqs: null,
+    has_query: false,
+    sql_query: null,
+    query_result: null,
+  },
+],
 };
 
 const dashboardSlice = createSlice({
@@ -767,6 +875,9 @@ const dashboardSlice = createSlice({
     setRevenueAndProfitAtProductLevelDetails: (state, action) => {
       state.revenueAndProfitAtProductLevel = action.payload;
     },
+    setinsightsDataDetails: (state, action) => {
+      state.insightsData = action.payload;
+    },
   },
 });
 
@@ -806,6 +917,7 @@ export const {
   setTeamDetails,
   setVolumeOfUsageDetails,
   setRevenueAndProfitAtProductLevelDetails,
+  setinsightsDataDetails,
 } = dashboardSlice.actions;
 
 // Selectors
@@ -919,6 +1031,9 @@ export const selectVolumeOfUsageDetails = (state) => {
 
 export const selectrevenueAndProfitAtProductLevelDetails = (state) => {
   return state.dashboard?.revenueAndProfitAtProductLevel || [];
+};
+export const selectInsightsDatalDetails = (state) => {
+  return state.dashboard?.insightsData || [];
 };
 
 export default dashboardSlice.reducer;

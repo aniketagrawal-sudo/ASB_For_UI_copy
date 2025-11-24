@@ -3,7 +3,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useSelector } from 'react-redux';
 import { selectCurrentPage, selectSelectedIndustry, selectUser } from '../../../features/auth/authSlice';
-import { selectLastRefreshed, selectHomeDashboardLoading, selectKpiDashboardData, selectRevenueGraphDetails, selectDepositLoanDetails, selectLoanOutstandingDetails, selectEngagementDetails, selectTotalProfitandLossRelationship, selectVolumeOfUsageDetails, selectrevenueAndProfitAtProductLevelDetails,  } from '../../../redux/store/dashboardSlice';
+import { selectLastRefreshed, selectHomeDashboardLoading, selectKpiDashboardData, selectRevenueGraphDetails, selectDepositLoanDetails, selectLoanOutstandingDetails, selectEngagementDetails, selectTotalProfitandLossRelationship, selectVolumeOfUsageDetails, selectrevenueAndProfitAtProductLevelDetails, selectInsightsDatalDetails,  } from '../../../redux/store/dashboardSlice';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import classes from './MainPanel.module.scss';
 import HomeDashboard from '../../../components/Dashboards/HomeDashboard';
@@ -35,6 +35,7 @@ function MainPanel({ dashboardsReady, dashboardsLoading, executingQueries, curre
   const accountDetailsInfo = useSelector(selectEngagementDetails);
   const voumeOfUsageData = useSelector(selectVolumeOfUsageDetails);
   const revenueProfitProductLevelData = useSelector(selectrevenueAndProfitAtProductLevelDetails);
+  const insightsData = useSelector(selectInsightsDatalDetails);
 
   const homeDashboardRef = useRef(null);
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
@@ -76,6 +77,10 @@ const filterdtRevenueProfirPrductLevel = useMemo(() => {
   return filterVolumeOfUsageByClient(revenueProfitProductLevelData, client);
 }, [revenueProfitProductLevelData, client]);
 
+const filterdtInsightsDataDetails = useMemo(() => {
+  return filterVolumeOfUsageByClient(insightsData, client);
+}, [insightsData, client]);
+
   const renderDashboard = () => {
     switch (currentPage) {
       case 'insight':
@@ -94,6 +99,7 @@ const filterdtRevenueProfirPrductLevel = useMemo(() => {
                 dashboardsLoading={dashboardsLoading}
                 executingQueries={executingQueries}
                 currentProcessingInsight={currentProcessingInsight}
+                filterdtInsightsDataDetails={filterdtInsightsDataDetails}
               />
               <ConversationDashboard />
             </div>
