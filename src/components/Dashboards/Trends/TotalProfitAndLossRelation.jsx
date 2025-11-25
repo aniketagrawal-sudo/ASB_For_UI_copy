@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BarChart,
   Bar,
@@ -98,7 +98,7 @@ export default function TotalProfitAndLossRelation({filterdtTotalProfiandLossRel
               />
               <Tooltip formatter={(value) => `$${(value / 1000).toFixed(0)}K`} labelStyle={{ fontWeight: 500 }} />
               <Legend wrapperStyle={{ fontSize: '12px' }} />
-              <Bar dataKey="product1" name="Product 1" fill="#03AB53" barSize={11.29} radius={[4, 4, 0, 0]} />
+              <Bar bar dataKey="product1" name="Product 1" fill="#03AB53" barSize={11.29} radius={[4, 4, 0, 0]} />
               <Bar dataKey="product2" name="Product 2" fill="#F7901D" barSize={11.29} radius={[4, 4, 0, 0]} />
               <Bar dataKey="product3" name="Product 3" fill="#0057B8" barSize={11.29} radius={[4, 4, 0, 0]} />
             </BarChart>

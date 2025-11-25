@@ -317,4 +317,121 @@ export const mockDepositData = {
       { clientId: 1, team: 'Name of the Team C', contactName: 'Contact Name C', email: 'c@example.com' },
       { clientId: 2, team: 'Name of the Team d', contactName: 'Contact Name d', email: 'd@example.com' },
     ],
-  };      
+  };   
+  
+  export const mockTotalProfitAndLossRelationData = {
+    Top1 : {
+      YoY: {
+        Profit: [
+          { year: 2021, product1: 700000, product2: 600000, product3: 500000, clientId: 1 },
+          { year: 2022, product1: 800000, product2: 700000, product3: 650000, clientId: 1 },
+          { year: 2023, product1: 900000, product2: 850000, product3: 800000, clientId: 1 },
+          { year: 2021, product1: 750000, product2: 620000, product3: 480000, clientId: 2 },
+          { year: 2022, product1: 830000, product2: 710000, product3: 660000, clientId: 2 },
+          { year: 2023, product1: 920000, product2: 860000, product3: 790000, clientId: 2 },
+        ],
+        Loss: [
+          { year: 2021, product1: 200000, product2: 180000, product3: 160000, clientId: 1 },
+          { year: 2022, product1: 150000, product2: 140000, product3: 130000, clientId: 1 },
+          { year: 2023, product1: 100000, product2: 90000, product3: 80000, clientId: 1 },
+          { year: 2021, product1: 210000, product2: 170000, product3: 150000, clientId: 2 },
+          { year: 2022, product1: 160000, product2: 130000, product3: 120000, clientId: 2 },
+          { year: 2023, product1: 110000, product2: 85000, product3: 82000, clientId: 2 },
+        ],
+      },
+      MoM: {
+        Profit: [
+          { month: 'Jan', product1: 90000, product2: 85000, product3: 80000, clientId: 1 },
+          { month: 'Feb', product1: 95000, product2: 90000, product3: 88000, clientId: 1 },
+          { month: 'Mar', product1: 100000, product2: 95000, product3: 92000, clientId: 1 },
+          { month: 'Jan', product1: 88000, product2: 83000, product3: 81000, clientId: 2 },
+          { month: 'Feb', product1: 96000, product2: 91000, product3: 87000, clientId: 2 },
+          { month: 'Mar', product1: 102000, product2: 97000, product3: 93000, clientId: 2 },
+        ],
+        Loss: [
+          { month: 'Jan', product1: 30000, product2: 28000, product3: 25000, clientId: 1 },
+          { month: 'Feb', product1: 25000, product2: 23000, product3: 22000, clientId: 1 },
+          { month: 'Mar', product1: 20000, product2: 18000, product3: 17000, clientId: 1 },
+          { month: 'Jan', product1: 32000, product2: 29000, product3: 26000, clientId: 2 },
+          { month: 'Feb', product1: 26000, product2: 24000, product3: 21000, clientId: 2 },
+          { month: 'Mar', product1: 19000, product2: 17000, product3: 16000, clientId: 2 },
+        ],
+      },
+    },
+    Top2: {
+      YoY: {
+        Profit: [
+          { year: 2021, product1: 600000, product2: 550000, product3: 450000, clientId: 1 },
+          { year: 2022, product1: 700000, product2: 650000, product3: 550000, clientId: 1 },
+          { year: 2023, product1: 780000, product2: 720000, product3: 650000, clientId: 1 },
+          { year: 2021, product1: 620000, product2: 530000, product3: 440000, clientId: 2 },
+          { year: 2022, product1: 710000, product2: 640000, product3: 560000, clientId: 2 },
+          { year: 2023, product1: 800000, product2: 740000, product3: 660000, clientId: 2 },
+        ],
+        Loss: [
+          { year: 2021, product1: 180000, product2: 160000, product3: 140000, clientId: 1 },
+          { year: 2022, product1: 140000, product2: 120000, product3: 110000, clientId: 1 },
+          { year: 2023, product1: 100000, product2: 90000, product3: 85000, clientId: 1 },
+          { year: 2021, product1: 190000, product2: 150000, product3: 130000, clientId: 2 },
+          { year: 2022, product1: 150000, product2: 125000, product3: 105000, clientId: 2 },
+          { year: 2023, product1: 95000, product2: 88000, product3: 82000, clientId: 2 },
+        ],
+      },
+      MoM: {
+        Profit: [
+          { month: 'Jan', product1: 80000, product2: 75000, product3: 70000, clientId: 1 },
+          { month: 'Feb', product1: 85000, product2: 80000, product3: 76000, clientId: 1 },
+          { month: 'Mar', product1: 90000, product2: 85000, product3: 82000, clientId: 1 },
+          { month: 'Jan', product1: 78000, product2: 74000, product3: 69000, clientId: 2 },
+          { month: 'Feb', product1: 83000, product2: 79000, product3: 75000, clientId: 2 },
+          { month: 'Mar', product1: 91000, product2: 86000, product3: 83000, clientId: 2 },
+        ],
+        Loss: [
+          { month: 'Jan', product1: 25000, product2: 23000, product3: 21000, clientId: 1 },
+          { month: 'Feb', product1: 22000, product2: 20000, product3: 18000, clientId: 1 },
+          { month: 'Mar', product1: 20000, product2: 17000, product3: 16000, clientId: 1 },
+          { month: 'Jan', product1: 26000, product2: 24000, product3: 22000, clientId: 2 },
+          { month: 'Feb', product1: 21000, product2: 19000, product3: 17000, clientId: 2 },
+          { month: 'Mar', product1: 19000, product2: 16000, product3: 15000, clientId: 2 },
+        ],
+      },
+    },
+    Top3: {
+      YoY: {
+        Profit: [
+          { year: 2021, product1: 500000, product2: 450000, product3: 400000, clientId: 1 },
+          { year: 2022, product1: 580000, product2: 520000, product3: 470000, clientId: 1 },
+          { year: 2023, product1: 650000, product2: 600000, product3: 550000, clientId: 1 },
+          { year: 2021, product1: 520000, product2: 460000, product3: 380000, clientId: 2 },
+          { year: 2022, product1: 600000, product2: 540000, product3: 490000, clientId: 2 },
+          { year: 2023, product1: 670000, product2: 610000, product3: 560000, clientId: 2 },
+        ],
+        Loss: [
+          { year: 2021, product1: 150000, product2: 140000, product3: 130000, clientId: 1 },
+          { year: 2022, product1: 120000, product2: 110000, product3: 100000, clientId: 1 },
+          { year: 2023, product1: 90000, product2: 85000, product3: 80000, clientId: 1 },
+          { year: 2021, product1: 160000, product2: 145000, product3: 125000, clientId: 2 },
+          { year: 2022, product1: 125000, product2: 115000, product3: 95000, clientId: 2 },
+          { year: 2023, product1: 88000, product2: 82000, product3: 78000, clientId: 2 },
+        ],
+      },
+      MoM: {
+        Profit: [
+          { month: 'Jan', product1: 70000, product2: 66000, product3: 62000, clientId: 1 },
+          { month: 'Feb', product1: 74000, product2: 70000, product3: 66000, clientId: 1 },
+          { month: 'Mar', product1: 78000, product2: 74000, product3: 70000, clientId: 1 },
+          { month: 'Jan', product1: 68000, product2: 64000, product3: 60000, clientId: 2 },
+          { month: 'Feb', product1: 72000, product2: 69000, product3: 65000, clientId: 2 },
+          { month: 'Mar', product1: 79000, product2: 75000, product3: 71000, clientId: 2 },
+        ],
+        Loss: [
+          { month: 'Jan', product1: 22000, product2: 21000, product3: 20000, clientId: 1 },
+          { month: 'Feb', product1: 20000, product2: 19000, product3: 18000, clientId: 1 },
+          { month: 'Mar', product1: 18000, product2: 16000, product3: 15000, clientId: 1 },
+          { month: 'Jan', product1: 23000, product2: 21500, product3: 20500, clientId: 2 },
+          { month: 'Feb', product1: 19000, product2: 18000, product3: 17000, clientId: 2 },
+          { month: 'Mar', product1: 17000, product2: 15500, product3: 14500, clientId: 2 },
+        ],
+      },
+    },
+  };
