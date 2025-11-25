@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
 import styles from './RevenueGraph.module.scss';
 // import { useSelector } from 'react-redux';
@@ -42,14 +42,14 @@ export default function RevenueGraph({revenueForClient}) {
   }
 
   return (
-    <div className={styles.revenueChartContainer}>
+    <div className={styles.revenueChartContainer} data-testid="revenue-graph">
       {/* Header */}
       <div className={styles.chartHeader}>
-        <h2 className={styles.chartTitle}>Revenue</h2>
+        <h2 className={styles.chartTitle}  data-testid="title">Revenue</h2>
 
         <div className={styles.chartControls}>
           {/* Filters */}
-          <div className={styles.filterButtons}>
+          <div className={styles.filterButtons} data-testid="filters">
             {['YoY', 'MoM', 'QoQ'].map((filter) => (
               <button
                 key={filter}
@@ -63,11 +63,12 @@ export default function RevenueGraph({revenueForClient}) {
           {/* Dropdown */}
           <div className={styles.accountDropdown}>
             <select
+            data-testid="account-dropdown"
               value={selectedAccount}
               onChange={(e) => setSelectedAccount(e.target.value)}
               className={styles.dropdownSelect}>
               {accounts.map((account) => (
-                <option key={account} value={account}>
+                <option key={account} value={account} data-testid="account-option">
                   {account}
                 </option>
               ))}
@@ -79,14 +80,14 @@ export default function RevenueGraph({revenueForClient}) {
 
       {/* Divider */}
       <div className={styles.dividerWrapper}>
-        <hr className={styles.divider} />
+        <hr className={styles.divider} data-testid="divider"/>
       </div>
 
       {/* Chart */}
-      <div className={styles.chartWrapper}>
-        <ResponsiveContainer width="95%" height={250}>
-          <BarChart data={chartData} margin={{ top: 10, right: 20, left: 10, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+      <div className={styles.chartWrapper} data-testid="chart-wrapper">
+        <ResponsiveContainer width="95%" height={250} data-testid="responsive-container">
+          <BarChart data={chartData} margin={{ top: 10, right: 20, left: 10, bottom: 0 }} data-testid="bar-chart">
+            <CartesianGrid strokeDasharray="3 3" vertical={false} data-testid="grid" />
 
             {/* ✅ Dynamic X-Axis key based on selected filter */}
             <XAxis
@@ -95,6 +96,7 @@ export default function RevenueGraph({revenueForClient}) {
               interval={0}
               angle={timeFilter === 'YoY' ? 0 : 0}
               textAnchor="middle"
+              data-key={xAxisKey}
             />
 
             <YAxis
@@ -106,13 +108,14 @@ export default function RevenueGraph({revenueForClient}) {
                 position: 'insideLeft',
                 style: { textAnchor: 'middle', fill: '#374151', fontSize: 12 },
               }}
+               data-testid="y-axis"
             />
 
-            <Tooltip formatter={(value) => `$${(value / 1000).toFixed(0)}K`} labelStyle={{ fontWeight: 500 }} />
-            <Legend wrapperStyle={{ fontSize: '12px' }} />
+            <Tooltip data-testid="tooltip" formatter={(value) => `$${(value / 1000).toFixed(0)}K`} labelStyle={{ fontWeight: 500 }} />
+            <Legend data-testid="legend" wrapperStyle={{ fontSize: '12px' }} />
 
-            <Bar dataKey="net" name="Net Revenue" fill="#03AB53" barSize={11.29} radius={[4, 4, 0, 0]} />
-            <Bar dataKey="gross" name="Gross Revenue" fill="#F7901D" barSize={11.29} radius={[4, 4, 0, 0]} />
+            <Bar data-testid="bar-net" dataKey="net" name="Net Revenue" fill="#03AB53" barSize={11.29} radius={[4, 4, 0, 0]} />
+            <Bar data-testid="bar-gross" dataKey="gross" name="Gross Revenue" fill="#F7901D" barSize={11.29} radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>

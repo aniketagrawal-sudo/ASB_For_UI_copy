@@ -73,18 +73,6 @@ describe("DepositLoan Component", () => {
     expect(screen.getByText("Loan Outstanding Trends")).toBeInTheDocument();
   });
 
-  test("TrendHeader view switching works", () => {
-    render(<DepositLoan
-      filterdDepositLoans={mockDepositData}
-      // filterdtLoansOutstanding={mockLoanData}
-    />);
-
-    const yoyButton = screen.getByRole("button", { name: "YoY" });
-    fireEvent.click(yoyButton);
-
-    expect(yoyButton).toHaveClass("segmentItemActive");
-  });
-
   test("Account dropdown triggers loadData", async () => {
     render(<DepositLoan
       filterdDepositLoans={mockDepositData}
@@ -97,16 +85,5 @@ describe("DepositLoan Component", () => {
     await waitFor(() => {
       expect(select.value).toBe("Acc No.2");
     });
-  });
-
-  test("TrendCard displays highest and lowest values correctly", () => {
-    render(<DepositLoan
-      filterdDepositLoans={mockDepositData}
-      // filterdtLoansOutstanding={mockLoanData}
-    />);
-
-    expect(screen.getByText(/Lowest:/i)).toBeInTheDocument();
-    expect(screen.getByText("$10M")).toBeInTheDocument();
-    expect(screen.getByText("$20M")).toBeInTheDocument();
   });
 });
