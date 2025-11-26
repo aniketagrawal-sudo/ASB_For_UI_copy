@@ -444,3 +444,12 @@ export const mockDepositData = {
     { clientId: 2, name: 'Product B', value: 26 },
     { clientId: 2, name: 'Product D', value: 20 },
   ];
+
+  export const mokeRevenueProfitProductLevel = [
+  { clientId: 1, name: 'Product 1', revenue: 400000, profit: 24, category: 'one' },
+  { clientId: 1, name: 'Product 2', revenue: 300000, profit: 13, category: 'two' },
+  { clientId: 1, name: 'Product 3', revenue: 200000, profit: 98, category: 'one' },
+  { clientId: 1, name: 'Product 4', revenue: 278000, profit: 39, category: 'two' },
+  { clientId: 2, name: 'Product 1', revenue: 278000, profit: 29, category: 'one' },
+  { clientId: 2, name: 'Product 2', revenue: 278000, profit: 19, category: 'two' },
+];

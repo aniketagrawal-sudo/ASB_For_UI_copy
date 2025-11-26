@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   BarChart,
   Bar,
@@ -90,6 +90,7 @@ export default function RevenueProfitAtProductLevel({ apiUrl, filterdtRevenuePro
         <div className={classes.chartControls}>
           <div className={classes.accountDropdown}>
             <select
+             data-testid="dropdown-filter"
               className={classes.dropdownSelect}
               value={selectedFilter}
               onChange={(e) => handleFilterChange(e.target.value)}
@@ -169,8 +170,8 @@ export default function RevenueProfitAtProductLevel({ apiUrl, filterdtRevenuePro
             <Tooltip />
             <Legend />
 
-            <Bar yAxisId="right" dataKey="profit" fill="#03AB53" />
-            <Bar yAxisId="left" dataKey="revenue" fill="#F7901D" />
+            <Bar data-testid="bar-profit" yAxisId="right" dataKey="profit" fill="#03AB53" />
+            <Bar data-testid="bar-revenue" yAxisId="left" dataKey="revenue" fill="#F7901D" />
           </BarChart>
         )}
       </div>
