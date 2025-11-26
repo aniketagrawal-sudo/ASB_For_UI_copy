@@ -435,3 +435,12 @@ export const mockDepositData = {
       },
     },
   };
+
+  export const mockVolumeUsageData = [
+    { clientId: 1, name: 'Product A', value: 12 },
+    { clientId: 1, name: 'Product B', value: 20 },
+    { clientId: 1, name: 'Product C', value: 28 },
+    { clientId: 1, name: 'Product D', value: 16 },
+    { clientId: 2, name: 'Product B', value: 26 },
+    { clientId: 2, name: 'Product D', value: 20 },
+  ];

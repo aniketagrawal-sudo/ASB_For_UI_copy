@@ -1,3 +1,4 @@
+import React from 'react';
 import { Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
 import PropTypes from 'prop-types';
 import classes from './VolumeUsage.module.scss';
@@ -9,18 +10,18 @@ export default function VolumeUsage({ isAnimationActive, filterdtVoumeOfUsage}) 
   const totalValue = filterdtVoumeOfUsage.reduce((sum, item) => sum + item.value, 0);
 
   return (
-    <div className={classes.revenueChartContainer}>
+    <div className={classes.revenueChartContainer} data-testid="volume-usage-container">
       <div className={classes.chartHeader}>
-        <h3 className={classes.chartTitle}>Volume of Usage</h3>
+        <h3 className={classes.chartTitle} data-testid="chart-title">Volume of Usage</h3>
       </div>
 
       <div className={classes.dividerWrapper}>
         <hr className={classes.divider} />
       </div>
 
-      <div className={classes.chartWrapper}>
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
+      <div className={classes.chartWrapper} data-testid="chart-wrapper">
+        <ResponsiveContainer width="100%" height="100%" >
+          <PieChart data-testid="pie-chart">
 
             <Pie
               data={filterdtVoumeOfUsage}
@@ -38,9 +39,10 @@ export default function VolumeUsage({ isAnimationActive, filterdtVoumeOfUsage}) 
               // Disable hover highlight
               activeIndex={null}
               activeShape={null}
+              data-testid="pie-slices"
             >
               {filterdtVoumeOfUsage.map((entry, index) => (
-                <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                <Cell key={index} fill={COLORS[index % COLORS.length]} data-testid={`slice-${index}`} />
               ))}
             </Pie>
 
@@ -53,6 +55,7 @@ export default function VolumeUsage({ isAnimationActive, filterdtVoumeOfUsage}) 
               fontSize={14}
               fontWeight="bold"
               fill="#333"
+               data-testid="total-value"
             >
               {`Total: ${totalValue}`}
             </text>
