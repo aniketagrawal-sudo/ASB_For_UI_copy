@@ -453,3 +453,52 @@ export const mockDepositData = {
   { clientId: 2, name: 'Product 1', revenue: 278000, profit: 29, category: 'one' },
   { clientId: 2, name: 'Product 2', revenue: 278000, profit: 19, category: 'two' },
 ];
+
+export const mockHomeKPIDashboardData = {
+    kpis: [
+      { clientId: 1, title: 'Deposit Balance', value: '$10M', sub: '(+3.2% of LY Avg)', trend: 'up' },
+      { clientId: 1, title: 'Loan Outstanding', value: '$1.2M', sub: '(Out of $10M)' },
+      { clientId: 1, title: 'Credit Utilisation', value: '60%', sub: '(Out of $22M)' },
+      { clientId: 1, title: 'Net Profit', value: '$2.4M', sub: '(+5% YoY)', trend: 'up' },
+      { clientId: 2, title: 'Credit Utilisation', value: '60%', sub: '(Out of $22M)' },
+      { clientId: 2, title: 'Net Profit', value: '$2.4M', sub: '(+5% YoY)', trend: 'up' },
+    ],
+    score: [
+      {
+        clientId: 1,
+        title: 'Financial Score',
+        value: '8.1/10',
+        sub: '(+0.5 of MoM)',
+        badge: 'Good',
+        badgeColor: 'yellow',
+        trend: 'up',
+      },
+      {
+        clientId: 1,
+        title: 'Relationship Score',
+        value: '8.6/10',
+        sub: '(+1.5% MoM)',
+        badge: 'Great',
+        badgeColor: 'green',
+        trend: 'up',
+      },
+      {
+        clientId: 1,
+        title: 'Risk and Stability Score',
+        value: '7.2/10',
+        sub: '(-0.5% MoM)',
+        badge: 'Low Risk',
+        badgeColor: 'lightGreen',
+        trend: 'down',
+      },
+      {
+        clientId: 2,
+        title: 'Risk and Stability Score',
+        value: '7.2/10',
+        sub: '(-0.5% MoM)',
+        badge: 'Low Risk',
+        badgeColor: 'lightGreen',
+        trend: 'down',
+      },
+    ],
+  };

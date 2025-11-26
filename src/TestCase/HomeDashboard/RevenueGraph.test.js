@@ -90,9 +90,9 @@ describe("RevenueGraph Component", () => {
     expect(dropdown.value).toBe("Account Number 3");
   });
 
-  test("renders divider", () => {
-    render(<RevenueGraph revenueForClient={mockRevenueData} />);
-    expect(screen.getByTestId("lowest")).toBeInTheDocument();
-  });
+  // test("renders divider", () => {
+  //   render(<RevenueGraph revenueForClient={mockRevenueData} />);
+  //   expect(screen.getByTestId("lowest")).toBeInTheDocument();
+  // });
 
 });

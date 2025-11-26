@@ -37,6 +37,7 @@ const kpiScoreLists = filteredKpis['score'];
               <Box className={classes.actionItem}>
                 <img src={MeetingIcon} alt="Meeting" />
                 <Typography
+                data-testid="report-button"
                   className={classes.actionText}
                   onClick={() => setIsReportModalOpen(true)}
                   sx={{ cursor: 'pointer', color: '#2e7d32', fontWeight: 500 }}>
@@ -47,7 +48,7 @@ const kpiScoreLists = filteredKpis['score'];
 
               <Box className={classes.actionItem}>
                 <img src={SummaryIcon} alt="Summary" />
-                <Typography className={classes.actionText} onClick={() => setIsSummaryOpen(true)}>
+                <Typography data-testid="summary-button" className={classes.actionText} onClick={() => setIsSummaryOpen(true)}>
                   Summary
                   {isSummaryOpen && <SummaryPanel open onClose={() => setIsSummaryOpen(false)} />}
                 </Typography>
@@ -57,7 +58,7 @@ const kpiScoreLists = filteredKpis['score'];
           </Box>
 
           {/* KPI Box */}
-          <Box className={classes.kpiBox}>
+          <Box className={classes.kpiBox} data-testid="kpi-box">
             <Box className={classes.topRow}>
               {kpisLists?.map((item, i) => (
                 <Box key={i} className={classes.metric}>
