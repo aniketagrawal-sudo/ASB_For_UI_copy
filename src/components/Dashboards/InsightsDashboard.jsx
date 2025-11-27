@@ -542,10 +542,10 @@ function InsightsDashboard({ dashboardsReady, filterdtInsightsDataDetails }) {
   const shouldShowDashboard = dashboardsReady?.insights || (!isLoading && insightsData?.length > 0);
 
   useEffect(() => {
-    if (insightsData?.length && !selectedInsightId) {
+    if (insightsData?.length) {
       setSelectedInsightId(insightsData[0].insight_id);
     }
-  }, [insightsData, selectedInsightId]);
+  }, [insightsData]);
 
   const selectedInsight = useMemo(
     () => insightsData?.find((insight) => insight.insight_id === selectedInsightId),
