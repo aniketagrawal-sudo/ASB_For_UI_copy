@@ -25,6 +25,8 @@ import classes from './InsightsDashboard.module.scss';
 // import { notifyViaSnackBar } from '../../redux/store/conversationSlice';
 // import DescriptionIcon from '@mui/icons-material/Description';
 import powerpoint from '../../assets/powerpoint.svg';
+import { useSelector } from 'react-redux';
+import { selectInsightsScreenData } from '../../redux/store/dashboardSlice';
 
 // --- DUMMY DATA DEFINITIONS ---
 
@@ -486,6 +488,7 @@ TableErrorBoundary.propTypes = {
 
 function InsightsDashboard({ dashboardsReady, filterdtInsightsDataDetails }) {
   // --- REPLACED REDUX STATE WITH DUMMY DATA ---
+  // const insightsData = useSelector(selectInsightsScreenData);
   const insightsData = filterdtInsightsDataDetails;
   const isLoading = false; // Set to false to show data immediately
   const error = null;
@@ -499,6 +502,8 @@ function InsightsDashboard({ dashboardsReady, filterdtInsightsDataDetails }) {
     return industry?.clientId || null;
   }, [userFromState?.industries, userFromState?.selectedIndustry]);
 
+  console.log('cliennnntId', clientId);
+
   const personaId = useMemo(() => {
     return userFromState?.industries
       ?.find((i) => i.name === selectedIndustry)
@@ -507,6 +512,7 @@ function InsightsDashboard({ dashboardsReady, filterdtInsightsDataDetails }) {
 
   // --- LOCAL STATE (Kept) ---
   const [selectedInsightId, setSelectedInsightId] = useState(insightsData[0].insight_id);
+  console.log('selectedInsightId', selectedInsightId);
   const [expandedFaqs, setExpandedFaqs] = useState({});
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [activeView, setActiveView] = useState('visualization');
