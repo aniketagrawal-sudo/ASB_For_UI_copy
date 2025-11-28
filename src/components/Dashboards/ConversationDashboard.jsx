@@ -33,7 +33,7 @@ import {
 import ChatInput from '../ChatInput/ChatInput';
 import WelcomeMessage from '../WelcomeMessage/WelcomeMessage';
 import ConversationScreen from '../ConversationScreen/ConversationScreen';
-import { useFetchArchivedDataQuery } from '../../services/conversationApi';
+import { useFetchArchivedDataQuery, useLazyFetchArchivedDataQuery } from '../../services/conversationApi';
 import { useSaveThreadMutation } from '../../services/threadApi';
 import ThreadsPanel from '../ThreadsPanel/ThreadsPanel';
 import classes from './ConversationDashboard.module.scss';
@@ -58,10 +58,7 @@ function ConversationDashboard() {
   const dispatch = useDispatch();
   const currentPage = useSelector(selectCurrentPage);
   const user = useSelector(selectUser);
-  const userName = useMemo(
-    () => user?.given_name || (user?.name ? user.name.split(' ')[0] : 'there'),
-    [user]
-  );
+  const userName = useMemo(() => user?.given_name || (user?.name ? user.name.split(' ')[0] : 'there'), [user]);
   const activeConversationId = useSelector(selectCurrentPageConversation);
   const chatInputRef = useRef(null);
   const componentMountedRef = useRef(true);
@@ -111,7 +108,7 @@ function ConversationDashboard() {
           message: 'A thread can only be created from structured data.',
           severity: 'warning',
           open: true,
-        })
+        }),
       );
     }
   };
@@ -147,7 +144,7 @@ function ConversationDashboard() {
           message: 'Thread saved successfully!',
           severity: 'success',
           open: true,
-        })
+        }),
       );
     } catch (err) {
       dispatch(
@@ -155,7 +152,7 @@ function ConversationDashboard() {
           message: 'Failed to save thread. Please try again.',
           severity: 'error',
           open: true,
-        })
+        }),
       );
     }
   };
@@ -174,8 +171,10 @@ function ConversationDashboard() {
 
   const { data: archivedData } = useFetchArchivedDataQuery(
     { page: 1, limit: 4, selectedIndustryId, selectedPersonaId },
-    { refetchOnMountOrArgChange: true }
+    { refetchOnMountOrArgChange: true },
   );
+
+  const [getHistoricalData, { isFetching, isError, error: fileFetchError }] = useLazyFetchArchivedDataQuery();
 
   useEffect(() => {
     if (!socket && keycloak?.token) {
@@ -221,12 +220,7 @@ function ConversationDashboard() {
   // ========= History Drawer =========
   const containerRef = useRef(null);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const historyItems = [
-    { id: 1, title: 'Client Name 1 and Client Name 2 Comparison', timestamp: 'Today, 7:55 PM' },
-    { id: 2, title: 'Client Name 3 Chart for Deposit Trend', timestamp: 'Today, 6:10 PM' },
-    { id: 3, title: 'Client Name 2 Chart for Deposit Trend', timestamp: 'Yesterday, 2:40 PM' },
-    { id: 4, title: 'Client Name 3 and Client Name 4 Comparison', timestamp: 'Mon, 11:26 AM' },
-  ];
+  const [historyConversations, setHistoryConversations] = useState([]);
 
   const handelHistory = () => setIsHistoryOpen(true);
   const handleHistoryClose = () => setIsHistoryOpen(false);
@@ -248,7 +242,7 @@ function ConversationDashboard() {
         dispatch(clearPageConversation(currentPage));
       }
     },
-    [dispatch, currentPage]
+    [dispatch, currentPage],
   );
 
   const handleSuggestedQuestionClick = useCallback((query) => {
@@ -338,7 +332,19 @@ function ConversationDashboard() {
           <Box className={classes.threadButtons}>
             {/* Opens History drawer */}
             <Box className={classes.threadButton} onClick={handelHistory}>
-              <img src={ChatHistoryIcon} alt="ChatHistoryIcon" />
+              <img
+                src={ChatHistoryIcon}
+                alt="ChatHistoryIcon"
+                onClick={async () => {
+                  const result = await getHistoricalData({});
+                  console.log('result', result);
+                  setHistoryConversations([
+                    ...(result?.data?.['This Week'] || []),
+                    ...(result?.data?.['Last Week'] || []),
+                    ...(result?.data?.Previous || []),
+                  ]);
+                }}
+              />
             </Box>
             <Box className={classes.threadButton} onClick={handleThreadsClick}>
               <img src={MaxsimizeIcon} alt="MaxsimizeIcon" />
@@ -370,8 +376,7 @@ function ConversationDashboard() {
         open={snackbar.open}
         autoHideDuration={snackbar.autoHideDuration || 4000}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
         <Alert onClose={handleCloseSnackbar} severity={snackbar.severity || 'info'} sx={{ width: '100%' }}>
           {snackbar.message}
         </Alert>
@@ -406,8 +411,7 @@ function ConversationDashboard() {
             onClick={handleSaveConfirm}
             disabled={!threadName.trim() || isSaving}
             variant="contained"
-            sx={{ textTransform: 'none' }}
-          >
+            sx={{ textTransform: 'none' }}>
             {isSaving ? <CircularProgress size={24} color="inherit" /> : 'Save'}
           </Button>
         </DialogActions>
@@ -428,23 +432,21 @@ function ConversationDashboard() {
         aria-hidden={!isHistoryOpen}
         style={{
           transform: isHistoryOpen ? 'translateX(0)' : 'translateX(100%)',
-        }}
-      >
+        }}>
         {/* outside-left close; only render when open so it disappears when closed */}
         {isHistoryOpen && (
           <button
             type="button"
             aria-label="Close history"
             className={classes.historyClose}
-            onClick={handleHistoryClose}
-          >
+            onClick={handleHistoryClose}>
             <img src={CloseIcon} alt="CloseIcon" />
           </button>
         )}
 
         <div className={classes.historyHeader}>History</div>
         <div className={classes.historyList}>
-          {historyItems.map((it) => (
+          {historyConversations?.map((it) => (
             <div
               key={it.id}
               className={classes.historyItem}
@@ -454,8 +456,7 @@ function ConversationDashboard() {
                   chatInputRef.current.setInputValue(it.title);
                 }
                 handleHistoryClose();
-              }}
-            >
+              }}>
               {it.title}
             </div>
           ))}

@@ -629,6 +629,7 @@ export const {
   useGetConversationDetailsByIdQuery,
   useCreateNewConversationMutation,
   useFetchArchivedDataQuery,
+  useLazyFetchArchivedDataQuery,
   useLazyGetBlobURLfromFileQuery,
   useDeleteConversationByIdMutation,
 } = conversationApi;
