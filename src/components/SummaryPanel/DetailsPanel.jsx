@@ -295,7 +295,6 @@ TableComponent.propTypes = {
 // Enhanced DetailsPanel component with client-specific handling
 const DetailsPanel = ({ open, onClose, selectedInsightId }) => {
   const insightDetails = useSelector(selectInsightDetails);
-  console.log('insightDetails', insightDetails);
   // Use specific loading state for insights dashboard
   const isInsightsLoading = useSelector(selectInsightsDashboardLoading);
   const [selectedDataPoint, setSelectedDataPoint] = useState(null);
@@ -320,9 +319,8 @@ const DetailsPanel = ({ open, onClose, selectedInsightId }) => {
     () => insightDetails?.find((detail) => String(detail.insight_id) === String(selectedInsightId)),
     [insightDetails, selectedInsightId],
   );
-console.log('selectedInsightData', selectedInsightData);
+
   const dataPoints = useMemo(() => selectedInsightData?.data || [], [selectedInsightData]);
-  console.log('DATAPOINTS', dataPoints);
 
   const anomaly_type = useMemo(() => selectedDataPoint?.anomaly_type || 'normal', [selectedDataPoint]);
 

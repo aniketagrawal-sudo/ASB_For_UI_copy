@@ -2450,7 +2450,7 @@ const initialState = {
   reportsData: null,
   loading: {
     home: true,
-    insights: true,
+    insights: false,// again need to do true once real api data will come.
   },
   error: null,
   chartFilters: {},
