@@ -39,7 +39,7 @@ export default function UsageStatsTable({ users, search, onEdit, onDelete }) {
           {filtered.map((row) => (
             <TableRow key={row.id} hover className={styles.tableRow}>
               <TableCell sx={{ width: 260 }}>
-                <Typography fontWeight={600}>{row.username}</Typography>
+                {row.username}
               </TableCell>
               <TableCell>{row.description}</TableCell>
               <TableCell>{row.category}</TableCell>

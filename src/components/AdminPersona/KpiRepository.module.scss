@@ -47,12 +47,6 @@
   margin-right: -8px !important;
 }
 
-// .searchContainer {
-//   background-color: #ffffff;
-//   border-radius: 8px;
-//   border: 1px solid #f7f6f5;
-// }
-
 .searchContainer {
   background-color: #ffffff;
   border-radius: 8px;
@@ -74,20 +68,16 @@
   }
 }
 
-// .searchStackTextFiled {
-//     border: 1px solid #D0D0D0;
-//     color: #FFFFFF;
-// height: 26px;
-// opacity: 1;
-// border-radius: 4px;
-// border-width: 1px;
-// gap: 8px;
-// padding-top: 12px;
-// padding-right: 8px;
-// padding-bottom: 12px;
-// padding-left: 8px;
-// }
-
+.searchStackTextFiled {
+  border: 1px solid #d0d0d0;
+  color: #ffffff;
+  width: 35%;
+  min-width: 100px;
+  opacity: 1;
+  border-radius: 4px;
+  border-width: 1px;
+  gap: 8px;
+}
 
 /* Right-side buttons */
 .iconActions {

@@ -1,6 +1,7 @@
 .dialogueTitle {
 padding-right: 6px !important;
 color: #00a651 !important;
+font-size: 14px;
 }
 
 
@@ -21,6 +22,7 @@ color: #00a651 !important;
     color: #666 !important;
     border: 1px solid #ccc !important;
     background-color: #f9f9f9 !important;
+    font-size: 12px;
 
     &:hover {
       background-color: #efefef !important;
@@ -31,11 +33,16 @@ color: #00a651 !important;
   .saveBtn {
     background-color: #00a651 !important;
     color: white !important;
+    font-size: 12px;
 
     &:hover {
       background-color: #008b46 !important;
     }
   }
+}
+
+.dialogueTitleText {
+font-size: 12px;
 }
 
 .customDialogPaper {

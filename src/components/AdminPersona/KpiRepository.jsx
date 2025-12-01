@@ -9,6 +9,8 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import OnBoardKPIDialogue from './OnBoardKPIDialogue';
 import ConfirmDialog from '../../assets/ConfirmDialogBox/ConfirmDialog';
 import classes from './KpiRepository.module.scss';
+import { useDispatch } from 'react-redux';
+import { notifyViaSnackBar } from '../../redux/store/conversationSlice';
 
 const SAMPLE_USERS = [
   {
@@ -46,6 +48,7 @@ const SAMPLE_USERS = [
 ];
 
 const KpiRepository = () => {
+   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState('create'); // "create" | "edit"
   const [editingUser, setEditingUser] = useState(null);
@@ -121,6 +124,13 @@ const KpiRepository = () => {
       const updated = await res.json();
       if (updated && updated.id) {
         setUsers((prev) => prev.map((u) => (u.id === id ? updated : u)));
+          dispatch(
+        notifyViaSnackBar({
+          message: 'User updated successfully',
+          severity: 'success',
+          open: true,
+        })
+      );
       } else {
         // optimistic update if API did not return object
         setUsers((prev) =>
@@ -136,6 +146,13 @@ const KpiRepository = () => {
               : u,
           ),
         );
+          dispatch(
+        notifyViaSnackBar({
+          message: 'User updated successfully',
+          severity: 'success',
+          open: true,
+        })
+      );
       }
     } catch (err) {
       console.error('Error updating user:', err);
@@ -152,6 +169,14 @@ const KpiRepository = () => {
               }
             : u,
         ),
+      );
+      console.log("Snackbar firing");
+        dispatch(
+        notifyViaSnackBar({
+          message: 'Failed to update user',
+          severity: 'error',
+          open: true,
+        })
       );
     }
   };
@@ -207,7 +232,7 @@ const KpiRepository = () => {
   return (
     <div className={classes.kpiMainContainer}>
       <KpiRepositoryLists />
-      {/* <Box className={classes.TableContaier}>
+      <Box className={classes.TableContaier}>
         <Box sx={{ flex: 1 }}>
           <Box className={classes.KpisTableHeader}>
             <Typography
@@ -241,14 +266,14 @@ const KpiRepository = () => {
                   ),
                 }}
               />
-              <Stack direction="row" spacing={1} className={classes.iconActions}>
+              {/* <Stack direction="row" spacing={1} className={classes.iconActions}>
                 <IconButton>
                   <SortIcon /> Sort By
                 </IconButton>
                 <IconButton>
                   <FilterListIcon /> Filters
                 </IconButton>
-              </Stack>
+              </Stack> */}
             </Stack>
 
             <KpiRepositoryTable users={users} search={search} onEdit={handleEditOpen} onDelete={handleAskDelete} />
@@ -292,7 +317,7 @@ const KpiRepository = () => {
           }}
           onConfirm={handleConfirmDelete}
         />
-      </Box> */}
+      </Box>
     </div>
   );
 };

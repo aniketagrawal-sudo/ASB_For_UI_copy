@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   Dialog,
   DialogTitle,
@@ -14,37 +14,31 @@ import {
   IconButton,
   InputLabel,
   FormControl,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import classes from "./UsageStatsOnBoardKPIDialog.module.scss";
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import classes from './UsageStatsOnBoardKPIDialog.module.scss';
 
-export default function UsageStatsOnBoardKPIDialog({
-  open,
-  onClose,
-  onSave,
-  mode = "create",
-  initialValues,
-}) {
+export default function UsageStatsOnBoardKPIDialog({ open, onClose, onSave, mode = 'create', initialValues }) {
   const [form, setForm] = useState({
-    username: "",
-    description: "",
-    category: "",
-    persona: "",
+    username: '',
+    description: '',
+    category: '',
+    persona: '',
   });
 
   // Example dropdown options (in future you can fetch these dynamically from API)
-  const USER_OPTIONS = ["John Doe", "Jane Smith", "Rahul Verma", "Priya Nair"];
-  const CATEGORY_OPTIONS = ["Sales", "Finance", "Marketing", "Operations"];
-  const PERSONA_OPTIONS = ["Regional Manager", "Team Leader", "Analyst"];
+  const USER_OPTIONS = ['John Doe', 'Jane Smith', 'Rahul Verma', 'Priya Nair'];
+  const CATEGORY_OPTIONS = ['Sales', 'Finance', 'Marketing', 'Operations'];
+  const PERSONA_OPTIONS = ['Regional Manager', 'Team Leader', 'Analyst'];
 
   // Hydrate form whenever dialog opens or initialValues change
   useEffect(() => {
     if (open) {
       setForm({
-        username: initialValues?.username || "",
-        description: initialValues?.description || "",
-        category: initialValues?.category || "",
-        persona: initialValues?.persona || "",
+        username: initialValues?.username || '',
+        description: initialValues?.description || '',
+        category: initialValues?.category || '',
+        persona: initialValues?.persona || '',
       });
     }
   }, [open, initialValues]);
@@ -54,35 +48,29 @@ export default function UsageStatsOnBoardKPIDialog({
   return (
     <Dialog open={open} onClose={onClose} classes={{ paper: classes.customDialogPaper }}>
       <DialogTitle className={classes.dialogueTitle}>
-        {mode === "edit" ? "Edit KPI" : "Add New KPI"}
-        <DialogContentText sx={{ mb: 2 }}>
-          {mode === "edit"
-            ? "Edit any necessary KPI details and click on save"
-            : "Please input the necessary details and choose the Persona"}
+        {mode === 'edit' ? 'Edit KPI' : 'Add New KPI'}
+        <DialogContentText className={classes.dialogueTitleText}>
+          {mode === 'edit'
+            ? 'Edit any necessary KPI details and click on save'
+            : 'Please input the necessary details and choose the Persona'}
         </DialogContentText>
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{ position: "absolute", right: 8, top: 8 }}
-        >
-          <CloseIcon />
+        <IconButton aria-label="close" onClick={onClose} sx={{ position: 'absolute', right: 8, top: 8 }}>
+          <CloseIcon sx={{ fontSize: '14px' }} />
         </IconButton>
       </DialogTitle>
 
       <DialogContent dividers>
-        <Box sx={{ display: "grid", gap: 2 }}>
+        <Box sx={{ display: 'grid', gap: 2 }}>
           {/* Username dropdown */}
-          <FormControl fullWidth>
-            <InputLabel>User Name</InputLabel>
+          <FormControl fullWidth size="small">
+            <InputLabel sx={{ fontSize: '12px' }}>KPI Name</InputLabel>
             <Select
               label="User Name"
+              sx={{ fontSize: '12px' }}
               value={form.username}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, username: e.target.value }))
-              }
-            >
+              onChange={(e) => setForm((f) => ({ ...f, username: e.target.value }))}>
               {USER_OPTIONS.map((user) => (
-                <MenuItem key={user} value={user}>
+                <MenuItem  sx={{ fontSize: '12px' }} key={user} value={user}>
                   {user}
                 </MenuItem>
               ))}
@@ -91,28 +79,34 @@ export default function UsageStatsOnBoardKPIDialog({
 
           {/* Description */}
           <TextField
-            label="User Description"
+            size="small"
+            label="KPI Description"
             value={form.description}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, description: e.target.value }))
-            }
+            onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
             multiline
             minRows={3}
             fullWidth
+            sx={{
+              '& .MuiInputBase-input': {
+                fontSize: '12px',
+                padding: '6px 10px',
+              },
+              '& .MuiInputLabel-root': {
+                fontSize: '12px',
+              },
+            }}
           />
 
           {/* Category dropdown */}
-          <FormControl fullWidth>
-            <InputLabel>Category</InputLabel>
+          <FormControl fullWidth size="small">
+            <InputLabel sx={{ fontSize: '12px' }}>Category</InputLabel>
             <Select
-              label="Category"
+            sx={{ fontSize: '12px' }}
+              label="KPI Category"
               value={form.category}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, category: e.target.value }))
-              }
-            >
+              onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}>
               {CATEGORY_OPTIONS.map((cat) => (
-                <MenuItem key={cat} value={cat}>
+                <MenuItem sx={{ fontSize: '12px' }} key={cat} value={cat}>
                   {cat}
                 </MenuItem>
               ))}
@@ -120,17 +114,15 @@ export default function UsageStatsOnBoardKPIDialog({
           </FormControl>
 
           {/* Persona dropdown */}
-          <FormControl fullWidth>
-            <InputLabel>Persona</InputLabel>
+          <FormControl fullWidth size="small">
+            <InputLabel sx={{ fontSize: '12px' }}>Persona</InputLabel>
             <Select
+            sx={{ fontSize: '12px' }}
               label="Persona"
               value={form.persona}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, persona: e.target.value }))
-              }
-            >
+              onChange={(e) => setForm((f) => ({ ...f, persona: e.target.value }))}>
               {PERSONA_OPTIONS.map((role) => (
-                <MenuItem key={role} value={role}>
+                <MenuItem sx={{ fontSize: '12px' }} key={role} value={role}>
                   {role}
                 </MenuItem>
               ))}
@@ -143,13 +135,8 @@ export default function UsageStatsOnBoardKPIDialog({
         <Button onClick={onClose} variant="outlined" className={classes.cancelBtn}>
           Cancel
         </Button>
-        <Button
-          color="primary"
-          variant="contained"
-          className={classes.saveBtn}
-          onClick={handleSave}
-        >
-          {mode === "edit" ? "Save Changes" : "Add KPI"}
+        <Button color="primary" variant="contained" className={classes.saveBtn} onClick={handleSave}>
+          {mode === 'edit' ? 'Save Changes' : 'Add KPI'}
         </Button>
       </DialogActions>
     </Dialog>
@@ -160,7 +147,7 @@ UsageStatsOnBoardKPIDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  mode: PropTypes.oneOf(["create", "edit"]),
+  mode: PropTypes.oneOf(['create', 'edit']),
   initialValues: PropTypes.shape({
     username: PropTypes.string,
     description: PropTypes.string,
@@ -170,6 +157,6 @@ UsageStatsOnBoardKPIDialog.propTypes = {
 };
 
 UsageStatsOnBoardKPIDialog.defaultProps = {
-  mode: "create",
+  mode: 'create',
   initialValues: undefined,
 };

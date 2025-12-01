@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import UsageStatsKpiList from './UsageStatsKpiList';
 import UsageStatsTable from './UsageStatsTable';
-import { Typography, Box, TextField, InputAdornment, IconButton, Stack } from '@mui/material';
+import { Typography, Box, TextField, InputAdornment, IconButton, Stack, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import SortIcon from '@mui/icons-material/Sort';
 import FilterListIcon from '@mui/icons-material/FilterList';
-// import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import OnBoardKPIDialogue from './OnBoardKPIDialogue';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import UsageStatsOnBoardKPIDialog from './UsageStatsOnBoardKPIDialog';
 import ConfirmDialog from '../../assets/ConfirmDialogBox/ConfirmDialog';
 import classes from './UsageStats.module.scss';
 
@@ -171,11 +171,11 @@ const UsageStats = () => {
   };
 
   // handlers used by UI
-  // const handleCreateOpen = () => {
-  //   setDialogMode('create');
-  //   setEditingUser(null);
-  //   setOpen(true);
-  // };
+  const handleCreateOpen = () => {
+    setDialogMode('create');
+    setEditingUser(null);
+    setOpen(true);
+  };
 
   const handleEditOpen = (user) => {
     setDialogMode('edit');
@@ -206,24 +206,24 @@ const UsageStats = () => {
 
   return (
     <div className={classes.kpiMainContainer}>
-      {/* <UsageStatsKpiList /> */}
+      <UsageStatsKpiList />
       <Box className={classes.TableContaier}>
         <Box sx={{ flex: 1 }}>
           <Box className={classes.KpisTableHeader}>
-            {/* <Typography
+            <Typography
               className={classes.headerTitle}
               >
               User List
-            </Typography> */}
-            {/* <Button
+            </Typography>
+            <Button
                className={classes.addButton}
               startIcon={<AddCircleOutlineIcon className={classes.addIcon} />}
               onClick={handleCreateOpen}>
               Add KPI
-            </Button> */}
+            </Button>
           </Box>
 
-          {/* <Box className={classes.searchContainer}>
+          <Box className={classes.searchContainer}>
             <Stack
               className={classes.searchStack}
               >
@@ -241,18 +241,18 @@ const UsageStats = () => {
                   ),
                 }}
               />
-              <Stack direction="row" spacing={1} className={classes.iconActions}>
+              {/* <Stack direction="row" spacing={1} className={classes.iconActions}>
                 <IconButton>
                   <SortIcon /> Sort By
                 </IconButton>
                 <IconButton>
                   <FilterListIcon /> Filters
                 </IconButton>
-              </Stack>
+              </Stack> */}
             </Stack>
 
             <UsageStatsTable users={users} search={search} onEdit={handleEditOpen} onDelete={handleAskDelete} />
-          </Box> */}
+          </Box>
 
           {loading && <Typography sx={{ mt: 2 }}>Loading users...</Typography>}
           {error && (
@@ -262,7 +262,7 @@ const UsageStats = () => {
           )}
         </Box>
 
-        <OnBoardKPIDialogue
+        <UsageStatsOnBoardKPIDialog
           open={open}
           onClose={() => setOpen(false)}
           onSave={handleSave}
