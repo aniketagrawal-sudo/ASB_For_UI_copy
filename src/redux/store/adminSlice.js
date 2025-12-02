@@ -61,11 +61,73 @@ const initialState = {
     status: 'Active',
   },
 ],
+adminUsageStatsKPIList: [
+    {
+      title: "Total Users", 
+      value: "1247", 
+      changeText: "10 new users ", 
+      isPositive: true,
+    },
+    {
+      title: "Avg Time Spent", 
+      value: "6.5Hrs", 
+      changeText: "1.5% MoM", 
+      isPositive: true,
+    },
+    {
+      title: "Active Users", 
+      value: "923", 
+      changeText: "-10 users", 
+      isPositive: false,
+    },
+    {
+      title: "Unique Logins", 
+      value: "124", 
+      changeText: "4 new unique logins", 
+      isPositive: true, 
+    },
+  ],
+adminUsageStatsTableList: [
+  {
+    id: '1',
+    username: 'William Anderson',
+    description: 'VP - Commercial Banking',
+    category: 'OKR',
+    persona: 'Regional Manager',
+    status: 'In-Active',
+  },
+  {
+    id: '2',
+    username: 'Mia White',
+    description: 'VP - Commercial Banking',
+    category: 'Widget',
+    persona: 'Regional Manager',
+    status: 'Active',
+  },
+  {
+    id: '3',
+    username: 'Neha Kapoor',
+    description: 'Team Leader',
+    category: 'Chart',
+    persona: 'Regional Manager',
+    status: 'Active',
+  },
+  {
+    id: '4',
+    username: 'Emily Johnson',
+    description: 'Team Leader',
+    category: 'Dashboard Metric',
+    persona: 'Regional Manager',
+    status: 'Active',
+  },
+],
+
   // Personas management
   personas: [],
   selectedPersona: null,
 
-  // BI dashboards management
+  // BI dashboards ma
+  // nagement
   biDashboards: [],
   selectedBiDashboard: null,
 
@@ -191,8 +253,15 @@ const adminSlice = createSlice({
       setAdminKpiTableList: (state, action) => {
       state.adminKpiTableList = action.payload;
     },
-  
 
+      setAdminUsageStatsKPIList: (state, action) => {
+      state.adminUsageStatsKPIList = action.payload;
+    },
+
+      setAdminUsageStatsTableList: (state, action) => {
+      state.adminUsageStatsTableList = action.payload;
+    },
+  
     // Selection actions - for setting selected items
     selectPersona: (state, action) => {
       state.selectedPersona = action.payload;
@@ -304,7 +373,9 @@ export const {
   resetUpdateStatus,
   resetAdminData,
   setAdminKPIList,
-  setAdminKpiTableList
+  setAdminKpiTableList,
+  setAdminUsageStatsTableList,
+  setAdminUsageStatsKPIList
 } = adminSlice.actions;
 
 // Export selectors
@@ -331,6 +402,14 @@ export const selectAdminKPIList = (state) => {
 
 export const selectAdminKpiTableList = (state) => {
   return state.admin?.adminKpiTableList || [];
+};
+
+export const selectAdminUsageStatsTableList = (state) => {
+  return state.admin?.adminUsageStatsTableList || [];
+};
+
+export const selectAdminUsageStatsKPIList = (state) => {
+  return state.admin?.adminUsageStatsKPIList || [];
 };
 
 // Helper selectors for specific loading states

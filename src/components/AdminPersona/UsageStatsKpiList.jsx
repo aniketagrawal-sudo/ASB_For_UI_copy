@@ -2,37 +2,12 @@ import PropTypes from "prop-types";
 import classes from './KpiRepositoryList.module.scss';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { useSelector } from "react-redux";
+import { selectAdminUsageStatsKPIList } from "../../redux/store/adminSlice";
 
 const UsageStatsKpiList = () => {
- const kpiData = [
-    {
-      title: "Total Users", 
-      value: "1247", 
-      changeText: "10 new users ", 
-      isPositive: true,
-    },
-    {
-      title: "Avg Time Spent", 
-      value: "6.5Hrs", 
-      changeText: "1.5% MoM", 
-      isPositive: true,
-    },
-    {
-      title: "Active Users", 
-      value: "923", 
-      changeText: "-10 users", 
-      isPositive: false,
-    },
-    {
-      title: "Unique Logins", 
-      value: "124", 
-      changeText: "4 new unique logins", 
-      isPositive: true, 
-    },
-  ];
-
-  // Inner component for KPI Card
-  const KPICard = ({ title, value, changeText, isPositive }) => {
+  const kpiData = useSelector(selectAdminUsageStatsKPIList);
+ const KPICard = ({ title, value, changeText, isPositive }) => {
     return (
       <div className={classes["kpi-card"]}>
         <h3 className={classes["kpi-title"]}>{title}</h3>

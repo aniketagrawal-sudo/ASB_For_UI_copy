@@ -9,43 +9,11 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import UsageStatsOnBoardKPIDialog from './UsageStatsOnBoardKPIDialog';
 import ConfirmDialog from '../../assets/ConfirmDialogBox/ConfirmDialog';
 import classes from './UsageStats.module.scss';
-
-const SAMPLE_USERS = [
-  {
-    id: '1',
-    username: 'William Anderson',
-    description: 'VP - Commercial Banking',
-    category: 'OKR',
-    persona: 'Regional Manager',
-    status: 'In-Active',
-  },
-  {
-    id: '2',
-    username: 'Mia White',
-    description: 'VP - Commercial Banking',
-    category: 'Widget',
-    persona: 'Regional Manager',
-    status: 'Active',
-  },
-  {
-    id: '3',
-    username: 'Neha Kapoor',
-    description: 'Team Leader',
-    category: 'Chart',
-    persona: 'Regional Manager',
-    status: 'Active',
-  },
-  {
-    id: '4',
-    username: 'Emily Johnson',
-    description: 'Team Leader',
-    category: 'Dashboard Metric',
-    persona: 'Regional Manager',
-    status: 'Active',
-  },
-];
+import { useSelector } from 'react-redux';
+import { selectAdminUsageStatsTableList } from '../../redux/store/adminSlice';
 
 const UsageStats = () => {
+  const SAMPLE_USERS = useSelector(selectAdminUsageStatsTableList);
   const [open, setOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState('create'); // "create" | "edit"
   const [editingUser, setEditingUser] = useState(null);
@@ -63,9 +31,7 @@ const UsageStats = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/users');
-      if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
-      const data = await res.json();
+      const data = SAMPLE_USERS;
       setUsers(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Failed to fetch users, falling back to sample users', err);
