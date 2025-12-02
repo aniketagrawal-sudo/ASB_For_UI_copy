@@ -1,3 +1,4 @@
+import React from "react";
 import PropTypes from "prop-types";
 import classes from './KpiRepositoryList.module.scss';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
