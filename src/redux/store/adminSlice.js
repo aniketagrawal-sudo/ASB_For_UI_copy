@@ -1,6 +1,66 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  adminKPIList: [
+    {
+      title: "Total KPI",
+      value: 25,
+      changeText: "3 more than Previous Month",
+      isPositive: true,
+    },
+    {
+      title: "Assigned KPIs",
+      value: 19,
+      changeText: "3 more than Previous Month",
+      isPositive: true,
+    },
+    {
+      title: "Unassigned KPIs",
+      value: 6,
+      changeText: "2 less than Previous Month",
+      isPositive: false,
+    },
+    {
+      title: "Categories",
+      value: 3,
+      changeText: "No New Categories since March",
+      isPositive: false,
+    },
+  ],
+  adminKpiTableList: [
+  {
+    id: '1',
+    username: 'William Anderson',
+    description: 'VP - Commercial Banking',
+    category: 'OKR',
+    persona: 'Regional Manager',
+    status: 'In-Active',
+  },
+  {
+    id: '2',
+    username: 'Mia White',
+    description: 'VP - Commercial Banking',
+    category: 'Widget',
+    persona: 'Regional Manager',
+    status: 'Active',
+  },
+  {
+    id: '3',
+    username: 'Neha Kapoor',
+    description: 'Team Leader',
+    category: 'Chart',
+    persona: 'Regional Manager',
+    status: 'Active',
+  },
+  {
+    id: '4',
+    username: 'Emily Johnson',
+    description: 'Team Leader',
+    category: 'Dashboard Metric',
+    persona: 'Regional Manager',
+    status: 'Active',
+  },
+],
   // Personas management
   personas: [],
   selectedPersona: null,
@@ -123,6 +183,15 @@ const adminSlice = createSlice({
       state.loading.appConfig = false;
       state.errors.appConfig = null;
     },
+ 
+      setAdminKPIList: (state, action) => {
+      state.adminKPIList = action.payload;
+    },
+
+      setAdminKpiTableList: (state, action) => {
+      state.adminKpiTableList = action.payload;
+    },
+  
 
     // Selection actions - for setting selected items
     selectPersona: (state, action) => {
@@ -140,6 +209,8 @@ const adminSlice = createSlice({
     selectUser: (state, action) => {
       state.selectedUser = action.payload;
     },
+
+
 
     // Loading state actions
     setLoading: (state, action) => {
@@ -232,6 +303,8 @@ export const {
   setUpdateError,
   resetUpdateStatus,
   resetAdminData,
+  setAdminKPIList,
+  setAdminKpiTableList
 } = adminSlice.actions;
 
 // Export selectors
@@ -251,6 +324,14 @@ export const selectSelectedUser = (state) => state.admin.selectedUser;
 export const selectAdminLoading = (state) => state.admin.loading;
 export const selectAdminErrors = (state) => state.admin.errors;
 export const selectAdminUpdateStatus = (state) => state.admin.updateStatus;
+
+export const selectAdminKPIList = (state) => {
+  return state.admin?.adminKPIList || [];
+};
+
+export const selectAdminKpiTableList = (state) => {
+  return state.admin?.adminKpiTableList || [];
+};
 
 // Helper selectors for specific loading states
 export const selectPersonasLoading = (state) => state.admin.loading.personas;

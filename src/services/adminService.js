@@ -1,3 +1,4 @@
+import { setAdminKPIList } from '../redux/store/adminSlice';
 import { api } from './api';
 
 /**
@@ -131,6 +132,89 @@ export const adminApi = api.injectEndpoints({
       }),
       invalidatesTags: ['AdminConfig'],
     }),
+
+     getAdminKPIDetails: builder.query({
+          query: () => ({
+            url: `/api/dashboard/adminKPIList`,
+            method: 'GET',
+          }),
+    
+          // --- Transform success responses ---
+          transformResponse: (response) => {
+            const dummyData = [
+    {
+      title: "Total KPI",
+      value: 25,
+      changeText: "3 more than Previous Month",
+      isPositive: true,
+    },
+    {
+      title: "Assigned KPIs",
+      value: 19,
+      changeText: "3 more than Previous Month",
+      isPositive: true,
+    },
+    {
+      title: "Unassigned KPIs",
+      value: 6,
+      changeText: "2 less than Previous Month",
+      isPositive: false,
+    },
+    {
+      title: "Categories",
+      value: 3,
+      changeText: "No New Categories since March",
+      isPositive: false,
+    },
+  ];
+    
+            // If response is NOT array → send dummy
+            // if (!Array.isArray(response)) return dummyData;
+    
+            // If empty return dummy
+            if (response.length === 0) return dummyData;
+    
+            return response; // Real API data
+          },
+    
+          // Handle SUCCESS AND FAILURES
+          async onQueryStarted(_, { dispatch, queryFulfilled }) {
+            try {
+              const { data } = await queryFulfilled; // already transformed
+              dispatch(setAdminKPIList(data));
+            } catch (err) {
+              // Prepare fallback dummy
+              const dummyData = [
+    {
+      title: "Total KPI",
+      value: 25,
+      changeText: "3 more than Previous Month",
+      isPositive: true,
+    },
+    {
+      title: "Assigned KPIs",
+      value: 19,
+      changeText: "3 more than Previous Month",
+      isPositive: true,
+    },
+    {
+      title: "Unassigned KPIs",
+      value: 6,
+      changeText: "2 less than Previous Month",
+      isPositive: false,
+    },
+    {
+      title: "Categories",
+      value: 3,
+      changeText: "No New Categories since March",
+      isPositive: false,
+    },
+  ];
+              dispatch(setAdminKPIList(dummyData));
+              dispatch(setError(err.message || 'Failed to fetch engagement details'));
+            }
+          },
+        }),
   }),
 });
 
@@ -148,4 +232,5 @@ export const {
   useResetUserAccessMutation,
   useGetAppConfigQuery,
   useUpdateAppConfigMutation,
+  useGetAdminKPIDetailsQuery,
 } = adminApi;
