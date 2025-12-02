@@ -1,13 +1,13 @@
 // src/pages/AdminLanding/Components/adminMenuConfig.js
 
-import DashboardIcon from '../../../../assets/Sidepanel/DashboardIcon.svg';
 import InsightsIcon from '../../../../assets/Sidepanel/InsightsIcon.svg';
+import KpiRepository from '../../../../assets/Sidepanel/KpiRepository.png';
 
 export const ADMIN_MENU_CONFIG = [
   {
     id: 'kpi',
     label: 'KPI Repository',
-    icon: DashboardIcon,
+    icon: KpiRepository,
     component: 'KpiRepository', // reference by name
   },
   {
