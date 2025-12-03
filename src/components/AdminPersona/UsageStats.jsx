@@ -11,6 +11,8 @@ import ConfirmDialog from '../../assets/ConfirmDialogBox/ConfirmDialog';
 import classes from './UsageStats.module.scss';
 import { useSelector } from 'react-redux';
 import { selectAdminUsageStatsTableList } from '../../redux/store/adminSlice';
+import sortIcon from '../../assets/sortIcon.png';
+import filterIcons from '../../assets/filerIcons.png';
 
 const UsageStats = () => {
   const SAMPLE_USERS = useSelector(selectAdminUsageStatsTableList);
@@ -25,6 +27,7 @@ const UsageStats = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [sortConfig, setSortConfig] = useState({ key: 'username', direction: 'asc' });
 
   // Fetch users from API
   const fetchUsers = async () => {
@@ -95,8 +98,8 @@ const UsageStats = () => {
               ? {
                   ...u,
                   username: userPayload.username || u.username,
-                   description: userPayload.description || '—',
-        category: userPayload.category || '—',
+                  description: userPayload.description || '—',
+                  category: userPayload.category || '—',
                   persona: userPayload.persona || u.persona,
                 }
               : u,
@@ -112,8 +115,8 @@ const UsageStats = () => {
             ? {
                 ...u,
                 username: userPayload.username || u.username,
-                 description: userPayload.description || '—',
-        category: userPayload.category || '—',
+                description: userPayload.description || '—',
+                category: userPayload.category || '—',
                 persona: userPayload.persona || u.persona,
               }
             : u,
@@ -170,19 +173,26 @@ const UsageStats = () => {
     setToDelete(null);
   };
 
+  const sortedUsers = [...users]
+    .filter((u) => u.username?.toLowerCase().includes(search.toLowerCase()))
+    .sort((a, b) => {
+      const { key, direction } = sortConfig;
+      const dir = direction === 'asc' ? 1 : -1;
+
+      if (a[key] < b[key]) return -1 * dir;
+      if (a[key] > b[key]) return 1 * dir;
+      return 0;
+    });
+
   return (
     <div className={classes.kpiMainContainer}>
       <UsageStatsKpiList />
       <Box className={classes.TableContaier}>
         <Box sx={{ flex: 1 }}>
           <Box className={classes.KpisTableHeader}>
-            <Typography
-              className={classes.headerTitle}
-              >
-              User List
-            </Typography>
+            <Typography className={classes.headerTitle}>User List</Typography>
             <Button
-               className={classes.addButton}
+              className={classes.addButton}
               startIcon={<AddCircleOutlineIcon className={classes.addIcon} />}
               onClick={handleCreateOpen}>
               Add KPI
@@ -190,9 +200,7 @@ const UsageStats = () => {
           </Box>
 
           <Box className={classes.searchContainer}>
-            <Stack
-              className={classes.searchStack}
-              >
+            <Stack className={classes.searchStack}>
               <TextField
                 placeholder="Search KPIs..."
                 value={search}
@@ -207,17 +215,25 @@ const UsageStats = () => {
                   ),
                 }}
               />
-              {/* <Stack direction="row" spacing={1} className={classes.iconActions}>
-                <IconButton>
-                  <SortIcon /> Sort By
+              <Stack direction="row" spacing={1} className={classes.iconActions}>
+                <IconButton
+                  className={classes.sortIconWrapper}
+                  onClick={() =>
+                    setSortConfig((prev) => ({
+                      key: 'username', // sorted column
+                      direction: prev.direction === 'asc' ? 'desc' : 'asc',
+                    }))
+                  }>
+                  <img className={classes.sortIcon} src={sortIcon} alt="Sort Icon" /> Sort by
                 </IconButton>
-                <IconButton>
-                  <FilterListIcon /> Filters
+                <IconButton className={classes.sortIconWrapper}>
+                  <img className={classes.sortIcon} src={filterIcons} alt="Filter Icon" />
+                  Filters
                 </IconButton>
-              </Stack> */}
+              </Stack>
             </Stack>
 
-            <UsageStatsTable users={users} search={search} onEdit={handleEditOpen} onDelete={handleAskDelete} />
+            <UsageStatsTable users={sortedUsers} search={search} onEdit={handleEditOpen} onDelete={handleAskDelete} />
           </Box>
 
           {loading && <Typography sx={{ mt: 2 }}>Loading users...</Typography>}
@@ -249,7 +265,9 @@ const UsageStats = () => {
           open={confirmOpen}
           title="Are you sure you want to delete?"
           description={
-            toDelete ? `This will permanently remove ${toDelete.username}. Please click on delete to confirm.` : undefined
+            toDelete
+              ? `This will permanently remove ${toDelete.username}. Please click on delete to confirm.`
+              : undefined
           }
           confirmText="Delete"
           onCancel={() => {
