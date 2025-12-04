@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -47,7 +48,7 @@ export default function UsageStatsOnBoardKPIDialog({ open, onClose, onSave, mode
 
   return (
     <Dialog open={open} onClose={onClose} classes={{ paper: classes.customDialogPaper }}>
-      <DialogTitle className={classes.dialogueTitle}>
+      <DialogTitle  data-testId='kpiBoardTitle' className={classes.dialogueTitle}>
         {mode === 'edit' ? 'Edit KPI' : 'Add New KPI'}
         <DialogContentText className={classes.dialogueTitleText}>
           {mode === 'edit'
@@ -65,6 +66,7 @@ export default function UsageStatsOnBoardKPIDialog({ open, onClose, onSave, mode
           <FormControl fullWidth size="small">
             <InputLabel sx={{ fontSize: '12px' }}>KPI Name</InputLabel>
             <Select
+            data-testid="username-select"
               label="User Name"
               sx={{ fontSize: '12px' }}
               value={form.username}
@@ -79,6 +81,7 @@ export default function UsageStatsOnBoardKPIDialog({ open, onClose, onSave, mode
 
           {/* Description */}
           <TextField
+          data-testid="description-input"
             size="small"
             label="KPI Description"
             value={form.description}
@@ -101,6 +104,7 @@ export default function UsageStatsOnBoardKPIDialog({ open, onClose, onSave, mode
           <FormControl fullWidth size="small">
             <InputLabel sx={{ fontSize: '12px' }}>Category</InputLabel>
             <Select
+             data-testid="category-select"
             sx={{ fontSize: '12px' }}
               label="KPI Category"
               value={form.category}
@@ -117,6 +121,7 @@ export default function UsageStatsOnBoardKPIDialog({ open, onClose, onSave, mode
           <FormControl fullWidth size="small">
             <InputLabel sx={{ fontSize: '12px' }}>Persona</InputLabel>
             <Select
+             data-testid="persona-select"
             sx={{ fontSize: '12px' }}
               label="Persona"
               value={form.persona}
@@ -132,10 +137,10 @@ export default function UsageStatsOnBoardKPIDialog({ open, onClose, onSave, mode
       </DialogContent>
 
       <DialogActions className={classes.dialogActions}>
-        <Button onClick={onClose} variant="outlined" className={classes.cancelBtn}>
+        <Button data-testid="cancel-btn" onClick={onClose} variant="outlined" className={classes.cancelBtn}>
           Cancel
         </Button>
-        <Button color="primary" variant="contained" className={classes.saveBtn} onClick={handleSave}>
+        <Button data-testid="save-btn" color="primary" variant="contained" className={classes.saveBtn} onClick={handleSave}>
           {mode === 'edit' ? 'Save Changes' : 'Add KPI'}
         </Button>
       </DialogActions>
