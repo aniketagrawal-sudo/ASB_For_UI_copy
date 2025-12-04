@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import UsageStatsKpiList from './UsageStatsKpiList';
 import UsageStatsTable from './UsageStatsTable';
-import { Typography, Box, TextField, InputAdornment, IconButton, Stack, Button } from '@mui/material';
+import { Typography, Box, TextField, InputAdornment, IconButton, Stack, Button,  Drawer,
+  Badge,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem, } from '@mui/material';
+  import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
-import SortIcon from '@mui/icons-material/Sort';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import UsageStatsOnBoardKPIDialog from './UsageStatsOnBoardKPIDialog';
 import ConfirmDialog from '../../assets/ConfirmDialogBox/ConfirmDialog';
@@ -29,7 +33,12 @@ const UsageStats = () => {
   const [error, setError] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: 'username', direction: 'asc' });
 
-  // Fetch users from API
+    const [openFilters, setOpenFilters] = useState(false);
+    const [filterConfig, setFilterConfig] = useState([]);
+
+    const [filters, setFilters] = useState({});
+    const [tempFilters, setTempFilters] = useState({});
+
   const fetchUsers = async () => {
     setLoading(true);
     setError(null);
@@ -39,7 +48,6 @@ const UsageStats = () => {
     } catch (err) {
       console.error('Failed to fetch users, falling back to sample users', err);
       setError(err.message || 'Failed to fetch users');
-      // fallback
       setUsers(SAMPLE_USERS);
     } finally {
       setLoading(false);
@@ -50,7 +58,6 @@ const UsageStats = () => {
     fetchUsers();
   }, []);
 
-  // Create user
   const createUser = async (userPayload) => {
     try {
       const res = await fetch('/api/users', {
@@ -65,7 +72,6 @@ const UsageStats = () => {
       else fetchUsers();
     } catch (err) {
       console.error('Error creating user:', err);
-      // fallback: add locally with generated id
       const fallback = {
         id: String(Date.now()),
         username: userPayload.username || `User ${users.length + 1}`,
@@ -78,7 +84,6 @@ const UsageStats = () => {
     }
   };
 
-  // Update user
   const updateUser = async (id, userPayload) => {
     try {
       const res = await fetch(`/api/users/${id}`, {
@@ -125,21 +130,17 @@ const UsageStats = () => {
     }
   };
 
-  // Delete user
   const deleteUser = async (id) => {
     try {
       const res = await fetch(`/api/users/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error(`Delete failed: ${res.status}`);
-      // remove from state
       setUsers((prev) => prev.filter((u) => u.id !== id));
     } catch (err) {
       console.error('Error deleting user:', err);
-      // fallback: remove locally anyway
       setUsers((prev) => prev.filter((u) => u.id !== id));
     }
   };
 
-  // handlers used by UI
   const handleCreateOpen = () => {
     setDialogMode('create');
     setEditingUser(null);
@@ -173,16 +174,78 @@ const UsageStats = () => {
     setToDelete(null);
   };
 
-  const sortedUsers = [...users]
-    .filter((u) => u.username?.toLowerCase().includes(search.toLowerCase()))
-    .sort((a, b) => {
-      const { key, direction } = sortConfig;
-      const dir = direction === 'asc' ? 1 : -1;
+    useEffect(() => {
+      if (!users || users.length === 0) {
+        setFilterConfig([]);
+        setFilters({});
+        return;
+      }
+  
+      const first = users[0];
+      const excludeKeys = new Set(['id', 'createdAt', 'updatedAt']);
+      const keys = Object.keys(first).filter((k) => !excludeKeys.has(k));
+  
+      const cfg = keys.map((key) => {
+        const label = key.charAt(0).toUpperCase() + key.slice(1);
+        const optionsSet = new Set();
+        users.forEach((u) => {
+          const val = u[key];
+          if (val !== undefined && val !== null && String(val).trim() !== '') optionsSet.add(String(val));
+        });
+        const options = Array.from(optionsSet).sort((a, b) => a.localeCompare(b));
+        return { key, label, options };
+      });
+  
+      setFilterConfig(cfg);
+  
+      setFilters((prev) => {
+        const next = { ...prev };
+        cfg.forEach((c) => {
+          if (!(c.key in next)) next[c.key] = '';
+        });
+        Object.keys(next).forEach((k) => {
+          if (!cfg.find((c) => c.key === k)) delete next[k];
+        });
+        return next;
+      });
+    }, [users]);
 
-      if (a[key] < b[key]) return -1 * dir;
-      if (a[key] > b[key]) return 1 * dir;
-      return 0;
-    });
+   const filteredSortedUsers = useMemo(() => {
+     const text = (search || '').trim().toLowerCase();
+ 
+     return [...users]
+       .filter((u) => {
+         if (!text) return true;
+         const searchFields = ['username', 'description', 'category', 'persona'];
+         return searchFields.some((f) =>
+           String(u[f] || '')
+             .toLowerCase()
+             .includes(text),
+         );
+       })
+       .filter((u) =>
+         Object.keys(filters).every((k) => {
+           const filterVal = filters[k];
+           if (!filterVal) return true;
+           const userVal = u[k];
+           return String(userVal ?? '').toLowerCase() === String(filterVal).toLowerCase();
+         }),
+       )
+       .sort((a, b) => {
+         const { key, direction } = sortConfig;
+         if (!key) return 0;
+         const va = String(a[key] ?? '').toLowerCase();
+         const vb = String(b[key] ?? '').toLowerCase();
+         if (va < vb) return direction === 'asc' ? -1 : 1;
+         if (va > vb) return direction === 'asc' ? 1 : -1;
+         return 0;
+       });
+   }, [users, search, filters, sortConfig]);
+
+  const handleOpenFilters = () => {
+    setTempFilters({ ...filters });
+    setOpenFilters(true);
+  };
 
   return (
     <div className={classes.kpiMainContainer}>
@@ -226,15 +289,77 @@ const UsageStats = () => {
                   }>
                   <img className={classes.sortIcon} src={sortIcon} alt="Sort Icon" /> Sort by
                 </IconButton>
-                <IconButton className={classes.sortIconWrapper}>
-                  <img className={classes.sortIcon} src={filterIcons} alt="Filter Icon" />
+               <IconButton className={classes.sortIconWrapper} onClick={handleOpenFilters}>
+                  <Badge badgeContent={Object.values(filters).filter(Boolean).length} color="primary">
+                    <img className={classes.sortIcon} src={filterIcons} alt="Filter Icon" />
+                  </Badge>
                   Filters
                 </IconButton>
               </Stack>
             </Stack>
 
-            <UsageStatsTable users={sortedUsers} search={search} onEdit={handleEditOpen} onDelete={handleAskDelete} />
+            <UsageStatsTable users={filteredSortedUsers} search={search} onEdit={handleEditOpen} onDelete={handleAskDelete} />
           </Box>
+
+ {/* Filter Drawer */}
+            <Drawer classes={{ paper: classes.customDialogPaper }} anchor="right" open={openFilters} onClose={() => setOpenFilters(false)}>
+              <Box sx={{ p: 2 }}>
+                <IconButton
+                  onClick={() => setOpenFilters(false)}
+                  sx={{
+                    position: 'absolute',
+                    top: 8,
+                    right: 8,
+                  }}>
+                  <CloseIcon />
+                </IconButton>
+                <Typography className={classes.dialogueTitle} variant="h6">Filters</Typography>
+
+                {filterConfig.map((cfg) => (
+                  <FormControl fullWidth sx={{ mt: 2 }} key={cfg.key}>
+                    <InputLabel fullWidth sx={{ fontSize: '12px' }}>{cfg.label}</InputLabel>
+                    <Select
+                    // size="small"
+                    sx={{ fontSize: '12px' }}
+                    fullWidth
+                      value={tempFilters[cfg.key] ?? ''}
+                      label={cfg.label}
+                      onChange={(e) => setTempFilters((prev) => ({ ...prev, [cfg.key]: e.target.value }))}>
+                      {cfg.options.map((op) => (
+                        <MenuItem fullWidth sx={{ fontSize: '12px' }} key={op} value={op}>
+                          {op}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                ))}
+
+                <Stack className={classes.dialogActions} direction="row" spacing={1} sx={{ mt: 3 }}>
+                  <Button
+                  className={classes.saveBtn} 
+                    variant="contained"
+                    fullWidth
+                    onClick={() => {
+                      setFilters({ ...tempFilters });
+                      setOpenFilters(false);
+                    }}>
+                    Apply
+                  </Button>
+                  <Button
+                  className={classes.cancelBtn}
+                    variant="outlined"
+                    fullWidth
+                    onClick={() => {
+                      const reset = {};
+                      filterConfig.forEach((c) => (reset[c.key] = ''));
+                      setTempFilters(reset);
+                      setFilters(reset);
+                    }}>
+                    Reset
+                  </Button>
+                </Stack>
+              </Box>
+            </Drawer>
 
           {loading && <Typography sx={{ mt: 2 }}>Loading users...</Typography>}
           {error && (

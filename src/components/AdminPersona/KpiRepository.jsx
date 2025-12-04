@@ -16,9 +16,8 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
-import SortIcon from '@mui/icons-material/Sort';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import OnBoardKPIDialogue from './OnBoardKPIDialogue';
 import ConfirmDialog from '../../assets/ConfirmDialogBox/ConfirmDialog';
@@ -45,19 +44,11 @@ const KpiRepository = () => {
   const [error, setError] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: 'username', direction: 'asc' });
 
-  // Drawer open/close state
   const [openFilters, setOpenFilters] = useState(false);
-
-  // Dynamic filter config (auto-generated from API data)
   const [filterConfig, setFilterConfig] = useState([]);
-
-  // Applied filter values
   const [filters, setFilters] = useState({});
-
-  // Temporary filter values inside drawer
   const [tempFilters, setTempFilters] = useState({});
 
-  // Fetch users from API
   const fetchUsers = async () => {
     setLoading(true);
     setError(null);
@@ -77,7 +68,6 @@ const KpiRepository = () => {
     fetchUsers();
   }, []);
 
-  // Create user
   const createUser = async (userPayload) => {
     try {
       const res = await fetch('/api/users', {
@@ -103,7 +93,6 @@ const KpiRepository = () => {
     }
   };
 
-  // Update user
   const updateUser = async (id, userPayload) => {
     try {
       const res = await fetch(`/api/users/${id}`, {
@@ -169,7 +158,6 @@ const KpiRepository = () => {
     }
   };
 
-  // Delete user
   const deleteUser = async (id) => {
     try {
       const res = await fetch(`/api/users/${id}`, { method: 'DELETE' });
@@ -181,7 +169,6 @@ const KpiRepository = () => {
     }
   };
 
-  // handlers used by UI
   const handleCreateOpen = () => {
     setDialogMode('create');
     setEditingUser(null);
@@ -215,7 +202,6 @@ const KpiRepository = () => {
     setToDelete(null);
   };
 
-  // Generate filter config dynamically
   useEffect(() => {
     if (!users || users.length === 0) {
       setFilterConfig([]);
@@ -252,7 +238,6 @@ const KpiRepository = () => {
     });
   }, [users]);
 
-  // Filtered + sorted + searched users
   const filteredSortedUsers = useMemo(() => {
     const text = (search || '').trim().toLowerCase();
 
@@ -285,7 +270,6 @@ const KpiRepository = () => {
       });
   }, [users, search, filters, sortConfig]);
 
-  // Open filter drawer with temp filters
   const handleOpenFilters = () => {
     setTempFilters({ ...filters });
     setOpenFilters(true);
@@ -338,7 +322,7 @@ const KpiRepository = () => {
                   <Badge badgeContent={Object.values(filters).filter(Boolean).length} color="primary">
                     <img className={classes.sortIcon} src={filterIcons} alt="Filter Icon" />
                   </Badge>
-                    Filters
+                  Filters
                 </IconButton>
               </Stack>
             </Stack>
@@ -351,19 +335,31 @@ const KpiRepository = () => {
             />
 
             {/* Filter Drawer */}
-            <Drawer anchor="right" open={openFilters} onClose={() => setOpenFilters(false)}>
-              <Box sx={{ width: 320, p: 2 }}>
-                <Typography variant="h6">Filters</Typography>
+            <Drawer classes={{ paper: classes.customDialogPaper }} anchor="right" open={openFilters} onClose={() => setOpenFilters(false)}>
+              <Box sx={{ p: 2 }}>
+                <IconButton
+                  onClick={() => setOpenFilters(false)}
+                  sx={{
+                    position: 'absolute',
+                    top: 8,
+                    right: 8,
+                  }}>
+                  <CloseIcon />
+                </IconButton>
+                <Typography className={classes.dialogueTitle} variant="h6">Filters</Typography>
 
                 {filterConfig.map((cfg) => (
                   <FormControl fullWidth sx={{ mt: 2 }} key={cfg.key}>
-                    <InputLabel>{cfg.label}</InputLabel>
+                    <InputLabel fullWidth sx={{ fontSize: '12px' }}>{cfg.label}</InputLabel>
                     <Select
+                    // size="small"
+                    sx={{ fontSize: '12px' }}
+                    fullWidth
                       value={tempFilters[cfg.key] ?? ''}
                       label={cfg.label}
                       onChange={(e) => setTempFilters((prev) => ({ ...prev, [cfg.key]: e.target.value }))}>
                       {cfg.options.map((op) => (
-                        <MenuItem key={op} value={op}>
+                        <MenuItem fullWidth sx={{ fontSize: '12px' }} key={op} value={op}>
                           {op}
                         </MenuItem>
                       ))}
@@ -371,8 +367,9 @@ const KpiRepository = () => {
                   </FormControl>
                 ))}
 
-                <Stack direction="row" spacing={1} sx={{ mt: 3 }}>
+                <Stack className={classes.dialogActions} direction="row" spacing={1} sx={{ mt: 3 }}>
                   <Button
+                  className={classes.saveBtn} 
                     variant="contained"
                     fullWidth
                     onClick={() => {
@@ -382,6 +379,7 @@ const KpiRepository = () => {
                     Apply
                   </Button>
                   <Button
+                  className={classes.cancelBtn}
                     variant="outlined"
                     fullWidth
                     onClick={() => {
