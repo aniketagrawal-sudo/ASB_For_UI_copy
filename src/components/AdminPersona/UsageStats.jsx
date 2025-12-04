@@ -17,6 +17,9 @@ import { useSelector } from 'react-redux';
 import { selectAdminUsageStatsTableList } from '../../redux/store/adminSlice';
 import sortIcon from '../../assets/sortIcon.png';
 import filterIcons from '../../assets/filerIcons.png';
+import { UsageStatsChartThreeTrends } from './UsageStatsChartThreeTrends';
+import { UsageStatsLoginTrends } from './UsageStatsLoginTrends';
+import { UsageStatsTimespent } from './UsageStatsTimespent';
 
 const UsageStats = () => {
   const SAMPLE_USERS = useSelector(selectAdminUsageStatsTableList);
@@ -250,6 +253,12 @@ const UsageStats = () => {
   return (
     <div className={classes.kpiMainContainer}>
       <UsageStatsKpiList />
+      <div style={{height: '100vh', overflowY: 'scroll'}}>
+      <Box className={classes.usageGraphContainer}>
+        <UsageStatsLoginTrends />
+        <UsageStatsTimespent />
+        <UsageStatsChartThreeTrends />
+      </Box>
       <Box className={classes.TableContaier}>
         <Box sx={{ flex: 1 }}>
           <Box className={classes.KpisTableHeader}>
@@ -402,6 +411,7 @@ const UsageStats = () => {
           onConfirm={handleConfirmDelete}
         />
       </Box>
+      </div>
     </div>
   );
 };
