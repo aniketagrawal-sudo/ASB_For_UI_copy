@@ -1,0 +1,47 @@
+.loginTrendsContainer {
+background-color: #ffffff;
+box-shadow: none;
+}
+
+.loginTrendsHeader {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.loginHeaderText {
+  color:#1A1A1A;
+font-weight: 500;
+font-style: Medium;
+font-size: 12px;
+line-height: 100%;
+letter-spacing: 0%;
+}
+
+.loginDropdownContainer {
+color: #1A1A1A;
+height: 22px;
+opacity: 1;
+}
+
+.loginDropdownInput {
+color: #1A1A1A;
+font-size: 12px;
+}
+
+.loginDropdownSelect {
+font-weight: 400;
+font-style: Regular;
+font-size: 10px;
+line-height: 100%;
+letter-spacing: 0%;
+height: 22px;
+}
+
+.loginDropdownOptions {
+font-weight: 400;
+font-style: Regular;
+font-size: 10px;
+line-height: 100%;
+letter-spacing: 0%;
+}

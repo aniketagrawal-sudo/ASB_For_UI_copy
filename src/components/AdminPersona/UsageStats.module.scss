@@ -4,6 +4,7 @@
   border-radius: 8px;
   // margin: 10px;
   // width: 99%;
+  width: 100%;
 }
 
 .TableContaier {
@@ -151,6 +152,9 @@ font-size: 14px;
 }
 
 .usageGraphContainer {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
+  width: 100%;
+  margin: 15px 0px;
 }

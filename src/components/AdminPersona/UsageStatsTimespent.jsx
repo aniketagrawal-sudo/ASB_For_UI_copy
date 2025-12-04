@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import {
   BarChart,
@@ -13,6 +11,7 @@ import {
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import classes from './UsageStatsTimespent.module.scss';
 
 const timeSpentData = {
   Day: [
