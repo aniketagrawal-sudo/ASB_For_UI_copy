@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Cell,
 } from "recharts";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -35,35 +36,89 @@ export function UsageStatsTimespent() {
   const [period, setPeriod] = useState("Day");
 
   return (
-    <Card sx={{ p: 2, height: "100%"}}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
-        <h2 style={{ fontSize: "1.125rem", fontWeight: 600 }}>Times Spent (Personal)</h2>
+    <Card sx={{ p: 2, borderRadius: '10px'}}className={classes.loginTrendsContainer}>
+      <div className={classes.loginTrendsHeader}>
+        <h2 className={classes.loginHeaderText}>Times Spent (Persona)</h2>
 
-        <FormControl variant="outlined" size="small" sx={{ minWidth: 120 }}>
-          <InputLabel id="time-spent-label">Period</InputLabel>
+        <FormControl variant="outlined" size="small" className={classes.loginDropdownContainer}>
+          <InputLabel 
+          className={classes.loginDropdownInput}id="time-spent-label">Period</InputLabel>
           <Select
+           className={classes.loginDropdownSelect}
             labelId="time-spent-label"
             value={period}
             onChange={(e) => setPeriod(e.target.value)}
             label="Period"
           >
-            <MenuItem value="Day">Day</MenuItem>
-            <MenuItem value="Week">Week</MenuItem>
-            <MenuItem value="Month">Month</MenuItem>
+            <MenuItem className={classes.loginDropdownOptions} value="Day">Day</MenuItem>
+            <MenuItem className={classes.loginDropdownOptions} value="Week">Week</MenuItem>
+            <MenuItem className={classes.loginDropdownOptions} value="Month">Month</MenuItem>
           </Select>
         </FormControl>
       </div>
 
-      <CardContent sx={{ flex: 1 }}>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={timeSpentData[period]}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis label={{ value: "No. of Hours", angle: -90, position: "insideLeft" }} />
-            <Tooltip />
-            <Bar dataKey="hours" fill="#1976d2" radius={[8, 8, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+      <CardContent sx={{ p: 2.5 }}>
+       <ResponsiveContainer width="100%" height={300}>
+  <BarChart data={timeSpentData[period]}>
+    <CartesianGrid strokeDasharray="3 3" />
+
+   <XAxis
+  dataKey="name"
+  tick={({ x, y, payload }) => {
+    const colorMap = {
+      "Persona 1": "#03AB53",
+      "Persona 2": "#F7901D",
+      "Persona 3": "#1F77B4",
+    };
+
+    return (
+      <text
+        x={x}
+        y={y + 8}                 // reduce vertical space
+        textAnchor="middle"
+        fill={colorMap[payload.value]}
+        fontSize="10"  
+        color='#1A1A1A'           // reduce font size
+        fontWeight="400"          // optional, looks cleaner
+      >
+        {payload.value}
+      </text>
+    );
+  }}
+/>
+    <YAxis 
+    tick={{ fontSize: 10, fill: "#1A1A1A" }} 
+      label={{ 
+        value: "No. of Hours", 
+        angle: -90, 
+        position: "insideLeft",
+        offset: 24,
+        fontSize: 10,
+        color: '#1A1A1A',
+      }} 
+    />
+
+    <Tooltip 
+      itemStyle={{ fontSize: '10px' }} 
+      labelStyle={{ fontSize: '10px' }} 
+    />
+
+    {/* MULTIPLE Bars to allow different colors */}
+    <Bar dataKey="hours" barSize={18} radius={[0, 0, 0, 0]}>
+  {timeSpentData[period].map((entry, index) => {
+    const colorMap = {
+      "Persona 1": "#03AB53",
+      "Persona 2": "#F7901D",
+      "Persona 3": "#1F77B4",
+    };
+
+    return <Cell key={`cell-${index}`} fill={colorMap[entry.name]} />;
+  })}
+</Bar>
+
+  </BarChart>
+</ResponsiveContainer>
+
       </CardContent>
     </Card>
   );

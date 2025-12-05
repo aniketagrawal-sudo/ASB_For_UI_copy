@@ -57,17 +57,17 @@ export function UsageStatsLoginTrends() {
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={loginTrendsData[period]}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" style={{ fontSize: '12px', color: '#1A1A1A' }} />
-            <YAxis style={{ fontSize: '12px', color: '#1A1A1A' }}>
+            <XAxis dataKey="month" style={{ fontSize: '10px', color: '#1A1A1A' }} />
+            <YAxis style={{ fontSize: '10px', color: '#1A1A1A' }}>
               <Label
-                value="Login Count"
+                value="No of Users"
                 angle={-90}
                 position="insideLeft"
-                offset={0}
-                style={{ textAnchor: 'middle', fontSize: '12px' }}
+                offset={12}
+                style={{ textAnchor: 'middle', fontSize: '10px' }}
               />
             </YAxis>
-            <Tooltip itemStyle={{ fontSize: '12px' }} labelStyle={{ fontSize: '12px' }} />
+            <Tooltip itemStyle={{ fontSize: '10px' }} labelStyle={{ fontSize: '10px' }} />
             <Legend
               wrapperStyle={{
                 fontSize: '10px',
