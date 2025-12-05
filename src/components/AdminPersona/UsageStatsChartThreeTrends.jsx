@@ -13,13 +13,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { FormControl, InputLabel, Select, MenuItem, Divider } from '@mui/material';
 import classes from './UsageStatsChartThreeTrends.module.scss';
-
-// Backend API response example
-const chart3Data = [
-  { name: "Persona 1", value: 7, avgTimeSpent: 1.4, users: 120, status: "Active" },
-  { name: "Persona 2", value: 9, avgTimeSpent: 1.8, users: 95, status: "Inactive" },
-  { name: "Persona 3", value: 12, avgTimeSpent: 2.4, users: 140, status: "Active" }
-];
+import { useSelector } from 'react-redux';
+import { selectAdminUsageStatsChartThreeBar } from '../../redux/store/adminSlice';
 
 const colorMap = {
   "Persona 1": "#03AB53",
@@ -60,6 +55,7 @@ function Chart3Tooltip({ active, payload, filter }) {
 }
 
 export function UsageStatsChartThreeTrends() {
+  const chart3Data = useSelector(selectAdminUsageStatsChartThreeBar);
   const [filter, setFilter] = useState('All');
 
   // --- FIXED: filtered data inside component ---

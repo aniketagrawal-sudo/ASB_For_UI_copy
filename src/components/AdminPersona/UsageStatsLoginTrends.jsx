@@ -4,25 +4,11 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { FormControl, InputLabel, Select, MenuItem, Divider } from '@mui/material';
 import classes from './UsageStatsLoginTrends.module.scss';
-
-const loginTrendsData = {
-  '6 Months': [
-    { month: 'Jan', 'Persona 1': 800, 'Persona 2': 900, 'Persona 3': 400 },
-    { month: 'Feb', 'Persona 1': 600, 'Persona 2': 800, 'Persona 3': 500 },
-    { month: 'Mar', 'Persona 1': 700, 'Persona 2': 950, 'Persona 3': 600 },
-    { month: 'Apr', 'Persona 1': 950, 'Persona 2': 1050, 'Persona 3': 700 },
-    { month: 'May', 'Persona 1': 1100, 'Persona 2': 1150, 'Persona 3': 900 },
-    { month: 'Jun', 'Persona 1': 1200, 'Persona 2': 1000, 'Persona 3': 1100 },
-  ],
-  '3 Months': [
-    { month: 'Apr', 'Persona 1': 950, 'Persona 2': 1050, 'Persona 3': 700 },
-    { month: 'May', 'Persona 1': 1100, 'Persona 2': 1150, 'Persona 3': 900 },
-    { month: 'Jun', 'Persona 1': 1200, 'Persona 2': 1000, 'Persona 3': 1100 },
-  ],
-  '1 Month': [{ month: 'Jun', 'Persona 1': 1200, 'Persona 2': 1000, 'Persona 3': 1100 }],
-};
+import { useSelector } from 'react-redux';
+import { selectAdminUsageStatsLoginTrends } from '../../redux/store/adminSlice';
 
 export function UsageStatsLoginTrends() {
+  const loginTrendsData = useSelector(selectAdminUsageStatsLoginTrends);
   const [period, setPeriod] = useState('6 Months');
 
   return (
