@@ -16,21 +16,55 @@ import classes from './UsageStatsTimespent.module.scss';
 
 const timeSpentData = {
   Day: [
-    { name: "Persona 1", hours: 7 },
-    { name: "Persona 2", hours: 9 },
-    { name: "Persona 3", hours: 12 },
+    { name: "Persona 1", hours: 7,   avgTimeSpent: 1.4, activeUsers: 120 },
+    { name: "Persona 2", hours: 9,   avgTimeSpent: 1.8, activeUsers: 95 },
+    { name: "Persona 3", hours: 12,  avgTimeSpent: 2.4, activeUsers: 140 },
   ],
+
   Week: [
-    { name: "Persona 1", hours: 45 },
-    { name: "Persona 2", hours: 52 },
-    { name: "Persona 3", hours: 68 },
+    { name: "Persona 1", hours: 45,  avgTimeSpent: 6.4, activeUsers: 780 },
+    { name: "Persona 2", hours: 52,  avgTimeSpent: 7.4, activeUsers: 680 },
+    { name: "Persona 3", hours: 68,  avgTimeSpent: 9.7, activeUsers: 820 },
   ],
+
   Month: [
-    { name: "Persona 1", hours: 168 },
-    { name: "Persona 2", hours: 200 },
-    { name: "Persona 3", hours: 240 },
+    { name: "Persona 1", hours: 168, avgTimeSpent: 42.0, activeUsers: 3000 },
+    { name: "Persona 2", hours: 200, avgTimeSpent: 50.0, activeUsers: 2800 },
+    { name: "Persona 3", hours: 240, avgTimeSpent: 60.0, activeUsers: 3500 },
   ],
 };
+
+// 🎨 Persona Colors
+const colorMap = {
+  "Persona 1": "#03AB53",
+  "Persona 2": "#F7901D",
+  "Persona 3": "#1F77B4",
+};
+
+function CustomTooltip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+
+  const data = payload[0].payload;
+
+  return (
+    <div
+      style={{
+        background: "#fff",
+        padding: "8px 10px",
+        borderRadius: "6px",
+        border: "1px solid #ddd",
+        fontSize: "10px",
+      }}
+    >
+      <div style={{ color: colorMap[data.name], fontWeight: "600" }}>
+        {data.name}
+      </div>
+
+      <div>Total Users: <strong>{data.activeUsers}</strong></div>
+      <div>Avg Time Spent: <strong>{data.avgTimeSpent} hours</strong></div>
+    </div>
+  );
+}
 
 export function UsageStatsTimespent() {
   const [period, setPeriod] = useState("Day");
@@ -102,6 +136,7 @@ export function UsageStatsTimespent() {
     />
 
     <Tooltip 
+    content={<CustomTooltip />}
       itemStyle={{ fontSize: '10px' }} 
       labelStyle={{ fontSize: '10px' }} 
     />
