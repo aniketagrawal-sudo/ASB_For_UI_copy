@@ -28,7 +28,9 @@ export default function UsageStatsTable({ users, search, onEdit, onDelete }) {
       <Table size="medium" aria-label="user list">
         <TableHead>
           <TableRow className={styles.tableHeader}>
-            <TableCell>KPI Name</TableCell>
+            <TableCell>User Name</TableCell>
+            <TableCell>Active Since</TableCell>
+            <TableCell>Avg. Time Spent</TableCell>
             <TableCell>Description</TableCell>
             <TableCell>Category</TableCell>
             <TableCell>Allocated Persona</TableCell>
@@ -39,11 +41,17 @@ export default function UsageStatsTable({ users, search, onEdit, onDelete }) {
         <TableBody>
           {filtered.map((row) => (
             <TableRow key={row.id} hover className={styles.tableRow}>
-              <TableCell sx={{ width: 260 }}>
+              <TableCell sx={{ width: 160 }}>
                 {row.username}
               </TableCell>
-              <TableCell>{row.description}</TableCell>
-              <TableCell>{row.category}</TableCell>
+              <TableCell sx={{ width: 160 }}>
+                {row.activeSince}
+              </TableCell>
+              <TableCell sx={{ width: 180 }}>
+                {row.avgTimeSpent}
+              </TableCell>
+              <TableCell sx={{ width: 200 }}>{row.description}</TableCell>
+              <TableCell sx={{ width: 200 }}>{row.category}</TableCell>
               <TableCell sx={{ width: 220 }}>{row.persona}</TableCell>
               <TableCell sx={{ width: 120 }}>
                 <Chip
@@ -94,6 +102,8 @@ UsageStatsTable.propTypes = {
     PropTypes.shape({
       id: PropTypes.string,
       username: PropTypes.string,
+      activeSince: PropTypes.instanceOf(Date),
+      avgTimeSpent: PropTypes.number,
       description: PropTypes.string,
       category: PropTypes.string,
       persona: PropTypes.string,

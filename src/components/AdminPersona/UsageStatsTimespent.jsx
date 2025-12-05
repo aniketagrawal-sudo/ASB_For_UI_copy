@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, Divider } from "@mui/material";
 import classes from './UsageStatsTimespent.module.scss';
 
 const timeSpentData = {
@@ -36,7 +36,7 @@ export function UsageStatsTimespent() {
   const [period, setPeriod] = useState("Day");
 
   return (
-    <Card sx={{ p: 2, borderRadius: '10px'}}className={classes.loginTrendsContainer}>
+    <Card sx={{ px: 0, py: 2, borderRadius: '10px'}}className={classes.loginTrendsContainer}>
       <div className={classes.loginTrendsHeader}>
         <h2 className={classes.loginHeaderText}>Times Spent (Persona)</h2>
 
@@ -57,6 +57,9 @@ export function UsageStatsTimespent() {
         </FormControl>
       </div>
 
+      <div className={classes.dividerWrapper}>
+  <Divider className={classes.divider} />
+      </div>
       <CardContent sx={{ p: 2.5 }}>
        <ResponsiveContainer width="100%" height={300}>
   <BarChart data={timeSpentData[period]}>
