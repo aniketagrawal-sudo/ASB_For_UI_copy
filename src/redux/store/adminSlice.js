@@ -91,6 +91,8 @@ adminUsageStatsTableList: [
   {
     id: '1',
     username: 'William Anderson',
+      activeSince: '06/07/24',
+    avgTimeSpent: 5,
     description: 'VP - Commercial Banking',
     category: 'OKR',
     persona: 'Regional Manager',
@@ -99,6 +101,8 @@ adminUsageStatsTableList: [
   {
     id: '2',
     username: 'Mia White',
+     activeSince: '06/08/25',
+    avgTimeSpent: 10,
     description: 'VP - Commercial Banking',
     category: 'Widget',
     persona: 'Regional Manager',
@@ -107,6 +111,8 @@ adminUsageStatsTableList: [
   {
     id: '3',
     username: 'Neha Kapoor',
+      activeSince: '12/03/26',
+    avgTimeSpent: 3,
     description: 'Team Leader',
     category: 'Chart',
     persona: 'Regional Manager',
@@ -115,6 +121,8 @@ adminUsageStatsTableList: [
   {
     id: '4',
     username: 'Emily Johnson',
+      activeSince: '02/07/24',
+    avgTimeSpent: 12,
     description: 'Team Leader',
     category: 'Dashboard Metric',
     persona: 'Regional Manager',
