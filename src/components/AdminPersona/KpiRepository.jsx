@@ -29,6 +29,9 @@ import sortIcon from '../../assets/sortIcon.png';
 import filterIcons from '../../assets/filerIcons.png';
 
 const KpiRepository = () => {
+    const USER_OPTIONS = ['Client Meeting Frequency', 'Net Promoter Score', 'Loan Default Rate', 'Deposit Growth'];
+  const CATEGORY_OPTIONS = ['Sales', 'Finance', 'Marketing', 'Operations'];
+  const PERSONA_OPTIONS = ['Regional Manager', 'Team Leader', 'Analyst'];
   const SAMPLE_USERS = useSelector(selectAdminKpiTableList);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -418,6 +421,9 @@ const KpiRepository = () => {
                 }
               : undefined
           }
+            personaOptions={PERSONA_OPTIONS}
+              userOptions={USER_OPTIONS}
+              categoryOptions={CATEGORY_OPTIONS}
         />
 
         <ConfirmDialog

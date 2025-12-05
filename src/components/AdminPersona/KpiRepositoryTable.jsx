@@ -32,7 +32,7 @@ export default function KpiRepositoryTable({ users, search, onEdit, onDelete }) 
             <TableCell>Description</TableCell>
             <TableCell>Category</TableCell>
             <TableCell>Allocated Persona</TableCell>
-            <TableCell>Status</TableCell>
+            {/* <TableCell>Status</TableCell> */}
             <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -45,19 +45,19 @@ export default function KpiRepositoryTable({ users, search, onEdit, onDelete }) 
               <TableCell>{row.description}</TableCell>
               <TableCell>{row.category}</TableCell>
               <TableCell sx={{ width: 220 }}>{row.persona}</TableCell>
-              <TableCell sx={{ width: 120 }}>
+              {/* <TableCell sx={{ width: 120 }}>
                 <Chip
                   label={row.status}
                   size="small"
                   color={row.status === "Active" ? "success" : "default"}
                   variant={row.status === "Active" ? "filled" : "outlined"}
                 />
-              </TableCell>
+              </TableCell> */}
               <TableCell align="right" sx={{ width: 120 }}>
                 <Tooltip title="Edit">
                   <IconButton
                     size="small"
-                    onClick={() => onEdit && onEdit(row)}
+                    onClick={() => onEdit && onEdit({...row})}
                     aria-label="edit user"
                   >
                     <EditOutlinedIcon fontSize="small" />
