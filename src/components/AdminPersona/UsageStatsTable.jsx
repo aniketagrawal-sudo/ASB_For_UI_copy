@@ -65,7 +65,7 @@ export default function UsageStatsTable({ users, search, onEdit, onDelete }) {
                 <Tooltip title="Edit">
                   <IconButton
                     size="small"
-                    onClick={() => onEdit && onEdit(row)}
+                    onClick={() => onEdit && onEdit({...row, status: row.status === "In-Active" ? "Inactive" : row.status})}
                     aria-label="edit user"
                   >
                     <EditOutlinedIcon fontSize="small" />
@@ -102,8 +102,8 @@ UsageStatsTable.propTypes = {
     PropTypes.shape({
       id: PropTypes.string,
       username: PropTypes.string,
-      activeSince: PropTypes.instanceOf(Date),
-      avgTimeSpent: PropTypes.number,
+      activeSince: PropTypes.string,
+      avgTimeSpent: PropTypes.string,
       description: PropTypes.string,
       category: PropTypes.string,
       persona: PropTypes.string,

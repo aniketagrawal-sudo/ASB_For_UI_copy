@@ -23,6 +23,21 @@ import { UsageStatsTimespent } from './UsageStatsTimespent';
 
 const UsageStats = () => {
   const SAMPLE_USERS = useSelector(selectAdminUsageStatsTableList);
+ // Extract unique dropdown values dynamically from SAMPLE_USERS
+const USER_OPTIONS = useMemo(
+  () => [...new Set((SAMPLE_USERS || []).map((u) => u.username))],
+  [SAMPLE_USERS]
+);
+
+const CATEGORY_OPTIONS = useMemo(
+  () => [...new Set((SAMPLE_USERS || []).map((u) => u.category))],
+  [SAMPLE_USERS]
+);
+
+const PERSONA_OPTIONS = useMemo(
+  () => [...new Set((SAMPLE_USERS || []).map((u) => u.persona))],
+  [SAMPLE_USERS]
+);
   const [open, setOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState('create'); // "create" | "edit"
   const [editingUser, setEditingUser] = useState(null);
@@ -109,6 +124,7 @@ const UsageStats = () => {
                   description: userPayload.description || '—',
                   category: userPayload.category || '—',
                   persona: userPayload.persona || u.persona,
+                   status: userPayload.status || u.status, // 🔹 add this
                 }
               : u,
           ),
@@ -126,6 +142,7 @@ const UsageStats = () => {
                 description: userPayload.description || '—',
                 category: userPayload.category || '—',
                 persona: userPayload.persona || u.persona,
+                 status: userPayload.status || u.status, // 🔹 add this
               }
             : u,
         ),
@@ -263,12 +280,12 @@ const UsageStats = () => {
         <Box sx={{ flex: 1 }}>
           <Box className={classes.KpisTableHeader}>
             <Typography className={classes.headerTitle}>User List</Typography>
-            <Button
+            {/* <Button
               className={classes.addButton}
               startIcon={<AddCircleOutlineIcon className={classes.addIcon} />}
               onClick={handleCreateOpen}>
               Add KPI
-            </Button>
+            </Button> */}
           </Box>
 
           <Box className={classes.searchContainer}>
@@ -383,6 +400,9 @@ const UsageStats = () => {
           onClose={() => setOpen(false)}
           onSave={handleSave}
           mode={dialogMode}
+           USER_OPTIONS={USER_OPTIONS}
+  CATEGORY_OPTIONS={CATEGORY_OPTIONS}
+  PERSONA_OPTIONS={PERSONA_OPTIONS}
           initialValues={
             editingUser
               ? {
@@ -390,6 +410,7 @@ const UsageStats = () => {
                   description: editingUser.description,
                   category: editingUser.category,
                   persona: editingUser.persona,
+                  status: editingUser.status,
                 }
               : undefined
           }
