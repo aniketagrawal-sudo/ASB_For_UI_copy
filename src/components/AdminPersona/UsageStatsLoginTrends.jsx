@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Label } from 'recharts';
 import Card from '@mui/material/Card';

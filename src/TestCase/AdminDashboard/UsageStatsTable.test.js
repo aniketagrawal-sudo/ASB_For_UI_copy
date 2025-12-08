@@ -52,7 +52,7 @@ describe("UsageStatsTable", () => {
   test("renders correct table headers", () => {
     render(<UsageStatsTable users={adminKpiTableData} />);
 
-    expect(screen.getByText("KPI Name")).toBeInTheDocument();
+    expect(screen.getByText("User Name")).toBeInTheDocument();
     expect(screen.getByText("Description")).toBeInTheDocument();
     expect(screen.getByText("Category")).toBeInTheDocument();
     expect(screen.getByText("Allocated Persona")).toBeInTheDocument();

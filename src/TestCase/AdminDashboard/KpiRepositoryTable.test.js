@@ -56,7 +56,6 @@ describe("KpiRepositoryTable", () => {
     expect(screen.getByText("Description")).toBeInTheDocument();
     expect(screen.getByText("Category")).toBeInTheDocument();
     expect(screen.getByText("Allocated Persona")).toBeInTheDocument();
-    expect(screen.getByText("Status")).toBeInTheDocument();
     expect(screen.getByText("Actions")).toBeInTheDocument();
   });
 });

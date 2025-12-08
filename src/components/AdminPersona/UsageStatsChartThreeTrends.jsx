@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from 'react';
 import {
   BarChart,
@@ -22,7 +23,7 @@ const colorMap = {
   "Persona 3": "#1F77B4",
 };
 
-function Chart3Tooltip({ active, payload, filter }) {
+export function Chart3Tooltip({ active, payload, filter }) {
   if (!active || !payload?.length) return null;
 
   const data = payload[0].payload;
