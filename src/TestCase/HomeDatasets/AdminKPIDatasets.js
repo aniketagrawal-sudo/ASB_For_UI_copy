@@ -54,3 +54,23 @@ export const UsageStatsLoginTrendsMock = {
   ],
   '1 Month': [{ month: 'Jun', 'Persona 1': 1200, 'Persona 2': 1000, 'Persona 3': 1100 }],
 };
+
+export const UsageStatsTimespentMock = {
+  Day: [
+    { name: "Persona 1", hours: 7,   avgTimeSpent: 1.4, activeUsers: 120 },
+    { name: "Persona 2", hours: 9,   avgTimeSpent: 1.8, activeUsers: 95 },
+    { name: "Persona 3", hours: 12,  avgTimeSpent: 2.4, activeUsers: 140 },
+  ],
+
+  Week: [
+    { name: "Persona 1", hours: 45,  avgTimeSpent: 6.4, activeUsers: 780 },
+    { name: "Persona 2", hours: 52,  avgTimeSpent: 7.4, activeUsers: 680 },
+    { name: "Persona 3", hours: 68,  avgTimeSpent: 9.7, activeUsers: 820 },
+  ],
+
+  Month: [
+    { name: "Persona 1", hours: 168, avgTimeSpent: 42.0, activeUsers: 3000 },
+    { name: "Persona 2", hours: 200, avgTimeSpent: 50.0, activeUsers: 2800 },
+    { name: "Persona 3", hours: 240, avgTimeSpent: 60.0, activeUsers: 3500 },
+  ],
+};

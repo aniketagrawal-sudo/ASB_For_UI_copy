@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import {
   BarChart,
@@ -23,7 +24,7 @@ const colorMap = {
   "Persona 3": "#1F77B4",
 };
 
-function CustomTooltip({ active, payload }) {
+export function CustomTooltip({ active, payload }) {
   if (!active || !payload || !payload.length) return null;
 
   const data = payload[0].payload;
@@ -61,6 +62,7 @@ export function UsageStatsTimespent() {
           <InputLabel 
           className={classes.loginDropdownInput}id="time-spent-label">Period</InputLabel>
           <Select
+          data-testid="timespent-dropdown"
            className={classes.loginDropdownSelect}
             labelId="time-spent-label"
             value={period}
