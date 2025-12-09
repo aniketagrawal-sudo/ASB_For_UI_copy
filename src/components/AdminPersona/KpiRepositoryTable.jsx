@@ -31,7 +31,7 @@ export default function KpiRepositoryTable({ users, search, onEdit, onDelete }) 
             <TableCell>KPI Name</TableCell>
             <TableCell>Description</TableCell>
             <TableCell>Category</TableCell>
-            <TableCell>Allocated Persona</TableCell>
+            <TableCell>Assignment</TableCell>
             {/* <TableCell>Status</TableCell> */}
             <TableCell align="right">Actions</TableCell>
           </TableRow>

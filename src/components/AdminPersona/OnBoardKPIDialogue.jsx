@@ -81,8 +81,9 @@ export default function OnBoardKPIDialogue({
           <FormControl fullWidth size="small">
             <InputLabel sx={{ fontSize: '12px' }}>KPI Name</InputLabel>
             <Select
+           InputProps={{ readOnly: true }}
               data-testid="username-select"
-              sx={{ fontSize: '12px' }}
+              sx={{ fontSize: '12px', pointerEvents: "none", }}
               value={form.username}
               label="KPI Name"
               onChange={(e) => setForm((f) => ({ ...f, username: e.target.value }))}
@@ -97,6 +98,7 @@ export default function OnBoardKPIDialogue({
 
           {/* Description */}
           <TextField
+          InputProps={{ readOnly: true }}
             data-testid="description-input"
             size="small"
             label="KPI Description"
@@ -106,6 +108,7 @@ export default function OnBoardKPIDialogue({
             minRows={3}
             fullWidth
             sx={{
+              pointerEvents: "none",
               '& .MuiInputBase-input': { fontSize: '12px', padding: '6px 10px' },
               '& .MuiInputLabel-root': { fontSize: '12px' },
             }}
@@ -115,10 +118,11 @@ export default function OnBoardKPIDialogue({
           <FormControl fullWidth size="small">
             <InputLabel sx={{ fontSize: '12px' }}>Category</InputLabel>
             <Select
+            InputProps={{ readOnly: true }}
               data-testid="category-select"
               value={form.category}
               label="Category"
-              sx={{ fontSize: '12px' }}
+              sx={{ fontSize: '12px', pointerEvents: "none", }}
               onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
             >
               {mergedCategories.map((cat) => (
@@ -131,11 +135,11 @@ export default function OnBoardKPIDialogue({
 
           {/* Persona */}
           <FormControl fullWidth size="small">
-            <InputLabel sx={{ fontSize: '12px' }}>Persona</InputLabel>
+            <InputLabel sx={{ fontSize: '12px' }}>Assignment</InputLabel>
             <Select
               data-testid="persona-select"
               value={form.persona}
-              label="Persona"
+              label="Assignment"
               sx={{ fontSize: '12px' }}
               onChange={(e) => setForm((f) => ({ ...f, persona: e.target.value }))}
             >

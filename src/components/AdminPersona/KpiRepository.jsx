@@ -28,10 +28,16 @@ import { selectAdminKpiTableList } from '../../redux/store/adminSlice';
 import sortIcon from '../../assets/sortIcon.png';
 import filterIcons from '../../assets/filerIcons.png';
 
+const FILTER_FIELDS = [
+  { key: 'username', label: 'KPI Name' },
+  { key: 'category', label: 'Category' },
+  { key: 'persona', label: 'Assignment' },
+];
+
 const KpiRepository = () => {
-    const USER_OPTIONS = ['Client Meeting Frequency', 'Net Promoter Score', 'Loan Default Rate', 'Deposit Growth'];
+  const USER_OPTIONS = ['Client Meeting Frequency', 'Net Promoter Score', 'Loan Default Rate', 'Deposit Growth'];
   const CATEGORY_OPTIONS = ['Sales', 'Finance', 'Marketing', 'Operations'];
-  const PERSONA_OPTIONS = ['Regional Manager', 'Team Leader', 'Analyst'];
+  const PERSONA_OPTIONS = ['Assign', 'unAssign'];
   const SAMPLE_USERS = useSelector(selectAdminKpiTableList);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -206,37 +212,30 @@ const KpiRepository = () => {
   };
 
   useEffect(() => {
-    if (!users || users.length === 0) {
-      setFilterConfig([]);
-      setFilters({});
-      return;
-    }
+    if (!users || users.length === 0) return;
 
-    const first = users[0];
-    const excludeKeys = new Set(['id', 'createdAt', 'updatedAt']);
-    const keys = Object.keys(first).filter((k) => !excludeKeys.has(k));
-
-    const cfg = keys.map((key) => {
-      const label = key.charAt(0).toUpperCase() + key.slice(1);
+    const cfg = FILTER_FIELDS.map((field) => {
       const optionsSet = new Set();
+
       users.forEach((u) => {
-        const val = u[key];
-        if (val !== undefined && val !== null && String(val).trim() !== '') optionsSet.add(String(val));
+        const val = u[field.key];
+        if (val !== undefined && val !== null && String(val).trim() !== '') {
+          optionsSet.add(String(val));
+        }
       });
-      const options = Array.from(optionsSet).sort((a, b) => a.localeCompare(b));
-      return { key, label, options };
+
+      return {
+        key: field.key,
+        label: field.label,
+        options: Array.from(optionsSet).sort((a, b) => a.localeCompare(b)),
+      };
     });
 
     setFilterConfig(cfg);
 
     setFilters((prev) => {
-      const next = { ...prev };
-      cfg.forEach((c) => {
-        if (!(c.key in next)) next[c.key] = '';
-      });
-      Object.keys(next).forEach((k) => {
-        if (!cfg.find((c) => c.key === k)) delete next[k];
-      });
+      const next = {};
+      cfg.forEach((c) => (next[c.key] = prev[c.key] || ''));
       return next;
     });
   }, [users]);
@@ -285,12 +284,12 @@ const KpiRepository = () => {
         <Box sx={{ flex: 1 }}>
           <Box className={classes.KpisTableHeader}>
             <Typography className={classes.headerTitle}>OKR List</Typography>
-            <Button
+            {/* <Button
               className={classes.addButton}
               startIcon={<AddCircleOutlineIcon className={classes.addIcon} />}
               onClick={handleCreateOpen}>
               Add KPI
-            </Button>
+            </Button> */}
           </Box>
 
           <Box className={classes.searchContainer}>
@@ -338,7 +337,11 @@ const KpiRepository = () => {
             />
 
             {/* Filter Drawer */}
-            <Drawer classes={{ paper: classes.customDialogPaper }} anchor="right" open={openFilters} onClose={() => setOpenFilters(false)}>
+            <Drawer
+              classes={{ paper: classes.customDialogPaper }}
+              anchor="right"
+              open={openFilters}
+              onClose={() => setOpenFilters(false)}>
               <Box sx={{ p: 2 }}>
                 <IconButton
                   onClick={() => setOpenFilters(false)}
@@ -349,20 +352,29 @@ const KpiRepository = () => {
                   }}>
                   <CloseIcon />
                 </IconButton>
-                <Typography className={classes.dialogueTitle} variant="h6">Filters</Typography>
+                <Typography className={classes.dialogueTitle} variant="h6">
+                  Filters
+                </Typography>
 
                 {filterConfig.map((cfg) => (
                   <FormControl fullWidth sx={{ mt: 2 }} key={cfg.key}>
-                    <InputLabel fullWidth sx={{ fontSize: '12px' }}>{cfg.label}</InputLabel>
+                    <InputLabel fullWidth sx={{ fontSize: '12px' }}>
+                      {cfg.label}
+                    </InputLabel>
+
                     <Select
-                    // size="small"
-                    sx={{ fontSize: '12px' }}
-                    fullWidth
-                      value={tempFilters[cfg.key] ?? ''}
+                      sx={{ fontSize: '12px' }}
+                      fullWidth
                       label={cfg.label}
-                      onChange={(e) => setTempFilters((prev) => ({ ...prev, [cfg.key]: e.target.value }))}>
+                      value={tempFilters[cfg.key] ?? ''}
+                      onChange={(e) =>
+                        setTempFilters((prev) => ({
+                          ...prev,
+                          [cfg.key]: e.target.value,
+                        }))
+                      }>
                       {cfg.options.map((op) => (
-                        <MenuItem fullWidth sx={{ fontSize: '12px' }} key={op} value={op}>
+                        <MenuItem key={op} value={op} sx={{ fontSize: '12px' }}>
                           {op}
                         </MenuItem>
                       ))}
@@ -372,7 +384,7 @@ const KpiRepository = () => {
 
                 <Stack className={classes.dialogActions} direction="row" spacing={1} sx={{ mt: 3 }}>
                   <Button
-                  className={classes.saveBtn} 
+                    className={classes.saveBtn}
                     variant="contained"
                     fullWidth
                     onClick={() => {
@@ -382,7 +394,7 @@ const KpiRepository = () => {
                     Apply
                   </Button>
                   <Button
-                  className={classes.cancelBtn}
+                    className={classes.cancelBtn}
                     variant="outlined"
                     fullWidth
                     onClick={() => {
@@ -421,9 +433,9 @@ const KpiRepository = () => {
                 }
               : undefined
           }
-            personaOptions={PERSONA_OPTIONS}
-              userOptions={USER_OPTIONS}
-              categoryOptions={CATEGORY_OPTIONS}
+          personaOptions={PERSONA_OPTIONS}
+          userOptions={USER_OPTIONS}
+          categoryOptions={CATEGORY_OPTIONS}
         />
 
         <ConfirmDialog
