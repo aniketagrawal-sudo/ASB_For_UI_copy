@@ -21,6 +21,15 @@ import { UsageStatsChartThreeTrends } from './UsageStatsChartThreeTrends';
 import { UsageStatsLoginTrends } from './UsageStatsLoginTrends';
 import { UsageStatsTimespent } from './UsageStatsTimespent';
 
+const FILTER_FIELDS = [
+  { key: 'username', label: 'User Name' },
+  { key: 'emailId', label: 'Email ID' },
+  { key: 'officerId', label: 'Officer ID' },
+  { key: 'title', label: 'Title' },
+  { key: 'department', label: 'Department' },
+  { key: 'status', label: 'Assignment' },
+];
+
 const UsageStats = () => {
   const SAMPLE_USERS = useSelector(selectAdminUsageStatsTableList);
  // Extract unique dropdown values dynamically from SAMPLE_USERS
@@ -186,40 +195,33 @@ const USER_OPTIONS = useMemo(
   };
 
     useEffect(() => {
-      if (!users || users.length === 0) {
-        setFilterConfig([]);
-        setFilters({});
-        return;
-      }
-  
-      const first = users[0];
-      const excludeKeys = new Set(['id', 'createdAt', 'updatedAt']);
-      const keys = Object.keys(first).filter((k) => !excludeKeys.has(k));
-  
-      const cfg = keys.map((key) => {
-        const label = key.charAt(0).toUpperCase() + key.slice(1);
-        const optionsSet = new Set();
-        users.forEach((u) => {
-          const val = u[key];
-          if (val !== undefined && val !== null && String(val).trim() !== '') optionsSet.add(String(val));
-        });
-        const options = Array.from(optionsSet).sort((a, b) => a.localeCompare(b));
-        return { key, label, options };
-      });
-  
-      setFilterConfig(cfg);
-  
-      setFilters((prev) => {
-        const next = { ...prev };
-        cfg.forEach((c) => {
-          if (!(c.key in next)) next[c.key] = '';
-        });
-        Object.keys(next).forEach((k) => {
-          if (!cfg.find((c) => c.key === k)) delete next[k];
-        });
-        return next;
-      });
-    }, [users]);
+       if (!users || users.length === 0) return;
+   
+       const cfg = FILTER_FIELDS.map((field) => {
+         const optionsSet = new Set();
+   
+         users.forEach((u) => {
+           const val = u[field.key];
+           if (val !== undefined && val !== null && String(val).trim() !== '') {
+             optionsSet.add(String(val));
+           }
+         });
+   
+         return {
+           key: field.key,
+           label: field.label,
+           options: Array.from(optionsSet).sort((a, b) => a.localeCompare(b)),
+         };
+       });
+   
+       setFilterConfig(cfg);
+   
+       setFilters((prev) => {
+         const next = {};
+         cfg.forEach((c) => (next[c.key] = prev[c.key] || ''));
+         return next;
+       });
+     }, [users]);
 
    const filteredSortedUsers = useMemo(() => {
      const text = (search || '').trim().toLowerCase();
