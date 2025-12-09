@@ -29,15 +29,6 @@ const USER_OPTIONS = useMemo(
   [SAMPLE_USERS]
 );
 
-const CATEGORY_OPTIONS = useMemo(
-  () => [...new Set((SAMPLE_USERS || []).map((u) => u.category))],
-  [SAMPLE_USERS]
-);
-
-const PERSONA_OPTIONS = useMemo(
-  () => [...new Set((SAMPLE_USERS || []).map((u) => u.persona))],
-  [SAMPLE_USERS]
-);
   const [open, setOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState('create'); // "create" | "edit"
   const [editingUser, setEditingUser] = useState(null);
@@ -291,7 +282,7 @@ const PERSONA_OPTIONS = useMemo(
           <Box className={classes.searchContainer}>
             <Stack className={classes.searchStack}>
               <TextField
-                placeholder="Search KPIs..."
+                placeholder="Search Users..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 size="small"
@@ -400,17 +391,16 @@ const PERSONA_OPTIONS = useMemo(
           onClose={() => setOpen(false)}
           onSave={handleSave}
           mode={dialogMode}
-           USER_OPTIONS={USER_OPTIONS}
-  CATEGORY_OPTIONS={CATEGORY_OPTIONS}
-  PERSONA_OPTIONS={PERSONA_OPTIONS}
+          USER_OPTIONS={USER_OPTIONS}
           initialValues={
             editingUser
               ? {
-                  username: editingUser.username,
-                  description: editingUser.description,
-                  category: editingUser.category,
-                  persona: editingUser.persona,
-                  status: editingUser.status,
+                username: editingUser.username,
+                emailId: editingUser.emailId,
+                officerId: editingUser.officerId,
+                title: editingUser.title,
+                department: editingUser.department,
+                status: editingUser.status,
                 }
               : undefined
           }
