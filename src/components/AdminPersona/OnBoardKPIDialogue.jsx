@@ -78,7 +78,7 @@ export default function OnBoardKPIDialogue({
         <Box sx={{ display: 'grid', gap: 2 }}>
 
           {/* KPI Name */}
-          <FormControl fullWidth size="small">
+          {/* <FormControl fullWidth size="small">
             <InputLabel sx={{ fontSize: '12px' }}>KPI Name</InputLabel>
             <Select
            InputProps={{ readOnly: true }}
@@ -94,7 +94,26 @@ export default function OnBoardKPIDialogue({
                 </MenuItem>
               ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
+           <TextField
+            fullWidth
+            size="small"
+            label="KPI Name"
+            value={form.username || ''}
+            InputProps={{
+              readOnly: true,
+            }}
+            sx={{
+              '& .MuiInputBase-input': {
+                fontSize: '12px',
+                padding: '6px 10px',
+              },
+              '& .MuiInputLabel-root': {
+                fontSize: '12px',
+              },
+              pointerEvents: "none",
+            }}
+          />
 
           {/* Description */}
           <TextField
@@ -115,7 +134,7 @@ export default function OnBoardKPIDialogue({
           />
 
           {/* Category */}
-          <FormControl fullWidth size="small">
+          {/* <FormControl fullWidth size="small">
             <InputLabel sx={{ fontSize: '12px' }}>Category</InputLabel>
             <Select
             InputProps={{ readOnly: true }}
@@ -131,7 +150,26 @@ export default function OnBoardKPIDialogue({
                 </MenuItem>
               ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
+           <TextField
+            fullWidth
+            size="small"
+            label="Category"
+            value={form.category || ''}
+            InputProps={{
+              readOnly: true,
+            }}
+            sx={{
+              '& .MuiInputBase-input': {
+                fontSize: '12px',
+                padding: '6px 10px',
+              },
+              '& .MuiInputLabel-root': {
+                fontSize: '12px',
+              },
+              pointerEvents: "none",
+            }}
+          />
 
           {/* Persona */}
           <FormControl fullWidth size="small">

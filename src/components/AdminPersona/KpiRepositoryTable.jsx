@@ -44,7 +44,7 @@ export default function KpiRepositoryTable({ users, search, onEdit, onDelete }) 
               </TableCell>
               <TableCell>{row.description}</TableCell>
               <TableCell>{row.category}</TableCell>
-              <TableCell sx={{ width: 220 }}>{row.persona}</TableCell>
+              <TableCell sx={{ width: 160 }}>{row.persona}</TableCell>
               {/* <TableCell sx={{ width: 120 }}>
                 <Chip
                   label={row.status}
@@ -53,7 +53,7 @@ export default function KpiRepositoryTable({ users, search, onEdit, onDelete }) 
                   variant={row.status === "Active" ? "filled" : "outlined"}
                 />
               </TableCell> */}
-              <TableCell align="right" sx={{ width: 120 }}>
+              <TableCell align="right" sx={{ width: 100 }}>
                 <Tooltip title="Edit">
                   <IconButton
                     size="small"

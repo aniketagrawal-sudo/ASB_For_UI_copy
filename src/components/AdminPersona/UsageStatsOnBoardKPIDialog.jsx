@@ -68,7 +68,7 @@ export default function UsageStatsOnBoardKPIDialog({
       <DialogContent dividers>
         <Box sx={{ display: 'grid', gap: 2 }}>
           {/* User Name */}
-          <FormControl fullWidth size="small">
+          {/* <FormControl fullWidth size="small">
             <InputLabel sx={{ fontSize: '12px' }}>User Name</InputLabel>
             <Select
               data-testid="username-select"
@@ -82,7 +82,26 @@ export default function UsageStatsOnBoardKPIDialog({
                 </MenuItem>
               ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
+           <TextField
+            fullWidth
+            size="small"
+            label="User Name"
+            value={form.username || ''}
+            InputProps={{
+              readOnly: true,
+            }}
+            sx={{
+              '& .MuiInputBase-input': {
+                fontSize: '12px',
+                padding: '6px 10px',
+              },
+              '& .MuiInputLabel-root': {
+                fontSize: '12px',
+              },
+              pointerEvents: "none",
+            }}
+          />
 
           {/* Email */}
           {/* <FormControl fullWidth size="small">

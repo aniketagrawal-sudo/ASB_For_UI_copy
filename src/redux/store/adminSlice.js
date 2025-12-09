@@ -40,7 +40,7 @@ const initialState = {
     username: "New Accounts Opened",
     description: "Measures the number of new client account...",
     category: 'Widget',
-    persona: "unAssign",
+    persona: "Unassign",
   },
   {
     id: '3',
@@ -54,7 +54,7 @@ const initialState = {
     username: "Cross-Sell Ratio",
     description: "Ratio of additional products sold to existing...",
     category: 'Dashboard Metric',
-    persona: "unAssign",
+    persona: "Unassign",
   },
 ],
 adminUsageStatsKPIList: [
