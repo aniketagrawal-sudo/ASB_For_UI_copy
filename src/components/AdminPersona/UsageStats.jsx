@@ -27,7 +27,7 @@ const FILTER_FIELDS = [
   { key: 'officerId', label: 'Officer ID' },
   { key: 'title', label: 'Title' },
   { key: 'department', label: 'Department' },
-  { key: 'status', label: 'Assignment' },
+  { key: 'status', label: 'User Status' },
 ];
 
 const UsageStats = () => {
@@ -267,7 +267,7 @@ const USER_OPTIONS = useMemo(
       <Box className={classes.usageGraphContainer}>
         <UsageStatsLoginTrends />
         <UsageStatsTimespent />
-        <UsageStatsChartThreeTrends />
+        {/* <UsageStatsChartThreeTrends /> */}
       </Box>
       <Box className={classes.TableContaier}>
         <Box sx={{ flex: 1 }}>

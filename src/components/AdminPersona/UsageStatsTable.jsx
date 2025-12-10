@@ -53,8 +53,8 @@ export default function UsageStatsTable({ users, search, onEdit, onDelete }) {
                 <Chip
                   label={row.status}
                   size="small"
-                  color={row.status === "Onboarded" ? "success" : "default"}
-                  variant={row.status === "Onboarded" ? "filled" : "outlined"}
+                  color={row.status === "Enabled" ? "success" : "default"}
+                  variant={row.status === "Enabled" ? "filled" : "outlined"}
                 />
               </TableCell>
               <TableCell sx={{ width: 180 }}>
@@ -69,13 +69,13 @@ export default function UsageStatsTable({ users, search, onEdit, onDelete }) {
                 <Tooltip title="Edit">
                   <IconButton
                     size="small"
-                    onClick={() => onEdit && onEdit({...row, status: row.status === "Offboarded" ? "Offboarded" : row.status})}
+                    onClick={() => onEdit && onEdit({...row, status: row.status === "Not-Enabled" ? "Not-Enabled" : row.status})}
                     aria-label="edit user"
                   >
                     <EditOutlinedIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Delete">
+                {/* <Tooltip title="Delete">
                   <IconButton
                     size="small"
                     color="error"
@@ -84,7 +84,7 @@ export default function UsageStatsTable({ users, search, onEdit, onDelete }) {
                   >
                     <DeleteOutlineIcon fontSize="small" />
                   </IconButton>
-                </Tooltip>
+                </Tooltip> */}
               </TableCell>
             </TableRow>
           ))}

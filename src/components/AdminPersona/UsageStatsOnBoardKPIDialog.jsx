@@ -219,11 +219,11 @@ export default function UsageStatsOnBoardKPIDialog({
               sx={{ fontSize: '12px' }}
               value={form.status}
               onChange={(e) => setForm((f) => ({ ...f, status: e.target.value }))}>
-              <MenuItem value="Onboarded" sx={{ fontSize: '12px' }}>
-                Onboarded
+              <MenuItem value="Enabled" sx={{ fontSize: '12px' }}>
+                Enabled
               </MenuItem>
-              <MenuItem value="Offboarded" sx={{ fontSize: '12px' }}>
-                Offboarded
+              <MenuItem value="Not-Enabled" sx={{ fontSize: '12px' }}>
+                Not-Enabled
               </MenuItem>
             </Select>
           </FormControl>

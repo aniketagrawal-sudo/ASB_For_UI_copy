@@ -63,7 +63,7 @@ export default function KpiRepositoryTable({ users, search, onEdit, onDelete }) 
                     <EditOutlinedIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Delete">
+                {/* <Tooltip title="Delete">
                   <IconButton
                     size="small"
                     color="error"
@@ -72,7 +72,7 @@ export default function KpiRepositoryTable({ users, search, onEdit, onDelete }) 
                   >
                     <DeleteOutlineIcon fontSize="small" />
                   </IconButton>
-                </Tooltip>
+                </Tooltip> */}
               </TableCell>
             </TableRow>
           ))}

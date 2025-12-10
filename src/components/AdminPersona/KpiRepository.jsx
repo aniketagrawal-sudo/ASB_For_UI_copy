@@ -37,7 +37,7 @@ const FILTER_FIELDS = [
 const KpiRepository = () => {
   const USER_OPTIONS = ['Client Meeting Frequency', 'Net Promoter Score', 'Loan Default Rate', 'Deposit Growth'];
   const CATEGORY_OPTIONS = ['Sales', 'Finance', 'Marketing', 'Operations'];
-  const PERSONA_OPTIONS = ['Assign', 'Unassign'];
+  const PERSONA_OPTIONS = ['Assigned', 'Unassigned'];
   const SAMPLE_USERS = useSelector(selectAdminKpiTableList);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
