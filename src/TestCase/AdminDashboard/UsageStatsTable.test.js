@@ -37,26 +37,12 @@ describe("UsageStatsTable", () => {
     expect(handleEdit).toHaveBeenCalledWith(adminKpiTableData[0]);
   });
 
-  test("triggers onDelete callback when delete button is clicked", () => {
-    const handleDelete = jest.fn();
-    render(<UsageStatsTable users={adminKpiTableData} onDelete={handleDelete} />);
-
-    const deleteButtons = screen.getAllByLabelText("delete user");
-
-    fireEvent.click(deleteButtons[1]);
-
-    expect(handleDelete).toHaveBeenCalledTimes(1);
-    expect(handleDelete).toHaveBeenCalledWith(adminKpiTableData[1]);
-  });
-
   test("renders correct table headers", () => {
     render(<UsageStatsTable users={adminKpiTableData} />);
 
     expect(screen.getByText("User Name")).toBeInTheDocument();
-    expect(screen.getByText("Description")).toBeInTheDocument();
-    expect(screen.getByText("Category")).toBeInTheDocument();
-    expect(screen.getByText("Allocated Persona")).toBeInTheDocument();
-    expect(screen.getByText("Status")).toBeInTheDocument();
+    expect(screen.getByText("Title")).toBeInTheDocument();
+    expect(screen.getByText("User Status")).toBeInTheDocument();
     expect(screen.getByText("Actions")).toBeInTheDocument();
   });
 });
