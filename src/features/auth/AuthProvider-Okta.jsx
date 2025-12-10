@@ -15,13 +15,12 @@ import { setUser } from '../auth/authSlice';
  * AuthProvider component handling Okta authentication and socket connection
  * with Azure-optimized settings for WebSockets
  *
- * Changes:
- * - Migrated from Keycloak to Okta authentication
- * - Improved socket initialization with connection verification
- * - Added timeout handling for socket connection
- * - Added reconnection logic for socket
- * - Token refresh handling for socket authentication
- * - Better error handling
+ * Features:
+ * - Okta authentication with PKCE flow
+ * - Automatic token refresh with socket reconnection
+ * - Timeout handling for socket connection
+ * - Better error handling and recovery
+ * - Role-based access control
  */
 const AuthProvider = ({ children }) => {
   const [initializationLoading, setInitializationLoading] = useState(true);
@@ -237,6 +236,7 @@ const AuthProvider = ({ children }) => {
     };
   }, []);
 
+  // Handle login callback
   useEffect(() => {
     if (location.pathname.includes('/callback')) {
       // Okta SDK handles the callback automatically

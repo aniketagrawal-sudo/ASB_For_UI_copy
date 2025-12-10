@@ -10,8 +10,8 @@ import {
   getIsLoadingConversationData,
   updateMessageResponseInConversation,
 } from '../../redux/store/conversationSlice';
-import { selectCurrentPageConversation as getConversationId } from '../../features/auth/authSlice';
-import keycloak from '../../utils/keycloak';
+import { selectCurrentPageConversation as getConversationId, selectUser } from '../../features/auth/authSlice';
+import { getOktaAccessToken } from '../../utils/okta';
 import MessageBubble from '../MessageBubble/MessageBubble';
 import { addToRunning, removeFromRunning, addToQueue, selectRunningMessages } from '../../redux/store/queueSlice';
 import { getSocket, initSocket } from '../../utils/socket';
@@ -75,7 +75,7 @@ const ConversationScreen = ({ id, stableInstanceId = 'main', onSuggestedQuestion
   const componentMountedRef = useRef(true);
   const previousConversationIdRef = useRef(null);
 
-  const user = keycloak?.idTokenParsed;
+  const user = useSelector(selectUser);
   const runningMessages = useSelector(selectRunningMessages);
 
   // Socket reference
@@ -315,8 +315,17 @@ const ConversationScreen = ({ id, stableInstanceId = 'main', onSuggestedQuestion
 
   // Initialize socket if needed - specifically for Azure environments
   useEffect(() => {
-    if (!socket && keycloak?.token) {
-      initSocket(keycloak.token);
+    if (!socket) {
+      (async () => {
+        try {
+          const accessToken = await getOktaAccessToken();
+          if (accessToken) {
+            initSocket(accessToken);
+          }
+        } catch (error) {
+          console.error('Failed to initialize socket with Okta token:', error);
+        }
+      })();
     }
   }, [socket]);
 

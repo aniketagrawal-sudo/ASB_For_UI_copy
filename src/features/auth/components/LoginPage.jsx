@@ -8,7 +8,7 @@ import LinearLoader from '../../../components/LinearLoader';
 import { setLoading } from '../authSlice';
 import classes from './LoginPage.module.scss';
 import { useEffect } from 'react';
-import keycloak from '../../../utils/keycloak';
+import { oktaLogin, getOktaAuthState } from '../../../utils/okta';
 import { useAuthContext } from '../AuthContext';
 
 const LoginPage = () => {
@@ -20,26 +20,28 @@ const LoginPage = () => {
   const { loading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (keycloak?.authenticated) {
-      const redirect = searchParams.get('redirect');
-      // Change default redirect to dashboard
-      navigate(redirect ? decodeURIComponent(redirect) : '/dashboard', { replace: true });
-    }
-  }, [navigate, searchParams, keycloak?.authenticated]);
+    const checkAuthAndRedirect = async () => {
+      try {
+        const authState = await getOktaAuthState();
+        if (authState?.isAuthenticated) {
+          const redirect = searchParams.get('redirect');
+          // Change default redirect to dashboard
+          navigate(redirect ? decodeURIComponent(redirect) : '/dashboard', { replace: true });
+        }
+      } catch (error) {
+        console.error('Error checking auth state:', error);
+      }
+    };
+
+    checkAuthAndRedirect();
+  }, [navigate, searchParams]);
 
   const handleLogin = async () => {
     dispatch(setLoading(true));
     try {
-      keycloak.onAuthSuccess = () => {
-        dispatch(setLoading(false));
-      };
-      await keycloak.login();
-      // const redirect = searchParams.get('redirect');
-      // // Change default redirect to dashboard
-      // navigate(redirect ? decodeURIComponent(redirect) : '/dashboard', { replace: true });
+      await oktaLogin();
     } catch (error) {
       console.error('Login failed:', error);
-    } finally {
       dispatch(setLoading(false));
     }
   };
@@ -89,7 +91,6 @@ const LoginPage = () => {
                 className={classes.loginButton}
                 endIcon={<ChevronRightIcon className={classes.sendIcon} />}
                 onClick={handleLogin}>
-                {/* onClick={handleLogin}> */}
                 Sign in with SSO
               </Button>
             )}

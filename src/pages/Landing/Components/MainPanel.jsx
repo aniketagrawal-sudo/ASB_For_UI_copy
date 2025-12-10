@@ -46,6 +46,7 @@ function MainPanel({ dashboardsReady, dashboardsLoading, executingQueries, curre
   const notificationAnchorRef = useRef(null);
   const isSmallScreen = useMediaQuery('(max-width:900px)');
  
+  console.log(insightsScreenData , voumeOfUsageData,revenueProfitProductLevelData ,'insightsScreenData');
   const filteredKpis = useMemo(() => {
   return filterClientData(HomeKpiDetails, client);
 }, [HomeKpiDetails, client]);

@@ -3,24 +3,57 @@ import { useDispatch, useSelector } from 'react-redux';
 import LinearLoader from './LinearLoader';
 import { Box } from '@mui/material';
 import backgroundImage from '../assets/bg-image.png';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { setLoading } from '../features/auth/authSlice';
-import keycloak from '../utils/keycloak';
+import { getOktaAuthState } from '../utils/okta';
 
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.auth);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+
   useEffect(() => {
-    if (!keycloak?.authenticated) {
+    const checkAuthState = async () => {
+      try {
+        const authState = await getOktaAuthState();
+        setIsAuthenticated(authState?.isAuthenticated || false);
+      } catch (error) {
+        console.error('Error checking auth state:', error);
+        setIsAuthenticated(false);
+      }
+    };
+
+    checkAuthState();
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated === false) {
       navigate(`/login`, { replace: true });
     }
-    if (keycloak?.authenticated && loading) {
+    if (isAuthenticated && loading) {
       dispatch(setLoading(false));
     }
-  }, [keycloak?.authenticated]);
+  }, [isAuthenticated, loading, navigate, dispatch]);
+
+  // Still checking auth state
+  if (isAuthenticated === null) {
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: 'cover',
+        }}>
+        <LinearLoader />
+      </Box>
+    );
+  }
 
   if (loading) {
     return (
@@ -37,7 +70,8 @@ const ProtectedRoute = ({ children }) => {
       </Box>
     );
   }
-  if (keycloak?.authenticated) {
+
+  if (isAuthenticated) {
     return children;
   }
 };

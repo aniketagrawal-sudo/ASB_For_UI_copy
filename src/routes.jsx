@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthProvider from './features/auth/AuthProvider';
-import keycloak from './utils/keycloak';
 import { lazy, Suspense } from 'react';
 import LinearLoader from './components/LinearLoader';
 
@@ -18,7 +17,10 @@ export const AppRoutes = () => {
   return (
     <Suspense fallback={<LinearLoader />}>
       <Routes>
-        <Route path="/login" element={keycloak?.authenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />} />
+        {/* Okta callback route */}
+        <Route path="/callback" element={<LinearLoader />} />
+
+        <Route path="/login" element={<LoginPage />} />
 
         {/* Dashboard route outside of AppLayout */}
         <Route
@@ -60,7 +62,7 @@ export const AppRoutes = () => {
           <Route index element={<Navigate to="/dashboard" replace />} />
         </Route>
 
-        <Route path="*" element={<Navigate to={keycloak?.authenticated ? '/dashboard' : '/login'} replace />} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Suspense>
   );
