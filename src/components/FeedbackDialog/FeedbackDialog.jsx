@@ -16,7 +16,7 @@ import {
   addOrUpdateMessageFeedback,
   deleteMessageFeedback,
 } from "../../redux/store/conversationSlice";
-import keycloak from "../../utils/keycloak";
+import { getOktaAccessToken } from "../../utils/okta";
 import {
   selectUser,
   selectCurrentPageConversation,
@@ -48,7 +48,7 @@ function FeedbackDialog() {
   };
 
   const handleSubmit = async () => {
-    const userEmail = keycloak?.tokenParsed?.email;
+    const userEmail = user?.email;
     if (!comment.trim()) {
       dispatch(
         notifyViaSnackBar({
@@ -69,7 +69,7 @@ function FeedbackDialog() {
     };
 
     try {
-      const token = keycloak?.token;
+      const token = await getOktaAccessToken();
       const baseURL = import.meta.env.VITE_API_BASE_URL;
 
       await fetch(`${baseURL}/api/conversation/${messageId}/feedback`, {
@@ -112,7 +112,7 @@ function FeedbackDialog() {
 
   const handleDelete = async () => {
     try {
-      const token = keycloak?.token;
+      const token = await getOktaAccessToken();
       const baseURL = import.meta.env.VITE_API_BASE_URL;
 
       await fetch(`${baseURL}/api/conversation/${messageId}/feedback`, {

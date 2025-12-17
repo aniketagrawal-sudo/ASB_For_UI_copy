@@ -45,7 +45,7 @@ import SmartToyOutlinedIcon from '@mui/icons-material/SmartToyOutlined';
 import { SENDER_TYPES } from '../../utils/constants';
 import { CombinedMessage } from './MessageTypes';
 import FileList from '../RenderFiles/RenderFile';
-import keycloak from '../../utils/keycloak';
+import { getOktaAccessToken } from '../../utils/okta';
 import ReactMarkdown from 'react-markdown';
 import { selectRunningMessages } from '../../redux/store/queueSlice';
 
@@ -383,8 +383,8 @@ const MessageBubble = ({
   }, [feedback_reaction]);
     // Like button handler
     const handleLikeClick = async () => {
-      const userEmail = keycloak?.tokenParsed?.email;
-      const token = keycloak?.token;
+      const userEmail = user?.email;
+      const token = await getOktaAccessToken();
       const baseURL = import.meta.env.VITE_API_BASE_URL;
 
       if (!userEmail || !token) {

@@ -38,7 +38,7 @@ import { useSaveThreadMutation } from '../../services/threadApi';
 import ThreadsPanel from '../ThreadsPanel/ThreadsPanel';
 import classes from './ConversationDashboard.module.scss';
 import { getSocket, initSocket, isSocketConnected } from '../../utils/socket';
-import keycloak from '../../utils/keycloak';
+import { getOktaAccessToken } from '../../utils/okta';
 import FeedbackDialog from '../FeedbackDialog/FeedbackDialog';
 import {
   notifyViaSnackBar,
@@ -178,8 +178,18 @@ function ConversationDashboard() {
   );
 
   useEffect(() => {
-    if (!socket && keycloak?.token) {
-      initSocket(keycloak.token);
+    if (!socket) {
+      // Get Okta token and initialize socket
+      (async () => {
+        try {
+          const token = await getOktaAccessToken();
+          if (token) {
+            initSocket(token);
+          }
+        } catch (error) {
+          console.error('Failed to initialize socket:', error);
+        }
+      })();
     }
     return () => {
       componentMountedRef.current = false;

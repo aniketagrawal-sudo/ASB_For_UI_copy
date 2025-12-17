@@ -1,7 +1,7 @@
 import { getSocket, initSocket, getConnectionPromise } from '.';
 import { notifyViaSnackBar } from '../../redux/store/conversationSlice';
 import { SOCKET_EVENTS } from '../constants';
-import keycloak from '../../utils/keycloak';
+import { getOktaAccessToken } from '../../utils/okta';
 import { registerRoomUsage, unregisterRoomUsage, isRoomInUse, logRoomUsage } from './roomManager';
 
 // Track the current conversation room
@@ -65,7 +65,7 @@ export const joinConversation = (conversationId, dispatch, componentId = 'defaul
   }
 
   // Case 3: Socket exists but not connected - try re-initializing
-  if (socket && !socket.connected && keycloak?.token) {
+  if (socket && !socket.connected) {
 
     // Check if a global reconnection is already in progress
     if (globalReconnectionPromise) {
@@ -85,54 +85,68 @@ export const joinConversation = (conversationId, dispatch, componentId = 'defaul
 
     // If no global reconnection is in progress, start one
     try {
-      const token = keycloak.token;
-
-      // Create a global reconnection promise
-      globalReconnectionPromise = new Promise((resolve, reject) => {
-        // Get the connection promise from initSocket
-        const newSocket = initSocket(token);
-        const connectionPromise = getConnectionPromise();
-
-        if (!connectionPromise) {
-          // If no connection promise, socket was already initialized
-          if (newSocket && newSocket.connected) {
-            // Socket is already connected
-            resolve(newSocket);
-          } else {
-            // Socket exists but not connected, wait for connect event
-            const onConnect = () => {
-              newSocket.off('connect', onConnect);
-              clearTimeout(connectionTimeout);
-              resolve(newSocket);
-            };
-
-            const connectionTimeout = setTimeout(() => {
-              newSocket.off('connect', onConnect);
-              reject(new Error('Connection timed out'));
-            }, 8000); // Longer timeout for Azure
-
-            newSocket.once('connect', onConnect);
+      // Get Okta access token for socket reconnection
+      (async () => {
+        try {
+          const token = await getOktaAccessToken();
+          if (!token) {
+            throw new Error('No Okta token available');
           }
-        } else {
-          // Use the connection promise from initSocket
-          connectionPromise.then((socket) => resolve(socket)).catch((error) => reject(error));
-        }
-      });
 
-      // Handle the result of the reconnection
-      globalReconnectionPromise
-        .then((socket) => {
-          emitJoinRoom(socket, conversationId, dispatch);
+          // Create a global reconnection promise
+          globalReconnectionPromise = new Promise((resolve, reject) => {
+            // Get the connection promise from initSocket
+            const newSocket = initSocket(token);
+            const connectionPromise = getConnectionPromise();
+
+            if (!connectionPromise) {
+              // If no connection promise, socket was already initialized
+              if (newSocket && newSocket.connected) {
+                // Socket is already connected
+                resolve(newSocket);
+              } else {
+                // Socket exists but not connected, wait for connect event
+                const onConnect = () => {
+                  newSocket.off('connect', onConnect);
+                  clearTimeout(connectionTimeout);
+                  resolve(newSocket);
+                };
+
+                const connectionTimeout = setTimeout(() => {
+                  newSocket.off('connect', onConnect);
+                  reject(new Error('Connection timed out'));
+                }, 8000); // Longer timeout for Azure
+
+                newSocket.once('connect', onConnect);
+              }
+            } else {
+              // Use the connection promise from initSocket
+              connectionPromise.then((socket) => resolve(socket)).catch((error) => reject(error));
+            }
+          });
+
+          // Handle the result of the reconnection
+          globalReconnectionPromise
+            .then((socket) => {
+              emitJoinRoom(socket, conversationId, dispatch);
+              globalReconnectionPromise = null;
+            })
+            .catch((error) => {
+              console.error('Global reconnection failed:', error?.message || 'Unknown error');
+              // Try again with incremented retry count
+              setTimeout(() => {
+                globalReconnectionPromise = null;
+                joinConversation(conversationId, dispatch, componentId, retryCount + 1);
+              }, 1000);
+            });
+        } catch (error) {
+          console.error('Failed to get Okta token for reconnection:', error?.message || 'Unknown error');
           globalReconnectionPromise = null;
-        })
-        .catch((error) => {
-          console.error('Global reconnection failed:', error?.message || 'Unknown error');
-          // Try again with incremented retry count
           setTimeout(() => {
-            globalReconnectionPromise = null;
             joinConversation(conversationId, dispatch, componentId, retryCount + 1);
           }, 1000);
-        });
+        }
+      })();
     } catch (error) {
       console.error('Error during reconnection attempt:', error?.message || 'Unknown error');
       globalReconnectionPromise = null;
@@ -147,52 +161,70 @@ export const joinConversation = (conversationId, dispatch, componentId = 'defaul
   }
 
   // Case 4: No socket exists or other error - initialize socket
-  if (!socket && keycloak?.token) {
+  if (!socket) {
 
     try {
-      const token = keycloak.token;
-      const newSocket = initSocket(token);
-      const connectionPromise = getConnectionPromise();
-
-      if (connectionPromise) {
-        connectionPromise
-          .then(() => {
-            joinConversation(conversationId, dispatch, componentId, retryCount + 1);
-          })
-          .catch((error) => {
-            console.error('Connection promise rejected:', error?.message || 'Unknown error');
-            dispatch(
-              notifyViaSnackBar({
-                message: 'Unable to establish socket connection. Using fallback mode.',
-                severity: 'warning',
-                open: true,
-              }),
-            );
-          });
-      } else if (newSocket && newSocket.connected) {
-        // Socket initialized and connected immediately
-        emitJoinRoom(newSocket, conversationId, dispatch);
-      } else {
-        // Set up event listener for connect
-        const connectTimeout = setTimeout(() => {
-          if (newSocket) {
-            newSocket.off('connect', connectHandler);
+      // Get Okta access token for socket initialization
+      (async () => {
+        try {
+          const token = await getOktaAccessToken();
+          if (!token) {
+            throw new Error('No Okta token available');
           }
-          joinConversation(conversationId, dispatch, componentId, retryCount + 1);
-        }, 5000); // Increased timeout for Azure
 
-        const connectHandler = () => {
-          clearTimeout(connectTimeout);
-          if (newSocket) {
-            newSocket.off('connect', connectHandler);
+          const newSocket = initSocket(token);
+          const connectionPromise = getConnectionPromise();
+
+          if (connectionPromise) {
+            connectionPromise
+              .then(() => {
+                joinConversation(conversationId, dispatch, componentId, retryCount + 1);
+              })
+              .catch((error) => {
+                console.error('Connection promise rejected:', error?.message || 'Unknown error');
+                dispatch(
+                  notifyViaSnackBar({
+                    message: 'Unable to establish socket connection. Using fallback mode.',
+                    severity: 'warning',
+                    open: true,
+                  }),
+                );
+              });
+          } else if (newSocket && newSocket.connected) {
+            // Socket initialized and connected immediately
+            emitJoinRoom(newSocket, conversationId, dispatch);
+          } else {
+            // Set up event listener for connect
+            const connectTimeout = setTimeout(() => {
+              if (newSocket) {
+                newSocket.off('connect', connectHandler);
+              }
+              joinConversation(conversationId, dispatch, componentId, retryCount + 1);
+            }, 5000); // Increased timeout for Azure
+
+            const connectHandler = () => {
+              clearTimeout(connectTimeout);
+              if (newSocket) {
+                newSocket.off('connect', connectHandler);
+              }
+              emitJoinRoom(newSocket, conversationId, dispatch);
+            };
+
+            if (newSocket) {
+              newSocket.once('connect', connectHandler);
+            }
           }
-          emitJoinRoom(newSocket, conversationId, dispatch);
-        };
-
-        if (newSocket) {
-          newSocket.once('connect', connectHandler);
+        } catch (error) {
+          console.error('Failed to get Okta token for socket initialization:', error?.message || 'Unknown error');
+          dispatch(
+            notifyViaSnackBar({
+              message: 'Authentication failed. Using fallback mode.',
+              severity: 'warning',
+              open: true,
+            }),
+          );
         }
-      }
+      })();
     } catch (error) {
       console.error('Error initializing socket:', error?.message || 'Unknown error');
       dispatch(
