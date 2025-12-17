@@ -2217,11 +2217,240 @@ const initialState = {
             "query_error": null,
             "has_query": true
         },
+        {
+           clientId: 2,
+            "insight_faqs": [
+                {
+                    "question": "Why does residential real estate contribute a much higher percentage to collateral value in Ashley Brown's loan portfolio compared to other categories?",
+                    "answer": "Residential real estate is typically more prevalent and valued among clients, making it a preferred form of security and resulting in its dominant share across most loan types within this portfolio."
+                },
+                {
+                    "question": "How does the collateral contribution of equipment and machinery or commercial real estate compare to residential real estate in these loans?",
+                    "answer": "Equipment and machinery provide significant collateral value for some products, but consistently trail residential real estate, while commercial real estate plays a minor role, contributing 15% or less across all loan types."
+                },
+                {
+                    "question": "What steps can I take as a Relationship Manager to further improve the collateralization rate in my portfolio?",
+                    "answer": "You can encourage clients to pledge higher-valued or additional residential properties, regularly update collateral valuations, and selectively target deals where alternative asset types bolster overall loan security."
+                },
+                {
+                    "question": "What are the business implications of relying mainly on residential real estate for loan collateral?",
+                    "answer": "Heavy reliance on residential assets secures the loan portfolio, but may concentrate risk in a single asset class; diversifying collateral sources can enhance risk management and support long-term growth."
+                }
+            ],
+            "insight_anomaly_data_points": [
+                {
+                    "type_of_facility": "Letter of Credit",
+                    "collateral_type": "Residential Real Estate",
+                    "collateral_value": 37720695.8,
+                    "total_collateral_value": 68813478.6,
+                    "collateral_contribution_pct": "54.816",
+                    "anomaly_type": "positive",
+                    "data_point_idx": 5,
+                    "anomaly_details_status": "N",
+                    "data_point_title": "Letter of Credit - Residential Real Estate"
+                },
+                {
+                    "type_of_facility": "Letter of Credit",
+                    "collateral_type": "Other Assets",
+                    "collateral_value": 12364937.7,
+                    "total_collateral_value": 68813478.6,
+                    "collateral_contribution_pct": "17.969",
+                    "anomaly_type": "normal",
+                    "data_point_idx": 7,
+                    "anomaly_details_status": "N",
+                    "data_point_title": "Letter of Credit - Other Assets"
+                },
+                {
+                    "type_of_facility": "Overdraft",
+                    "collateral_type": "Residential Real Estate",
+                    "collateral_value": 12165742.2,
+                    "total_collateral_value": 25591162.75,
+                    "collateral_contribution_pct": "47.539",
+                    "anomaly_type": "positive",
+                    "data_point_idx": 9,
+                    "anomaly_details_status": "N",
+                    "data_point_title": "Overdraft - Residential Real Estate"
+                },
+                {
+                    "type_of_facility": "Overdraft",
+                    "collateral_type": "Equipment and Machinery",
+                    "collateral_value": 2419613.35,
+                    "total_collateral_value": 25591162.75,
+                    "collateral_contribution_pct": "9.455",
+                    "anomaly_type": "normal",
+                    "data_point_idx": 11,
+                    "anomaly_details_status": "N",
+                    "data_point_title": "Overdraft - Equipment and Machinery"
+                },
+                {
+                    "type_of_facility": "Revolving Line of Credit",
+                    "collateral_type": "Residential Real Estate",
+                    "collateral_value": 48333151.24,
+                    "total_collateral_value": 74782598.6,
+                    "collateral_contribution_pct": "64.632",
+                    "anomaly_type": "positive",
+                    "data_point_idx": 13,
+                    "anomaly_details_status": "N",
+                    "data_point_title": "Revolving Line of Credit - Residential Real Estate"
+                },
+                {
+                    "type_of_facility": "Revolving Line of Credit",
+                    "collateral_type": "Equipment and Machinery",
+                    "collateral_value": 20633578.64,
+                    "total_collateral_value": 74782598.6,
+                    "collateral_contribution_pct": "27.591",
+                    "anomaly_type": "normal",
+                    "data_point_idx": 14,
+                    "anomaly_details_status": "N",
+                    "data_point_title": "Revolving Line of Credit - Equipment and Machinery"
+                },
+                {
+                    "type_of_facility": "Revolving Line of Credit",
+                    "collateral_type": "Commercial Real Estate",
+                    "collateral_value": 241771.16,
+                    "total_collateral_value": 74782598.6,
+                    "collateral_contribution_pct": "0.323 x 10⁰",
+                    "anomaly_type": "negative",
+                    "data_point_idx": 16,
+                    "anomaly_details_status": "N",
+                    "data_point_title": "Revolving Line of Credit - Commercial Real Estate"
+                }
+            ],
+            "insight_id": 755,
+            "insight_title": "Residential Real Estate Dominates Collateral Mix in Loans (Nov 2024–Oct 2025)",
+            "insight_brief": "Residential real estate provides the highest share of collateral value across most loan types in Ashley Brown’s portfolio, notably exceeding 47% in overdraft, 55% in letters of credit, and 65% in revolving credit facilities.",
+            "insight_summary": "Ashley Brown’s managed loans show a clear trend: residential real estate is the leading collateral category for several key products—representing nearly two-thirds of total collateral in revolving credit lines, over half in letters of credit, and close to half in overdraft facilities. In contrast, bank guarantees rely most on 'Other Assets' (43%), followed by equipment and machinery (24%). Commercial real estate consistently has the lowest proportional impact, contributing 15% or less across all loan types. This collateral composition suggests the portfolio’s risk profile and coverage are primarily secured by residential assets, with targeted diversification in other collateral types for specific products. To optimize portfolio collateralization, focusing on further strengthening residential real estate backing—or enhancing equipment and other asset values where they dominate—may improve overall security and support strategic growth.",
+            "data_points": "{\n  \"type\": \"bar\",\n  \"data\": {\n    \"labels\": [\n      \"Bank Guarantees:Other Assets\",\n      \"Bank Guarantees:Equip & Mach.\",\n      \"Bank Guarantees:Resi. RE\",\n      \"Bank Guarantees:Comm. RE\",\n      \"Letter of Credit:Resi. RE\",\n      \"Letter of Credit:Equip & Mach.\",\n      \"Letter of Credit:Other Assets\",\n      \"Letter of Credit:Comm. RE\",\n      \"Overdraft:Resi. RE\",\n      \"Overdraft:Other Assets\",\n      \"Overdraft:Equip & Mach.\",\n      \"Overdraft:Comm. RE\",\n      \"Revol. Line:Resi. RE\",\n      \"Revol. Line:Equip & Mach.\",\n      \"Revol. Line:Other Assets\",\n      \"Revol. Line:Comm. RE\"\n    ],\n    \"datasets\": [\n      {\n        \"label\": \"Collateral Contribution (%)\",\n        \"data\": [\n          43.030715,\n          23.69766,\n          17.956908,\n          15.314714,\n          54.815853,\n          23.11668,\n          17.968772,\n          4.098692,\n          47.538841,\n          36.534084,\n          9.454878,\n          6.472195,\n          64.631548,\n          27.591417,\n          7.453736,\n          0.323298\n        ],\n        \"backgroundColor\": [\n          \"#2E86AB\",\n          \"#3498DB\",\n          \"#207561\",\n          \"#FFB400\",\n          \"#487EB0\",\n          \"#008585\",\n          \"#B0B9B3\",\n          \"#F28585\",\n          \"#2E86AB\",\n          \"#B0B9B3\",\n          \"#008585\",\n          \"#FFB400\",\n          \"#207561\",\n          \"#008585\",\n          \"#B0B9B3\",\n          \"#F28585\"\n        ],\n        \"borderColor\": \"#665142\",\n        \"borderWidth\": 1\n      }\n    ]\n  },\n  \"options\": {\n    \"responsive\": true,\n    \"plugins\": {\n      \"legend\": {\n        \"display\": false\n      },\n      \"title\": {\n        \"display\": true,\n        \"text\": \"Collateral Contribution % by Facility and Collateral Type\"\n      },\n      \"tooltip\": {\n        \"callbacks\": {\n          \"label\": \"function(context) { return context.label + ': ' + context.parsed.y.toFixed(2) + '%'; }\"\n        }\n      }\n    },\n    \"scales\": {\n      \"x\": {\n        \"title\": {\n          \"display\": true,\n          \"text\": \"Facility : Collateral Type\"\n        },\n        \"ticks\": {\n          \"maxRotation\": 0,\n          \"minRotation\": 0,\n          \"autoSkip\": false,\n          \"font\": {\n            \"size\": 11\n          }\n        }\n      },\n      \"y\": {\n        \"title\": {\n          \"display\": true,\n          \"text\": \"Collateral Contribution (%)\"\n        },\n        \"min\": 0,\n        \"max\": 70,\n        \"ticks\": {\n          \"stepSize\": 10,\n          \"font\": {\n            \"size\": 12\n          },\n          \"callback\": \"function(value, index, values) { return value + '%'; }\"\n        }\n      }\n    }\n  }\n}",
+            "confidence_score": 92,
+            "explainability_summary": "[\"<ol><li>A high-level business question was developed to determine overall collateralization for loans managed by Ashley Brown and identify loan types or collateral categories driving security.</li><li>This was narrowed to analyzing the proportional contribution of each collateral category, segmented by loan type, for Ashley Brown\\u2019s portfolio during November 2024 to October 2025.</li><li>The analysis focused on the KPI \\u2018Portfolio Collateralization Rate\\u2019 due to its relevance to loan security and the sales relationship manager\\u2019s responsibilities.</li><li>A targeted data retrieval was conducted to extract collateral amount details across all active loan types and collateral categories managed by Ashley Brown during the specified period.</li><li>The dataset was organized to show the percentage contribution of commercial real estate, residential real estate, equipment and machinery, and other assets to the total collateral value within each loan type.</li><li>The data revealed that residential real estate was the strongest contributor to collateral value overall, with notable secondary roles from other assets and equipment, and a smaller impact from commercial real estate.</li><li>This insight enables the sales relationship manager to recognize which collateral categories most influence portfolio security, guiding strategy for client engagement and risk assessment.</li></ol>\"]",
+            "sql_query": "{\"sql_query\": \"WITH FilteredLoans AS ( SELECT fd.facility_id, fd.client_id, fd.type_of_facility, fd.total_collateral_amount_cre, fd.total_collateral_amount_rre, fd.total_collateral_amount_efc, fd.total_collateral_amount_others FROM BFS.facility_data fd INNER JOIN BFS.client_data cd ON fd.client_id = cd.client_id WHERE cd.rm_name = 'Ashley Brown' ), EligibleFacilities AS ( SELECT fl.*, md.meeting_date FROM FilteredLoans fl INNER JOIN BFS.meeting_data md ON fl.client_id = md.client_id WHERE md.meeting_date >= '2024-11-01' AND md.meeting_date <= '2025-10-31' ), CollateralSummary AS ( SELECT ef.type_of_facility, 'Commercial Real Estate' AS collateral_type, SUM(ef.total_collateral_amount_cre) AS collateral_value FROM EligibleFacilities ef GROUP BY ef.type_of_facility UNION ALL SELECT ef.type_of_facility, 'Residential Real Estate' AS collateral_type, SUM(ef.total_collateral_amount_rre) AS collateral_value FROM EligibleFacilities ef GROUP BY ef.type_of_facility UNION ALL SELECT ef.type_of_facility, 'Equipment and Machinery' AS collateral_type, SUM(ef.total_collateral_amount_efc) AS collateral_value FROM EligibleFacilities ef GROUP BY ef.type_of_facility UNION ALL SELECT ef.type_of_facility, 'Other Assets' AS collateral_type, SUM(ef.total_collateral_amount_others) AS collateral_value FROM EligibleFacilities ef GROUP BY ef.type_of_facility ), CollateralTotal AS ( SELECT type_of_facility, SUM(collateral_value) AS total_collateral_value FROM CollateralSummary GROUP BY type_of_facility ) SELECT cs.type_of_facility, cs.collateral_type, cs.collateral_value, ct.total_collateral_value, (cs.collateral_value * 100.0) / NULLIF(ct.total_collateral_value, 0) AS collateral_contribution_pct FROM CollateralSummary cs INNER JOIN CollateralTotal ct ON cs.type_of_facility = ct.type_of_facility ORDER BY cs.type_of_facility, collateral_contribution_pct DESC;\", \"metric_col\": \"collateral_contribution_pct\"}",
+            "insight_visual_link": null,
+            "created_at": null,
+            "updated_at": "2025-10-05T05:31:27.270Z",
+            "query_result": [
+                {
+                    "type_of_facility": "Bank Guarantees",
+                    "collateral_type": "Other Assets",
+                    "collateral_value": 64319951.34,
+                    "total_collateral_value": 149474508.93,
+                    "collateral_contribution_pct": 43.030715
+                },
+                {
+                    "type_of_facility": "Bank Guarantees",
+                    "collateral_type": "Equipment and Machinery",
+                    "collateral_value": 35421962.16,
+                    "total_collateral_value": 149474508.93,
+                    "collateral_contribution_pct": 23.69766
+                },
+                {
+                    "type_of_facility": "Bank Guarantees",
+                    "collateral_type": "Residential Real Estate",
+                    "collateral_value": 26841000.8,
+                    "total_collateral_value": 149474508.93,
+                    "collateral_contribution_pct": 17.956908
+                },
+                {
+                    "type_of_facility": "Bank Guarantees",
+                    "collateral_type": "Commercial Real Estate",
+                    "collateral_value": 22891594.63,
+                    "total_collateral_value": 149474508.93,
+                    "collateral_contribution_pct": 15.314714
+                },
+                {
+                    "type_of_facility": "Letter of Credit",
+                    "collateral_type": "Residential Real Estate",
+                    "collateral_value": 37720695.8,
+                    "total_collateral_value": 68813478.6,
+                    "collateral_contribution_pct": 54.815853
+                },
+                {
+                    "type_of_facility": "Letter of Credit",
+                    "collateral_type": "Equipment and Machinery",
+                    "collateral_value": 15907392.3,
+                    "total_collateral_value": 68813478.6,
+                    "collateral_contribution_pct": 23.11668
+                },
+                {
+                    "type_of_facility": "Letter of Credit",
+                    "collateral_type": "Other Assets",
+                    "collateral_value": 12364937.7,
+                    "total_collateral_value": 68813478.6,
+                    "collateral_contribution_pct": 17.968772
+                },
+                {
+                    "type_of_facility": "Letter of Credit",
+                    "collateral_type": "Commercial Real Estate",
+                    "collateral_value": 2820452.8,
+                    "total_collateral_value": 68813478.6,
+                    "collateral_contribution_pct": 4.098692
+                },
+                {
+                    "type_of_facility": "Overdraft",
+                    "collateral_type": "Residential Real Estate",
+                    "collateral_value": 12165742.2,
+                    "total_collateral_value": 25591162.75,
+                    "collateral_contribution_pct": 47.538841
+                },
+                {
+                    "type_of_facility": "Overdraft",
+                    "collateral_type": "Other Assets",
+                    "collateral_value": 9349497.05,
+                    "total_collateral_value": 25591162.75,
+                    "collateral_contribution_pct": 36.534084
+                },
+                {
+                    "type_of_facility": "Overdraft",
+                    "collateral_type": "Equipment and Machinery",
+                    "collateral_value": 2419613.35,
+                    "total_collateral_value": 25591162.75,
+                    "collateral_contribution_pct": 9.454878
+                },
+                {
+                    "type_of_facility": "Overdraft",
+                    "collateral_type": "Commercial Real Estate",
+                    "collateral_value": 1656310.15,
+                    "total_collateral_value": 25591162.75,
+                    "collateral_contribution_pct": 6.472195
+                },
+                {
+                    "type_of_facility": "Revolving Line of Credit",
+                    "collateral_type": "Residential Real Estate",
+                    "collateral_value": 48333151.24,
+                    "total_collateral_value": 74782598.6,
+                    "collateral_contribution_pct": 64.631548
+                },
+                {
+                    "type_of_facility": "Revolving Line of Credit",
+                    "collateral_type": "Equipment and Machinery",
+                    "collateral_value": 20633578.64,
+                    "total_collateral_value": 74782598.6,
+                    "collateral_contribution_pct": 27.591417
+                },
+                {
+                    "type_of_facility": "Revolving Line of Credit",
+                    "collateral_type": "Other Assets",
+                    "collateral_value": 5574097.56,
+                    "total_collateral_value": 74782598.6,
+                    "collateral_contribution_pct": 7.453736
+                },
+                {
+                    "type_of_facility": "Revolving Line of Credit",
+                    "collateral_type": "Commercial Real Estate",
+                    "collateral_value": 241771.16,
+                    "total_collateral_value": 74782598.6,
+                    "collateral_contribution_pct": 0.323298
+                }
+            ],
+            "query_execution_time": null,
+            "query_loading": false,
+            "query_error": null,
+            "has_query": true
+        },
     ],
   reportsData: null,
   loading: {
     home: true,
-    insights: true,
+    insights: false,// again need to do true once real api data will come.
   },
   error: null,
   chartFilters: {},

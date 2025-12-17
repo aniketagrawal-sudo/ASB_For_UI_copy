@@ -1,33 +1,33 @@
-/* KpiRepositoryTable.module.scss */
 
 .tableContainer {
   border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* ===== Table Header ===== */
 .tableHeader {
-  font-weight: 400;
-  font-style: normal;
-  font-size: 12px;
-  line-height: 100%;
-  letter-spacing: 0%;
-  color: #ffffff;
-  background-color: #7351e5;
-
+  background-color: #F1F7F4;
   th {
-    color: #ffffff !important;
+    color: #767676 !important;
+    padding: 10px !important;
+    font-size: 12px;
+    line-height: 100%;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0%;
   }
 }
 
-/* ===== Table Rows ===== */
 .tableRow {
-  font-weight: 400;
+   td {
+    padding: 10px !important;
+   font-size: 12px;
+   line-height: 100%;
+   font-weight: 400;
   font-style: normal;
-  font-size: 10px;
-  line-height: 100%;
   letter-spacing: 0%;
-  color: #434343 !important;
-  height: 14px !important;
+  color: #434343;
+  }
 
   &:nth-child(odd) {
     background-color: #ffffff;
@@ -38,11 +38,10 @@
   }
 }
 
-/* ===== No Data Message ===== */
 .noData {
   padding: 48px 0;
   text-align: center;
   color: #888888;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 12px;
 }

@@ -1,3 +1,4 @@
+import React from 'react';
 import PropTypes from "prop-types";
 import styles from "./UsageStatsTable.module.scss";
 import {
@@ -27,42 +28,54 @@ export default function UsageStatsTable({ users, search, onEdit, onDelete }) {
       <Table size="medium" aria-label="user list">
         <TableHead>
           <TableRow className={styles.tableHeader}>
-            <TableCell>KPI Name</TableCell>
-            <TableCell>Description</TableCell>
-            <TableCell>Category</TableCell>
-            <TableCell>Allocated Persona</TableCell>
-            <TableCell>Status</TableCell>
+            <TableCell>User Name</TableCell>
+            <TableCell>Email ID</TableCell>
+            <TableCell>Officer ID</TableCell>
+            <TableCell>Title</TableCell>
+            <TableCell>Department</TableCell>
+            <TableCell>User Status</TableCell>
+            <TableCell>Active Since</TableCell>
+            <TableCell>Avg. Time Spent</TableCell>
             <TableCell align="right">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {filtered.map((row) => (
             <TableRow key={row.id} hover className={styles.tableRow}>
-              <TableCell sx={{ width: 260 }}>
-                <Typography fontWeight={600}>{row.username}</Typography>
+              <TableCell sx={{ width: 160 }}>
+                {row.username}
               </TableCell>
-              <TableCell>{row.description}</TableCell>
-              <TableCell>{row.category}</TableCell>
-              <TableCell sx={{ width: 220 }}>{row.persona}</TableCell>
-              <TableCell sx={{ width: 120 }}>
+               <TableCell sx={{ width: 200 }}>{row.emailId}</TableCell>
+              <TableCell sx={{ width: 150 }}>{row.officerId}</TableCell>
+              <TableCell sx={{ width: 175 }}>{row.title}</TableCell>
+              <TableCell sx={{ width: 200 }}>{row.department}</TableCell>
+               <TableCell sx={{ width: 120 }}>
                 <Chip
                   label={row.status}
                   size="small"
-                  color={row.status === "Active" ? "success" : "default"}
-                  variant={row.status === "Active" ? "filled" : "outlined"}
+                  color={row.status === "Enabled" ? "success" : "default"}
+                  variant={row.status === "Enabled" ? "filled" : "outlined"}
                 />
               </TableCell>
+              <TableCell sx={{ width: 180 }}>
+                {row.activeSince}
+              </TableCell>
+              <TableCell sx={{ width: 150 }}>
+                {row.avgTimeSpent}
+              </TableCell>
+             
+             
               <TableCell align="right" sx={{ width: 120 }}>
                 <Tooltip title="Edit">
                   <IconButton
                     size="small"
-                    onClick={() => onEdit && onEdit(row)}
+                    onClick={() => onEdit && onEdit({...row, status: row.status === "Not-Enabled" ? "Not-Enabled" : row.status})}
                     aria-label="edit user"
                   >
                     <EditOutlinedIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Delete">
+                {/* <Tooltip title="Delete">
                   <IconButton
                     size="small"
                     color="error"
@@ -71,7 +84,7 @@ export default function UsageStatsTable({ users, search, onEdit, onDelete }) {
                   >
                     <DeleteOutlineIcon fontSize="small" />
                   </IconButton>
-                </Tooltip>
+                </Tooltip> */}
               </TableCell>
             </TableRow>
           ))}
@@ -93,10 +106,13 @@ UsageStatsTable.propTypes = {
     PropTypes.shape({
       id: PropTypes.string,
       username: PropTypes.string,
-      description: PropTypes.string,
-      category: PropTypes.string,
-      persona: PropTypes.string,
+      emailId: PropTypes.string,
+      officerId: PropTypes.string,
+      title: PropTypes.string,
+      department: PropTypes.string,
       status: PropTypes.string,
+      activeSince: PropTypes.string,
+      avgTimeSpent: PropTypes.string,
     })
   ),
   search: PropTypes.string,

@@ -24,7 +24,7 @@ export default function ConfirmDialog({
       <DialogTitle className={classes.confirmDialogTitle}>{title}</DialogTitle>
       {description && (
         <DialogContent>
-          <DialogContentText>{description}</DialogContentText>
+          <DialogContentText className={classes.confirmDialogContent}>{description}</DialogContentText>
         </DialogContent>
       )}
       <DialogActions className={classes.dialogActions}>

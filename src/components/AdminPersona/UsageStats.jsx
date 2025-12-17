@@ -1,51 +1,43 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import UsageStatsKpiList from './UsageStatsKpiList';
 import UsageStatsTable from './UsageStatsTable';
-import { Typography, Box, TextField, InputAdornment, IconButton, Stack } from '@mui/material';
+import { Typography, Box, TextField, InputAdornment, IconButton, Stack, Button,  Drawer,
+  Badge,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem, } from '@mui/material';
+  import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
-import SortIcon from '@mui/icons-material/Sort';
-import FilterListIcon from '@mui/icons-material/FilterList';
-// import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import OnBoardKPIDialogue from './OnBoardKPIDialogue';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import UsageStatsOnBoardKPIDialog from './UsageStatsOnBoardKPIDialog';
 import ConfirmDialog from '../../assets/ConfirmDialogBox/ConfirmDialog';
 import classes from './UsageStats.module.scss';
+import { useSelector } from 'react-redux';
+import { selectAdminUsageStatsTableList } from '../../redux/store/adminSlice';
+import sortIcon from '../../assets/sortIcon.png';
+import filterIcons from '../../assets/filerIcons.png';
+import { UsageStatsChartThreeTrends } from './UsageStatsChartThreeTrends';
+import { UsageStatsLoginTrends } from './UsageStatsLoginTrends';
+import { UsageStatsTimespent } from './UsageStatsTimespent';
 
-const SAMPLE_USERS = [
-  {
-    id: '1',
-    username: 'William Anderson',
-    description: 'VP - Commercial Banking',
-    category: 'OKR',
-    persona: 'Regional Manager',
-    status: 'In-Active',
-  },
-  {
-    id: '2',
-    username: 'Mia White',
-    description: 'VP - Commercial Banking',
-    category: 'Widget',
-    persona: 'Regional Manager',
-    status: 'Active',
-  },
-  {
-    id: '3',
-    username: 'Neha Kapoor',
-    description: 'Team Leader',
-    category: 'Chart',
-    persona: 'Regional Manager',
-    status: 'Active',
-  },
-  {
-    id: '4',
-    username: 'Emily Johnson',
-    description: 'Team Leader',
-    category: 'Dashboard Metric',
-    persona: 'Regional Manager',
-    status: 'Active',
-  },
+const FILTER_FIELDS = [
+  { key: 'username', label: 'User Name' },
+  { key: 'emailId', label: 'Email ID' },
+  { key: 'officerId', label: 'Officer ID' },
+  { key: 'title', label: 'Title' },
+  { key: 'department', label: 'Department' },
+  { key: 'status', label: 'User Status' },
 ];
 
 const UsageStats = () => {
+  const SAMPLE_USERS = useSelector(selectAdminUsageStatsTableList);
+ // Extract unique dropdown values dynamically from SAMPLE_USERS
+const USER_OPTIONS = useMemo(
+  () => [...new Set((SAMPLE_USERS || []).map((u) => u.username))],
+  [SAMPLE_USERS]
+);
+
   const [open, setOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState('create'); // "create" | "edit"
   const [editingUser, setEditingUser] = useState(null);
@@ -57,20 +49,23 @@ const UsageStats = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [sortConfig, setSortConfig] = useState({ key: 'username', direction: 'asc' });
 
-  // Fetch users from API
+    const [openFilters, setOpenFilters] = useState(false);
+    const [filterConfig, setFilterConfig] = useState([]);
+
+    const [filters, setFilters] = useState({});
+    const [tempFilters, setTempFilters] = useState({});
+
   const fetchUsers = async () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/users');
-      if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
-      const data = await res.json();
+      const data = SAMPLE_USERS;
       setUsers(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Failed to fetch users, falling back to sample users', err);
       setError(err.message || 'Failed to fetch users');
-      // fallback
       setUsers(SAMPLE_USERS);
     } finally {
       setLoading(false);
@@ -81,7 +76,6 @@ const UsageStats = () => {
     fetchUsers();
   }, []);
 
-  // Create user
   const createUser = async (userPayload) => {
     try {
       const res = await fetch('/api/users', {
@@ -96,7 +90,6 @@ const UsageStats = () => {
       else fetchUsers();
     } catch (err) {
       console.error('Error creating user:', err);
-      // fallback: add locally with generated id
       const fallback = {
         id: String(Date.now()),
         username: userPayload.username || `User ${users.length + 1}`,
@@ -109,7 +102,6 @@ const UsageStats = () => {
     }
   };
 
-  // Update user
   const updateUser = async (id, userPayload) => {
     try {
       const res = await fetch(`/api/users/${id}`, {
@@ -129,9 +121,10 @@ const UsageStats = () => {
               ? {
                   ...u,
                   username: userPayload.username || u.username,
-                   description: userPayload.description || '—',
-        category: userPayload.category || '—',
+                  description: userPayload.description || '—',
+                  category: userPayload.category || '—',
                   persona: userPayload.persona || u.persona,
+                   status: userPayload.status || u.status, // 🔹 add this
                 }
               : u,
           ),
@@ -146,9 +139,10 @@ const UsageStats = () => {
             ? {
                 ...u,
                 username: userPayload.username || u.username,
-                 description: userPayload.description || '—',
-        category: userPayload.category || '—',
+                description: userPayload.description || '—',
+                category: userPayload.category || '—',
                 persona: userPayload.persona || u.persona,
+                 status: userPayload.status || u.status, // 🔹 add this
               }
             : u,
         ),
@@ -156,26 +150,22 @@ const UsageStats = () => {
     }
   };
 
-  // Delete user
   const deleteUser = async (id) => {
     try {
       const res = await fetch(`/api/users/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error(`Delete failed: ${res.status}`);
-      // remove from state
       setUsers((prev) => prev.filter((u) => u.id !== id));
     } catch (err) {
       console.error('Error deleting user:', err);
-      // fallback: remove locally anyway
       setUsers((prev) => prev.filter((u) => u.id !== id));
     }
   };
 
-  // handlers used by UI
-  // const handleCreateOpen = () => {
-  //   setDialogMode('create');
-  //   setEditingUser(null);
-  //   setOpen(true);
-  // };
+  const handleCreateOpen = () => {
+    setDialogMode('create');
+    setEditingUser(null);
+    setOpen(true);
+  };
 
   const handleEditOpen = (user) => {
     setDialogMode('edit');
@@ -204,31 +194,97 @@ const UsageStats = () => {
     setToDelete(null);
   };
 
+    useEffect(() => {
+       if (!users || users.length === 0) return;
+   
+       const cfg = FILTER_FIELDS.map((field) => {
+         const optionsSet = new Set();
+   
+         users.forEach((u) => {
+           const val = u[field.key];
+           if (val !== undefined && val !== null && String(val).trim() !== '') {
+             optionsSet.add(String(val));
+           }
+         });
+   
+         return {
+           key: field.key,
+           label: field.label,
+           options: Array.from(optionsSet).sort((a, b) => a.localeCompare(b)),
+         };
+       });
+   
+       setFilterConfig(cfg);
+   
+       setFilters((prev) => {
+         const next = {};
+         cfg.forEach((c) => (next[c.key] = prev[c.key] || ''));
+         return next;
+       });
+     }, [users]);
+
+   const filteredSortedUsers = useMemo(() => {
+     const text = (search || '').trim().toLowerCase();
+ 
+     return [...users]
+       .filter((u) => {
+         if (!text) return true;
+         const searchFields = ['username', 'description', 'category', 'persona'];
+         return searchFields.some((f) =>
+           String(u[f] || '')
+             .toLowerCase()
+             .includes(text),
+         );
+       })
+       .filter((u) =>
+         Object.keys(filters).every((k) => {
+           const filterVal = filters[k];
+           if (!filterVal) return true;
+           const userVal = u[k];
+           return String(userVal ?? '').toLowerCase() === String(filterVal).toLowerCase();
+         }),
+       )
+       .sort((a, b) => {
+         const { key, direction } = sortConfig;
+         if (!key) return 0;
+         const va = String(a[key] ?? '').toLowerCase();
+         const vb = String(b[key] ?? '').toLowerCase();
+         if (va < vb) return direction === 'asc' ? -1 : 1;
+         if (va > vb) return direction === 'asc' ? 1 : -1;
+         return 0;
+       });
+   }, [users, search, filters, sortConfig]);
+
+  const handleOpenFilters = () => {
+    setTempFilters({ ...filters });
+    setOpenFilters(true);
+  };
+
   return (
     <div className={classes.kpiMainContainer}>
-      {/* <UsageStatsKpiList /> */}
+      <UsageStatsKpiList />
+      <div style={{height: '100vh', overflowY: 'scroll'}}>
+      <Box className={classes.usageGraphContainer}>
+        <UsageStatsLoginTrends />
+        <UsageStatsTimespent />
+        {/* <UsageStatsChartThreeTrends /> */}
+      </Box>
       <Box className={classes.TableContaier}>
         <Box sx={{ flex: 1 }}>
           <Box className={classes.KpisTableHeader}>
-            {/* <Typography
-              className={classes.headerTitle}
-              >
-              User List
-            </Typography> */}
+            <Typography className={classes.headerTitle}>User List</Typography>
             {/* <Button
-               className={classes.addButton}
+              className={classes.addButton}
               startIcon={<AddCircleOutlineIcon className={classes.addIcon} />}
               onClick={handleCreateOpen}>
               Add KPI
             </Button> */}
           </Box>
 
-          {/* <Box className={classes.searchContainer}>
-            <Stack
-              className={classes.searchStack}
-              >
+          <Box className={classes.searchContainer}>
+            <Stack className={classes.searchStack}>
               <TextField
-                placeholder="Search KPIs..."
+                placeholder="Search Users..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 size="small"
@@ -242,17 +298,87 @@ const UsageStats = () => {
                 }}
               />
               <Stack direction="row" spacing={1} className={classes.iconActions}>
-                <IconButton>
-                  <SortIcon /> Sort By
+                <IconButton
+                  className={classes.sortIconWrapper}
+                  onClick={() =>
+                    setSortConfig((prev) => ({
+                      key: 'username', // sorted column
+                      direction: prev.direction === 'asc' ? 'desc' : 'asc',
+                    }))
+                  }>
+                  <img className={classes.sortIcon} src={sortIcon} alt="Sort Icon" /> Sort by
                 </IconButton>
-                <IconButton>
-                  <FilterListIcon /> Filters
+               <IconButton className={classes.sortIconWrapper} onClick={handleOpenFilters}>
+                  <Badge badgeContent={Object.values(filters).filter(Boolean).length} color="primary">
+                    <img className={classes.sortIcon} src={filterIcons} alt="Filter Icon" />
+                  </Badge>
+                  Filters
                 </IconButton>
               </Stack>
             </Stack>
 
-            <UsageStatsTable users={users} search={search} onEdit={handleEditOpen} onDelete={handleAskDelete} />
-          </Box> */}
+            <UsageStatsTable users={filteredSortedUsers} search={search} onEdit={handleEditOpen} onDelete={handleAskDelete} />
+          </Box>
+
+ {/* Filter Drawer */}
+            <Drawer classes={{ paper: classes.customDialogPaper }} anchor="right" open={openFilters} onClose={() => setOpenFilters(false)}>
+              <Box sx={{ p: 2 }}>
+                <IconButton
+                  onClick={() => setOpenFilters(false)}
+                  sx={{
+                    position: 'absolute',
+                    top: 8,
+                    right: 8,
+                  }}>
+                  <CloseIcon />
+                </IconButton>
+                <Typography className={classes.dialogueTitle} variant="h6">Filters</Typography>
+
+                {filterConfig.map((cfg) => (
+                  <FormControl fullWidth sx={{ mt: 2 }} key={cfg.key}>
+                    <InputLabel fullWidth sx={{ fontSize: '12px' }}>{cfg.label}</InputLabel>
+                    <Select
+                    // size="small"
+                    sx={{ fontSize: '12px' }}
+                    fullWidth
+                      value={tempFilters[cfg.key] ?? ''}
+                      label={cfg.label}
+                      onChange={(e) => setTempFilters((prev) => ({ ...prev, [cfg.key]: e.target.value }))}>
+                      {cfg.options.map((op) => (
+                        <MenuItem fullWidth sx={{ fontSize: '12px' }} key={op} value={op}>
+                          {op}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                ))}
+
+                <Stack className={classes.dialogActions} direction="row" spacing={1} sx={{ mt: 3 }}>
+                  <Button
+                  className={classes.saveBtn} 
+                    variant="contained"
+                    fullWidth
+                    onClick={() => {
+                      setFilters({ ...tempFilters });
+                      setOpenFilters(false);
+                    }}>
+                    Apply
+                  </Button>
+                  <Button
+                  className={classes.cancelBtn}
+                    variant="outlined"
+                    fullWidth
+                    onClick={() => {
+                      const reset = {};
+                      filterConfig.forEach((c) => (reset[c.key] = ''));
+                      setTempFilters(reset);
+                      setFilters(reset);
+                    }}>
+                    Reset
+                  </Button>
+                </Stack>
+              </Box>
+            </Drawer>
 
           {loading && <Typography sx={{ mt: 2 }}>Loading users...</Typography>}
           {error && (
@@ -262,18 +388,21 @@ const UsageStats = () => {
           )}
         </Box>
 
-        <OnBoardKPIDialogue
+        <UsageStatsOnBoardKPIDialog
           open={open}
           onClose={() => setOpen(false)}
           onSave={handleSave}
           mode={dialogMode}
+          USER_OPTIONS={USER_OPTIONS}
           initialValues={
             editingUser
               ? {
-                  username: editingUser.username,
-                  description: editingUser.description,
-                  category: editingUser.category,
-                  persona: editingUser.persona,
+                username: editingUser.username,
+                emailId: editingUser.emailId,
+                officerId: editingUser.officerId,
+                title: editingUser.title,
+                department: editingUser.department,
+                status: editingUser.status,
                 }
               : undefined
           }
@@ -283,7 +412,9 @@ const UsageStats = () => {
           open={confirmOpen}
           title="Are you sure you want to delete?"
           description={
-            toDelete ? `This will permanently remove ${toDelete.username}. Please click on delete to confirm.` : undefined
+            toDelete
+              ? `This will permanently remove ${toDelete.username}. Please click on delete to confirm.`
+              : undefined
           }
           confirmText="Delete"
           onCancel={() => {
@@ -293,6 +424,7 @@ const UsageStats = () => {
           onConfirm={handleConfirmDelete}
         />
       </Box>
+      </div>
     </div>
   );
 };

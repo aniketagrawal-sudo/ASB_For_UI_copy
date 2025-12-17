@@ -1,51 +1,45 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import KpiRepositoryLists from './KpiRepositoryLists';
 import KpiRepositoryTable from './KpiRepositoryTable';
-import { Typography, Box, TextField, InputAdornment, Button, IconButton, Stack } from '@mui/material';
+import {
+  Typography,
+  Box,
+  TextField,
+  InputAdornment,
+  Button,
+  IconButton,
+  Stack,
+  Drawer,
+  Badge,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
-import SortIcon from '@mui/icons-material/Sort';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import OnBoardKPIDialogue from './OnBoardKPIDialogue';
 import ConfirmDialog from '../../assets/ConfirmDialogBox/ConfirmDialog';
 import classes from './KpiRepository.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { notifyViaSnackBar } from '../../redux/store/conversationSlice';
+import { selectAdminKpiTableList } from '../../redux/store/adminSlice';
+import sortIcon from '../../assets/sortIcon.png';
+import filterIcons from '../../assets/filerIcons.png';
 
-const SAMPLE_USERS = [
-  {
-    id: '1',
-    username: 'William Anderson',
-    description: 'VP - Commercial Banking',
-    category: 'OKR',
-    persona: 'Regional Manager',
-    status: 'In-Active',
-  },
-  {
-    id: '2',
-    username: 'Mia White',
-    description: 'VP - Commercial Banking',
-    category: 'Widget',
-    persona: 'Regional Manager',
-    status: 'Active',
-  },
-  {
-    id: '3',
-    username: 'Neha Kapoor',
-    description: 'Team Leader',
-    category: 'Chart',
-    persona: 'Regional Manager',
-    status: 'Active',
-  },
-  {
-    id: '4',
-    username: 'Emily Johnson',
-    description: 'Team Leader',
-    category: 'Dashboard Metric',
-    persona: 'Regional Manager',
-    status: 'Active',
-  },
+const FILTER_FIELDS = [
+  { key: 'username', label: 'KPI Name' },
+  { key: 'category', label: 'Category' },
+  { key: 'persona', label: 'Assignment' },
 ];
 
 const KpiRepository = () => {
+  const USER_OPTIONS = ['Client Meeting Frequency', 'Net Promoter Score', 'Loan Default Rate', 'Deposit Growth'];
+  const CATEGORY_OPTIONS = ['Sales', 'Finance', 'Marketing', 'Operations'];
+  const PERSONA_OPTIONS = ['Assigned', 'Unassigned'];
+  const SAMPLE_USERS = useSelector(selectAdminKpiTableList);
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState('create'); // "create" | "edit"
   const [editingUser, setEditingUser] = useState(null);
@@ -57,20 +51,22 @@ const KpiRepository = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [sortConfig, setSortConfig] = useState({ key: 'username', direction: 'asc' });
 
-  // Fetch users from API
+  const [openFilters, setOpenFilters] = useState(false);
+  const [filterConfig, setFilterConfig] = useState([]);
+  const [filters, setFilters] = useState({});
+  const [tempFilters, setTempFilters] = useState({});
+
   const fetchUsers = async () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/users');
-      if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
-      const data = await res.json();
+      const data = SAMPLE_USERS;
       setUsers(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Failed to fetch users, falling back to sample users', err);
       setError(err.message || 'Failed to fetch users');
-      // fallback
       setUsers(SAMPLE_USERS);
     } finally {
       setLoading(false);
@@ -81,7 +77,6 @@ const KpiRepository = () => {
     fetchUsers();
   }, []);
 
-  // Create user
   const createUser = async (userPayload) => {
     try {
       const res = await fetch('/api/users', {
@@ -91,12 +86,10 @@ const KpiRepository = () => {
       });
       if (!res.ok) throw new Error(`Create failed: ${res.status}`);
       const newUser = await res.json();
-      // if API responds with created user append to list; otherwise refetch
       if (newUser && newUser.id) setUsers((prev) => [newUser, ...prev]);
       else fetchUsers();
     } catch (err) {
       console.error('Error creating user:', err);
-      // fallback: add locally with generated id
       const fallback = {
         id: String(Date.now()),
         username: userPayload.username || `User ${users.length + 1}`,
@@ -109,7 +102,6 @@ const KpiRepository = () => {
     }
   };
 
-  // Update user
   const updateUser = async (id, userPayload) => {
     try {
       const res = await fetch(`/api/users/${id}`, {
@@ -121,56 +113,71 @@ const KpiRepository = () => {
       const updated = await res.json();
       if (updated && updated.id) {
         setUsers((prev) => prev.map((u) => (u.id === id ? updated : u)));
+        dispatch(
+          notifyViaSnackBar({
+            message: 'User updated successfully',
+            severity: 'success',
+            open: true,
+          }),
+        );
       } else {
-        // optimistic update if API did not return object
         setUsers((prev) =>
           prev.map((u) =>
             u.id === id
               ? {
                   ...u,
                   username: userPayload.username || u.username,
-                   description: userPayload.description || '—',
-        category: userPayload.category || '—',
+                  description: userPayload.description || '—',
+                  category: userPayload.category || '—',
                   persona: userPayload.persona || u.persona,
                 }
               : u,
           ),
         );
+        dispatch(
+          notifyViaSnackBar({
+            message: 'User updated successfully',
+            severity: 'success',
+            open: true,
+          }),
+        );
       }
     } catch (err) {
       console.error('Error updating user:', err);
-      // optimistic local update
       setUsers((prev) =>
         prev.map((u) =>
           u.id === id
             ? {
                 ...u,
                 username: userPayload.username || u.username,
-                 description: userPayload.description || '—',
-        category: userPayload.category || '—',
+                description: userPayload.description || '—',
+                category: userPayload.category || '—',
                 persona: userPayload.persona || u.persona,
               }
             : u,
         ),
       );
+      dispatch(
+        notifyViaSnackBar({
+          message: 'Failed to update user',
+          severity: 'error',
+          open: true,
+        }),
+      );
     }
   };
 
-  // Delete user
   const deleteUser = async (id) => {
     try {
       const res = await fetch(`/api/users/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error(`Delete failed: ${res.status}`);
-      // remove from state
       setUsers((prev) => prev.filter((u) => u.id !== id));
     } catch (err) {
       console.error('Error deleting user:', err);
-      // fallback: remove locally anyway
       setUsers((prev) => prev.filter((u) => u.id !== id));
     }
   };
 
-  // handlers used by UI
   const handleCreateOpen = () => {
     setDialogMode('create');
     setEditingUser(null);
@@ -204,29 +211,89 @@ const KpiRepository = () => {
     setToDelete(null);
   };
 
+  useEffect(() => {
+    if (!users || users.length === 0) return;
+
+    const cfg = FILTER_FIELDS.map((field) => {
+      const optionsSet = new Set();
+
+      users.forEach((u) => {
+        const val = u[field.key];
+        if (val !== undefined && val !== null && String(val).trim() !== '') {
+          optionsSet.add(String(val));
+        }
+      });
+
+      return {
+        key: field.key,
+        label: field.label,
+        options: Array.from(optionsSet).sort((a, b) => a.localeCompare(b)),
+      };
+    });
+
+    setFilterConfig(cfg);
+
+    setFilters((prev) => {
+      const next = {};
+      cfg.forEach((c) => (next[c.key] = prev[c.key] || ''));
+      return next;
+    });
+  }, [users]);
+
+  const filteredSortedUsers = useMemo(() => {
+    const text = (search || '').trim().toLowerCase();
+
+    return [...users]
+      .filter((u) => {
+        if (!text) return true;
+        const searchFields = ['username', 'description', 'category', 'persona'];
+        return searchFields.some((f) =>
+          String(u[f] || '')
+            .toLowerCase()
+            .includes(text),
+        );
+      })
+      .filter((u) =>
+        Object.keys(filters).every((k) => {
+          const filterVal = filters[k];
+          if (!filterVal) return true;
+          const userVal = u[k];
+          return String(userVal ?? '').toLowerCase() === String(filterVal).toLowerCase();
+        }),
+      )
+      .sort((a, b) => {
+        const { key, direction } = sortConfig;
+        if (!key) return 0;
+        const va = String(a[key] ?? '').toLowerCase();
+        const vb = String(b[key] ?? '').toLowerCase();
+        if (va < vb) return direction === 'asc' ? -1 : 1;
+        if (va > vb) return direction === 'asc' ? 1 : -1;
+        return 0;
+      });
+  }, [users, search, filters, sortConfig]);
+
+  const handleOpenFilters = () => {
+    setTempFilters({ ...filters });
+    setOpenFilters(true);
+  };
+
   return (
     <div className={classes.kpiMainContainer}>
       <KpiRepositoryLists />
-      {/* <Box className={classes.TableContaier}>
+      <Box className={classes.TableContaier}>
         <Box sx={{ flex: 1 }}>
           <Box className={classes.KpisTableHeader}>
-            <Typography
-              className={classes.headerTitle}
-              >
-              OKR List
-            </Typography>
-            <Button
-               className={classes.addButton}
+            <Typography className={classes.headerTitle}>OKR List</Typography>
+            {/* <Button
+              className={classes.addButton}
               startIcon={<AddCircleOutlineIcon className={classes.addIcon} />}
               onClick={handleCreateOpen}>
               Add KPI
-            </Button>
+            </Button> */}
           </Box>
 
           <Box className={classes.searchContainer}>
-            <Stack
-              className={classes.searchStack}
-              >
+            <Stack className={classes.searchStack}>
               <TextField
                 placeholder="Search KPIs..."
                 value={search}
@@ -242,16 +309,105 @@ const KpiRepository = () => {
                 }}
               />
               <Stack direction="row" spacing={1} className={classes.iconActions}>
-                <IconButton>
-                  <SortIcon /> Sort By
+                <IconButton
+                  className={classes.sortIconWrapper}
+                  onClick={() =>
+                    setSortConfig((prev) => ({
+                      key: 'username',
+                      direction: prev.direction === 'asc' ? 'desc' : 'asc',
+                    }))
+                  }>
+                  <img className={classes.sortIcon} src={sortIcon} alt="Sort Icon" />
+                  Sort by
                 </IconButton>
-                <IconButton>
-                  <FilterListIcon /> Filters
+                <IconButton className={classes.sortIconWrapper} onClick={handleOpenFilters}>
+                  <Badge badgeContent={Object.values(filters).filter(Boolean).length} color="primary">
+                    <img className={classes.sortIcon} src={filterIcons} alt="Filter Icon" />
+                  </Badge>
+                  Filters
                 </IconButton>
               </Stack>
             </Stack>
 
-            <KpiRepositoryTable users={users} search={search} onEdit={handleEditOpen} onDelete={handleAskDelete} />
+            <KpiRepositoryTable
+              users={filteredSortedUsers}
+              search={search}
+              onEdit={handleEditOpen}
+              onDelete={handleAskDelete}
+            />
+
+            {/* Filter Drawer */}
+            <Drawer
+              classes={{ paper: classes.customDialogPaper }}
+              anchor="right"
+              open={openFilters}
+              onClose={() => setOpenFilters(false)}>
+              <Box sx={{ p: 2 }}>
+                <IconButton
+                  onClick={() => setOpenFilters(false)}
+                  sx={{
+                    position: 'absolute',
+                    top: 8,
+                    right: 8,
+                  }}>
+                  <CloseIcon />
+                </IconButton>
+                <Typography className={classes.dialogueTitle} variant="h6">
+                  Filters
+                </Typography>
+
+                {filterConfig.map((cfg) => (
+                  <FormControl fullWidth sx={{ mt: 2 }} key={cfg.key}>
+                    <InputLabel fullWidth sx={{ fontSize: '12px' }}>
+                      {cfg.label}
+                    </InputLabel>
+
+                    <Select
+                      sx={{ fontSize: '12px' }}
+                      fullWidth
+                      label={cfg.label}
+                      value={tempFilters[cfg.key] ?? ''}
+                      onChange={(e) =>
+                        setTempFilters((prev) => ({
+                          ...prev,
+                          [cfg.key]: e.target.value,
+                        }))
+                      }>
+                      {cfg.options.map((op) => (
+                        <MenuItem key={op} value={op} sx={{ fontSize: '12px' }}>
+                          {op}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                ))}
+
+                <Stack className={classes.dialogActions} direction="row" spacing={1} sx={{ mt: 3 }}>
+                  <Button
+                    className={classes.saveBtn}
+                    variant="contained"
+                    fullWidth
+                    onClick={() => {
+                      setFilters({ ...tempFilters }); // Apply filters
+                      setOpenFilters(false);
+                    }}>
+                    Apply
+                  </Button>
+                  <Button
+                    className={classes.cancelBtn}
+                    variant="outlined"
+                    fullWidth
+                    onClick={() => {
+                      const reset = {};
+                      filterConfig.forEach((c) => (reset[c.key] = ''));
+                      setTempFilters(reset); // reset drawer selections
+                      setFilters(reset); // immediately reset applied filters
+                    }}>
+                    Reset
+                  </Button>
+                </Stack>
+              </Box>
+            </Drawer>
           </Box>
 
           {loading && <Typography sx={{ mt: 2 }}>Loading users...</Typography>}
@@ -277,13 +433,18 @@ const KpiRepository = () => {
                 }
               : undefined
           }
+          personaOptions={PERSONA_OPTIONS}
+          userOptions={USER_OPTIONS}
+          categoryOptions={CATEGORY_OPTIONS}
         />
 
         <ConfirmDialog
           open={confirmOpen}
           title="Are you sure you want to delete?"
           description={
-            toDelete ? `This will permanently remove ${toDelete.username}. Please click on delete to confirm.` : undefined
+            toDelete
+              ? `This will permanently remove ${toDelete.username}. Please click on delete to confirm.`
+              : undefined
           }
           confirmText="Delete"
           onCancel={() => {
@@ -292,7 +453,7 @@ const KpiRepository = () => {
           }}
           onConfirm={handleConfirmDelete}
         />
-      </Box> */}
+      </Box>
     </div>
   );
 };

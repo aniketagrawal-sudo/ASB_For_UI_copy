@@ -10,7 +10,7 @@ import HomeDashboard from '../../../components/Dashboards/HomeDashboard';
 import InsightsDashboard from '../../../components/Dashboards/InsightsDashboard';
 import ConversationDashboard from '../../../components/Dashboards/ConversationDashboard';
 import PropTypes from 'prop-types';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import CalendarIcon from '../../../assets/DashboardPage1/Dashboard/CalanderIcon.svg';
 import DashboardName from '../../../assets/DashboardPage1/Dashboard/DashboardName_Icon.svg';
 import DashNotification from '../../../assets/DashboardPage1/Dashboard/Dashboard_Notification_Icon.svg';
@@ -45,6 +45,10 @@ function MainPanel({ dashboardsReady, dashboardsLoading, executingQueries, curre
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const notificationAnchorRef = useRef(null);
   const isSmallScreen = useMediaQuery('(max-width:900px)');
+
+    useEffect(()=> {
+       setClient(clientOptions[0].id);
+     }, [currentPage]);
  
   console.log(insightsScreenData , voumeOfUsageData,revenueProfitProductLevelData ,'insightsScreenData');
   const filteredKpis = useMemo(() => {
@@ -94,7 +98,7 @@ const filterdtInsightsDataDetails = useMemo(() => {
                 display: 'flex',
                 // gap: '12px',
                 // alignItems: 'flex-start', // or 'center' if you want vertical centering
-                flexWrap: 'wrap', // optional, for responsiveness
+                // flexWrap: 'wrap', // optional, for responsiveness
               }}>
               <InsightsDashboard
                 dashboardsReady={dashboardsReady}

@@ -1,35 +1,16 @@
+import React from "react";
 import PropTypes from "prop-types";
 import classes from './KpiRepositoryList.module.scss';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { useSelector } from "react-redux";
+import { selectAdminKPIList } from "../../redux/store/adminSlice";
+import { useGetInsightDetailsQuery } from "../../services/dashboardApi";
+
 
 const KpiRepositoryLists = () => {
-  const kpiData = [
-    {
-      title: "Total KPI",
-      value: 25,
-      changeText: "3 more than Previous Month",
-      isPositive: true,
-    },
-    {
-      title: "Assigned KPIs",
-      value: 19,
-      changeText: "3 more than Previous Month",
-      isPositive: true,
-    },
-    {
-      title: "Unassigned KPIs",
-      value: 6,
-      changeText: "2 less than Previous Month",
-      isPositive: false,
-    },
-    {
-      title: "Categories",
-      value: 3,
-      changeText: "No New Categories since March",
-      isPositive: false,
-    },
-  ];
+  const kpiData = useSelector(selectAdminKPIList);
+  // const {data: kpiData} = useGetInsightDetailsQuery();
 
   // Inner component for KPI Card
   const KPICard = ({ title, value, changeText, isPositive }) => {

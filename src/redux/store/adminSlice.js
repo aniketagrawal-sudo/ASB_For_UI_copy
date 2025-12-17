@@ -1,11 +1,180 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  adminKPIList: [
+    {
+      title: "Total KPI",
+      value: 25,
+      changeText: "3 more than Previous Month",
+      isPositive: true,
+    },
+    {
+      title: "Assigned KPIs",
+      value: 19,
+      changeText: "3 more than Previous Month",
+      isPositive: true,
+    },
+    {
+      title: "Unassigned KPIs",
+      value: 6,
+      changeText: "2 less than Previous Month",
+      isPositive: false,
+    },
+    {
+      title: "Categories",
+      value: 3,
+      changeText: "No New Categories since March",
+      isPositive: false,
+    },
+  ],
+  adminKpiTableList: [
+  {
+    id: '1',
+    username: "Total Loan Portfolio",
+    description: "Tracks the total value of loans managed by R...",
+    category: 'OKR',
+    persona: "Assigned",
+  },
+  {
+    id: '2',
+    username: "New Accounts Opened",
+    description: "Measures the number of new client account...",
+    category: 'Widget',
+    persona: "Unassigned",
+  },
+  {
+    id: '3',
+    username: "Customer Retention Rate",
+    description: "Percentage of clients retained over a define...",
+    category: 'Chart',
+    persona: "Assigned",
+  },
+  {
+    id: '4',
+    username: "Cross-Sell Ratio",
+    description: "Ratio of additional products sold to existing...",
+    category: 'Dashboard Metric',
+    persona: "Unassigned",
+  },
+],
+adminUsageStatsKPIList: [
+    {
+      title: "Total Users", 
+      value: "1247", 
+      changeText: "10 new users ", 
+      isPositive: true,
+    },
+    {
+      title: "Avg Time Spent", 
+      value: "6.5Hrs", 
+      changeText: "1.5% MoM", 
+      isPositive: true,
+    },
+    {
+      title: "Active Users", 
+      value: "923", 
+      changeText: "-10 users", 
+      isPositive: false,
+    },
+    {
+      title: "Unique Logins", 
+      value: "124", 
+      changeText: "4 new unique logins", 
+      isPositive: true, 
+    },
+  ],
+adminUsageStatsTableList: [
+  {
+    id: '1',
+    username: 'Amit Sharma',
+    emailId: 'amit.sharma@bank.com',
+    officerId: 'OFF1001',
+    title: 'Relationship Manager',
+    department: 'Sales',
+    status: 'Enabled',
+    activeSince: '12-Jan-2024',
+    avgTimeSpent: '5 Min',
+  },
+  {
+    id: '2',
+    username: 'Priya Mehta',
+    emailId: ' priya.mehta@bank.com',
+    officerId: 'OFF1002',
+    title: 'Senior Relationship Manager',
+    department: 'Sales',
+    status: 'Enabled',
+    activeSince: '05-Feb-2024',
+    avgTimeSpent: '42 Min',
+  },
+  {
+    id: '3',
+    username: 'Rohan Iyer',
+    emailId: 'rohan.iyer@bank.com',
+    officerId: 'OFF1003',
+    title: 'Relationship Manager',
+    department: 'Commercial Banking',
+    status: 'Enabled',
+    activeSince: '20-Mar-2024',
+    avgTimeSpent: '31 Min',
+  },
+  {
+    id: '4',
+    username: 'Vijay Krishnan',
+    emailId: 'vijay.krishnan@bank.com',
+    officerId: 'OFF1015',
+    title: 'Team Lead – Relationship Manager',
+    department: 'Sales',
+    status: 'Not-Enabled',
+    activeSince: '05-Dec-2023',
+    avgTimeSpent: '52 Min',
+  },
+],
+adminUsageStatsLoginTrends: {
+  '6 Months': [
+    { month: 'Jan', 'Persona 1': 800, 'Persona 2': 900, 'Persona 3': 400 },
+    { month: 'Feb', 'Persona 1': 600, 'Persona 2': 800, 'Persona 3': 500 },
+    { month: 'Mar', 'Persona 1': 700, 'Persona 2': 950, 'Persona 3': 600 },
+    { month: 'Apr', 'Persona 1': 950, 'Persona 2': 1050, 'Persona 3': 700 },
+    { month: 'May', 'Persona 1': 1100, 'Persona 2': 1150, 'Persona 3': 900 },
+    { month: 'Jun', 'Persona 1': 1200, 'Persona 2': 1000, 'Persona 3': 1100 },
+  ],
+  '3 Months': [
+    { month: 'Apr', 'Persona 1': 950, 'Persona 2': 1050, 'Persona 3': 700 },
+    { month: 'May', 'Persona 1': 1100, 'Persona 2': 1150, 'Persona 3': 900 },
+    { month: 'Jun', 'Persona 1': 1200, 'Persona 2': 1000, 'Persona 3': 1100 },
+  ],
+  '1 Month': [{ month: 'Jun', 'Persona 1': 1200, 'Persona 2': 1000, 'Persona 3': 1100 }],
+},
+adminUsageStatsTimeSpentBar: {
+  Day: [
+    { name: "Persona 1", hours: 7,   avgTimeSpent: 1.4, activeUsers: 120 },
+    { name: "Persona 2", hours: 9,   avgTimeSpent: 1.8, activeUsers: 95 },
+    { name: "Persona 3", hours: 12,  avgTimeSpent: 2.4, activeUsers: 140 },
+  ],
+
+  Week: [
+    { name: "Persona 1", hours: 45,  avgTimeSpent: 6.4, activeUsers: 780 },
+    { name: "Persona 2", hours: 52,  avgTimeSpent: 7.4, activeUsers: 680 },
+    { name: "Persona 3", hours: 68,  avgTimeSpent: 9.7, activeUsers: 820 },
+  ],
+
+  Month: [
+    { name: "Persona 1", hours: 168, avgTimeSpent: 42.0, activeUsers: 3000 },
+    { name: "Persona 2", hours: 200, avgTimeSpent: 50.0, activeUsers: 2800 },
+    { name: "Persona 3", hours: 240, avgTimeSpent: 60.0, activeUsers: 3500 },
+  ],
+},
+adminUsageStatsChartThreeBar: [
+  { name: "Persona 1", value: 7, avgTimeSpent: 1.4, users: 120, status: "Active" },
+  { name: "Persona 2", value: 9, avgTimeSpent: 1.8, users: 95, status: "Inactive" },
+  { name: "Persona 3", value: 12, avgTimeSpent: 2.4, users: 140, status: "Active" }
+],
   // Personas management
   personas: [],
   selectedPersona: null,
 
-  // BI dashboards management
+  // BI dashboards ma
+  // nagement
   biDashboards: [],
   selectedBiDashboard: null,
 
@@ -123,7 +292,32 @@ const adminSlice = createSlice({
       state.loading.appConfig = false;
       state.errors.appConfig = null;
     },
+ 
+      setAdminKPIList: (state, action) => {
+      state.adminKPIList = action.payload;
+    },
 
+      setAdminKpiTableList: (state, action) => {
+      state.adminKpiTableList = action.payload;
+    },
+
+      setAdminUsageStatsKPIList: (state, action) => {
+      state.adminUsageStatsKPIList = action.payload;
+    },
+
+      setAdminUsageStatsTableList: (state, action) => {
+      state.adminUsageStatsTableList = action.payload;
+    },
+      setAdminUsageStatsLoginTrends: (state, action) => {
+      state.adminUsageStatsLoginTrends = action.payload;
+    },
+      setAdminUsageStatsTimeSpentBar: (state, action) => {
+      state.adminUsageStatsTimeSpentBar = action.payload;
+    },
+      setAdminUsageStatsChartThreeBar: (state, action) => {
+      state.adminUsageStatsChartThreeBar = action.payload;
+    },
+  
     // Selection actions - for setting selected items
     selectPersona: (state, action) => {
       state.selectedPersona = action.payload;
@@ -140,6 +334,8 @@ const adminSlice = createSlice({
     selectUser: (state, action) => {
       state.selectedUser = action.payload;
     },
+
+
 
     // Loading state actions
     setLoading: (state, action) => {
@@ -232,6 +428,13 @@ export const {
   setUpdateError,
   resetUpdateStatus,
   resetAdminData,
+  setAdminKPIList,
+  setAdminKpiTableList,
+  setAdminUsageStatsTableList,
+  setAdminUsageStatsKPIList,
+  setAdminUsageStatsChartThreeBar,
+  setAdminUsageStatsTimeSpentBar,
+  setAdminUsageStatsLoginTrends
 } = adminSlice.actions;
 
 // Export selectors
@@ -251,6 +454,31 @@ export const selectSelectedUser = (state) => state.admin.selectedUser;
 export const selectAdminLoading = (state) => state.admin.loading;
 export const selectAdminErrors = (state) => state.admin.errors;
 export const selectAdminUpdateStatus = (state) => state.admin.updateStatus;
+
+export const selectAdminKPIList = (state) => {
+  return state.admin?.adminKPIList || [];
+};
+
+export const selectAdminKpiTableList = (state) => {
+  return state.admin?.adminKpiTableList || [];
+};
+
+export const selectAdminUsageStatsTableList = (state) => {
+  return state.admin?.adminUsageStatsTableList || [];
+};
+export const selectAdminUsageStatsLoginTrends = (state) => {
+  return state.admin?.adminUsageStatsLoginTrends || [];
+};
+export const selectAdminUsageStatsTimeSpentBar = (state) => {
+  return state.admin?.adminUsageStatsTimeSpentBar || [];
+};
+export const selectAdminUsageStatsChartThreeBar = (state) => {
+  return state.admin?.adminUsageStatsChartThreeBar || [];
+};
+
+export const selectAdminUsageStatsKPIList = (state) => {
+  return state.admin?.adminUsageStatsKPIList || [];
+};
 
 // Helper selectors for specific loading states
 export const selectPersonasLoading = (state) => state.admin.loading.personas;

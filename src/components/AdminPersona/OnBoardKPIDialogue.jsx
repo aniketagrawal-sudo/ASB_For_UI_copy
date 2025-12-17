@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   Dialog,
   DialogTitle,
@@ -14,142 +14,190 @@ import {
   IconButton,
   InputLabel,
   FormControl,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import classes from "./OnBoardKPIDialogue.module.scss";
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import classes from './OnBoardKPIDialogue.module.scss';
 
 export default function OnBoardKPIDialogue({
   open,
   onClose,
   onSave,
-  mode = "create",
+  mode = 'create',
   initialValues,
+  userOptions = [],
+  categoryOptions = [],
+  personaOptions = []
 }) {
   const [form, setForm] = useState({
-    username: "",
-    description: "",
-    category: "",
-    persona: "",
+    username: '',
+    description: '',
+    category: '',
+    persona: '',
   });
 
-  // Example dropdown options (in future you can fetch these dynamically from API)
-  const USER_OPTIONS = ["John Doe", "Jane Smith", "Rahul Verma", "Priya Nair"];
-  const CATEGORY_OPTIONS = ["Sales", "Finance", "Marketing", "Operations"];
-  const PERSONA_OPTIONS = ["Regional Manager", "Team Leader", "Analyst"];
-
-  // Hydrate form whenever dialog opens or initialValues change
+  // Hydrate values on open
   useEffect(() => {
     if (open) {
       setForm({
-        username: initialValues?.username || "",
-        description: initialValues?.description || "",
-        category: initialValues?.category || "",
-        persona: initialValues?.persona || "",
+        username: initialValues?.username || '',
+        description: initialValues?.description || '',
+        category: initialValues?.category || '',
+        persona: initialValues?.persona || '',
       });
     }
   }, [open, initialValues]);
 
   const handleSave = () => onSave(form);
 
+  // Helper: ensure selected value is always shown.
+  const ensureValueIncluded = (options, value) => {
+    if (!value) return options;
+    if (options.includes(value)) return options;
+    return [value, ...options];
+  };
+
+  const mergedUsers = ensureValueIncluded(userOptions, form.username);
+  const mergedCategories = ensureValueIncluded(categoryOptions, form.category);
+  const mergedPersonas = ensureValueIncluded(personaOptions, form.persona);
+
   return (
     <Dialog open={open} onClose={onClose} classes={{ paper: classes.customDialogPaper }}>
       <DialogTitle className={classes.dialogueTitle}>
-        {mode === "edit" ? "Edit KPI" : "Add New KPI"}
-        <DialogContentText sx={{ mb: 2 }}>
-          {mode === "edit"
-            ? "Edit any necessary KPI details and click on save"
-            : "Please input the necessary details and choose the Persona"}
+        {mode === 'edit' ? 'Edit KPI' : 'Add New KPI'}
+        <DialogContentText className={classes.dialogueTitleText}>
+          {mode === 'edit'
+            ? 'Edit the KPI details and click save.'
+            : 'Please input all necessary details to create a KPI.'}
         </DialogContentText>
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{ position: "absolute", right: 8, top: 8 }}
-        >
-          <CloseIcon />
+        <IconButton aria-label="close" onClick={onClose} sx={{ position: 'absolute', right: 8, top: 8 }}>
+          <CloseIcon sx={{ fontSize: '14px' }} />
         </IconButton>
       </DialogTitle>
 
       <DialogContent dividers>
-        <Box sx={{ display: "grid", gap: 2 }}>
-          {/* Username dropdown */}
-          <FormControl fullWidth>
-            <InputLabel>User Name</InputLabel>
+        <Box sx={{ display: 'grid', gap: 2 }}>
+
+          {/* KPI Name */}
+          {/* <FormControl fullWidth size="small">
+            <InputLabel sx={{ fontSize: '12px' }}>KPI Name</InputLabel>
             <Select
-              label="User Name"
+           InputProps={{ readOnly: true }}
+              data-testid="username-select"
+              sx={{ fontSize: '12px', pointerEvents: "none", }}
               value={form.username}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, username: e.target.value }))
-              }
+              label="KPI Name"
+              onChange={(e) => setForm((f) => ({ ...f, username: e.target.value }))}
             >
-              {USER_OPTIONS.map((user) => (
-                <MenuItem key={user} value={user}>
+              {mergedUsers.map((user) => (
+                <MenuItem key={user} value={user} sx={{ fontSize: '12px' }}>
                   {user}
                 </MenuItem>
               ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
+           <TextField
+            fullWidth
+            size="small"
+            label="KPI Name"
+            value={form.username || ''}
+            InputProps={{
+              readOnly: true,
+            }}
+            sx={{
+              '& .MuiInputBase-input': {
+                fontSize: '12px',
+                padding: '6px 10px',
+              },
+              '& .MuiInputLabel-root': {
+                fontSize: '12px',
+              },
+              pointerEvents: "none",
+            }}
+          />
 
           {/* Description */}
           <TextField
-            label="User Description"
+          InputProps={{ readOnly: true }}
+            data-testid="description-input"
+            size="small"
+            label="KPI Description"
             value={form.description}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, description: e.target.value }))
-            }
+            onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
             multiline
             minRows={3}
             fullWidth
+            sx={{
+              pointerEvents: "none",
+              '& .MuiInputBase-input': { fontSize: '12px', padding: '6px 10px' },
+              '& .MuiInputLabel-root': { fontSize: '12px' },
+            }}
           />
 
-          {/* Category dropdown */}
-          <FormControl fullWidth>
-            <InputLabel>Category</InputLabel>
+          {/* Category */}
+          {/* <FormControl fullWidth size="small">
+            <InputLabel sx={{ fontSize: '12px' }}>Category</InputLabel>
             <Select
-              label="Category"
+            InputProps={{ readOnly: true }}
+              data-testid="category-select"
               value={form.category}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, category: e.target.value }))
-              }
+              label="Category"
+              sx={{ fontSize: '12px', pointerEvents: "none", }}
+              onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
             >
-              {CATEGORY_OPTIONS.map((cat) => (
-                <MenuItem key={cat} value={cat}>
+              {mergedCategories.map((cat) => (
+                <MenuItem key={cat} value={cat} sx={{ fontSize: '12px' }}>
                   {cat}
                 </MenuItem>
               ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
+           <TextField
+            fullWidth
+            size="small"
+            label="Category"
+            value={form.category || ''}
+            InputProps={{
+              readOnly: true,
+            }}
+            sx={{
+              '& .MuiInputBase-input': {
+                fontSize: '12px',
+                padding: '6px 10px',
+              },
+              '& .MuiInputLabel-root': {
+                fontSize: '12px',
+              },
+              pointerEvents: "none",
+            }}
+          />
 
-          {/* Persona dropdown */}
-          <FormControl fullWidth>
-            <InputLabel>Persona</InputLabel>
+          {/* Persona */}
+          <FormControl fullWidth size="small">
+            <InputLabel sx={{ fontSize: '12px' }}>Assignment</InputLabel>
             <Select
-              label="Persona"
+              data-testid="persona-select"
               value={form.persona}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, persona: e.target.value }))
-              }
+              label="Assignment"
+              sx={{ fontSize: '12px' }}
+              onChange={(e) => setForm((f) => ({ ...f, persona: e.target.value }))}
             >
-              {PERSONA_OPTIONS.map((role) => (
-                <MenuItem key={role} value={role}>
+              {mergedPersonas.map((role) => (
+                <MenuItem key={role} value={role} sx={{ fontSize: '12px' }}>
                   {role}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
+
         </Box>
       </DialogContent>
 
       <DialogActions className={classes.dialogActions}>
-        <Button onClick={onClose} variant="outlined" className={classes.cancelBtn}>
+        <Button data-testid="cancel-btn" onClick={onClose} variant="outlined" className={classes.cancelBtn}>
           Cancel
         </Button>
-        <Button
-          color="primary"
-          variant="contained"
-          className={classes.saveBtn}
-          onClick={handleSave}
-        >
-          {mode === "edit" ? "Save Changes" : "Add KPI"}
+        <Button data-testid="save-btn" color="primary" variant="contained" className={classes.saveBtn} onClick={handleSave}>
+          {mode === 'edit' ? 'Save Changes' : 'Add KPI'}
         </Button>
       </DialogActions>
     </Dialog>
@@ -160,16 +208,22 @@ OnBoardKPIDialogue.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  mode: PropTypes.oneOf(["create", "edit"]),
+  mode: PropTypes.oneOf(['create', 'edit']),
   initialValues: PropTypes.shape({
     username: PropTypes.string,
     description: PropTypes.string,
     category: PropTypes.string,
     persona: PropTypes.string,
   }),
+  userOptions: PropTypes.arrayOf(PropTypes.string),
+  categoryOptions: PropTypes.arrayOf(PropTypes.string),
+  personaOptions: PropTypes.arrayOf(PropTypes.string),
 };
 
 OnBoardKPIDialogue.defaultProps = {
-  mode: "create",
+  mode: 'create',
   initialValues: undefined,
+  userOptions: [],
+  categoryOptions: [],
+  personaOptions: [],
 };

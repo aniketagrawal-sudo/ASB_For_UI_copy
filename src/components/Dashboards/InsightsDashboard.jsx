@@ -502,8 +502,6 @@ function InsightsDashboard({ dashboardsReady, filterdtInsightsDataDetails }) {
     return industry?.clientId || null;
   }, [userFromState?.industries, userFromState?.selectedIndustry]);
 
-  console.log('cliennnntId', clientId);
-
   const personaId = useMemo(() => {
     return userFromState?.industries
       ?.find((i) => i.name === selectedIndustry)
@@ -512,7 +510,6 @@ function InsightsDashboard({ dashboardsReady, filterdtInsightsDataDetails }) {
 
   // --- LOCAL STATE (Kept) ---
   const [selectedInsightId, setSelectedInsightId] = useState(insightsData[0].insight_id);
-  console.log('selectedInsightId', selectedInsightId);
   const [expandedFaqs, setExpandedFaqs] = useState({});
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [activeView, setActiveView] = useState('visualization');
@@ -542,10 +539,10 @@ function InsightsDashboard({ dashboardsReady, filterdtInsightsDataDetails }) {
   const shouldShowDashboard = dashboardsReady?.insights || (!isLoading && insightsData?.length > 0);
 
   useEffect(() => {
-    if (insightsData?.length && !selectedInsightId) {
+    if (insightsData?.length) {
       setSelectedInsightId(insightsData[0].insight_id);
     }
-  }, [insightsData, selectedInsightId]);
+  }, [insightsData]);
 
   const selectedInsight = useMemo(
     () => insightsData?.find((insight) => insight.insight_id === selectedInsightId),
