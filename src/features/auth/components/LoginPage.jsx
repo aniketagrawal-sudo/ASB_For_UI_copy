@@ -1,14 +1,13 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Box, Button, Grid2 as Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import LeftIcon from '../../../assets/LoginLeftGroup.png';
 import TALogo from '../../../assets/TA-logo.png';
 import LinearLoader from '../../../components/LinearLoader';
 import { setLoading } from '../authSlice';
 import classes from './LoginPage.module.scss';
-import { useEffect } from 'react';
-import { oktaLogin, getOktaAuthState } from '../../../utils/okta';
+import { oktaLogin } from '../../../utils/okta';
 import { useAuthContext } from '../AuthContext';
 
 const LoginPage = () => {
@@ -18,23 +17,6 @@ const LoginPage = () => {
   const { authError } = useAuthContext();
 
   const { loading } = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    const checkAuthAndRedirect = async () => {
-      try {
-        const authState = await getOktaAuthState();
-        if (authState?.isAuthenticated) {
-          const redirect = searchParams.get('redirect');
-          // Change default redirect to dashboard
-          navigate(redirect ? decodeURIComponent(redirect) : '/dashboard', { replace: true });
-        }
-      } catch (error) {
-        console.error('Error checking auth state:', error);
-      }
-    };
-
-    checkAuthAndRedirect();
-  }, [navigate, searchParams]);
 
   const handleLogin = async () => {
     dispatch(setLoading(true));

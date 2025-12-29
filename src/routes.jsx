@@ -7,6 +7,7 @@ import LinearLoader from './components/LinearLoader';
 // Lazy-loaded components
 const AppLayout = lazy(() => import('./layouts/AppLayout'));
 const LoginPage = lazy(() => import('./features/auth/components/LoginPage'));
+const OktaCallback = lazy(() => import('./features/auth/components/OktaCallback'));
 const Home = lazy(() => import('./pages/Home/Home'));
 const Conversations = lazy(() => import('./pages/Conversations/Conversations'));
 const Dashboard = lazy(() => import('./pages/Dashboard/Dashboard'));
@@ -17,8 +18,8 @@ export const AppRoutes = () => {
   return (
     <Suspense fallback={<LinearLoader />}>
       <Routes>
-        {/* Okta callback route */}
-        <Route path="/callback" element={<LinearLoader />} />
+        {/* Okta callback route - handles OAuth 2.0 callback */}
+        <Route path="/callback" element={<OktaCallback />} />
 
         <Route path="/login" element={<LoginPage />} />
 

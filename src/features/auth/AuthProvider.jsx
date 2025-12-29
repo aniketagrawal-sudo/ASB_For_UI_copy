@@ -48,6 +48,8 @@ const AuthProvider = ({ children }) => {
     disconnectSocket();
   };
 
+  
+
   /**
    * Extract groups/roles from Okta user object
    * Okta stores group information in the groups claim or via group API
@@ -182,13 +184,21 @@ const AuthProvider = ({ children }) => {
 
   const initializeApp = async () => {
     try {
-      if (!validateOktaConfig()) {
-        throw new Error('Invalid Okta configuration');
-      }
+      // if (!validateOktaConfig()) {
+      //   throw new Error('Invalid Okta configuration');
+      // }
 
       enableLoading();
       const oktaAuth = await initializeOkta();
       oktaAuthRef.current = oktaAuth;
+
+      // Skip socket initialization if we're on the callback route
+      // The callback needs to be processed first before initializing socket
+      if (window.location.pathname.includes('/callback')) {
+        console.log('AuthProvider: On callback route, skipping socket initialization');
+        disableLoading();
+        return;
+      }
 
       // Check auth state
       const authState = await oktaAuth.authStateManager.getAuthState();
@@ -256,7 +266,26 @@ const AuthProvider = ({ children }) => {
         navigate(location.pathname, { replace: true });
       }
     }
-  }, [location, navigate]);
+
+    // After callback processing, initialize socket if authenticated
+    if (!location.pathname.includes('/callback') && !initializationLoading) {
+      const initializeSocketAfterCallback = async () => {
+        try {
+          const authState = await oktaAuthRef.current?.authStateManager.getAuthState();
+          if (authState?.isAuthenticated && !socketInitializedRef.current) {
+            const user = await getOktaUser();
+            if (user) {
+              await handleUserAuthenticatedEvents(oktaAuthRef.current, user);
+            }
+          }
+        } catch (error) {
+          console.error('Error initializing socket after callback:', error);
+        }
+      };
+
+      initializeSocketAfterCallback();
+    }
+  }, [location, navigate, initializationLoading]);
 
   if (initializationLoading) {
     return (

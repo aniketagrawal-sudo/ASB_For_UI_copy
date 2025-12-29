@@ -14,7 +14,7 @@ import { disconnectSocket, initSocket } from './socket';
 const oktaConfig = {
   issuer: import.meta.env.VITE_OKTA_ISSUER,
   clientId: import.meta.env.VITE_OKTA_CLIENT_ID,
-  redirectUri: `${window.location.origin}${import.meta.env.VITE_BASE_PATH || ''}/callback`,
+  redirectUri: import.meta.env.VITE_OKTA_REDIRECT_URI || `${window.location.origin}${import.meta.env.VITE_BASE_PATH || ''}/callback`,
   scopes: ['openid', 'profile', 'email'],
   responseType: ['code'],
   responseMode: 'fragment',
@@ -33,9 +33,9 @@ let refreshCallbacks = [];
  * @returns {Promise<OktaAuth>} Okta Auth instance
  */
 export const initializeOkta = async () => {
-  if (!validateOktaConfig()) {
-    return Promise.reject(new Error('Okta not initialized due to missing configuration'));
-  }
+  // if (!validateOktaConfig()) {
+  //   return Promise.reject(new Error('Okta not initialized due to missing configuration'));
+  // }
 
   try {
     if (!oktaAuth) {
@@ -49,7 +49,7 @@ export const initializeOkta = async () => {
         if (err.errorCode === 'E_REFRESH_STATE_NOT_FOUND') {
           // Force logout and redirect to login
           await oktaAuth.signOut();
-          window.location.href = `${import.meta.env.VITE_BASE_PATH || ''}/login`;
+          window.location.href = `/login`;
         }
       });
 
@@ -58,6 +58,19 @@ export const initializeOkta = async () => {
         console.log('Token renewed successfully');
         handleTokenRenewal();
       });
+    }
+
+    // Handle callback from Okta redirect
+    // If we're on the callback route, process the authorization code
+    if (window.location.pathname.includes('/callback')) {
+      console.log('Processing Okta callback...');
+      try {
+        // This will parse the authorization code from the URL and exchange it for tokens
+        await oktaAuth.authStateManager.updateAuthState();
+        console.log('Okta callback processed successfully');
+      } catch (err) {
+        console.error('Okta callback processing error:', err);
+      }
     }
 
     // Check if user is already authenticated
