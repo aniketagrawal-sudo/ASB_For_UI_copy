@@ -1,107 +1,48 @@
-import { OktaAuth } from '@okta/okta-auth-js';
-import { validateOktaConfig } from './validator';
-import { disconnectSocket, initSocket } from './socket';
-
 /**
- * Azure-optimized Okta authentication integration
- * - Token refresh with socket reconnection
- * - Improved error handling and retry logic
- * - Better logging for Azure Application Insights
+ * MPA (Multi-Page Application) Session-Based Authentication
+ * 
+ * This module handles session-based authentication where:
+ * - Backend manages authentication and session creation
+ * - HTTPOnly cookies store session information
+ * - Frontend sends requests with automatic cookie attachment
+ * - No token handling needed on frontend
  *
- * @version 1.0.0
+ * @version 2.0.0 - MPA Architecture
  */
-
-const oktaConfig = {
-  issuer: import.meta.env.VITE_OKTA_ISSUER,
-  clientId: import.meta.env.VITE_OKTA_CLIENT_ID,
-  redirectUri: `${window.location.origin}${import.meta.env.VITE_BASE_PATH || ''}/callback`,
-  scopes: ['openid', 'profile', 'email'],
-  responseType: ['code'],
-  responseMode: 'fragment',
-  pkce: true,
-};
-
-// Initialize Okta instance
-let oktaAuth = null;
-
-// Track token refresh operations
-let isRefreshing = false;
-let refreshCallbacks = [];
 
 /**
- * Initialize Okta Auth
- * @returns {Promise<OktaAuth>} Okta Auth instance
+ * Check if user has a valid session by calling backend
+ * @returns {Promise<Object>} User object if session exists, null otherwise
  */
-export const initializeOkta = async () => {
-  if (!validateOktaConfig()) {
-    return Promise.reject(new Error('Okta not initialized due to missing configuration'));
-  }
-
+export const checkSessionValidity = async () => {
   try {
-    if (!oktaAuth) {
-      oktaAuth = new OktaAuth(oktaConfig);
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/me`, {
+      method: 'GET',
+      credentials: 'include', // Important: Include cookies
+    });
 
-      // Setup token expiration handler
-      oktaAuth.tokenManager.on('error', async (err) => {
-        console.error('Token manager error:', err);
-
-        // If it's an expiration error, try to refresh
-        if (err.errorCode === 'E_REFRESH_STATE_NOT_FOUND') {
-          // Force logout and redirect to login
-          await oktaAuth.signOut();
-          window.location.href = `${import.meta.env.VITE_BASE_PATH || ''}/login`;
-        }
-      });
-
-      // Listen for token renewal
-      oktaAuth.tokenManager.on('renewed', () => {
-        console.log('Token renewed successfully');
-        handleTokenRenewal();
-      });
+    if (response.status === 200) {
+      return await response.json();
+    } else if (response.status === 401) {
+      return null; // Session expired
     }
-
-    // Check if user is already authenticated
-    const authState = await oktaAuth.authStateManager.getAuthState();
-    if (authState && authState.isAuthenticated) {
-      // Ensure valid access token exists
-      try {
-        await oktaAuth.tokenManager.get('accessToken');
-      } catch (err) {
-        console.error('Failed to get access token:', err);
-        throw new Error('Unable to retrieve access token');
-      }
-    }
-
-    return oktaAuth;
   } catch (error) {
-    console.error('Okta initialization failed:', error);
-    throw {
-      error: error,
-    };
+    console.error('Failed to check session validity:', error);
+    return null;
   }
 };
 
 /**
- * Handle token renewal and socket reconnection
+ * Initialize application - check if user has valid session
+ * @returns {Promise<Object|null>} User object if authenticated, null otherwise
  */
-const handleTokenRenewal = async () => {
+export const initializeApp = async () => {
   try {
-    // Reconnect socket with new token
-    const accessToken = await oktaAuth.tokenManager.get('accessToken');
-    if (accessToken) {
-      try {
-        const currentSocket = window.socketInstance;
-        if (currentSocket) {
-          disconnectSocket();
-          const newSocket = initSocket(accessToken.accessToken);
-          window.socketInstance = newSocket;
-        }
-      } catch (socketError) {
-        console.error('Socket reconnection error:', socketError);
-      }
-    }
+    const user = await checkSessionValidity();
+    return user;
   } catch (error) {
-    console.error('Token renewal error:', error);
+    console.error('App initialization failed:', error);
+    return null;
   }
 };
 
@@ -109,54 +50,54 @@ const handleTokenRenewal = async () => {
  * Get the current authenticated user info
  * @returns {Promise<Object>} User object
  */
-export const getOktaUser = async () => {
+export const getCurrentUser = async () => {
   try {
-    if (!oktaAuth) {
-      throw new Error('Okta Auth not initialized');
+    const user = await checkSessionValidity();
+    if (!user) {
+      throw new Error('User not authenticated');
     }
-
-    const user = await oktaAuth.getUser();
     return user;
   } catch (error) {
-    console.error('Failed to get Okta user:', error);
+    console.error('Failed to get current user:', error);
     throw error;
   }
 };
 
 /**
- * Get auth state
- * @returns {Promise<Object>} Auth state
+ * Redirect to backend login endpoint
+ * Backend will handle OAuth/SSO authentication and set HTTPOnly cookie
  */
-export const getOktaAuthState = async () => {
-  try {
-    if (!oktaAuth) {
-      throw new Error('Okta Auth not initialized');
-    }
-
-    return await oktaAuth.authStateManager.getAuthState();
-  } catch (error) {
-    console.error('Failed to get auth state:', error);
-    throw error;
+export const initiateLogin = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  if (!apiBaseUrl) {
+    console.error('VITE_API_BASE_URL not configured');
+    return;
   }
+  
+  // Redirect to backend login endpoint
+  // Backend will handle SSO authentication and return HTTPOnly cookie
+  window.location.href = `${apiBaseUrl}/auth/login`;
 };
 
 /**
- * Get access token
- * @returns {Promise<string>} Access token
+ * Redirect to backend logout endpoint
+ * Backend will clear session and HTTPOnly cookie
  */
-export const getOktaAccessToken = async () => {
+export const logout = async () => {
   try {
-    if (!oktaAuth) {
-      throw new Error('Okta Auth not initialized');
+    await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/logout`, {
+      method: 'POST',
+      credentials: 'include', // Include cookies
+    });
+  } catch (error) {
+    console.error('Logout failed:', error);
+  } finally {
+    // Redirect to login page
+    window.location.href = `${import.meta.env.VITE_BASE_PATH || ''}/login`;
     }
 
-    const accessToken = await oktaAuth.tokenManager.get('accessToken');
-    return accessToken?.accessToken;
-  } catch (error) {
-    console.error('Failed to get access token:', error);
-    throw error;
-  }
-};
+  } 
+  
 
 /**
  * Login to Okta
@@ -199,38 +140,34 @@ export const oktaLogout = async () => {
  * Manual token refresh with socket reconnection
  * @returns {Promise<boolean>} Whether token was refreshed
  */
-export const refreshOktaTokenWithSocketUpdate = async () => {
-  try {
-    if (isRefreshing) {
-      return new Promise((resolve) => {
-        refreshCallbacks.push(resolve);
-      });
-    }
 
-    isRefreshing = true;
 
-    // Okta SDK automatically refreshes tokens when needed
-    await oktaAuth.tokenManager.renew('accessToken');
-
-    // Execute pending callbacks
-    refreshCallbacks.forEach((callback) => callback(true));
-    refreshCallbacks = [];
-    isRefreshing = false;
-
-    // Reconnect socket with new token
-    await handleTokenRenewal();
-
-    return true;
-  } catch (error) {
-    console.error('Token refresh failed:', error);
-
-    // Notify waiting operations that refresh failed
-    refreshCallbacks.forEach((callback) => callback(false));
-    refreshCallbacks = [];
-    isRefreshing = false;
-
-    return false;
-  }
+/**
+ * Legacy function names maintained for backward compatibility
+ * These now delegate to session-based functions
+ */
+export const initializeOkta = initializeApp;
+export const getOktaUser = getCurrentUser;
+export const getOktaAuthState = checkSessionValidity;
+export const getOktaAccessToken = async () => {
+  // In MPA mode, no access token needed on frontend
+  // Backend handles authentication via HTTPOnly cookies
+  return null;
 };
+//  export const oktaLogout = logout;
+//  export const oktaLogin = initiateLogin;
 
-export default oktaAuth;
+export default {
+  initializeApp,
+  getCurrentUser,
+  checkSessionValidity,
+  initiateLogin,
+  logout,
+  // Legacy names
+  initializeOkta,
+  getOktaUser,
+  getOktaAuthState,
+  getOktaAccessToken,
+  oktaLogout,
+  oktaLogin,
+}

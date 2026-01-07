@@ -54,7 +54,6 @@ import ConversationScreen from '../ConversationScreen/ConversationScreen';
 import Sidebar from '../Sidebar/Sidebar';
 import { getSocket, initSocket } from '../../utils/socket';
 import { joinConversation, leaveConversation } from '../../utils/socket/socketActions';
-import { getOktaAccessToken } from '../../utils/okta';
 import { SOCKET_EVENTS } from '../../utils/constants';
 import { addToQueue, addToRunning, removeFromRunning, selectRunningMessages } from '../../redux/store/queueSlice';
 
@@ -182,22 +181,17 @@ const ThreadsPanel = ({ open, onClose, userName, previousQueries = [], onQuerySe
     };
   }, []);
 
-  // Initialize socket if needed - with Azure-specific config
+  // Initialize socket if needed - MPA mode uses session cookies (no token needed)
   useEffect(() => {
     if (!socket) {
-      (async () => {
-        try {
-          const accessToken = await getOktaAccessToken();
-          if (accessToken) {
-            const newSocket = initSocket(accessToken);
-            if (newSocket) {
-              console.log('Socket initialized in ThreadsPanel');
-            }
-          }
-        } catch (error) {
-          console.error('Failed to initialize socket in ThreadsPanel:', error);
+      try {
+        const newSocket = initSocket();
+        if (newSocket) {
+          console.log('Socket initialized in ThreadsPanel');
         }
-      })();
+      } catch (error) {
+        console.error('Failed to initialize socket in ThreadsPanel:', error);
+      }
     }
   }, [socket]);
 

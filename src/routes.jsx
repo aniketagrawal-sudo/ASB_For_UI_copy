@@ -13,13 +13,18 @@ const Dashboard = lazy(() => import('./pages/Dashboard/Dashboard'));
 const Landing = lazy(() => import('./pages/Landing/Landing'));
 const AdminLanding = lazy(() => import('./pages/Landing/AdminLanding'));
 
+/**
+ * Routes configuration for MPA authentication
+ * 
+ * Changes from SPA:
+ * - Removed /callback route (backend handles OAuth callback)
+ * - No token-based auth required
+ * - Session validated at AuthProvider level
+ */
 export const AppRoutes = () => {
   return (
     <Suspense fallback={<LinearLoader />}>
       <Routes>
-        {/* Okta callback route */}
-        <Route path="/callback" element={<LinearLoader />} />
-
         <Route path="/login" element={<LoginPage />} />
 
         {/* Dashboard route outside of AppLayout */}

@@ -6,8 +6,17 @@ import backgroundImage from '../assets/bg-image.png';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { setLoading } from '../features/auth/authSlice';
-import { getOktaAuthState } from '../utils/okta';
+import { checkSessionValidity } from '../utils/okta';
 
+/**
+ * ProtectedRoute component for MPA authentication
+ * 
+ * In MPA mode:
+ * - Backend handles authentication via HTTPOnly cookies
+ * - Frontend checks if user has valid session
+ * - If session expires (401 response), user is redirected to login
+ * - AuthProvider already ensures user is authenticated before reaching protected routes
+ */
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -16,18 +25,24 @@ const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
-    const checkAuthState = async () => {
+    const verifySession = async () => {
       try {
-        const authState = await getOktaAuthState();
-        setIsAuthenticated(authState?.isAuthenticated || false);
+        const user = await checkSessionValidity();
+        if (user) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+          navigate(`/login`, { replace: true });
+        }
       } catch (error) {
-        console.error('Error checking auth state:', error);
+        console.error('Error checking session:', error);
         setIsAuthenticated(false);
+        navigate(`/login`, { replace: true });
       }
     };
 
-    checkAuthState();
-  }, []);
+    verifySession();
+  }, [navigate]);
 
   useEffect(() => {
     if (isAuthenticated === false) {
@@ -77,7 +92,8 @@ const ProtectedRoute = ({ children }) => {
 };
 
 ProtectedRoute.propTypes = {
-  children: PropTypes.node, // Ensures children is a valid React node and required
+  children: PropTypes.node,
 };
+
 
 export default ProtectedRoute;

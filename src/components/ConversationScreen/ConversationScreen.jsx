@@ -11,7 +11,6 @@ import {
   updateMessageResponseInConversation,
 } from '../../redux/store/conversationSlice';
 import { selectCurrentPageConversation as getConversationId, selectUser } from '../../features/auth/authSlice';
-import { getOktaAccessToken } from '../../utils/okta';
 import MessageBubble from '../MessageBubble/MessageBubble';
 import { addToRunning, removeFromRunning, addToQueue, selectRunningMessages } from '../../redux/store/queueSlice';
 import { getSocket, initSocket } from '../../utils/socket';
@@ -313,19 +312,14 @@ const ConversationScreen = ({ id, stableInstanceId = 'main', onSuggestedQuestion
     [refetchConversation, socketConnected],
   );
 
-  // Initialize socket if needed - specifically for Azure environments
+  // Initialize socket if needed - MPA mode uses session cookies (no token needed)
   useEffect(() => {
     if (!socket) {
-      (async () => {
-        try {
-          const accessToken = await getOktaAccessToken();
-          if (accessToken) {
-            initSocket(accessToken);
-          }
-        } catch (error) {
-          console.error('Failed to initialize socket with Okta token:', error);
-        }
-      })();
+      try {
+        initSocket();
+      } catch (error) {
+        console.error('Failed to initialize socket:', error);
+      }
     }
   }, [socket]);
 

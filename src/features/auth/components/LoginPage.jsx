@@ -8,9 +8,18 @@ import LinearLoader from '../../../components/LinearLoader';
 import { setLoading } from '../authSlice';
 import classes from './LoginPage.module.scss';
 import { useEffect } from 'react';
-import { oktaLogin, getOktaAuthState } from '../../../utils/okta';
+import { checkSessionValidity, initiateLogin } from '../../../utils/okta';
 import { useAuthContext } from '../AuthContext';
 
+/**
+ * LoginPage component for MPA authentication
+ * 
+ * In MPA mode:
+ * - User clicks "Sign in with SSO"
+ * - Frontend redirects to backend login endpoint
+ * - Backend handles all OAuth/SSO authentication
+ * - Backend sets HTTPOnly cookie and redirects back to app
+ */
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,26 +29,28 @@ const LoginPage = () => {
   const { loading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const checkAuthAndRedirect = async () => {
+    const checkSessionAndRedirect = async () => {
       try {
-        const authState = await getOktaAuthState();
-        if (authState?.isAuthenticated) {
+        const user = await checkSessionValidity();
+        if (user) {
           const redirect = searchParams.get('redirect');
           // Change default redirect to dashboard
           navigate(redirect ? decodeURIComponent(redirect) : '/dashboard', { replace: true });
         }
       } catch (error) {
-        console.error('Error checking auth state:', error);
+        console.error('Error checking session:', error);
       }
     };
 
-    checkAuthAndRedirect();
+    checkSessionAndRedirect();
   }, [navigate, searchParams]);
 
   const handleLogin = async () => {
     dispatch(setLoading(true));
     try {
-      await oktaLogin();
+      // Redirect to backend login endpoint
+      // Backend will handle OAuth/SSO authentication
+      initiateLogin();
     } catch (error) {
       console.error('Login failed:', error);
       dispatch(setLoading(false));

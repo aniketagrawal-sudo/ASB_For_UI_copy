@@ -1,8 +1,16 @@
 import { getSocket, initSocket, getConnectionPromise } from '.';
 import { notifyViaSnackBar } from '../../redux/store/conversationSlice';
 import { SOCKET_EVENTS } from '../constants';
-import { getOktaAccessToken } from '../../utils/okta';
 import { registerRoomUsage, unregisterRoomUsage, isRoomInUse, logRoomUsage } from './roomManager';
+
+/**
+ * Socket actions for MPA (Multi-Page Application)
+ * 
+ * Changes from SPA:
+ * - No token parameter needed (uses HTTPOnly session cookies)
+ * - Simplified reconnection logic
+ * - No token refresh needed
+ */
 
 // Track the current conversation room
 let currentRoom = null;
@@ -11,8 +19,7 @@ let currentRoom = null;
 let globalReconnectionPromise = null;
 
 /**
- * Joins a specified conversation room with Azure-optimized retry logic
- * Leverages the promise-based socket initialization for better error handling
+ * Joins a specified conversation room with retry logic
  *
  * @param {string} conversationId - ID of the conversation to join
  * @param {Function} dispatch - Redux dispatch function
@@ -59,7 +66,7 @@ export const joinConversation = (conversationId, dispatch, componentId = 'defaul
     );
     console.warn(`Socket not connected after ${retryCount} attempts. Cannot join conversation: ${conversationId}`);
 
-    // Simple notification about connection issues - replacing diagnostics
+    // Simple notification about connection issues
     notifyConnectionIssue(dispatch);
     return;
   }
@@ -85,18 +92,13 @@ export const joinConversation = (conversationId, dispatch, componentId = 'defaul
 
     // If no global reconnection is in progress, start one
     try {
-      // Get Okta access token for socket reconnection
+      // In MPA mode, no token needed - session is in HTTPOnly cookies
       (async () => {
         try {
-          const token = await getOktaAccessToken();
-          if (!token) {
-            throw new Error('No Okta token available');
-          }
-
           // Create a global reconnection promise
           globalReconnectionPromise = new Promise((resolve, reject) => {
             // Get the connection promise from initSocket
-            const newSocket = initSocket(token);
+            const newSocket = initSocket();
             const connectionPromise = getConnectionPromise();
 
             if (!connectionPromise) {
@@ -164,15 +166,10 @@ export const joinConversation = (conversationId, dispatch, componentId = 'defaul
   if (!socket) {
 
     try {
-      // Get Okta access token for socket initialization
+      // In MPA mode, no token needed - session is in HTTPOnly cookies
       (async () => {
         try {
-          const token = await getOktaAccessToken();
-          if (!token) {
-            throw new Error('No Okta token available');
-          }
-
-          const newSocket = initSocket(token);
+          const newSocket = initSocket();
           const connectionPromise = getConnectionPromise();
 
           if (connectionPromise) {

@@ -9,7 +9,6 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import GroupIcon from '@mui/icons-material/Group';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import { getOktaAuthState } from '../../utils/okta';
 import PropTypes from 'prop-types';
 import TALogo from '../../assets/TA-logo.png';
 import { resetQueueState } from '../../redux/store/queueSlice';

@@ -16,7 +16,6 @@ import {
   addOrUpdateMessageFeedback,
   deleteMessageFeedback,
 } from "../../redux/store/conversationSlice";
-import { getOktaAccessToken } from "../../utils/okta";
 import {
   selectUser,
   selectCurrentPageConversation,
@@ -69,15 +68,14 @@ function FeedbackDialog() {
     };
 
     try {
-      const token = await getOktaAccessToken();
       const baseURL = import.meta.env.VITE_API_BASE_URL;
 
       await fetch(`${baseURL}/api/conversation/${messageId}/feedback`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
+        credentials: 'include',
         body: JSON.stringify(payload),
       });
 
@@ -112,14 +110,11 @@ function FeedbackDialog() {
 
   const handleDelete = async () => {
     try {
-      const token = await getOktaAccessToken();
       const baseURL = import.meta.env.VITE_API_BASE_URL;
 
       await fetch(`${baseURL}/api/conversation/${messageId}/feedback`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: 'include',
       });
 
       // ✅ update Redux immediately
