@@ -45,6 +45,8 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  
+
   /**
    * Extract groups/roles from user object
    */
@@ -215,7 +217,26 @@ const AuthProvider = ({ children }) => {
         navigate(location.pathname, { replace: true });
       }
     }
-  }, [location, navigate]);
+
+    // After callback processing, initialize socket if authenticated
+    if (!location.pathname.includes('/callback') && !initializationLoading) {
+      const initializeSocketAfterCallback = async () => {
+        try {
+          const authState = await oktaAuthRef.current?.authStateManager.getAuthState();
+          if (authState?.isAuthenticated && !socketInitializedRef.current) {
+            const user = await getOktaUser();
+            if (user) {
+              await handleUserAuthenticatedEvents(oktaAuthRef.current, user);
+            }
+          }
+        } catch (error) {
+          console.error('Error initializing socket after callback:', error);
+        }
+      };
+
+      initializeSocketAfterCallback();
+    }
+  }, [location, navigate, initializationLoading]);
 
   if (initializationLoading) {
     return (

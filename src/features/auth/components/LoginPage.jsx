@@ -1,7 +1,7 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Box, Button, Grid2 as Grid, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import LeftIcon from '../../../assets/LoginLeftGroup.png';
 import TALogo from '../../../assets/TA-logo.png';
 import LinearLoader from '../../../components/LinearLoader';
